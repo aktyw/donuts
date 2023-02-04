@@ -1,6 +1,7 @@
 <template>
-  <div> <!-- drawer container -->
-    <div class="drawer">
+  <div>
+    <!-- drawer container -->
+    <div class="drawer full-h">
       <input id="my-drawer" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content">
         <!-- Page content here -->

@@ -1,5 +1,5 @@
 <template>
-  <div class="hero min-h-screen bg-base-200">
+  <div class="hero full-h min-h-screen bg-base-200">
     <div class="hero-content flex-col lg:flex-row-reverse gap-12">
       <div class="text-center lg:text-left">
         <h1 class="text-5xl font-bold">Login to Donuts!</h1>

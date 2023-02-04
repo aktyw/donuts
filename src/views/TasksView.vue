@@ -1,5 +1,5 @@
 <template>
-  <form action="" class="flex flex-col items-center">
+  <form action="" class="flex full-h flex-col items-center">
     <label class="label" for="taskInput">
       <span class="label-text">What you want to do?</span>
     </label>
