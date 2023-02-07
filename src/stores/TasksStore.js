@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { v4 as uuid } from 'uuid';
+import { toggleProp } from '@/helpers/toggleProp';
 
 export const useStoreTasks = defineStore('tasks', {
   state: () => {
@@ -18,9 +19,21 @@ export const useStoreTasks = defineStore('tasks', {
       const newTask = {
         id,
         content,
-        done: false
+        done: false,
+        isImportant: false,
       };
       this.tasks.unshift(newTask);
+    },
+    deleteTask(id) {
+      this.tasks = this.tasks.filter((task) => task.id !== id);
+      console.log(this.tasks);
+    },
+    toggleIsDone(id) {
+      toggleProp(id, 'done', this.tasks);
+    },
+    toggleIsImportant(id) {
+      console.log(id)
+      toggleProp(id, 'isImportant', this.tasks);
     },
   },
 });

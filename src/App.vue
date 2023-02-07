@@ -5,5 +5,5 @@ import TheHeader from '@/components/TheHeader.vue';
 
 <template>
   <the-header></the-header>
-  <RouterView />
+  <RouterView  />
 </template>
