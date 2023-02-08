@@ -6,6 +6,7 @@ export const useStoreTasks = defineStore('tasks', {
   state: () => {
     return {
       tasks: [],
+      deletedTasks: [],
     };
   },
   getters: {
@@ -21,6 +22,9 @@ export const useStoreTasks = defineStore('tasks', {
     getNotDoneTasks(state) {
       return state.tasks.filter((task) => !task.done);
     },
+    getDeletedTask(state) {
+      return state.deletedTasks[this.deletedTasks.length - 1];
+    },
   },
   actions: {
     addTask(content) {
@@ -30,10 +34,13 @@ export const useStoreTasks = defineStore('tasks', {
         content,
         done: false,
         isImportant: false,
+        subtasks: {},
       };
       this.tasks.unshift(newTask);
     },
     deleteTask(id) {
+      const toDeleteTask = this.tasks.find((task) => task.id === id);
+      this.deletedTasks.push(toDeleteTask);
       this.tasks = this.tasks.filter((task) => task.id !== id);
     },
     toggleIsDone(id) {
@@ -41,6 +48,9 @@ export const useStoreTasks = defineStore('tasks', {
     },
     toggleIsImportant(id) {
       toggleProp(id, 'isImportant', this.tasks);
+    },
+    undoDelete(task) {
+      this.tasks.unshift(task);
     },
   },
 });

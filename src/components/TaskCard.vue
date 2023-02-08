@@ -20,6 +20,7 @@
       :taskId="task.id"
     ></TaskOptions>
   </li>
+  
 </template>
 
 <script setup>

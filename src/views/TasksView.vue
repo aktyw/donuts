@@ -16,7 +16,11 @@
           v-model.trim="taskContent"
           v-focus
         />
-        <BaseButton :disabled="!taskContent" @click.prevent="addTask">
+        <BaseButton
+          :disabled="!taskContent"
+          @click.prevent="addTask"
+          class="btn-primary"
+        >
           <template #default>Add New Task</template>
         </BaseButton>
       </form>
@@ -41,6 +45,18 @@
       >No tasks. Time for chillout...</span
     >
   </div>
+  <Teleport to="body">
+    <BaseAlert
+      v-if="alertIsActive"
+      class="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+      @undo="undoDelete"
+      ><template #default>
+        <span class="md:text-lg text-center"
+          >You've deleted the task succesfully.</span
+        >
+      </template>
+    </BaseAlert>
+  </Teleport>
 </template>
 
 <script setup>
@@ -48,6 +64,7 @@ import { ref } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
 import TaskCard from '@/components/TaskCard.vue';
 import BaseButton from '@/components/BaseButton.vue';
+import BaseAlert from '@/components/BaseAlert.vue';
 import { vFocus } from '@/directives/vAutoFocus.js';
 import TaskFilter from '@/components/TaskFilter.vue';
 
@@ -55,6 +72,9 @@ const store = useStoreTasks();
 const currentFilter = ref('all');
 const tasks = ref(store.tasks);
 const taskContent = ref('');
+const alertIsActive = ref(false);
+const UNDO_DELETE_TIME = 4000;
+const undoTimeout = ref(null);
 
 function filterTasks(type) {
   currentFilter.value = type;
@@ -74,18 +94,6 @@ function filterTasks(type) {
     default:
       tasks.value = store.getAllTasks;
   }
-  // if (type === ) {
-
-  // }
-  // if (type === 'completed') {
-  //   tasks.value = store.getDoneTasks;
-  // }
-  // if (type === 'important') {
-  //   tasks.value = store.getImportantTasks;
-  // }
-  // if (type === 'not-completed') {
-  //   tasks.value = store.getNotDoneTasks;
-  // }
 }
 
 function addTask() {
@@ -97,5 +105,17 @@ function addTask() {
 function deleteTask(task) {
   store.deleteTask(task);
   tasks.value = store.tasks;
+  alertIsActive.value = true;
+
+  undoTimeout.value = setTimeout(() => {
+    alertIsActive.value = false;
+  }, UNDO_DELETE_TIME);
+}
+
+function undoDelete() {
+  clearTimeout(undoTimeout.value);
+  alertIsActive.value = false;
+  store.undoDelete(store.getDeletedTask);
+  filterTasks(currentFilter.value);
 }
 </script>
