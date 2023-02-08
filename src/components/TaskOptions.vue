@@ -14,7 +14,7 @@
       </li>
       <li>
         <button class="btn-md md:btn-sm" @click="handleToggleIsDone(taskId)">
-          Toggle Completed
+          Toggle Done
         </button>
       </li>
       <li><button class="btn-md md:btn-sm">Set Deadline</button></li>

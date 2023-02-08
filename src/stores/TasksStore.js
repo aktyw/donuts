@@ -9,8 +9,17 @@ export const useStoreTasks = defineStore('tasks', {
     };
   },
   getters: {
-    getTask(state) {
-      console.log(this.tasks);
+    getAllTasks(state) {
+      return state.tasks;
+    },
+    getImportantTasks(state) {
+      return state.tasks.filter((task) => task.isImportant);
+    },
+    getDoneTasks(state) {
+      return state.tasks.filter((task) => task.done);
+    },
+    getNotDoneTasks(state) {
+      return state.tasks.filter((task) => !task.done);
     },
   },
   actions: {
@@ -26,13 +35,11 @@ export const useStoreTasks = defineStore('tasks', {
     },
     deleteTask(id) {
       this.tasks = this.tasks.filter((task) => task.id !== id);
-      console.log(this.tasks);
     },
     toggleIsDone(id) {
       toggleProp(id, 'done', this.tasks);
     },
     toggleIsImportant(id) {
-      console.log(id)
       toggleProp(id, 'isImportant', this.tasks);
     },
   },

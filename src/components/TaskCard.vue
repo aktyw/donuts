@@ -1,6 +1,6 @@
 <template>
   <li class="w-full flex justify-between py-2">
-    <div class="flex gap-4 cursor-pointer" @click="toggleIsDone(taskId)">
+    <div class="flex gap-4 cursor-pointer" @click="toggleIsDone(task.id)">
       <label>
         <input
           type="checkbox"
@@ -17,7 +17,7 @@
       @deleteTask="handleDeleteTask"
       @toggleIsImportant="toggleIsImportant"
       @toggleIsDone="toggleIsDone"
-      :taskId="taskId"
+      :taskId="task.id"
     ></TaskOptions>
   </li>
 </template>
@@ -29,23 +29,23 @@ import { useStoreTasks } from '@/stores/TasksStore';
 
 const store = useStoreTasks();
 
-const props = defineProps(['taskId']);
+const props = defineProps(['task']);
 const emits = defineEmits(['deleteTask']);
 
-const isDone = ref(false);
-const isImportant = ref(false);
+const isDone = ref(props.task.done);
+const isImportant = ref(props.task.isImportant);
 
-function handleDeleteTask(taskId) {
-  emits('deleteTask', taskId);
+function handleDeleteTask(id) {
+  emits('deleteTask', id);
 }
 
-function toggleIsDone(taskId) {
+function toggleIsDone(id) {
   isDone.value = !isDone.value;
-  store.toggleIsDone(taskId);
+  store.toggleIsDone(id);
 }
 
-function toggleIsImportant(taskId) {
+function toggleIsImportant(id) {
   isImportant.value = !isImportant.value;
-  store.toggleIsImportant(taskId);
+  store.toggleIsImportant(id);
 }
 </script>
