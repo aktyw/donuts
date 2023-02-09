@@ -1,6 +1,5 @@
 <template>
   <div class="flex flex-col justify-start items-center full-h">
-    <BaseButton @click="editTask">Test Modal Edit Task</BaseButton>
     <div
       class="flex flex-col items-start max-w-2xl py-4"
       :class="{ 'h-1/2': !store.tasks.length }"
@@ -32,6 +31,8 @@
           v-for="task in tasks"
           :key="task.id"
           :task="task"
+          :taskId="task.id"
+          :taskContent="task.content"
           class="border-solid border-t-2 border-base-200 last:border-solid last:border-b-2"
           @deleteTask="deleteTask"
           @click="filterTasks(currentFilter)"
@@ -58,19 +59,17 @@
       </template>
     </BaseAlert>
   </Teleport>
-  <Teleport to="body">
-    <BaseModal> </BaseModal>
-  </Teleport>
+  
 </template>
 
 <script setup>
+
 import { ref } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
 import TaskCard from '@/components/TaskCard.vue';
 import TaskFilter from '@/components/TaskFilter.vue';
 import BaseButton from '@/components/BaseButton.vue';
 import BaseAlert from '@/components/BaseAlert.vue';
-import BaseModal from '@/components/BaseModal.vue';
 import { vFocus } from '@/directives/vAutoFocus.js';
 
 const store = useStoreTasks();
@@ -105,10 +104,6 @@ function addTask() {
   store.addTask(taskContent.value);
   taskContent.value = '';
   taskInput.focus();
-}
-
-function editTask() {
-  console.log('edit');
 }
 
 function deleteTask(task) {

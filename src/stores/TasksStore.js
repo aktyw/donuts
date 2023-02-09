@@ -52,5 +52,10 @@ export const useStoreTasks = defineStore('tasks', {
     undoDelete(task) {
       this.tasks.unshift(task);
     },
+    updateTask(id, content) {
+      const toUpdateTask = this.tasks.find((task) => task.id === id);
+      toUpdateTask.content = content;
+      this.tasks
+    },
   },
 });
