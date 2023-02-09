@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+::selection {
+  background-color: hsl(var(--p));
+}
+
 .full-h {
   height: calc(100vh - 4rem);
+}
+
+.bg-error-darken:hover {
+  background-color: hsl(var(--er));
+  filter: brightness(0.85);
 }

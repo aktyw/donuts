@@ -17,7 +17,7 @@
     </li>
     <li>
       <button id="not-completed" class="btn btn-xs btn-ghost">
-        Not completed
+        Uncompleted
       </button>
     </li>
   </ul>
