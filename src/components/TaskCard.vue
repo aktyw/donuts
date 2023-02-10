@@ -21,10 +21,11 @@
       @toggleIsImportant="toggleIsImportant"
       @toggleIsDone="toggleIsDone"
       @editTask="toggleModal"
-      @updateDate="handleUpdateDate"
+      @handleDate="handleUpdateDate"
       :taskId="task.id"
       :taskIsDone="task.done"
       :taskIsImportant="task.isImportant"
+      :taskDate="props.task.date"
     ></TaskOptions>
     <Teleport to="body">
       <AddEditTask
@@ -48,13 +49,12 @@
 </template>
 
 <script setup>
-import { ref, toRefs } from 'vue';
+import { ref, onMounted } from 'vue';
 import TaskOptions from '@/components/TaskOptions.vue';
 import { useStoreTasks } from '@/stores/TasksStore';
 import AddEditTask from '@/components/AddEditTask.vue';
 
 const store = useStoreTasks();
-
 const props = defineProps(['task', 'taskContent', 'taskId']);
 const emits = defineEmits(['deleteTask']);
 
@@ -62,8 +62,8 @@ const newContent = ref(props.taskContent);
 // to refactor
 const isDone = ref(props.task.done);
 const isImportant = ref(props.task.isImportant);
-
 const editTask = ref(false);
+
 
 function toggleModal() {
   editTask.value = !editTask.value;
@@ -73,8 +73,8 @@ function cancelEditTask() {
   toggleModal();
 }
 
-function handleUpdateDate({ id, date }) {
-  store.updateDate(id, date);
+function handleUpdateDate(date) {
+  store.updateDate(props.task.id, date);
 }
 
 function handleUpdateTask(content) {

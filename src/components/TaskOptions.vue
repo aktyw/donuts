@@ -76,7 +76,9 @@
       </li>
       <li>
         <Datepicker
-          v-model="date"
+          v-model="currentDate"
+          :value="date"
+          @update:model-value="handleDate"
           ref="datepicker"
           teleport-center
           v-show="showPicker"
@@ -120,37 +122,48 @@
 </template>
 
 <script setup>
-import { computed, toRefs, ref, watch } from 'vue';
+import { computed, toRefs, ref } from 'vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
+import { useStoreTasks } from '@/stores/TasksStore';
+const store = useStoreTasks();
 
-const date = ref();
-const datepicker = ref(null);
-const showPicker = ref(false);
-const currentTaskDate = ref(null);
-const props = defineProps(['taskId', 'taskIsDone', 'taskIsImportant']);
+const props = defineProps([
+  'taskId',
+  'taskIsDone',
+  'taskIsImportant',
+  'taskDate',
+]);
 const emits = defineEmits([
   'deleteTask',
   'toggleIsImportant',
   'toggleIsDone',
-  'updateDate',
+  'handleDate',
 ]);
+const date = ref('');
+const currentDate = props.taskDate;
+const datepicker = ref(null);
+const showPicker = ref(false);
 
 const {
   taskId,
   taskIsDone: isDone,
   taskIsImportant: isImportant,
 } = toRefs(props);
+
 const activeStyle =
   'bg-accent focus:bg-accent active:bg-accent hover:bg-accent-focus text-accent-content fill-accent';
-
 const doneStyle = computed(() => (isDone.value ? activeStyle : ''));
 const importantStyle = computed(() => (isImportant.value ? activeStyle : ''));
 
-watch(date, (newDate) => {
-  currentTaskDate.value = newDate;
-  handleUpdateDate(taskId.value, currentTaskDate.value);
-});
+function handleDate(modelData) {
+  date.value = modelData;
+  emits('handleDate', date);
+}
+
+function handleCalendar() {
+  datepicker.value.openMenu();
+}
 
 function handleDeleteTask(taskId) {
   emits('deleteTask', taskId);
@@ -158,14 +171,6 @@ function handleDeleteTask(taskId) {
 
 function handleToggleImportant(taskId) {
   emits('toggleIsImportant', taskId);
-}
-
-function handleCalendar() {
-  datepicker.value.openMenu();
-}
-
-function handleUpdateDate(id, date) {
-  emits('updateDate', { id, date });
 }
 
 function handleToggleIsDone(taskId) {

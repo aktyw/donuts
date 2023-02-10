@@ -1,14 +1,14 @@
 <template>
   <div class="aa flex flex-col justify-start items-center full-h">
     <div
-      class="flex flex-col items-start max-w-2xl py-4"
+      class="flex flex-col items-start max-w-2xl py-4 relative"
       :class="{ 'h-1/2': !store.tasks.length }"
     >
       <form
         action=""
         class="flex lg:flex-row flex-col lg:items-start items-end lg:gap-8 gap-4"
       >
-        <div id="cal" class="relative flex">
+        <div class="relative flex">
           <input
             id="taskInput"
             type="text"
@@ -17,27 +17,13 @@
             v-model.trim="taskContent"
             v-focus
           />
-          <button
-            class="[&:focus>svg]:fill-accent [&>svg:hover]:fill-accent"
-            @click.prevent="handleCalendar"
-          >
-            <svg
-              class="fill-neutral-content absolute right-3 top-3 cursor-pointer"
-              xmlns="http://www.w3.org/2000/svg"
-              height="24"
-              width="24"
-            >
-              <path
-                d="M5.625 21q-.7 0-1.162-.462Q4 20.075 4 19.375V6.625q0-.7.463-1.162Q4.925 5 5.625 5h1.75V2.775H8.45V5h7.175V2.775h1V5h1.75q.7 0 1.163.463.462.462.462 1.162v5.225h-1v-1.225H5v8.75q0 .25.188.437.187.188.437.188h4.6v1Zm14.65-5.2-1.425-1.45.725-.725q.15-.15.35-.15.2 0 .35.15l.725.725q.175.175.175.363 0 .187-.175.362ZM13 21.625V20.2l5.15-5.15 1.425 1.45-5.15 5.125Zm-8-12h14v-3q0-.25-.188-.437Q18.625 6 18.375 6H5.625q-.25 0-.437.188Q5 6.375 5 6.625Zm0 0V6v3.625Z"
-              />
-            </svg>
-          </button>
         </div>
+
         <Datepicker
           v-model="date"
           ref="datepicker"
           v-show="showPicker"
-          teleport="#cal"
+          teleport-center
           position="right"
           :min-date="new Date()"
           :disabled="!taskContent"
@@ -51,6 +37,23 @@
         >
           <template #default>Add New Task</template>
         </BaseButton>
+
+        <button
+          class="[&:focus>svg]:fill-accent [&>svg:hover]:fill-accent absolute top-7 right-3 lg:right-44"
+          @click.prevent="handleCalendar"
+        >
+          <svg
+            class="fill-accent-content cursor-pointer "
+            xmlns="http://www.w3.org/2000/svg"
+            height="24"
+            width="24"
+            id="cal"
+          >
+            <path
+              d="M5.625 21q-.7 0-1.162-.462Q4 20.075 4 19.375V6.625q0-.7.463-1.162Q4.925 5 5.625 5h1.75V2.775H8.45V5h7.175V2.775h1V5h1.75q.7 0 1.163.463.462.462.462 1.162v5.225h-1v-1.225H5v8.75q0 .25.188.437.187.188.437.188h4.6v1Zm14.65-5.2-1.425-1.45.725-.725q.15-.15.35-.15.2 0 .35.15l.725.725q.175.175.175.363 0 .187-.175.362ZM13 21.625V20.2l5.15-5.15 1.425 1.45-5.15 5.125Zm-8-12h14v-3q0-.25-.188-.437Q18.625 6 18.375 6H5.625q-.25 0-.437.188Q5 6.375 5 6.625Zm0 0V6v3.625Z"
+            />
+          </svg>
+        </button>
       </form>
 
       <TaskFilter v-if="store.tasks.length" @filter="filterTasks" />
@@ -115,7 +118,6 @@ const undoTimeout = ref(null);
 
 watch(date, (newDate) => {
   inputTaskDate.value = newDate;
-  console.log(inputTaskDate.value);
 });
 
 function filterTasks(type) {
@@ -146,6 +148,7 @@ function addTask() {
   store.addTask(taskContent.value, inputTaskDate.value);
   taskContent.value = '';
   taskInput.focus();
+  datepicker.value.clearValue();
 }
 
 function deleteTask(task) {

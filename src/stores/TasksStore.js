@@ -42,7 +42,6 @@ export const useStoreTasks = defineStore('tasks', {
     },
     deleteTask(id) {
       const taskToDel = findItem(id, this.tasks);
-      // const taskToDel = this.tasks.find((task) => task.id === id);
       this.deletedTasks.push(taskToDel);
       this.tasks = this.tasks.filter((task) => task.id !== id);
     },
