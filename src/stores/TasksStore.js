@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { v4 as uuid } from 'uuid';
 import { toggleProp } from '@/helpers/toggleProp';
+import { findItem } from '@/helpers/findItem';
 
 export const useStoreTasks = defineStore('tasks', {
   state: () => {
@@ -27,20 +28,22 @@ export const useStoreTasks = defineStore('tasks', {
     },
   },
   actions: {
-    addTask(content) {
+    addTask(content, date) {
       const id = uuid();
       const newTask = {
         id,
         content,
         done: false,
         isImportant: false,
+        date: date || null,
         subtasks: {},
       };
       this.tasks.unshift(newTask);
     },
     deleteTask(id) {
-      const toDeleteTask = this.tasks.find((task) => task.id === id);
-      this.deletedTasks.push(toDeleteTask);
+      const taskToDel = findItem(id, this.tasks);
+      // const taskToDel = this.tasks.find((task) => task.id === id);
+      this.deletedTasks.push(taskToDel);
       this.tasks = this.tasks.filter((task) => task.id !== id);
     },
     toggleIsDone(id) {
@@ -53,9 +56,13 @@ export const useStoreTasks = defineStore('tasks', {
       this.tasks.unshift(task);
     },
     updateTask(id, content) {
-      const toUpdateTask = this.tasks.find((task) => task.id === id);
-      toUpdateTask.content = content;
-      this.tasks
+      const task = findItem(id, this.tasks);
+      task.content = content;
+      this.tasks;
+    },
+    updateDate(id, date) {
+      const task = findItem(id, this.tasks);
+      task.date = date;
     },
   },
 });

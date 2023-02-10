@@ -21,6 +21,7 @@
       @toggleIsImportant="toggleIsImportant"
       @toggleIsDone="toggleIsDone"
       @editTask="toggleModal"
+      @updateDate="handleUpdateDate"
       :taskId="task.id"
       :taskIsDone="task.done"
       :taskIsImportant="task.isImportant"
@@ -70,6 +71,10 @@ function toggleModal() {
 function cancelEditTask() {
   newContent.value = props.taskContent;
   toggleModal();
+}
+
+function handleUpdateDate({ id, date }) {
+  store.updateDate(id, date);
 }
 
 function handleUpdateTask(content) {

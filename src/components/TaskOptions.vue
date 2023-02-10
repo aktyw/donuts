@@ -120,22 +120,37 @@
 </template>
 
 <script setup>
-import { computed, toRefs, ref } from 'vue';
+import { computed, toRefs, ref, watch } from 'vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
 const date = ref();
 const datepicker = ref(null);
 const showPicker = ref(false);
+const currentTaskDate = ref(null);
 const props = defineProps(['taskId', 'taskIsDone', 'taskIsImportant']);
-const emits = defineEmits(['deleteTask', 'toggleIsImportant', 'toggleIsDone']);
+const emits = defineEmits([
+  'deleteTask',
+  'toggleIsImportant',
+  'toggleIsDone',
+  'updateDate',
+]);
 
-const { taskIsDone: isDone, taskIsImportant: isImportant } = toRefs(props);
+const {
+  taskId,
+  taskIsDone: isDone,
+  taskIsImportant: isImportant,
+} = toRefs(props);
 const activeStyle =
   'bg-accent focus:bg-accent active:bg-accent hover:bg-accent-focus text-accent-content fill-accent';
 
 const doneStyle = computed(() => (isDone.value ? activeStyle : ''));
 const importantStyle = computed(() => (isImportant.value ? activeStyle : ''));
+
+watch(date, (newDate) => {
+  currentTaskDate.value = newDate;
+  handleUpdateDate(taskId.value, currentTaskDate.value);
+});
 
 function handleDeleteTask(taskId) {
   emits('deleteTask', taskId);
@@ -147,6 +162,10 @@ function handleToggleImportant(taskId) {
 
 function handleCalendar() {
   datepicker.value.openMenu();
+}
+
+function handleUpdateDate(id, date) {
+  emits('updateDate', { id, date });
 }
 
 function handleToggleIsDone(taskId) {

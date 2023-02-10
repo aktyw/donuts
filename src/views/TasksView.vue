@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-start items-center full-h">
+  <div class="aa flex flex-col justify-start items-center full-h">
     <div
       class="flex flex-col items-start max-w-2xl py-4"
       :class="{ 'h-1/2': !store.tasks.length }"
@@ -8,7 +8,7 @@
         action=""
         class="flex lg:flex-row flex-col lg:items-start items-end lg:gap-8 gap-4"
       >
-        <div class="relative flex">
+        <div id="cal" class="relative flex">
           <input
             id="taskInput"
             type="text"
@@ -36,9 +36,11 @@
         <Datepicker
           v-model="date"
           ref="datepicker"
-          teleport-center
           v-show="showPicker"
+          teleport="#cal"
+          position="right"
           :min-date="new Date()"
+          :disabled="!taskContent"
           dark
         ></Datepicker>
 
@@ -88,7 +90,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
 import TaskCard from '@/components/TaskCard.vue';
 import TaskFilter from '@/components/TaskFilter.vue';
@@ -100,6 +102,7 @@ import '@vuepic/vue-datepicker/dist/main.css';
 
 const date = ref();
 const datepicker = ref(null);
+const inputTaskDate = ref(null);
 const showPicker = ref(false);
 
 const store = useStoreTasks();
@@ -109,6 +112,11 @@ const taskContent = ref('');
 const alertIsActive = ref(false);
 const UNDO_DELETE_TIME = 4000;
 const undoTimeout = ref(null);
+
+watch(date, (newDate) => {
+  inputTaskDate.value = newDate;
+  console.log(inputTaskDate.value);
+});
 
 function filterTasks(type) {
   currentFilter.value = type;
@@ -135,7 +143,7 @@ function handleCalendar() {
 }
 
 function addTask() {
-  store.addTask(taskContent.value);
+  store.addTask(taskContent.value, inputTaskDate.value);
   taskContent.value = '';
   taskInput.focus();
 }
