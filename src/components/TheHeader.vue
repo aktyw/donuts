@@ -23,12 +23,12 @@
           class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
         >
           <li>
-            <router-link active-class="bg-neutral" to="/tasks"
+            <router-link active-class="bg-neutra text-neutral-contentl" to="/tasks"
               >Tasks</router-link
             >
           </li>
           <li>
-            <router-link active-class="bg-neutral" to="/notes"
+            <router-link active-class="bg-neutral text-neutral-content" to="/notes"
               >Notes</router-link
             >
           </li>
@@ -41,12 +41,12 @@
     <div class="navbar-center hidden lg:flex">
       <ul class="menu menu-horizontal">
         <li>
-          <router-link active-class="bg-neutral" to="/tasks"
+          <router-link active-class="bg-neutral text-neutral-content" to="/tasks"
             >Tasks</router-link
           >
         </li>
         <li>
-          <router-link active-class="bg-neutral" to="/notes"
+          <router-link active-class="bg-neutral text-neutral-content" to="/notes"
             >Notes</router-link
           >
         </li>

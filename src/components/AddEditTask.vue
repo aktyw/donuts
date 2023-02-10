@@ -1,16 +1,16 @@
 <template>
   <div class="modal modal-bottom sm:modal-middle modal-open">
     <div class="modal-box">
-      <h3 class="font-bold text-lg">
+      <h3 class="font-bold text-lg text-center py-2">
         {{ title }}
       </h3>
       <input
         type="text"
+        class="input input-bordered md:w-full w-80  mt-4"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
         v-focus
       />
-      <slot name="text" />
       <div class="modal-action">
         <slot name="action" />
       </div>

@@ -25,23 +25,29 @@
       :taskIsDone="task.done"
       :taskIsImportant="task.isImportant"
     ></TaskOptions>
-  </li>
-  <Teleport to="body">
-    <AddEditTask
-      v-if="editTask"
-      v-model="newContent"
-      :title="'Edit Task'"
-    >
-      <template #text> new: {{ newContent }}</template>
-      <template #action
-        ><button class="btn" @click="handleUpdateTask(newContent)">Save</button></template
+    <Teleport to="body">
+      <AddEditTask
+        v-if="editTask"
+        v-model.trim="newContent"
+        :title="'Edit Task'"
       >
-    </AddEditTask>
-  </Teleport>
+        <template #action>
+          <button @click="cancelEditTask" class="btn btn-ghost">Cancel</button>
+          <button
+            :disabled="!newContent.length"
+            class="btn"
+            @click="handleUpdateTask(newContent)"
+          >
+            Save
+          </button></template
+        >
+      </AddEditTask>
+    </Teleport>
+  </li>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, toRefs } from 'vue';
 import TaskOptions from '@/components/TaskOptions.vue';
 import { useStoreTasks } from '@/stores/TasksStore';
 import AddEditTask from '@/components/AddEditTask.vue';
@@ -51,8 +57,7 @@ const store = useStoreTasks();
 const props = defineProps(['task', 'taskContent', 'taskId']);
 const emits = defineEmits(['deleteTask']);
 
-const oldContent = props.taskContent;
-const newContent = ref(oldContent);
+const newContent = ref(props.taskContent);
 // to refactor
 const isDone = ref(props.task.done);
 const isImportant = ref(props.task.isImportant);
@@ -62,10 +67,13 @@ const editTask = ref(false);
 function toggleModal() {
   editTask.value = !editTask.value;
 }
+function cancelEditTask() {
+  newContent.value = props.taskContent;
+  toggleModal();
+}
 
 function handleUpdateTask(content) {
   toggleModal();
-  // update store
   store.updateTask(props.taskId, content);
 }
 

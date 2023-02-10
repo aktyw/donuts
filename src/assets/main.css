@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 ::selection {
-  background-color: hsl(var(--p));
+  background-color: hsl(var(--af));
 }
 
 .full-h {

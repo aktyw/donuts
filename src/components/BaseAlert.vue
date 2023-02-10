@@ -1,7 +1,7 @@
 <template>
-  <div class="alert md:w-7/12 w-10/12 shadow-lg flex justify-center bg-neutral-focus">
-    <slot name="default" class="text-xl text-center" />
-    <BaseButton class="btn-warning btn-sm mx-4" @click="undoDelete"
+  <div class="alert gap-0 md:w-fit w-10/12 shadow-lg bg-neutral-focus text-neutral-content ">
+    <slot name="default"  />
+    <BaseButton class="btn-accent md:btn-sm mx-4 " @click="undoDelete"
       >Undo</BaseButton
     >
   </div>

@@ -53,7 +53,7 @@
       class="absolute bottom-10 left-1/2 transform -translate-x-1/2"
       @undo="undoDelete"
       ><template #default>
-        <span class="md:text-lg text-center"
+        <span class="md:text-lg text-center md:mx-4 py-4 md:py-2 md:p-0"
           >You've deleted the task succesfully.</span
         >
       </template>
