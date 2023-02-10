@@ -75,13 +75,21 @@
         </button>
       </li>
       <li>
-        <button class="btn-md md:btn-sm">
+        <Datepicker
+          v-model="date"
+          ref="datepicker"
+          teleport-center
+          v-show="showPicker"
+          :min-date="new Date()"
+          dark
+        ></Datepicker>
+        <button class="btn-md md:btn-sm" @click="handleCalendar">
           <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
             <path
               d="m15.65 16.35.7-.7-3.85-3.85V7h-1v5.2ZM12 21q-1.875 0-3.512-.712-1.638-.713-2.85-1.926-1.213-1.212-1.926-2.85Q3 13.875 3 12t.712-3.513q.713-1.637 1.926-2.85 1.212-1.212 2.85-1.925Q10.125 3 12 3t3.513.712q1.637.713 2.85 1.925 1.212 1.213 1.925 2.85Q21 10.125 21 12t-.712 3.512q-.713 1.638-1.925 2.85-1.213 1.213-2.85 1.926Q13.875 21 12 21Zm0-9Zm0 8q3.325 0 5.663-2.337Q20 15.325 20 12t-2.337-5.663Q15.325 4 12 4T6.338 6.337Q4 8.675 4 12t2.338 5.663Q8.675 20 12 20Z"
             />
           </svg>
-          Set Deadline
+          Date
         </button>
       </li>
       <li>
@@ -91,7 +99,7 @@
               d="M4.5 18.725v-1h2v-7.5q0-2 1.275-3.513Q9.05 5.2 11 4.825v-.7q0-.45.288-.725.287-.275.712-.275t.713.275q.287.275.287.725v.7q1.95.375 3.225 1.887Q17.5 8.225 17.5 10.225v7.5h2v1Zm7.5-7Zm0 9.9q-.65 0-1.137-.462-.488-.463-.488-1.163h3.25q0 .7-.462 1.163-.463.462-1.163.462Zm-4.5-3.9h9v-7.5q0-1.875-1.312-3.188Q13.875 5.725 12 5.725q-1.875 0-3.188 1.312Q7.5 8.35 7.5 10.225Z"
             />
           </svg>
-          Set Reminder
+          Reminder
         </button>
       </li>
       <li>
@@ -112,8 +120,13 @@
 </template>
 
 <script setup>
-import { computed, toRefs } from 'vue';
+import { computed, toRefs, ref } from 'vue';
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
 
+const date = ref();
+const datepicker = ref(null);
+const showPicker = ref(false);
 const props = defineProps(['taskId', 'taskIsDone', 'taskIsImportant']);
 const emits = defineEmits(['deleteTask', 'toggleIsImportant', 'toggleIsDone']);
 
@@ -132,6 +145,10 @@ function handleToggleImportant(taskId) {
   emits('toggleIsImportant', taskId);
 }
 
+function handleCalendar() {
+  datepicker.value.openMenu();
+}
+
 function handleToggleIsDone(taskId) {
   emits('toggleIsDone', taskId);
 }
@@ -140,6 +157,5 @@ function handleAddSubtask(taskId) {
 }
 function handleEditTask(taskId) {
   emits('editTask', taskId);
-
 }
 </script>

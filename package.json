@@ -11,6 +11,7 @@
     "lint-fix": "eslint --fix --ext .js,.jsx ."
   },
   "dependencies": {
+    "@vuepic/vue-datepicker": "^3.6.8",
     "daisyui": "^2.50.0",
     "pinia": "^2.0.28",
     "uuid": "^9.0.0",
