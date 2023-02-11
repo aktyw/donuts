@@ -36,6 +36,7 @@
           teleport="#form"
           position="left"
           :min-date="new Date()"
+          :start-time="startTime"
           :disabled="!taskContent"
           dark
         ></Datepicker>
@@ -108,12 +109,12 @@ import { ref, watch, computed } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
 import TaskCard from '@/components/TaskCard.vue';
 import TaskFilter from '@/components/TaskFilter.vue';
+import TaskTimeDetail from '@/components/TaskTimeDetail.vue';
 import BaseButton from '@/components/BaseButton.vue';
 import BaseAlert from '@/components/BaseAlert.vue';
-import { vFocus } from '@/directives/vAutoFocus.js';
 import Datepicker from '@vuepic/vue-datepicker';
-import TaskTimeDetail from '@/components/TaskTimeDetail.vue';
-
+import { vFocus } from '@/directives/vAutoFocus.js';
+import { addHours, calcStartTime } from '@/helpers/checkTime.js';
 import '@vuepic/vue-datepicker/dist/main.css';
 
 const date = ref();
@@ -127,6 +128,7 @@ const taskContent = ref('');
 const alertIsActive = ref(false);
 const UNDO_DELETE_TIME = 3500; // config
 const undoTimeout = ref(null);
+const startTime = ref({});
 
 watch(date, (newDate) => {
   inputTaskDate.value = newDate;
@@ -158,6 +160,7 @@ const showDateOnInput = computed(() => {
 });
 
 function handleCalendar() {
+  startTime.value = calcStartTime();
   datepicker.value.openMenu();
 }
 

@@ -11,7 +11,7 @@
       </label>
       <div class="flex flex-col">
         <p
-          class="break-all h-full w-full flex "
+          class="break-all h-full w-full flex"
           :class="{ 'line-through': isDone, 'decoration-accent': isImportant }"
         >
           <slot name="content" />
@@ -24,7 +24,7 @@
       </div>
     </div>
     <TaskOptions
-    class="ml-3"
+      class="ml-3"
       @deleteTask="handleDeleteTask"
       @toggleIsImportant="toggleIsImportant"
       @toggleIsDone="toggleIsDone"
@@ -84,7 +84,7 @@ onMounted(() => {
 });
 
 const overdue = computed(() =>
-  timeDetail.value === 'Overdue' ? 'text-error fill-error' : ''
+  timeDetail.value === 'Overdue' ? '[&>span]:text-error [&>svg]:fill-error' : ''
 );
 
 function setTimeDetail() {

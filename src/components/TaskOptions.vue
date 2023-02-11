@@ -1,8 +1,11 @@
 <template>
   <div class="dropdown md:dropdown-right dropdown-left" id="drop">
-    <button tabindex="0" class="btn btn-square btn-sm bg-base-300 border-0 hover:bg-base-300 ">
+    <button
+      tabindex="0"
+      class="btn btn-square btn-sm bg-base-300 border-0 hover:bg-base-300"
+    >
       <svg
-        class="fill-neutral-content "
+        class="fill-neutral-content"
         xmlns="http://www.w3.org/2000/svg"
         height="24"
         width="24"
@@ -84,6 +87,7 @@
           position="right"
           v-show="showPicker"
           :min-date="new Date()"
+          :start-time="startTime"
           dark
         ></Datepicker>
         <button class="btn-md md:btn-sm" @click="handleCalendar">
@@ -126,6 +130,7 @@
 import { computed, toRefs, ref } from 'vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
+import { addHours, calcStartTime } from '@/helpers/checkTime.js';
 
 const props = defineProps([
   'taskId',
@@ -150,6 +155,7 @@ const date = ref('');
 const currentDate = props.taskDate;
 const datepicker = ref(null);
 const showPicker = ref(false);
+const startTime = ref({});
 
 const activeStyle =
   'bg-accent focus:bg-accent active:bg-accent hover:bg-accent-focus text-accent-content fill-accent';
@@ -162,6 +168,7 @@ function handleDate(modelData) {
 }
 
 function handleCalendar() {
+  startTime.value = calcStartTime();
   datepicker.value.openMenu();
 }
 
