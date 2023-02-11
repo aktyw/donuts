@@ -1,7 +1,7 @@
 <template>
   <li class="w-full flex justify-between py-2">
     <div class="flex gap-4 cursor-pointer" @click="toggleIsDone(task.id)">
-      <label class="flex items-center h-full">
+      <label class="flex items-start h-full">
         <input
           type="checkbox"
           class="checkbox"
@@ -11,19 +11,20 @@
       </label>
       <div class="flex flex-col">
         <p
-          class="break-all h-full w-full flex items-center"
-          :class="{ 'line-through': isDone }"
+          class="break-all h-full w-full flex "
+          :class="{ 'line-through': isDone, 'decoration-accent': isImportant }"
         >
           <slot name="content" />
         </p>
-        <TaskTimeDetail v-if="timeDetail" :class="overdue">
+        <TaskTimeDetail v-if="timeDetail" :class="overdue" class="pt-0.5">
           <template #time>
-            <span class="py-0.5">{{ timeDetail }}</span>
+            <span class="pt-0.5 w-full">{{ timeDetail }}</span>
           </template>
         </TaskTimeDetail>
       </div>
     </div>
     <TaskOptions
+    class="ml-3"
       @deleteTask="handleDeleteTask"
       @toggleIsImportant="toggleIsImportant"
       @toggleIsDone="toggleIsDone"
@@ -89,15 +90,17 @@ const overdue = computed(() =>
 function setTimeDetail() {
   const deadline = props.taskDate;
   if (!deadline) return;
-
+  const date = deadline.toDateString().split(' ');
   if (isOverdue(deadline)) {
     timeDetail.value = 'Overdue';
   } else if (isToday(deadline)) {
-    timeDetail.value = 'Today';
+    timeDetail.value = `Today at ${deadline
+      .getHours()
+      .toString()
+      .padStart(2, '0')}:${deadline.getMinutes().toString().padStart(2, '0')}`;
   } else if (isTomorrow(deadline)) {
     timeDetail.value = 'Tomorrow';
   } else {
-    const date = props.taskDate.toDateString().split(' ');
     timeDetail.value = `${date[1]} ${date[2]}`;
   }
 }

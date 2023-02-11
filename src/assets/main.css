@@ -56,7 +56,7 @@
   --dp-scroll-bar-background: #212121;
   --dp-scroll-bar-color: #484848;
   --dp-success-color: hsl(var(--a));
-  --dp-success-color-disabled: #428f59;
+  --dp-success-color-disabled: hsl(var(--nc));
   --dp-icon-color: hsl(var(--nc));
   --dp-danger-color: hsl(var(--er));
   --dp-highlight-color: rgba(13, 92, 167, 0.2);

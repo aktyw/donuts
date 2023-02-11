@@ -12,6 +12,7 @@
           <input
             id="taskInput"
             type="text"
+            maxlength="100"
             placeholder="What's on your mind?"
             class="input input-bordered md:w-96 w-80"
             v-model.trim="taskContent"
@@ -43,7 +44,7 @@
           @click.prevent="handleCalendar"
         >
           <svg
-            class="fill-accent-content cursor-pointer"
+            class="fill-accent cursor-pointer"
             xmlns="http://www.w3.org/2000/svg"
             height="24"
             width="24"
@@ -65,7 +66,7 @@
           :taskId="task.id"
           :taskContent="task.content"
           :taskDate="task.date"
-          class="border-solid border-t-2 border-base-200 last:border-solid last:border-b-2"
+          class="border-solid border-t-2 border-base-200 last:border-solid last:border-b-2 pt-3"
           @deleteTask="deleteTask"
           @click="filterTasks(currentFilter)"
         >
@@ -85,7 +86,7 @@
       class="absolute bottom-10 left-1/2 transform -translate-x-1/2"
       @undo="undoDelete"
       ><template #default>
-        <span class="md:text-lg text-center md:mx-4 py-4 md:py-2 md:p-0"
+        <span class="text-center md:text-lg sm:px-4 md:p-2 py-4"
           >You've deleted the task succesfully.</span
         >
       </template>
@@ -113,7 +114,7 @@ const currentFilter = ref('all');
 const tasks = ref(store.tasks);
 const taskContent = ref('');
 const alertIsActive = ref(false);
-const UNDO_DELETE_TIME = 4000;
+const UNDO_DELETE_TIME = 3500; // config
 const undoTimeout = ref(null);
 
 watch(date, (newDate) => {

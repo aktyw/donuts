@@ -7,6 +7,7 @@
       <input
         type="text"
         class="input input-bordered md:w-full w-80  mt-4"
+        maxlength="100"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
         v-focus
@@ -20,7 +21,6 @@
 
 <script setup>
 import { vFocus } from '@/directives/vAutoFocus.js';
-
 const props = defineProps(['modelValue', 'title']);
 const emits = defineEmits(['update:modelValue']);
 </script>
