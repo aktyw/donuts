@@ -14,12 +14,18 @@
             type="text"
             maxlength="100"
             placeholder="What's on your mind?"
-            class="input input-bordered md:w-96 w-80"
+            class="input input-bordered md:w-96 w-80 pr-11"
+            :class="{'pr-28': date}"
             v-model.trim="taskContent"
             v-focus
           />
+          <TaskTimeDetail v-if="date && taskContent" class="absolute right-1 py-3.5">
+          <template #time>
+            <span class="pt-0.5 w-full">{{ showDateOnInput }}</span>
+          </template>
+        </TaskTimeDetail>
         </div>
-
+        
         <Datepicker
           v-model="date"
           ref="datepicker"
@@ -95,7 +101,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
 import TaskCard from '@/components/TaskCard.vue';
 import TaskFilter from '@/components/TaskFilter.vue';
@@ -103,6 +109,8 @@ import BaseButton from '@/components/BaseButton.vue';
 import BaseAlert from '@/components/BaseAlert.vue';
 import { vFocus } from '@/directives/vAutoFocus.js';
 import Datepicker from '@vuepic/vue-datepicker';
+import TaskTimeDetail from '@/components/TaskTimeDetail.vue';
+
 import '@vuepic/vue-datepicker/dist/main.css';
 
 const date = ref();
@@ -140,6 +148,12 @@ function filterTasks(type) {
       tasks.value = store.getAllTasks;
   }
 }
+
+const showDateOnInput = computed(() => {
+  const shortDate = date.value.toDateString().split(' ');
+  return `${shortDate[1]} ${shortDate[2]} `;
+});
+console.log(date.value);
 
 function handleCalendar() {
   datepicker.value.openMenu();
