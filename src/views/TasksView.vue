@@ -6,7 +6,7 @@
     >
       <form
         id="form"
-        class="flex lg:flex-row flex-col lg:items-start items-end lg:gap-8 gap-4"
+        class="flex lg:flex-row flex-col lg:items-start items-end lg:gap-8 gap-4 [&>(#cal)]:fill-white"
       >
         <div class="relative flex">
           <input
@@ -15,17 +15,20 @@
             maxlength="100"
             placeholder="What's on your mind?"
             class="input input-bordered md:w-96 w-80 pr-11"
-            :class="{'pr-28': date}"
+            :class="{ 'pr-28': date }"
             v-model.trim="taskContent"
             v-focus
           />
-          <TaskTimeDetail v-if="date && taskContent" class="absolute right-1 py-3.5">
-          <template #time>
-            <span class="pt-0.5 w-full">{{ showDateOnInput }}</span>
-          </template>
-        </TaskTimeDetail>
+          <TaskTimeDetail
+            v-if="date && taskContent"
+            class="absolute right-1 py-3.5"
+          >
+            <template #time>
+              <span class="pt-0.5 w-full">{{ showDateOnInput }}</span>
+            </template>
+          </TaskTimeDetail>
         </div>
-        
+
         <Datepicker
           v-model="date"
           ref="datepicker"
@@ -50,7 +53,7 @@
           @click.prevent="handleCalendar"
         >
           <svg
-            class="fill-accent cursor-pointer"
+            class="fill-base-content cursor-pointer"
             xmlns="http://www.w3.org/2000/svg"
             height="24"
             width="24"
@@ -118,7 +121,7 @@ const datepicker = ref(null);
 const inputTaskDate = ref(null);
 const showPicker = ref(false);
 const store = useStoreTasks();
-const currentFilter = ref('all');
+const currentFilter = ref('');
 const tasks = ref(store.tasks);
 const taskContent = ref('');
 const alertIsActive = ref(false);
@@ -130,6 +133,7 @@ watch(date, (newDate) => {
 });
 
 function filterTasks(type) {
+  console.log(type);
   currentFilter.value = type;
   switch (type) {
     case 'all':
@@ -153,7 +157,6 @@ const showDateOnInput = computed(() => {
   const shortDate = date.value.toDateString().split(' ');
   return `${shortDate[1]} ${shortDate[2]} `;
 });
-console.log(date.value);
 
 function handleCalendar() {
   datepicker.value.openMenu();
@@ -164,6 +167,7 @@ function addTask() {
   taskContent.value = '';
   taskInput.focus();
   datepicker.value.clearValue();
+  filterTasks(currentFilter.value);
 }
 
 function deleteTask(task) {

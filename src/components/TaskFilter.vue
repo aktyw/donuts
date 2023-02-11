@@ -1,41 +1,51 @@
 <template>
-  <ul class="flex justify-start md:gap-4 py-4" @click="filterTasks">
+  <ul class="flex md:gap-2 py-2 p-0" @click="filterTasks">
     <li>
-      <button id="all" class="btn btn-xs btn-ghost md:w-14 btn-active">
-        All
-      </button>
+      <FilterBadge id="all" class="btn-active">
+        <template #title>All</template>
+        <template #amount>{{ getAllTasks.length }}</template>
+      </FilterBadge>
     </li>
     <li>
-      <button id="important" class="btn btn-xs btn-ghost md:w-22">
-        Important
-      </button>
+      <FilterBadge id="important">
+        <template #title>Important</template>
+        <template #amount>{{ getImportantTasks.length }}</template>
+      </FilterBadge>
     </li>
     <li>
-      <button id="completed" class="btn btn-xs btn-ghost md:w-22">
-        Completed
-      </button>
+      <FilterBadge id="completed">
+        <template #title>Completed</template>
+        <template #amount>{{ getDoneTasks.length }}</template>
+      </FilterBadge>
     </li>
     <li>
-      <button id="not-completed" class="btn btn-xs btn-ghost">
-        Uncompleted
-      </button>
+      <FilterBadge id="not-completed">
+        <template #title>Uncompleted</template>
+        <template #amount>{{ getNotDoneTasks.length }}</template>
+      </FilterBadge>
     </li>
   </ul>
 </template>
 
 <script setup>
+import { storeToRefs } from 'pinia';
 import { useStoreTasks } from '@/stores/TasksStore';
+import FilterBadge from '@/components/FilterBadge.vue';
+
 const store = useStoreTasks();
+const { getAllTasks, getImportantTasks, getDoneTasks, getNotDoneTasks } =
+  storeToRefs(store);
 
 const emits = defineEmits(['filter']);
 
 function filterTasks({ currentTarget, target }) {
-  if (target.tagName !== 'BUTTON') return;
+  const btn = target.closest('button');
+  if (!btn) return;
   currentTarget
     .querySelectorAll('button')
     .forEach((btn) => btn.classList.remove('btn-active'));
-  target.classList.add('btn-active');
-  
-  emits('filter', target.id);
+  btn.classList.add('btn-active');
+
+  emits('filter', btn.id);
 }
 </script>
