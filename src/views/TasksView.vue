@@ -1,11 +1,11 @@
 <template>
-  <div class="aa flex flex-col justify-start items-center full-h">
+  <div class="flex flex-col justify-start items-center full-h">
     <div
       class="flex flex-col items-start max-w-2xl py-4 relative"
       :class="{ 'h-1/2': !store.tasks.length }"
     >
       <form
-        action=""
+        id="form"
         class="flex lg:flex-row flex-col lg:items-start items-end lg:gap-8 gap-4"
       >
         <div class="relative flex">
@@ -23,8 +23,8 @@
           v-model="date"
           ref="datepicker"
           v-show="showPicker"
-          teleport-center
-          position="right"
+          teleport="#form"
+          position="left"
           :min-date="new Date()"
           :disabled="!taskContent"
           dark
@@ -43,7 +43,7 @@
           @click.prevent="handleCalendar"
         >
           <svg
-            class="fill-accent-content cursor-pointer "
+            class="fill-accent-content cursor-pointer"
             xmlns="http://www.w3.org/2000/svg"
             height="24"
             width="24"
@@ -64,6 +64,7 @@
           :task="task"
           :taskId="task.id"
           :taskContent="task.content"
+          :taskDate="task.date"
           class="border-solid border-t-2 border-base-200 last:border-solid last:border-b-2"
           @deleteTask="deleteTask"
           @click="filterTasks(currentFilter)"
@@ -107,7 +108,6 @@ const date = ref();
 const datepicker = ref(null);
 const inputTaskDate = ref(null);
 const showPicker = ref(false);
-
 const store = useStoreTasks();
 const currentFilter = ref('all');
 const tasks = ref(store.tasks);

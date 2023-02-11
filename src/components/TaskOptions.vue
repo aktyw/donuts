@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown md:dropdown-right dropdown-left">
+  <div class="dropdown md:dropdown-right dropdown-left" id="drop">
     <label tabindex="0" class="btn btn-square btn-sm">
       <svg
         class="fill-neutral-content"
@@ -80,7 +80,8 @@
           :value="date"
           @update:model-value="handleDate"
           ref="datepicker"
-          teleport-center
+          teleport="#drop"
+          position="right"
           v-show="showPicker"
           :min-date="new Date()"
           dark
@@ -125,8 +126,6 @@
 import { computed, toRefs, ref } from 'vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
-import { useStoreTasks } from '@/stores/TasksStore';
-const store = useStoreTasks();
 
 const props = defineProps([
   'taskId',
@@ -140,16 +139,17 @@ const emits = defineEmits([
   'toggleIsDone',
   'handleDate',
 ]);
-const date = ref('');
-const currentDate = props.taskDate;
-const datepicker = ref(null);
-const showPicker = ref(false);
 
 const {
   taskId,
   taskIsDone: isDone,
   taskIsImportant: isImportant,
 } = toRefs(props);
+
+const date = ref('');
+const currentDate = props.taskDate;
+const datepicker = ref(null);
+const showPicker = ref(false);
 
 const activeStyle =
   'bg-accent focus:bg-accent active:bg-accent hover:bg-accent-focus text-accent-content fill-accent';
