@@ -133,7 +133,6 @@ watch(date, (newDate) => {
 });
 
 function filterTasks(type) {
-  console.log(type);
   currentFilter.value = type;
   switch (type) {
     case 'all':

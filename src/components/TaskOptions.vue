@@ -1,6 +1,6 @@
 <template>
   <div class="dropdown md:dropdown-right dropdown-left" id="drop">
-    <button tabindex="0" class="btn btn-square btn-sm bg-base-200 border-base-200 hover:bg-base-300 hover:border-0">
+    <button tabindex="0" class="btn btn-square btn-sm bg-base-300 border-0 hover:bg-base-300 ">
       <svg
         class="fill-neutral-content "
         xmlns="http://www.w3.org/2000/svg"
@@ -14,7 +14,7 @@
     </button>
     <ul
       tabindex="0"
-      class="dropdown-content menu p-2 shadow rounded-lg w-52 space-y-2 bg-neutral text-neutral-content [&>button:hover]:bg-neutral-focus fill-neutral-content [&>li>button:active]:bg-neutral [&>li>button:active]:text-neutral-content"
+      class="dropdown-content menu p-2 shadow rounded-lg w-52 space-y-2 bg-base-200 border border-base-300 text-base-content [&>button:hover]:bg-neutral-focus fill-base-content [&>li>button:active]:bg-base-300 [&>li>button:active]:text-base-content"
     >
       <li>
         <button class="btn-md md:btn-sm" @click="handleEditTask(taskId)">
