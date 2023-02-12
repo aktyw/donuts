@@ -1,5 +1,5 @@
 <template>
-  <button class="btn btn-xs btn-ghost p-1">
+  <button class="btn btn-xs btn-ghost px-1 lg:px-2.5 font-normal tracking-wide capitalize">
     <span>
       <slot name="title" />
     </span>

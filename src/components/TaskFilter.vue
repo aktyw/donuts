@@ -1,5 +1,5 @@
 <template>
-  <ul class="flex justify-between w-full md:gap-2 py-2 p-0" @click="filterTasks">
+  <ul class="flex justify-between w-full md:gap-2 md:py-4 py-2 p-0 " @click="filterTasks">
     <li>
       <FilterBadge id="all" class="btn-active">
         <template #title>All</template>

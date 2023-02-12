@@ -1,10 +1,9 @@
-const today = new Date();
-
 export const isOverdue = (deadline) => {
   return Date.parse(deadline) <= Date.now();
 };
 
 export const isToday = (deadline) => {
+  const today = new Date();
   return (
     deadline.getDate() === today.getDate() &&
     deadline.getMonth() === today.getMonth() &&
@@ -13,6 +12,7 @@ export const isToday = (deadline) => {
 };
 
 export const isTomorrow = (deadline) => {
+  const today = new Date();
   return (
     deadline.getDate() - 1 === today.getDate() &&
     deadline.getMonth() === today.getMonth() &&
