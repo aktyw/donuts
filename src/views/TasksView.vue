@@ -56,15 +56,16 @@
           </BaseButton>
 
           <button
-            class="[&:focus>svg]:fill-accent [&>svg:hover]:fill-accent absolute top-5 right-4 lg:right-3"
+            class="absolute top-5 right-4 lg:right-3 fill-base-content"
+            :class="{ 'hover:fill-accent': taskContent }"
             @click.prevent="handleCalendar"
           >
             <svg
-              class="fill-base-content cursor-pointer"
+              id="cal"
+              class="cursor-pointer"
               xmlns="http://www.w3.org/2000/svg"
               height="24"
               width="24"
-              id="cal"
             >
               <path
                 d="M5.625 21q-.7 0-1.162-.462Q4 20.075 4 19.375V6.625q0-.7.463-1.162Q4.925 5 5.625 5h1.75V2.775H8.45V5h7.175V2.775h1V5h1.75q.7 0 1.163.463.462.462.462 1.162v5.225h-1v-1.225H5v8.75q0 .25.188.437.187.188.437.188h4.6v1Zm14.65-5.2-1.425-1.45.725-.725q.15-.15.35-.15.2 0 .35.15l.725.725q.175.175.175.363 0 .187-.175.362ZM13 21.625V20.2l5.15-5.15 1.425 1.45-5.15 5.125Zm-8-12h14v-3q0-.25-.188-.437Q18.625 6 18.375 6H5.625q-.25 0-.437.188Q5 6.375 5 6.625Zm0 0V6v3.625Z"
@@ -84,7 +85,6 @@
             :taskId="task.id"
             :taskContent="task.content"
             :taskDate="task.date"
-            :showOptions="showOptions"
           >
             <template #content>
               {{ task.content }}
@@ -100,17 +100,26 @@
     >
   </div>
   <Teleport to="body">
-    <BaseAlert
+    <DeleteAlert
       v-if="alertIsActive"
-      class="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+      class="flex flex-row absolute bottom-10 left-1/2 transform -translate-x-1/2 w-10/12 md:w-6/12 bg-neutral-focus text-neutral-content lg:w-fit"
       @undo="undoDelete"
+      @closeAlert="closeDeleteAlert"
       ><template #default>
-        <span class="text-center md:text-lg sm:px-4 md:p-2 py-4"
-          >You've deleted the task succesfully.</span
-        >
+        <span class="text-center mx-4">Task deleted</span>
+      </template>
+    </DeleteAlert>
+  </Teleport>
+  <!-- <Teleport to="body">
+    <BaseAlert>
+      <template #icon>
+        <slot></slot>
+      </template>
+      <template #content>
+        <slot></slot>
       </template>
     </BaseAlert>
-  </Teleport>
+  </Teleport> -->
 </template>
 
 <script setup>
@@ -121,19 +130,20 @@ import TaskFilter from '@/components/TaskFilter.vue';
 import TaskTimeDetail from '@/components/TaskTimeDetail.vue';
 import BaseButton from '@/components/BaseButton.vue';
 import BaseAlert from '@/components/BaseAlert.vue';
+import DeleteAlert from '@/components/DeleteAlert.vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import SettingsNavbar from '@/components/SettingsNavbar.vue';
 import { vFocus } from '@/directives/vAutoFocus.js';
 import { addHours, calcStartTime } from '@/helpers/checkTime.js';
 
+const store = useStoreTasks();
+const tasks = ref(store.tasks);
+const taskContent = ref('');
 const date = ref();
 const datepicker = ref(null);
 const inputTaskDate = ref(null);
 const showPicker = ref(false);
-const store = useStoreTasks();
 const currentFilter = ref('');
-const tasks = ref(store.tasks);
-const taskContent = ref('');
 const alertIsActive = ref(false);
 const UNDO_DELETE_TIME = 3500; // config
 const undoTimeout = ref(null);
@@ -198,5 +208,9 @@ function undoDelete() {
   alertIsActive.value = false;
   store.undoDelete(store.getDeletedTask);
   filterTasks(currentFilter.value);
+}
+
+function closeDeleteAlert() {
+  alertIsActive.value = !alertIsActive.value;
 }
 </script>

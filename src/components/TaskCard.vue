@@ -26,33 +26,67 @@
       </div>
     </div>
     <TaskOptions
-      @deleteTask="handleDeleteTask"
       @toggleIsImportant="toggleIsImportant"
       @toggleIsDone="toggleIsDone"
-      @editTask="toggleModal"
+      @editTask="toggleEditModal"
+      @deleteTask="toggleDeleteModal"
       @handleDate="handleUpdateDate"
       :taskId="task.id"
       :taskIsDone="task.done"
       :taskIsImportant="task.isImportant"
       :taskDate="props.task.date"
+      :taskContent="task.content"
     ></TaskOptions>
     <Teleport to="body">
-      <AddEditTask
+      <TaskEditModal
         v-if="editTask"
         v-model.trim="newContent"
-        :title="'Edit Task'"
+        :title="'Edit task'"
       >
         <template #action>
-          <button @click="cancelEditTask" class="btn btn-ghost">Cancel</button>
           <button
-            class="btn"
+            @click="cancelEditTask"
+            class="btn bg-base-200 text-base-content hover:bg-base-300 border-0 btn-sm rounded-md capitalize font-semibold"
+          >
+            Cancel
+          </button>
+          <button
+            class="btn btn-sm rounded-md capitalize font-semibold"
             @click="handleUpdateTask(newContent)"
             :disabled="!newContent.length"
           >
             Save
           </button></template
         >
-      </AddEditTask>
+      </TaskEditModal>
+    </Teleport>
+    <Teleport to="body">
+      <TaskDeleteConfirmModal
+      v-if="deleteConfirm"
+      :title="'Delete task'"
+      
+      >
+        <template #content >
+          <p>
+            Do you really want to delete
+            <span class="font-bold break-words">"{{ taskContent }}"</span> ?
+          </p>
+        </template>
+        <template #action>
+          <button
+            @click="cancelDeleteTask"
+            class="btn bg-base-200 text-base-content hover:bg-base-300 border-0 btn-sm rounded-md capitalize font-semibold" 
+          >
+            Cancel
+          </button>
+          <button
+            class="btn btn-sm rounded-md capitalize font-semibold"
+            @click="handleDeleteTask(taskId)"
+          >
+            Delete
+          </button></template
+        >
+      </TaskDeleteConfirmModal>
     </Teleport>
   </li>
 </template>
@@ -61,26 +95,22 @@
 import { ref, onUpdated, onMounted, computed } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
 import TaskOptions from '@/components/TaskOptions.vue';
-import AddEditTask from '@/components/AddEditTask.vue';
+import TaskEditModal from '@/components/TaskEditModal.vue';
+import TaskDeleteConfirmModal from '@/components/TaskDeleteConfirmModal.vue';
 import TaskTimeDetail from '@/components/TaskTimeDetail.vue';
 import { isOverdue, isToday, isTomorrow } from '@/helpers/checkTime';
+import { vFocus } from '@/directives/vAutoFocus.js';
 
 const store = useStoreTasks();
-const props = defineProps([
-  'task',
-  'taskContent',
-  'taskId',
-  'taskDate',
-  'showOptions',
-]);
+const props = defineProps(['task', 'taskContent', 'taskId', 'taskDate']);
 const emits = defineEmits(['deleteTask']);
 
 const newContent = ref(props.taskContent);
-const showOptions = ref(false);
 // to refactor
 const isDone = ref(props.task.done);
 const isImportant = ref(props.task.isImportant);
 const editTask = ref(false);
+const deleteConfirm = ref(false);
 const timeDetail = ref(null);
 
 onUpdated(() => {
@@ -113,13 +143,21 @@ function setTimeDetail() {
   }
 }
 
-function toggleModal() {
+function toggleDeleteModal() {
+  deleteConfirm.value = !deleteConfirm.value;
+}
+
+function cancelDeleteTask() {
+  toggleDeleteModal();
+}
+
+function toggleEditModal() {
   editTask.value = !editTask.value;
 }
 
 function cancelEditTask() {
   newContent.value = props.taskContent;
-  toggleModal();
+  toggleEditModal();
 }
 
 function handleUpdateDate(date) {
@@ -127,8 +165,13 @@ function handleUpdateDate(date) {
 }
 
 function handleUpdateTask(content) {
-  toggleModal();
+  showAlert();
+  toggleEditModal();
   store.updateTask(props.taskId, content);
+}
+
+function showAlert() {
+  setTimeout(() => {});
 }
 
 function handleDeleteTask(id) {

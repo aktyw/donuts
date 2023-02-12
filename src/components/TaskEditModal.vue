@@ -1,18 +1,18 @@
 <template>
-  <div class="modal modal-bottom sm:modal-middle modal-open">
+  <div class="modal modal-bottom sm:modal-middle modal-open" role="dialog">
     <div class="modal-box">
-      <h3 class="font-bold text-lg text-center py-2">
+      <h3 class="font-semibold text-lg text-center py-2">
         {{ title }}
       </h3>
       <input
         type="text"
-        class="input input-bordered md:w-full w-80  mt-4"
+        class="input input-bordered md:w-full w-80 mt-4"
         maxlength="100"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
         v-focus
       />
-      <div class="modal-action">
+      <div class="modal-action gap-1">
         <slot name="action" />
       </div>
     </div>
