@@ -1,23 +1,23 @@
 <template>
-  <div class="dropdown md:dropdown-right dropdown-left" id="drop">
+  <div class="dropdown md:dropdown-bottom dropdown-left h-0" id="drop">
     <button
       tabindex="0"
-      class="btn btn-square btn-sm bg-base-300 border-0 hover:bg-base-300"
+      class="btn btn-square rounded-md btn-xs bg-base-100 hover:bg-base-200 border-0 focus:bg-base-200"
     >
       <svg
-        class="fill-neutral-content"
+        class="fill-base-content"
         xmlns="http://www.w3.org/2000/svg"
         height="24"
         width="24"
       >
         <path
-          d="M12 18.55q-.425 0-.712-.3-.288-.3-.288-.7 0-.425.288-.713.287-.287.712-.287t.713.287q.287.288.287.713 0 .4-.287.7-.288.3-.713.3ZM12 13q-.425 0-.712-.288Q11 12.425 11 12t.288-.713Q11.575 11 12 11t.713.287Q13 11.575 13 12t-.287.712Q12.425 13 12 13Zm0-5.55q-.425 0-.712-.288Q11 6.875 11 6.45q0-.4.288-.7.287-.3.712-.3t.713.3q.287.3.287.7 0 .425-.287.712-.288.288-.713.288Z"
+          d="M12 19.275q-.625 0-1.062-.438-.438-.437-.438-1.062t.438-1.063q.437-.437 1.062-.437t1.062.437q.438.438.438 1.063t-.438 1.062q-.437.438-1.062.438Zm0-5.775q-.625 0-1.062-.438Q10.5 12.625 10.5 12t.438-1.062Q11.375 10.5 12 10.5t1.062.438q.438.437.438 1.062t-.438 1.062q-.437.438-1.062.438Zm0-5.775q-.625 0-1.062-.438-.438-.437-.438-1.062t.438-1.063q.437-.437 1.062-.437t1.062.437q.438.438.438 1.063t-.438 1.062q-.437.438-1.062.438Z"
         />
       </svg>
     </button>
     <ul
       tabindex="0"
-      class="dropdown-content menu p-2 shadow rounded-lg w-52 space-y-2 bg-base-200 border border-base-300 text-base-content [&>button:hover]:bg-neutral-focus fill-base-content [&>li>button:active]:bg-base-300 [&>li>button:active]:text-base-content"
+      class="dropdown-content menu py-0.5 shadow rounded-md w-52 bg-base-100 border border-base-300 text-base-content [& svg:not(.active-state)]:fill-base-content [&>li:hover>button:not(.active-state)]:bg-base-200 [& button:active]:text-base-content [& >button:active]:bg-base-200"
     >
       <li>
         <button class="btn-md md:btn-sm" @click="handleEditTask(taskId)">
@@ -39,18 +39,14 @@
           Add Subtask
         </button>
       </li>
+      <li id="separator" class="border-1 m-1" aria-hidden="true"></li>
       <li>
         <button
           class="btn-md md:btn-sm"
           @click="handleToggleImportant(taskId)"
           :class="importantStyle"
         >
-          <svg
-            :class="{ 'fill-accent-content': isImportant }"
-            xmlns="http://www.w3.org/2000/svg"
-            height="24"
-            width="24"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
             <path
               d="M12 18.85q-.425 0-.712-.3-.288-.3-.288-.7 0-.425.288-.712.287-.288.712-.288t.713.288q.287.287.287.712 0 .4-.287.7-.288.3-.713.3Zm-.725-3.8V4.15h1.45v10.9Z"
             />
@@ -64,12 +60,7 @@
           :class="doneStyle"
           @click="handleToggleIsDone(taskId)"
         >
-          <svg
-            :class="{ 'fill-accent-content': isDone }"
-            xmlns="http://www.w3.org/2000/svg"
-            height="24"
-            width="24"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
             <path
               d="m9.55 17.3-4.975-4.95.725-.725 4.25 4.25 9.15-9.15.725.725Z"
             />
@@ -77,6 +68,7 @@
           Toggle Done
         </button>
       </li>
+      <li id="separator" class="border-1 m-1" aria-hidden="true"></li>
       <li>
         <Datepicker
           v-model="currentDate"
@@ -109,9 +101,10 @@
           Reminder
         </button>
       </li>
+      <li id="separator" class="border-1 m-1" aria-hidden="true"></li>
       <li>
         <button
-          class="btn-md bg-error text-error-content bg-error-darken md:btn-sm fill-error-content"
+          class="btn-md hover:text-error hover:fill-error focus:text-error focus:fill-error md:btn-sm fill-base-content "
           @click="handleDeleteTask(taskId)"
         >
           <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
@@ -130,7 +123,7 @@
 import { computed, toRefs, ref } from 'vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
-import { addHours, calcStartTime } from '@/helpers/checkTime.js';
+import { calcStartTime } from '@/helpers/checkTime.js';
 
 const props = defineProps([
   'taskId',
@@ -157,8 +150,13 @@ const datepicker = ref(null);
 const showPicker = ref(false);
 const startTime = ref({});
 
-const activeStyle =
-  'bg-accent focus:bg-accent active:bg-accent hover:bg-accent-focus text-accent-content fill-accent';
+const activeStyle = [
+  'active-state',
+  'active:bg-base-200',
+  'focus:fill-accent',
+  'fill-accent',
+  'text-accent',
+];
 const doneStyle = computed(() => (isDone.value ? activeStyle : ''));
 const importantStyle = computed(() => (isImportant.value ? activeStyle : ''));
 

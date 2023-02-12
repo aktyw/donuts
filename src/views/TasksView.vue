@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-col justify-start items-center full-h">
-    <div >
+    <div>
       <SettingsNavbar
         :tasks="tasks"
-        class="fill-base-content [&>button:hover]:fill-accent"
+        class="fill-base-content [&>button:hover]:fill-base-content [&>button:hover]:bg-base-300 [&>button]:p-0.5 [&>button]:rounded"
       >
       </SettingsNavbar>
       <div
@@ -74,17 +74,17 @@
         </form>
 
         <TaskFilter v-if="store.tasks.length" @filter="filterTasks" />
-        <ul class="md:w-96 w-80 ">
+        <ul class="md:w-96 w-80">
           <TaskCard
+            @deleteTask="deleteTask"
+            @click="filterTasks(currentFilter)"
             v-for="task in tasks"
             :key="task.id"
             :task="task"
             :taskId="task.id"
             :taskContent="task.content"
             :taskDate="task.date"
-            class="border-solid border-t border-base-200 last:border-solid last:border-b pt-3"
-            @deleteTask="deleteTask"
-            @click="filterTasks(currentFilter)"
+            :showOptions="showOptions"
           >
             <template #content>
               {{ task.content }}
@@ -93,7 +93,9 @@
         </ul>
       </div>
     </div>
-    <span v-if="!store.tasks.length" class="grid place-items-center h-1/2 md:text-lg"
+    <span
+      v-if="!store.tasks.length"
+      class="grid place-items-center h-1/2 md:text-lg"
       >No tasks. Time for chillout...</span
     >
   </div>

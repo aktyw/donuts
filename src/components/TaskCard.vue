@@ -1,5 +1,7 @@
 <template>
-  <li class="w-full flex justify-between py-2">
+  <li
+    class="border-solid border-t border-base-200 last:border-solid last:border-b py-3 w-full flex justify-between"
+  >
     <div class="flex gap-4 cursor-pointer" @click="toggleIsDone(task.id)">
       <label class="flex items-start h-full">
         <input
@@ -11,7 +13,7 @@
       </label>
       <div class="flex flex-col">
         <p
-          class="break-all h-full w-full flex"
+          class="break-all h-full flex"
           :class="{ 'line-through': isDone, 'decoration-accent': isImportant }"
         >
           <slot name="content" />
@@ -24,7 +26,6 @@
       </div>
     </div>
     <TaskOptions
-      class="ml-3"
       @deleteTask="handleDeleteTask"
       @toggleIsImportant="toggleIsImportant"
       @toggleIsDone="toggleIsDone"
@@ -44,9 +45,9 @@
         <template #action>
           <button @click="cancelEditTask" class="btn btn-ghost">Cancel</button>
           <button
-            :disabled="!newContent.length"
             class="btn"
             @click="handleUpdateTask(newContent)"
+            :disabled="!newContent.length"
           >
             Save
           </button></template
@@ -65,10 +66,17 @@ import TaskTimeDetail from '@/components/TaskTimeDetail.vue';
 import { isOverdue, isToday, isTomorrow } from '@/helpers/checkTime';
 
 const store = useStoreTasks();
-const props = defineProps(['task', 'taskContent', 'taskId', 'taskDate']);
+const props = defineProps([
+  'task',
+  'taskContent',
+  'taskId',
+  'taskDate',
+  'showOptions',
+]);
 const emits = defineEmits(['deleteTask']);
 
 const newContent = ref(props.taskContent);
+const showOptions = ref(false);
 // to refactor
 const isDone = ref(props.task.done);
 const isImportant = ref(props.task.isImportant);
@@ -94,7 +102,7 @@ function setTimeDetail() {
   if (isOverdue(deadline)) {
     timeDetail.value = 'Overdue';
   } else if (isToday(deadline)) {
-    timeDetail.value = `Today at ${deadline
+    timeDetail.value = `Today ${deadline
       .getHours()
       .toString()
       .padStart(2, '0')}:${deadline.getMinutes().toString().padStart(2, '0')}`;
