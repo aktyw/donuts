@@ -1,7 +1,7 @@
 <template>
   <div class="alert gap-0 shadow-lg p-3" role="dialog">
     <slot name="default" />
-    <div class="flex gap-0">
+    <div class="flex gap-0" ref="target">
       <BaseButton
         class="btn-ghost text-accent capitalize md:btn-sm"
         @click="undoDelete"
@@ -24,15 +24,21 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
 import BaseButton from '@/components/BaseButton.vue';
-
 const emits = defineEmits(['undo', 'closeAlert']);
+const target = ref();
+
+useFocusTrap(target, {
+  immediate: true,
+});
 
 function undoDelete() {
   emits('undo');
 }
 
-function closeDeleteAlert (){
-  emits('closeAlert', true)
+function closeDeleteAlert() {
+  emits('closeAlert', true);
 }
 </script>

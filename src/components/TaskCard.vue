@@ -61,12 +61,8 @@
       </TaskEditModal>
     </Teleport>
     <Teleport to="body">
-      <TaskDeleteConfirmModal
-      v-if="deleteConfirm"
-      :title="'Delete task'"
-      
-      >
-        <template #content >
+      <TaskDeleteConfirmModal v-if="deleteConfirm" :title="'Delete task'">
+        <template #content>
           <p>
             Do you really want to delete
             <span class="font-bold break-words">"{{ taskContent }}"</span> ?
@@ -75,7 +71,7 @@
         <template #action>
           <button
             @click="cancelDeleteTask"
-            class="btn bg-base-200 text-base-content hover:bg-base-300 border-0 btn-sm rounded-md capitalize font-semibold" 
+            class="btn bg-base-200 text-base-content hover:bg-base-300 border-0 btn-sm rounded-md capitalize font-semibold"
           >
             Cancel
           </button>

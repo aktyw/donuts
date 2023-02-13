@@ -145,7 +145,7 @@ const inputTaskDate = ref(null);
 const showPicker = ref(false);
 const currentFilter = ref('');
 const alertIsActive = ref(false);
-const UNDO_DELETE_TIME = 3500; // config
+const UNDO_DELETE_TIME = 993500; // config
 const undoTimeout = ref(null);
 const startTime = ref({});
 
