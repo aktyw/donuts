@@ -13,6 +13,7 @@
   "dependencies": {
     "@vuepic/vue-datepicker": "^3.6.8",
     "daisyui": "^2.50.0",
+    "focus-trap": "^7.2.0",
     "pinia": "^2.0.28",
     "uuid": "^9.0.0",
     "vue": "^3.2.45",
