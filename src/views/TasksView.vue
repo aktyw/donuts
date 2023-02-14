@@ -136,7 +136,7 @@ import { vFocus } from '@/directives/vAutoFocus.js';
 import { addHours, calcStartTime } from '@/helpers/checkTime.js';
 
 const store = useStoreTasks();
-const tasks = ref(store.tasks);
+const tasks = computed(() => store.getAllTasks);
 const taskContent = ref('');
 const date = ref();
 const datepicker = ref(null);
@@ -174,11 +174,6 @@ function filterTasks(type) {
 
 function sortTasks() {}
 
-const showDateOnInput = computed(() => {
-  const shortDate = date.value.toDateString().split(' ');
-  return `${shortDate[1]} ${shortDate[2]} `;
-});
-
 function handleCalendar() {
   startTime.value = calcStartTime();
   datepicker.value.openMenu();
@@ -213,4 +208,9 @@ function undoDelete() {
 function closeDeleteAlert() {
   alertIsActive.value = !alertIsActive.value;
 }
+
+const showDateOnInput = computed(() => {
+  const shortDate = date.value.toDateString().split(' ');
+  return `${shortDate[1]} ${shortDate[2]} `;
+});
 </script>

@@ -1,25 +1,9 @@
 <template>
   <div class="w-full flex justify-end gap-2 py-2 relative">
-    <SettingsDropdown>
+    <TasksSettingsDropdown @deleteTasks="toggleDeleteModal">
       <template #btn>
         <button
-          :disabled="!tasks.length"
-          class="hover:bg-base-200 p-0.5 rounded focus:bg-base-200"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-            <path
-              d="M8.5 12.5V4.625L5.4 7.7 4.7 7 9 2.7 13.3 7l-.7.7-3.1-3.075V12.5Zm6.5 8.8L10.7 17l.7-.7 3.1 3.075V11.5h1v7.875l3.1-3.075.7.7Z"
-            />
-          </svg>
-        </button>
-      </template>
-    </SettingsDropdown>
-
-    <SettingsDropdown>
-      <template #btn>
-        <button
-          :disabled="!tasks.length"
-          class="hover:bg-base-200 p-0.5 rounded focus:bg-base-200"
+          class="hover:bg-base-200 focus:bg-base-200 btn btn-square rounded-md btn-xs bg-base-100 border-0 focus:outline focus:outline-1"
         >
           <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
             <path
@@ -28,11 +12,49 @@
           </svg>
         </button>
       </template>
-    </SettingsDropdown>
+    </TasksSettingsDropdown>
+    <TaskDeleteConfirmModal v-if="deleteConfirm" :title="'Delete task'">
+      <template #content>
+        <p>Do you really want to delete all tasks ?</p>
+      </template>
+      <template #action>
+        <button
+          @click="cancelDeleteTask"
+          class="btn bg-base-200 text-base-content hover:bg-base-300 border-0 btn-sm rounded-md capitalize font-semibold focus:outline focus:outline-1"
+        >
+          Cancel
+        </button>
+        <button
+          class="btn btn-sm rounded-md capitalize font-semibold"
+          @click="handleDeleteAllTasks"
+        >
+          Delete
+        </button></template
+      >
+    </TaskDeleteConfirmModal>
   </div>
 </template>
 
 <script setup>
-import SettingsDropdown from '@/components/SettingsDropdown.vue';
+import { ref } from 'vue';
+import TasksSettingsDropdown from '@/components/TasksSettingsDropdown.vue';
+import TaskDeleteConfirmModal from '@/components/TaskDeleteConfirmModal.vue';
+import { useStoreTasks } from '@/stores/TasksStore';
+
+const store = useStoreTasks();
 const props = defineProps(['tasks']);
+const deleteConfirm = ref(false);
+
+function toggleDeleteModal() {
+  deleteConfirm.value = !deleteConfirm.value;
+}
+
+function cancelDeleteTask() {
+  toggleDeleteModal();
+}
+
+function handleDeleteAllTasks() {
+  store.deleteAllTasks();
+  toggleDeleteModal();
+}
 </script>

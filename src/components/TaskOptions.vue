@@ -49,6 +49,7 @@
           Duplicate Task
         </button>
       </li>
+
       <li id="separator" class="border-1 m-1" aria-hidden="true"></li>
 
       <li>
@@ -134,6 +135,7 @@
 import { computed, toRefs, ref } from 'vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import { calcStartTime } from '@/helpers/checkTime.js';
+import blurElement from '@/helpers/blur';
 import '@vuepic/vue-datepicker/dist/main.css';
 
 const props = defineProps([
@@ -174,10 +176,6 @@ const activeStyle = [
 const doneStyle = computed(() => (isDone.value ? activeStyle : ''));
 const importantStyle = computed(() => (isImportant.value ? activeStyle : ''));
 
-function closeDropdown() {
-  document.activeElement.blur();
-}
-
 function handleDate(modelData) {
   date.value = modelData;
   emits('handleDate', date);
@@ -189,7 +187,7 @@ function handleCalendar() {
 }
 
 function handleDeleteTask(taskId) {
-  closeDropdown();
+  blurElement();
   emits('deleteTask', taskId);
 }
 

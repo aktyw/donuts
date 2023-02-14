@@ -143,6 +143,10 @@ function cancelDeleteTask() {
   toggleDeleteModal();
 }
 
+function handleDeleteTask(id) {
+  emits('deleteTask', id);
+}
+
 function toggleEditModal() {
   editTask.value = !editTask.value;
 }
@@ -163,10 +167,6 @@ function handleUpdateDate(date) {
 function handleUpdateTask(content) {
   toggleEditModal();
   store.updateTask(props.taskId, content);
-}
-
-function handleDeleteTask(id) {
-  emits('deleteTask', id);
 }
 
 function toggleIsDone(id) {

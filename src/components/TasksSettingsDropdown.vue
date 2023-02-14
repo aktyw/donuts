@@ -5,10 +5,10 @@
     </label>
     <ul
       tabindex="0"
-      class="dropdown-content menu p-2 shadow rounded-md w-40 space-y-2 bg-base-200 border border-base-300 text-base-content [&>button:hover]:bg-neutral-focus fill-base-content [&>li>button:active]:bg-base-300 [&>li>button:active]:text-base-content"
+      class="dropdown-content menu py-0.5 shadow rounded-md w-44 bg-base-100 border border-base-300 text-base-content fill-base-content [& svg:not(.active-state)]:fill-base-content [&>li:hover>button:not(.active-state)]:bg-base-200 [& button:active]:text-base-content [&>button:active]:bg-base-200"
     >
       <li>
-        <button class="btn-md md:btn-sm">
+        <button class="btn-md md:btn-sm" :disabled="tasks.length < 2">
           <svg
             class="fill-base-content"
             xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +23,7 @@
         </button>
       </li>
       <li>
-        <button class="btn-md md:btn-sm">
+        <button class="btn-md md:btn-sm" :disabled="tasks.length < 2">
           <svg
             class="fill-base-content"
             xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +38,7 @@
         </button>
       </li>
       <li>
-        <button class="btn-md md:btn-sm">
+        <button class="btn-md md:btn-sm" :disabled="tasks.length < 2">
           <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
             <path
               d="M13.55 20.7q-.275.3-.7.3-.425 0-.725-.3l-8.8-8.8q-.15-.15-.237-.338Q3 11.375 3 11.15V4q0-.4.3-.7.3-.3.7-.3h7.15q.2 0 .388.075.187.075.337.225l8.8 8.8q.3.3.313.737.012.438-.288.713Zm-.725-.7L20 12.85 11.15 4H4v7.15ZM6.5 7.5q.425 0 .713-.287.287-.288.287-.713t-.287-.713Q6.925 5.5 6.5 5.5t-.713.287Q5.5 6.075 5.5 6.5t.287.713q.288.287.713.287ZM4 4Z"
@@ -47,8 +47,36 @@
           Sort by Tag
         </button>
       </li>
+      <li id="separator" class="border-1 m-1" aria-hidden="true"></li>
+      <li>
+        <button
+          :disabled="!tasks.length"
+          class="btn-md hover:text-error hover:fill-error focus:text-error focus:fill-error md:btn-sm fill-base-content"
+          @click="handleDeleteTask(taskId)"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+            <path
+              d="M7.625 20q-.675 0-1.15-.475Q6 19.05 6 18.375V6H5V5h4v-.775h6V5h4v1h-1v12.375q0 .7-.462 1.163-.463.462-1.163.462ZM17 6H7v12.375q0 .275.175.45t.45.175h8.75q.25 0 .437-.188.188-.187.188-.437ZM9.8 17h1V8h-1Zm3.4 0h1V8h-1ZM7 6v13-.625Z"
+            />
+          </svg>
+          Delete All Tasks
+        </button>
+      </li>
     </ul>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { computed } from 'vue';
+import { useStoreTasks } from '@/stores/TasksStore';
+import blurElement from '@/helpers/blur';
+const store = useStoreTasks();
+const tasks = computed(() => store.getAllTasks);
+
+const emits = defineEmits(['deleteTasks']);
+
+function handleDeleteTask() {
+  blurElement();
+  emits('deleteTasks');
+}
+</script>

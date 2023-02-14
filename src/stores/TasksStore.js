@@ -71,11 +71,15 @@ export const useStoreTasks = defineStore('tasks', {
       const newId = uuid();
       copyTask.id = newId;
       if (copyTask.date) copyTask.date = new Date(copyTask.date);
-      
+
       const taskIndex = this.tasks.findIndex((task) => task.id === id);
       const tasksArrStart = this.tasks.slice(0, taskIndex + 1);
       const tasksArrEnd = this.tasks.slice(taskIndex + 1);
       this.tasks = [...tasksArrStart, copyTask, ...tasksArrEnd];
+    },
+    deleteAllTasks() {
+      this.deletedTasks.push(...this.tasks);
+      this.tasks = [];
     },
   },
 });
