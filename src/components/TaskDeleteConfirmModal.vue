@@ -1,7 +1,7 @@
 <template>
   <div class="modal modal-bottom sm:modal-middle modal-open" role="dialog">
     <div class="modal-box">
-      <h3 class="font-semibold text-lg text-center py-2" >
+      <h3 class="font-semibold text-lg text-center py-2">
         {{ title }}
       </h3>
       <slot name="content" />

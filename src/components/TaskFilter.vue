@@ -39,7 +39,7 @@ const store = useStoreTasks();
 const { getAllTasks, getImportantTasks, getDoneTasks, getNotDoneTasks } =
   storeToRefs(store);
 
-const emits = defineEmits(['filter']);
+const emits = defineEmits(['filterType']);
 
 function filterTasks({ currentTarget, target }) {
   const btn = target.closest('button');
@@ -49,6 +49,6 @@ function filterTasks({ currentTarget, target }) {
     .forEach((btn) => btn.classList.remove('btn-active'));
   btn.classList.add('btn-active');
 
-  emits('filter', btn.id);
+  emits('filterType', btn.id);
 }
 </script>

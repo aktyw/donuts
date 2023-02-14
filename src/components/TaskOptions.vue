@@ -203,7 +203,7 @@ function handleToggleIsDone(taskId) {
   emits('toggleIsDone', taskId);
 }
 function handleAddSubtask(taskId) {
-  console.log('sub');
+  console.log('sub', taskId);
 }
 function handleEditTask(taskId) {
   emits('editTask', taskId);

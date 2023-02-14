@@ -16,7 +16,7 @@
         >
           <div class="relative flex">
             <input
-              id="taskInput"
+              ref="taskInput"
               type="text"
               maxlength="100"
               placeholder="What's on your mind?"
@@ -74,12 +74,12 @@
           </button>
         </form>
 
-        <TaskFilter v-if="store.tasks.length" @filter="filterTasks" />
+        <TaskFilter v-if="store.tasks.length" @filterType="updateFilterType" />
+
         <ul class="md:w-96 w-80">
           <TaskCard
             @deleteTask="deleteTask"
-            @click="filterTasks(currentFilter)"
-            v-for="task in tasks"
+            v-for="task in filteredTasks"
             :key="task.id"
             :task="task"
             :taskId="task.id"
@@ -110,16 +110,6 @@
       </template>
     </TaskDeleteAlert>
   </Teleport>
-  <!-- <Teleport to="body">
-    <BaseAlert>
-      <template #icon>
-        <slot></slot>
-      </template>
-      <template #content>
-        <slot></slot>
-      </template>
-    </BaseAlert>
-  </Teleport> -->
 </template>
 
 <script setup>
@@ -128,12 +118,12 @@ import { useStoreTasks } from '@/stores/TasksStore';
 import TaskCard from '@/components/TaskCard.vue';
 import TaskFilter from '@/components/TaskFilter.vue';
 import TaskTimeDetail from '@/components/TaskTimeDetail.vue';
-import BaseButton from '@/components/BaseButton.vue';
 import TaskDeleteAlert from '@/components/TaskDeleteAlert.vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import SettingsNavbar from '@/components/SettingsNavbar.vue';
+import BaseButton from '@/components/BaseButton.vue';
 import { vFocus } from '@/directives/vAutoFocus.js';
-import { addHours, calcStartTime } from '@/helpers/checkTime.js';
+import { calcStartTime } from '@/helpers/checkTime.js';
 
 const store = useStoreTasks();
 const tasks = computed(() => store.getAllTasks);
@@ -142,37 +132,41 @@ const date = ref();
 const datepicker = ref(null);
 const inputTaskDate = ref(null);
 const showPicker = ref(false);
-const currentFilter = ref('');
+const currentFilter = ref();
 const alertIsActive = ref(false);
 const UNDO_DELETE_TIME = 3500; // config
 const undoTimeout = ref(null);
 const startTime = ref({});
+const taskInput = ref();
 
 watch(date, (newDate) => {
   inputTaskDate.value = newDate;
 });
 
-function filterTasks(type) {
-  currentFilter.value = type;
-  switch (type) {
+watch(tasks, (value) => {
+  if (value.length) resetFilters();
+});
+
+const filteredTasks = computed(() => {
+  switch (currentFilter.value) {
     case 'all':
-      tasks.value = store.getAllTasks;
-      break;
+      return store.getAllTasks;
     case 'completed':
-      tasks.value = store.getDoneTasks;
-      break;
+      return store.getDoneTasks;
     case 'important':
-      tasks.value = store.getImportantTasks;
-      break;
+      return store.getImportantTasks;
     case 'not-completed':
-      tasks.value = store.getNotDoneTasks;
-      break;
+      return store.getNotDoneTasks;
     default:
-      tasks.value = store.getAllTasks;
+      return store.getAllTasks;
   }
+});
+
+function updateFilterType(type) {
+  currentFilter.value = type;
 }
 
-function sortTasks() {}
+// function sortTasks() {}
 
 function handleCalendar() {
   startTime.value = calcStartTime();
@@ -182,17 +176,13 @@ function handleCalendar() {
 function addTask() {
   store.addTask(taskContent.value, inputTaskDate.value);
   taskContent.value = '';
-  taskInput.focus();
+  taskInput.value.focus();
   datepicker.value.clearValue();
-  filterTasks(currentFilter.value);
 }
 
 function deleteTask(task) {
   store.deleteTask(task);
-  tasks.value = store.tasks;
   alertIsActive.value = true;
-  filterTasks(currentFilter.value);
-
   undoTimeout.value = setTimeout(() => {
     alertIsActive.value = false;
   }, UNDO_DELETE_TIME);
@@ -202,7 +192,6 @@ function undoDelete() {
   clearTimeout(undoTimeout.value);
   alertIsActive.value = false;
   store.undoDelete(store.getDeletedTask);
-  filterTasks(currentFilter.value);
 }
 
 function closeDeleteAlert() {
@@ -213,4 +202,8 @@ const showDateOnInput = computed(() => {
   const shortDate = date.value.toDateString().split(' ');
   return `${shortDate[1]} ${shortDate[2]} `;
 });
+
+function resetFilters() {
+  currentFilter.value = 'all';
+}
 </script>

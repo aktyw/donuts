@@ -1,3 +1,3 @@
 export default function blurElement() {
-    document.activeElement.blur();
-  }
+  document.activeElement.blur();
+}
