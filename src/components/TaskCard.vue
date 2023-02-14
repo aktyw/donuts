@@ -72,7 +72,7 @@
         <template #action>
           <button
             @click="cancelDeleteTask"
-            class="btn bg-base-200 text-base-content hover:bg-base-300 border-0 btn-sm rounded-md capitalize font-semibold"
+            class="btn bg-base-200 text-base-content hover:bg-base-300 border-0 btn-sm rounded-md capitalize font-semibold focus:outline focus:outline-1"
           >
             Cancel
           </button>
@@ -161,7 +161,6 @@ function handleUpdateDate(date) {
 }
 
 function handleUpdateTask(content) {
-  // showAlert();
   toggleEditModal();
   store.updateTask(props.taskId, content);
 }

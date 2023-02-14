@@ -134,7 +134,6 @@ import Datepicker from '@vuepic/vue-datepicker';
 import SettingsNavbar from '@/components/SettingsNavbar.vue';
 import { vFocus } from '@/directives/vAutoFocus.js';
 import { addHours, calcStartTime } from '@/helpers/checkTime.js';
-// import BaseAlert from '@/components/BaseAlert.vue';
 
 const store = useStoreTasks();
 const tasks = ref(store.tasks);
@@ -197,6 +196,7 @@ function deleteTask(task) {
   store.deleteTask(task);
   tasks.value = store.tasks;
   alertIsActive.value = true;
+  filterTasks(currentFilter.value);
 
   undoTimeout.value = setTimeout(() => {
     alertIsActive.value = false;
