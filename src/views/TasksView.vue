@@ -100,7 +100,7 @@
     >
   </div>
   <Teleport to="body">
-    <DeleteAlert
+    <TaskDeleteAlert
       v-if="alertIsActive"
       class="flex flex-row absolute bottom-10 left-1/2 transform -translate-x-1/2 w-10/12 md:w-6/12 bg-neutral-focus text-neutral-content lg:w-fit"
       @undo="undoDelete"
@@ -108,7 +108,7 @@
       ><template #default>
         <span class="text-center mx-4">Task deleted</span>
       </template>
-    </DeleteAlert>
+    </TaskDeleteAlert>
   </Teleport>
   <!-- <Teleport to="body">
     <BaseAlert>
@@ -129,12 +129,12 @@ import TaskCard from '@/components/TaskCard.vue';
 import TaskFilter from '@/components/TaskFilter.vue';
 import TaskTimeDetail from '@/components/TaskTimeDetail.vue';
 import BaseButton from '@/components/BaseButton.vue';
-import BaseAlert from '@/components/BaseAlert.vue';
-import DeleteAlert from '@/components/DeleteAlert.vue';
+import TaskDeleteAlert from '@/components/TaskDeleteAlert.vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import SettingsNavbar from '@/components/SettingsNavbar.vue';
 import { vFocus } from '@/directives/vAutoFocus.js';
 import { addHours, calcStartTime } from '@/helpers/checkTime.js';
+// import BaseAlert from '@/components/BaseAlert.vue';
 
 const store = useStoreTasks();
 const tasks = ref(store.tasks);
@@ -145,7 +145,7 @@ const inputTaskDate = ref(null);
 const showPicker = ref(false);
 const currentFilter = ref('');
 const alertIsActive = ref(false);
-const UNDO_DELETE_TIME = 993500; // config
+const UNDO_DELETE_TIME = 3500; // config
 const undoTimeout = ref(null);
 const startTime = ref({});
 

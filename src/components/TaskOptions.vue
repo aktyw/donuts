@@ -39,7 +39,18 @@
           Add Subtask
         </button>
       </li>
+      <li>
+        <button class="btn-md md:btn-sm" @click="handleDuplicateTask(taskId)">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+            <path
+              d="M13 13.5h1v-3h3v-1h-3v-3h-1v3h-3v1h3ZM8.125 17q-.7 0-1.162-.462-.463-.463-.463-1.163V4.625q0-.7.463-1.163Q7.425 3 8.125 3h10.75q.7 0 1.163.462.462.463.462 1.163v10.75q0 .7-.462 1.163-.463.462-1.163.462Zm0-1h10.75q.25 0 .437-.188.188-.187.188-.437V4.625q0-.25-.188-.437Q19.125 4 18.875 4H8.125q-.25 0-.437.188-.188.187-.188.437v10.75q0 .25.188.437.187.188.437.188Zm-3 4q-.7 0-1.163-.462-.462-.463-.462-1.163V6.625h1v11.75q0 .25.188.437.187.188.437.188h11.75v1ZM7.5 4v12V4Z"
+            />
+          </svg>
+          Duplicate Task
+        </button>
+      </li>
       <li id="separator" class="border-1 m-1" aria-hidden="true"></li>
+
       <li>
         <button
           class="btn-md md:btn-sm"
@@ -138,6 +149,7 @@ const emits = defineEmits([
   'toggleIsDone',
   'handleDate',
   'editTask',
+  'duplicateTask',
 ]);
 
 const {
@@ -179,6 +191,10 @@ function handleCalendar() {
 function handleDeleteTask(taskId) {
   closeDropdown();
   emits('deleteTask', taskId);
+}
+
+function handleDuplicateTask(taskId) {
+  emits('duplicateTask', taskId);
 }
 
 function handleToggleImportant(taskId) {

@@ -18,9 +18,9 @@
         >
           <slot name="content" />
         </p>
-        <TaskTimeDetail v-if="timeDetail" :class="overdue" class="pt-0.5">
+        <TaskTimeDetail v-if="setDetailTime" :class="overdue" class="pt-0.5">
           <template #time>
-            <span class="pt-0.5 w-full">{{ timeDetail }}</span>
+            <span class="pt-0.5 w-full">{{ setDetailTime }}</span>
           </template>
         </TaskTimeDetail>
       </div>
@@ -31,6 +31,7 @@
       @editTask="toggleEditModal"
       @deleteTask="toggleDeleteModal"
       @handleDate="handleUpdateDate"
+      @duplicateTask="handleDuplicateTask"
       :taskId="task.id"
       :taskIsDone="task.done"
       :taskIsImportant="task.isImportant"
@@ -88,56 +89,51 @@
 </template>
 
 <script setup>
-import { ref, onUpdated, onMounted, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
 import TaskOptions from '@/components/TaskOptions.vue';
 import TaskEditModal from '@/components/TaskEditModal.vue';
 import TaskDeleteConfirmModal from '@/components/TaskDeleteConfirmModal.vue';
 import TaskTimeDetail from '@/components/TaskTimeDetail.vue';
 import { isOverdue, isToday, isTomorrow } from '@/helpers/checkTime';
-import { vFocus } from '@/directives/vAutoFocus.js';
 
 const store = useStoreTasks();
 const props = defineProps(['task', 'taskContent', 'taskId', 'taskDate']);
 const emits = defineEmits(['deleteTask']);
 
 const newContent = ref(props.taskContent);
-// to refactor
+// to refactor to storerefs? or computed
 const isDone = ref(props.task.done);
 const isImportant = ref(props.task.isImportant);
 const editTask = ref(false);
 const deleteConfirm = ref(false);
-const timeDetail = ref(null);
 
-onUpdated(() => {
-  setTimeDetail();
-});
-
-onMounted(() => {
-  setTimeDetail();
+const deadline = computed(() => store.getTaskDate(props.taskId));
+const setDetailTime = computed(() => {
+  if (!deadline.value) return;
+  if (isOverdue(deadline.value)) {
+    return 'Overdue';
+  }
+  if (isToday(deadline.value)) {
+    return `Today ${deadline.value
+      .getHours()
+      .toString()
+      .padStart(2, '0')}:${deadline.value
+      .getMinutes()
+      .toString()
+      .padStart(2, '0')}`;
+  } else if (isTomorrow(deadline.value)) {
+    return 'Tomorrow';
+  }
+  const date = deadline.value.toDateString().split(' ');
+  return `${date[1]} ${date[2]}`;
 });
 
 const overdue = computed(() =>
-  timeDetail.value === 'Overdue' ? '[&>span]:text-error [&>svg]:fill-error' : ''
+  setDetailTime.value === 'Overdue'
+    ? '[&>span]:text-error [&>svg]:fill-error'
+    : ''
 );
-
-function setTimeDetail() {
-  const deadline = props.taskDate;
-  if (!deadline) return;
-  const date = deadline.toDateString().split(' ');
-  if (isOverdue(deadline)) {
-    timeDetail.value = 'Overdue';
-  } else if (isToday(deadline)) {
-    timeDetail.value = `Today ${deadline
-      .getHours()
-      .toString()
-      .padStart(2, '0')}:${deadline.getMinutes().toString().padStart(2, '0')}`;
-  } else if (isTomorrow(deadline)) {
-    timeDetail.value = 'Tomorrow';
-  } else {
-    timeDetail.value = `${date[1]} ${date[2]}`;
-  }
-}
 
 function toggleDeleteModal() {
   deleteConfirm.value = !deleteConfirm.value;
@@ -156,18 +152,18 @@ function cancelEditTask() {
   toggleEditModal();
 }
 
+function handleDuplicateTask(id) {
+  store.duplicateTask(id);
+}
+
 function handleUpdateDate(date) {
-  store.updateDate(props.task.id, date);
+  store.updateDate(props.taskId, date);
 }
 
 function handleUpdateTask(content) {
-  showAlert();
+  // showAlert();
   toggleEditModal();
   store.updateTask(props.taskId, content);
-}
-
-function showAlert() {
-  setTimeout(() => {});
 }
 
 function handleDeleteTask(id) {

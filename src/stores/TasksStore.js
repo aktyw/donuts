@@ -26,6 +26,9 @@ export const useStoreTasks = defineStore('tasks', {
     getDeletedTask(state) {
       return state.deletedTasks[this.deletedTasks.length - 1];
     },
+    getTaskDate(state) {
+      return (id) => state.tasks.find((task) => task.id === id).date;
+    },
   },
   actions: {
     addTask(content, date) {
@@ -57,11 +60,22 @@ export const useStoreTasks = defineStore('tasks', {
     updateTask(id, content) {
       const task = findItem(id, this.tasks);
       task.content = content;
-      this.tasks;
     },
     updateDate(id, date) {
       const task = findItem(id, this.tasks);
       task.date = date;
+    },
+    duplicateTask(id) {
+      const task = findItem(id, this.tasks);
+      const copyTask = JSON.parse(JSON.stringify(task));
+      const newId = uuid();
+      copyTask.id = newId;
+      if (copyTask.date) copyTask.date = new Date(copyTask.date);
+      
+      const taskIndex = this.tasks.findIndex((task) => task.id === id);
+      const tasksArrStart = this.tasks.slice(0, taskIndex + 1);
+      const tasksArrEnd = this.tasks.slice(taskIndex + 1);
+      this.tasks = [...tasksArrStart, copyTask, ...tasksArrEnd];
     },
   },
 });
