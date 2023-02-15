@@ -4,10 +4,8 @@
       <div class="text-center lg:text-left">
         <h1 class="text-5xl font-bold">Login to Donuts!</h1>
         <p class="py-6 max-w-prose">
-          Donuts is a simple and intuitive application that allows users to
-          easily manage their tasks and notes. With multiple features, Donuts
-          helps users stay on top of their schedule and get things done more
-          efficiently.
+          Donuts is a simple and intuitive application that allows users to easily manage their tasks and notes. With
+          multiple features, Donuts helps users stay on top of their schedule and get things done more efficiently.
         </p>
       </div>
       <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
@@ -19,8 +17,7 @@
             <input
               type="text"
               placeholder="email"
-              class="input input-bordered"
-            />
+              class="input input-bordered" />
           </div>
           <div class="form-control">
             <label class="label">
@@ -29,10 +26,11 @@
             <input
               type="text"
               placeholder="password"
-              class="input input-bordered"
-            />
+              class="input input-bordered" />
             <label class="label">
-              <a href="#" class="label-text-alt link link-hover"
+              <a
+                href="#"
+                class="label-text-alt link link-hover"
                 >Forgot password?</a
               >
             </label>

@@ -1,8 +1,10 @@
 <template>
-  <div class="alert shadow-lg" role="dialog">
+  <div
+    class="alert shadow-lg"
+    role="dialog">
     <div>
-      <slot name="icon"></slot>
-      <slot name="content"> </slot>
+      <slot name="icon" />
+      <slot name="content" />
     </div>
   </div>
 </template>

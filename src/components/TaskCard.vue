@@ -1,24 +1,26 @@
 <template>
-  <li
-    class="border-solid border-t border-base-200 last:border-solid last:border-b py-3 w-full flex justify-between"
-  >
-    <div class="flex gap-4 cursor-pointer" @click="toggleIsDone(task.id)">
+  <li class="border-solid border-t border-base-200 last:border-solid last:border-b py-3 w-full flex justify-between">
+    <div
+      class="flex gap-4 cursor-pointer"
+      @click="toggleIsDone(task.id)">
       <label class="flex items-start h-full">
         <input
           type="checkbox"
           class="checkbox"
           :checked="isDone"
-          :class="{ 'checkbox-accent': isImportant }"
-        />
+          :class="{ 'checkbox-accent': isImportant }" />
       </label>
       <div class="flex flex-col">
         <p
           class="break-all h-full flex"
-          :class="{ 'line-through': isDone, 'decoration-accent': isImportant }"
-        >
+          :class="{ 'line-through': isDone, 'decoration-accent': isImportant }">
           <slot name="content" />
+          s
         </p>
-        <TaskTimeDetail v-if="setDetailTime" :class="overdue" class="pt-0.5">
+        <TaskTimeDetail
+          v-if="setDetailTime"
+          :class="overdue"
+          class="pt-0.5">
           <template #time>
             <span class="pt-0.5 w-full">{{ setDetailTime }}</span>
           </template>
@@ -26,43 +28,41 @@
       </div>
     </div>
     <TaskOptions
+      :task-id="task.id"
+      :task-is-done="task.done"
+      :task-is-important="task.isImportant"
+      :task-date="props.task.date"
+      :task-content="task.content"
       @toggleIsImportant="toggleIsImportant"
       @toggleIsDone="toggleIsDone"
       @editTask="toggleEditModal"
       @deleteTask="toggleDeleteModal"
       @handleDate="handleUpdateDate"
-      @duplicateTask="handleDuplicateTask"
-      :taskId="task.id"
-      :taskIsDone="task.done"
-      :taskIsImportant="task.isImportant"
-      :taskDate="props.task.date"
-      :taskContent="task.content"
-    ></TaskOptions>
+      @duplicateTask="handleDuplicateTask" />
     <Teleport to="body">
       <TaskEditModal
         v-if="editTask"
         v-model.trim="newContent"
-        :title="'Edit task'"
-      >
+        :title="'Edit task'">
         <template #action>
           <button
-            @click="cancelEditTask"
             class="btn bg-base-200 text-base-content hover:bg-base-300 border-0 btn-sm rounded-md capitalize font-semibold"
-          >
+            @click="cancelEditTask">
             Cancel
           </button>
           <button
             class="btn btn-sm rounded-md capitalize font-semibold"
-            @click="handleUpdateTask(newContent)"
             :disabled="!newContent.length"
-          >
+            @click="handleUpdateTask(newContent)">
             Save
-          </button></template
-        >
+          </button>
+        </template>
       </TaskEditModal>
     </Teleport>
     <Teleport to="body">
-      <TaskDeleteConfirmModal v-if="deleteConfirm" :title="'Delete task'">
+      <TaskDeleteConfirmModal
+        v-if="deleteConfirm"
+        :title="'Delete task'">
         <template #content>
           <p>
             Do you really want to delete
@@ -71,18 +71,16 @@
         </template>
         <template #action>
           <button
-            @click="cancelDeleteTask"
             class="btn bg-base-200 text-base-content hover:bg-base-300 border-0 btn-sm rounded-md capitalize font-semibold focus:outline focus:outline-1"
-          >
+            @click="cancelDeleteTask">
             Cancel
           </button>
           <button
             class="btn btn-sm rounded-md capitalize font-semibold"
-            @click="handleDeleteTask(taskId)"
-          >
+            @click="handleDeleteTask(taskId)">
             Delete
-          </button></template
-        >
+          </button>
+        </template>
       </TaskDeleteConfirmModal>
     </Teleport>
   </li>
@@ -115,25 +113,20 @@ const setDetailTime = computed(() => {
     return 'Overdue';
   }
   if (isToday(deadline.value)) {
-    return `Today ${deadline.value
-      .getHours()
-      .toString()
-      .padStart(2, '0')}:${deadline.value
+    return `Today ${deadline.value.getHours().toString().padStart(2, '0')}:${deadline.value
       .getMinutes()
       .toString()
       .padStart(2, '0')}`;
-  } else if (isTomorrow(deadline.value)) {
+  }
+  if (isTomorrow(deadline.value)) {
     return 'Tomorrow';
   }
   const date = deadline.value.toDateString().split(' ');
+
   return `${date[1]} ${date[2]}`;
 });
 
-const overdue = computed(() =>
-  setDetailTime.value === 'Overdue'
-    ? '[&>span]:text-error [&>svg]:fill-error'
-    : ''
-);
+const overdue = computed(() => (setDetailTime.value === 'Overdue' ? '[&>span]:text-error [&>svg]:fill-error' : ''));
 
 function toggleDeleteModal() {
   deleteConfirm.value = !deleteConfirm.value;

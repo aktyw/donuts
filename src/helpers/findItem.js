@@ -1,3 +1,1 @@
-export const findItem = (id, store) => {
-  return store.find((item) => item.id === id);
-};
+export const findItem = (id, store) => store.find((item) => item.id === id);

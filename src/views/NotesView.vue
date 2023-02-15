@@ -2,15 +2,22 @@
   <div>
     <!-- drawer container -->
     <div class="drawer full-h">
-      <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+      <input
+        id="my-drawer"
+        type="checkbox"
+        class="drawer-toggle" />
       <div class="drawer-content">
         <!-- Page content here -->
-        <label for="my-drawer" class="btn btn-primary drawer-button"
+        <label
+          for="my-drawer"
+          class="btn btn-primary drawer-button"
           >Show Notes</label
         >
       </div>
       <div class="drawer-side">
-        <label for="my-drawer" class="drawer-overlay"></label>
+        <label
+          for="my-drawer"
+          class="drawer-overlay" />
         <ul class="menu p-4 w-80 bg-base-100 text-base-content">
           <!-- Sidebar content here -->
           <li><a>Sidebar Item 1</a></li>

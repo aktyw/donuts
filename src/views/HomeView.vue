@@ -1,26 +1,25 @@
 <template>
   <div class="hero bg-base-200">
     <div class="hero-content full-h flex-col lg:flex-row-reverse lg:gap-8">
-      <img src="@/assets/donut-air.png" class="rounded-lg lg:max-w-xl" />
+      <img
+        src="@/assets/donut-air.png"
+        class="rounded-lg lg:max-w-xl" />
       <div>
         <h1 class="text-5xl lg:text-7xl font-bold">
           Improve productivity with
-          <span
-            class="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-indigo-500"
-            >Donuts!</span
-          >
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-indigo-500">Donuts!</span>
         </h1>
         <p class="py-6 max-w-prose">
-          Simple and intuitive app that allows users to easily manage their
-          tasks and notes.
+          Simple and intuitive app that allows users to easily manage their tasks and notes.
         </p>
-        <router-link to="/login" class="btn btn-primary">Try now!</router-link>
+        <router-link
+          to="/login"
+          class="btn btn-primary">
+          Try now!
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue';
-const loggedIn = ref(false);
-</script>
+<script setup></script>

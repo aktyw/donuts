@@ -1,6 +1,10 @@
 <template>
-  <div class="modal modal-bottom sm:modal-middle modal-open" role="dialog">
-    <div class="modal-box" ref="target">
+  <div
+    class="modal modal-bottom sm:modal-middle modal-open"
+    role="dialog">
+    <div
+      ref="target"
+      class="modal-box">
       <h3 class="font-semibold text-lg text-center py-2">
         {{ title }}
       </h3>
@@ -10,8 +14,7 @@
         type="text"
         maxlength="100"
         :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value)"
-      />
+        @input="$emit('update:modelValue', $event.target.value)" />
       <div class="modal-action gap-1">
         <slot name="action" />
       </div>
@@ -27,6 +30,7 @@ const props = defineProps(['modelValue', 'title']);
 const emits = defineEmits(['update:modelValue']);
 
 const target = ref();
+
 useFocusTrap(target, {
   immediate: true,
 });
