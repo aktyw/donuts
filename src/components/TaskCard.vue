@@ -15,7 +15,6 @@
           class="break-all h-full flex"
           :class="{ 'line-through': isDone, 'decoration-accent': isImportant }">
           <slot name="content" />
-          s
         </p>
         <TaskTimeDetail
           v-if="setDetailTime"

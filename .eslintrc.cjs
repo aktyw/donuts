@@ -7,19 +7,21 @@ module.exports = {
     'eslint:recommended',
     // 'plugin:vuejs-accessibility/recommended',
     '@vue/eslint-config-prettier',
-    'plugin:vue/vue3-essential',
+    'plugin:vue/vue3-recommended',
   ],
   parser: 'vue-eslint-parser',
   parserOptions: {
     ecmaVersion: 'latest',
   },
-  // plugins: ['vuejs-accessibility'],
+  plugins: ['vuejs-accessibility'],
   rules: {
+    'prettier/prettier': 'error',
     // 'vuejs-accessibility/rule-name': 'error',
-    'vue/component-name-in-template-casing': ['error', 'PascalCase'],
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'vue/component-name-in-template-casing': ['error', 'PascalCase'],
     'linebreak-style': ['error', process.platform === 'win32' ? 'windows' : 'unix'],
+    'vue/padding-line-between-blocks': ['error', 'always'],
     'padding-line-between-statements': [
       'error',
       { blankLine: 'always', prev: ['export', 'import'], next: '*' },
@@ -32,6 +34,7 @@ module.exports = {
         next: ['const', 'let', 'var'],
       },
       { blankLine: 'always', prev: '*', next: 'return' },
+      { blankLine: 'always', prev: ['block', 'function'], next: ['block', 'function'] },
     ],
   },
 };
