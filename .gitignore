@@ -12,6 +12,7 @@ node_modules
 dist
 dist-ssr
 coverage
+__snapshots__/
 *.local
 
 /cypress/videos/
@@ -26,4 +27,6 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+# Misc
 todo.*

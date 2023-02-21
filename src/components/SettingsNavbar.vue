@@ -38,7 +38,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import TasksSettingsDropdown from '@/components/TasksSettingsDropdown.vue';
 import TaskDeleteConfirmModal from '@/components/TaskDeleteConfirmModal.vue';

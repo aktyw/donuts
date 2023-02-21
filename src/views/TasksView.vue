@@ -103,7 +103,7 @@
   </Teleport>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, watch, computed } from 'vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import { useStoreTasks } from '@/stores/TasksStore';
@@ -113,8 +113,8 @@ import TaskTimeDetail from '@/components/TaskTimeDetail.vue';
 import TaskDeleteAlert from '@/components/TaskDeleteAlert.vue';
 import SettingsNavbar from '@/components/SettingsNavbar.vue';
 import BaseButton from '@/components/BaseButton.vue';
-import { vFocus } from '@/directives/vAutoFocus.js';
-import { calcStartTime } from '@/helpers/checkTime.js';
+import { vFocus } from '@/directives/vAutoFocus';
+import { calcStartTime } from '@/helpers/checkTime';
 
 const store = useStoreTasks();
 const tasks = computed(() => store.getAllTasks);

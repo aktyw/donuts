@@ -2,7 +2,6 @@ import { defineStore } from 'pinia';
 import { v4 as uuid } from 'uuid';
 import { toggleProp } from '@/helpers/toggleProp';
 import { findItem } from '@/helpers/findItem';
-
 export const useStoreTasks = defineStore('tasks', {
   state: () => ({
     tasks: [],

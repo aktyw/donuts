@@ -85,7 +85,7 @@
   </li>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
 import TaskOptions from '@/components/TaskOptions.vue';

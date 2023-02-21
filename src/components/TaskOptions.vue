@@ -157,7 +157,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, toRefs, ref } from 'vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import { calcStartTime } from '@/helpers/checkTime.js';
@@ -212,9 +212,11 @@ function handleToggleImportant(taskId) {
 function handleToggleIsDone(taskId) {
   emits('toggleIsDone', taskId);
 }
+
 function handleAddSubtask(taskId) {
   console.log('sub', taskId);
 }
+
 function handleEditTask(taskId) {
   emits('editTask', taskId);
 }
