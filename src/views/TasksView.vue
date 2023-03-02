@@ -76,7 +76,7 @@
             :task-id="task.id"
             :task-content="task.content"
             :task-date="task.date"
-            @deleteTask="deleteTask">
+            @delete-task="deleteTask">
             <template #content>
               {{ task.content }}
             </template>
@@ -95,7 +95,7 @@
       v-if="alertIsActive"
       class="flex flex-row absolute bottom-10 left-1/2 transform -translate-x-1/2 w-10/12 md:w-6/12 bg-neutral-focus text-neutral-content lg:w-fit"
       @undo="undoDelete"
-      @closeAlert="closeDeleteAlert">
+      @close-alert="closeDeleteAlert">
       <template #default>
         <span class="text-center mx-4">Task deleted</span>
       </template>
@@ -104,29 +104,30 @@
 </template>
 
 <script setup lang="ts">
+import type { Ref } from 'vue';
 import { ref, watch, computed } from 'vue';
-import Datepicker from '@vuepic/vue-datepicker';
 import { useStoreTasks } from '@/stores/TasksStore';
-import TaskCard from '@/components/TaskCard.vue';
-import TaskFilter from '@/components/TaskFilter.vue';
-import TaskTimeDetail from '@/components/TaskTimeDetail.vue';
-import TaskDeleteAlert from '@/components/TaskDeleteAlert.vue';
-import SettingsNavbar from '@/components/SettingsNavbar.vue';
-import BaseButton from '@/components/BaseButton.vue';
+import Datepicker from '@vuepic/vue-datepicker';
+import TaskCard from '@/components/tasks/TaskCard.vue';
+import TaskFilter from '@/components/tasks/TaskFilter.vue';
+import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
+import TaskDeleteAlert from '@/components/tasks/TaskDeleteAlert.vue';
+import SettingsNavbar from '@/components/tasks/TasksSettingsNavbar.vue';
+import BaseButton from '@/components/ui/BaseButton.vue';
 import { vFocus } from '@/directives/vAutoFocus';
 import { calcStartTime } from '@/helpers/checkTime';
 
 const store = useStoreTasks();
 const tasks = computed(() => store.getAllTasks);
 const taskContent = ref('');
-const date = ref();
-const datepicker = ref(null);
-const inputTaskDate = ref(null);
+const date: Ref<Date | undefined> = ref();
+const datepicker: Ref<Date | undefined> = ref();
+const inputTaskDate: Ref<Date | undefined> = ref();
 const showPicker = ref(false);
 const currentFilter = ref();
 const alertIsActive = ref(false);
 const UNDO_DELETE_TIME = 3500; // config
-const undoTimeout = ref(null);
+const undoTimeout = ref();
 const startTime = ref({});
 const taskInput = ref();
 
@@ -169,8 +170,8 @@ function addTask() {
   datepicker.value.clearValue();
 }
 
-function deleteTask(task) {
-  store.deleteTask(task);
+function deleteTask(taskId: string) {
+  store.deleteTask(taskId);
   alertIsActive.value = true;
   undoTimeout.value = setTimeout(() => {
     alertIsActive.value = false;

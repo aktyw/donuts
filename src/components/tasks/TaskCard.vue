@@ -32,12 +32,12 @@
       :task-is-important="task.isImportant"
       :task-date="props.task.date"
       :task-content="task.content"
-      @toggleIsImportant="toggleIsImportant"
-      @toggleIsDone="toggleIsDone"
-      @editTask="toggleEditModal"
-      @deleteTask="toggleDeleteModal"
-      @handleDate="handleUpdateDate"
-      @duplicateTask="handleDuplicateTask" />
+      @task-is-important="toggleIsImportant"
+      @toggle-is-done="toggleIsDone"
+      @edit-task="toggleEditModal"
+      @delete-task="toggleDeleteModal"
+      @handle-date="handleUpdateDate"
+      @duplicate-task="handleDuplicateTask" />
     <Teleport to="body">
       <TaskEditModal
         v-if="editTask"
@@ -88,15 +88,26 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
-import TaskOptions from '@/components/TaskOptions.vue';
-import TaskEditModal from '@/components/TaskEditModal.vue';
-import TaskDeleteConfirmModal from '@/components/TaskDeleteConfirmModal.vue';
-import TaskTimeDetail from '@/components/TaskTimeDetail.vue';
+import TaskOptions from '@/components/tasks/TaskOptions.vue';
+import TaskEditModal from '@/components/tasks/TaskEditModal.vue';
+import TaskDeleteConfirmModal from '@/components/tasks/TaskDeleteConfirmModal.vue';
+import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
 import { isOverdue, isToday, isTomorrow } from '@/helpers/checkTime';
+import type { Task } from '@/types/interfaces/task';
+
+type Props = {
+  task: { type: Task; required: true };
+  taskContent: { type: string; required: true };
+  taskId: { type: string; required: true };
+  taskDate: { type: Date; required: false };
+};
+
+const props = defineProps<Props>();
+const emit = defineEmits<{
+  (e: 'deleteTasks', id: string): void;
+}>();
 
 const store = useStoreTasks();
-const props = defineProps(['task', 'taskContent', 'taskId', 'taskDate']);
-const emits = defineEmits(['deleteTask']);
 
 const newContent = ref(props.taskContent);
 // to refactor to storerefs? or computed
@@ -135,8 +146,8 @@ function cancelDeleteTask() {
   toggleDeleteModal();
 }
 
-function handleDeleteTask(id) {
-  emits('deleteTask', id);
+function handleDeleteTask(id: string) {
+  emit('deleteTask', id);
 }
 
 function toggleEditModal() {
@@ -148,7 +159,7 @@ function cancelEditTask() {
   toggleEditModal();
 }
 
-function handleDuplicateTask(id) {
+function handleDuplicateTask(id: string) {
   store.duplicateTask(id);
 }
 
@@ -156,17 +167,17 @@ function handleUpdateDate(date) {
   store.updateDate(props.taskId, date);
 }
 
-function handleUpdateTask(content) {
+function handleUpdateTask(content: string) {
   toggleEditModal();
   store.updateTask(props.taskId, content);
 }
 
-function toggleIsDone(id) {
+function toggleIsDone(id: string) {
   isDone.value = !isDone.value;
   store.toggleIsDone(id);
 }
 
-function toggleIsImportant(id) {
+function toggleIsImportant(id: string) {
   isImportant.value = !isImportant.value;
   store.toggleIsImportant(id);
 }

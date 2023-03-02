@@ -5,7 +5,9 @@
   "compilerOptions": {
     "composite": true,
     "types": ["vite/client", "node"],
+    "declaration": true,
     "target": "ESNext",
+    "strict": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

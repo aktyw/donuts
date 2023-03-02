@@ -40,8 +40,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import TasksSettingsDropdown from '@/components/TasksSettingsDropdown.vue';
-import TaskDeleteConfirmModal from '@/components/TaskDeleteConfirmModal.vue';
+import TasksSettingsDropdown from '@/components/tasks/TasksSettingsDropdown.vue';
+import TaskDeleteConfirmModal from '@/components/tasks/TaskDeleteConfirmModal.vue';
 import { useStoreTasks } from '@/stores/TasksStore';
 
 const store = useStoreTasks();

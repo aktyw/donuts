@@ -1,45 +1,48 @@
 import { defineStore } from 'pinia';
 import { v4 as uuid } from 'uuid';
-import { toggleProp } from '@/helpers/toggleProp';
 import { findItem } from '@/helpers/findItem';
+import { findIndex } from '@/helpers/findIndex';
+import type { Task } from '@/types/models/Task';
+import type { State } from '@/types/models/State';
+
 export const useStoreTasks = defineStore('tasks', {
-  state: () => ({
+  state: (): State => ({
     tasks: [],
     deletedTasks: [],
   }),
   getters: {
-    getAllTasks(state) {
+    getAllTasks(state): Task[] {
       return state.tasks;
     },
-    getImportantTasks(state) {
+    getImportantTasks(state): Task[] {
       return state.tasks.filter((task) => task.isImportant);
     },
-    getDoneTasks(state) {
+    getDoneTasks(state): Task[] {
       return state.tasks.filter((task) => task.done);
     },
-    getNotDoneTasks(state) {
+    getNotDoneTasks(state): Task[] {
       return state.tasks.filter((task) => !task.done);
     },
-    getDeletedTask(state) {
+    getDeletedTask(state): Task {
       return state.deletedTasks[this.deletedTasks.length - 1];
     },
     getTaskDate(state) {
-      return (id) => state.tasks.find((task) => task.id === id).date;
+      return (id: string) => state.tasks.find((task) => task.id === id).date;
     },
-    getTasksSortedByDeadlineDate(state) {
+    getTasksSortedByDeadlineDate(state): Task[] {
       return state.tasks.sort((taskA, taskB) => taskA.date - taskB.date);
     },
-    getTasksSortedByTitle(state) {
-      return state.tasks.sort((taskA, taskB) => taskA.content - taskB.content);
+    getTasksSortedByTitle(state): Task[] {
+      return state.tasks.sort((taskA, taskB) => taskA.content.localeCompare(taskB.content));
     },
-    getTasksSortedByCreationDate(state) {
-      return state.tasks.sort((taskA, taskB) => taskA.createdAt - taskB.createdAt);
+    getTasksSortedByCreationDate(state): Task[] {
+      return state.tasks.sort((taskA, taskB) => taskA.createdAt.getTime() - taskB.createdAt.getTime());
     },
   },
   actions: {
-    addTask(content, date) {
+    addTask(content: string, date: string) {
       const id = uuid();
-      const newTask = {
+      const newTask: Task = {
         id,
         content,
         done: false,
@@ -51,32 +54,36 @@ export const useStoreTasks = defineStore('tasks', {
 
       this.tasks.unshift(newTask);
     },
-    deleteTask(id) {
+    deleteTask(id: string): void {
       const taskToDel = findItem(id, this.tasks);
 
       this.deletedTasks.push(taskToDel);
       this.tasks = this.tasks.filter((task) => task.id !== id);
     },
-    toggleIsDone(id) {
-      toggleProp(id, 'done', this.tasks);
+    toggleIsDone(id: string) {
+      const index = findIndex(id, this.tasks);
+
+      this.tasks[index]['done'] = !this.tasks[index]['done'];
     },
-    toggleIsImportant(id) {
-      toggleProp(id, 'isImportant', this.tasks);
+    toggleIsImportant(id: string) {
+      const index = findIndex(id, this.tasks);
+
+      this.tasks[index]['isImportant'] = !this.tasks[index]['isImportant'];
     },
-    undoDelete(task) {
+    undoDelete(task: Task): void {
       this.tasks.unshift(task);
     },
-    updateTask(id, content) {
+    updateTask(id: string, content: string): void {
       const task = findItem(id, this.tasks);
 
       task.content = content;
     },
-    updateDate(id, date) {
+    updateDate(id: string, date: string): void {
       const task = findItem(id, this.tasks);
 
       task.date = date;
     },
-    duplicateTask(id) {
+    duplicateTask(id: string): void {
       const task = findItem(id, this.tasks);
       const copyTask = JSON.parse(JSON.stringify(task));
       const newId = uuid();
@@ -90,7 +97,7 @@ export const useStoreTasks = defineStore('tasks', {
 
       this.tasks = [...tasksArrStart, copyTask, ...tasksArrEnd];
     },
-    deleteAllTasks() {
+    deleteAllTasks(): void {
       this.deletedTasks.push(...this.tasks);
       this.tasks = [];
     },

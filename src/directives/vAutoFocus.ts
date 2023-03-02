@@ -1,3 +1,3 @@
 export const vFocus = {
-  mounted: (el) => el.focus(),
+  mounted: (el: HTMLElement) => el.focus(),
 };

@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import BaseButton from '@/components/BaseButton.vue';
+import BaseButton from '@/components/ui/BaseButton.vue';
 import { vFocus } from '@/directives/vAutoFocus.js';
 
 const emits = defineEmits(['undo', 'closeAlert']);
