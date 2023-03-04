@@ -44,25 +44,21 @@ import { storeToRefs } from 'pinia';
 import { useStoreTasks } from '@/stores/TasksStore';
 import TaskFilterBadge from '@/components/tasks/TaskFilterBadge.vue';
 
-enum FilterType {
-  All = 'all',
-  Completed = 'completed',
-  Important = 'important',
-  NotCompleted = 'not-completed',
-}
-
 const store = useStoreTasks();
 const { getAllTasks, getImportantTasks, getDoneTasks, getNotDoneTasks } = storeToRefs(store);
 
 const emits = defineEmits(['filterType']);
 
-function filterTasks({ currentTarget, target }) {
-  const btn = target.closest('button');
+function filterTasks(event: Event): void {
+  if (!(event.target as Element).closest('li')) return;
 
-  if (!btn) return;
-  currentTarget.querySelectorAll('button').forEach((btn: HTMLButtonElement) => btn.classList.remove('btn-active'));
-  btn.classList.add('btn-active');
+  const btn = (event.target as Element)?.closest('button');
 
-  emits('filterType', btn.id);
+  (event.currentTarget as HTMLButtonElement)
+    ?.querySelectorAll('button')
+    .forEach((btn) => btn.classList.remove('btn-active'));
+  btn?.classList.add('btn-active');
+
+  emits('filterType', btn?.id);
 }
 </script>

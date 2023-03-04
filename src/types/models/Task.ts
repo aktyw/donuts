@@ -3,7 +3,7 @@ export interface Task {
   content: string;
   done: boolean;
   isImportant: boolean;
-  date: string | null;
+  date?: Date;
   createdAt: Date;
   subtasks: {};
 }

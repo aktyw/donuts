@@ -121,14 +121,14 @@ const store = useStoreTasks();
 const tasks = computed(() => store.getAllTasks);
 const taskContent = ref('');
 const date: Ref<Date | undefined> = ref();
-const datepicker: Ref<Date | undefined> = ref();
+const datepicker = ref();
 const inputTaskDate: Ref<Date | undefined> = ref();
 const showPicker = ref(false);
 const currentFilter = ref();
 const alertIsActive = ref(false);
 const UNDO_DELETE_TIME = 3500; // config
 const undoTimeout = ref();
-const startTime = ref({});
+const startTime = ref();
 const taskInput = ref();
 
 watch(date, (newDate) => {
@@ -154,23 +154,23 @@ const filteredTasks = computed(() => {
   }
 });
 
-function updateFilterType(type) {
+function updateFilterType(type: string): void {
   currentFilter.value = type;
 }
 
-function handleCalendar() {
+function handleCalendar(): void {
   startTime.value = calcStartTime();
-  datepicker.value.openMenu();
+  datepicker.value?.openMenu();
 }
 
-function addTask() {
+function addTask(): void {
   store.addTask(taskContent.value, inputTaskDate.value);
   taskContent.value = '';
-  taskInput.value.focus();
-  datepicker.value.clearValue();
+  taskInput.value?.focus();
+  datepicker.value?.clearValue();
 }
 
-function deleteTask(taskId: string) {
+function deleteTask(taskId: string): void {
   store.deleteTask(taskId);
   alertIsActive.value = true;
   undoTimeout.value = setTimeout(() => {
@@ -178,18 +178,18 @@ function deleteTask(taskId: string) {
   }, UNDO_DELETE_TIME);
 }
 
-function undoDelete() {
+function undoDelete(): void {
   clearTimeout(undoTimeout.value);
   alertIsActive.value = false;
   store.undoDelete(store.getDeletedTask);
 }
 
-function closeDeleteAlert() {
+function closeDeleteAlert(): void {
   alertIsActive.value = !alertIsActive.value;
 }
 
 const showDateOnInput = computed(() => {
-  const shortDate = date.value.toDateString().split(' ');
+  const shortDate = date?.value?.toDateString().split(' ');
 
   return `${shortDate[1]} ${shortDate[2]} `;
 });

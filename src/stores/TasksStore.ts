@@ -14,6 +14,11 @@ export const useStoreTasks = defineStore('tasks', {
     getAllTasks(state): Task[] {
       return state.tasks;
     },
+    getTaskById(state) {
+      return (id: string): Task | undefined => {
+        return state.tasks.find((task) => task.id === id);
+      };
+    },
     getImportantTasks(state): Task[] {
       return state.tasks.filter((task) => task.isImportant);
     },
@@ -26,11 +31,11 @@ export const useStoreTasks = defineStore('tasks', {
     getDeletedTask(state): Task {
       return state.deletedTasks[this.deletedTasks.length - 1];
     },
-    getTaskDate(state) {
-      return (id: string) => state.tasks.find((task) => task.id === id).date;
+    getTaskDate() {
+      return (id: string): Date | undefined => this.getTaskById(id)?.date;
     },
     getTasksSortedByDeadlineDate(state): Task[] {
-      return state.tasks.sort((taskA, taskB) => taskA.date - taskB.date);
+      return state.tasks.sort((taskA, taskB) => (taskA.date?.getTime() ?? -1) - (taskB.date?.getTime() ?? -1));
     },
     getTasksSortedByTitle(state): Task[] {
       return state.tasks.sort((taskA, taskB) => taskA.content.localeCompare(taskB.content));
@@ -40,15 +45,15 @@ export const useStoreTasks = defineStore('tasks', {
     },
   },
   actions: {
-    addTask(content: string, date: string) {
+    addTask(content: string, date: Date) {
       const id = uuid();
       const newTask: Task = {
         id,
         content,
         done: false,
         isImportant: false,
-        date: date || null,
         createdAt: new Date(),
+        ...(date && { date: date }),
         subtasks: {},
       };
 
@@ -78,7 +83,7 @@ export const useStoreTasks = defineStore('tasks', {
 
       task.content = content;
     },
-    updateDate(id: string, date: string): void {
+    updateDate(id: string, date: Date): void {
       const task = findItem(id, this.tasks);
 
       task.date = date;

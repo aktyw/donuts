@@ -10,7 +10,7 @@
         <button
           class="btn-md md:btn-sm"
           :disabled="tasks.length < 2"
-          @click="handleSortTasks('byDate')">
+          @click="handleSortTasks(SortFilters.Date)">
           <svg
             class="fill-base-content"
             xmlns="http://www.w3.org/2000/svg"
@@ -26,7 +26,7 @@
         <button
           class="btn-md md:btn-sm"
           :disabled="tasks.length < 2"
-          @click="handleSortTasks('byTitle')">
+          @click="handleSortTasks(SortFilters.Title)">
           <svg
             class="fill-base-content"
             xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +42,7 @@
         <button
           class="btn-md md:btn-sm"
           :disabled="tasks.length < 2"
-          @click="handleSortTasks('byCreationDate')">
+          @click="handleSortTasks(SortFilters.Created)">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="24"
@@ -61,7 +61,7 @@
         <button
           :disabled="!tasks.length"
           class="btn-md hover:text-error hover:fill-error focus:text-error focus:fill-error md:btn-sm fill-base-content"
-          @click="handleDeleteTask(taskId)">
+          @click="handleDeleteTask()">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="24"
@@ -80,18 +80,22 @@
 import { computed } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
 import blurElement from '@/helpers/blur';
+import { SortFilters } from '@/types/models/SortFilters';
 
 const store = useStoreTasks();
 const tasks = computed(() => store.getAllTasks);
 
-const emits = defineEmits(['deleteTasks']);
+const emit = defineEmits<{
+  (e: 'deleteTasks'): void;
+  (e: 'sortTasks', value: SortFilters): void;
+}>();
 
 function handleDeleteTask() {
   blurElement();
-  emits('deleteTasks');
+  emit('deleteTasks');
 }
 
-function handleSortTasks(type) {
-  emits('sortTasks', type);
+function handleSortTasks(type: SortFilters) {
+  emit('sortTasks', type);
 }
 </script>

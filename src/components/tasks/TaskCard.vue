@@ -93,7 +93,7 @@ import TaskEditModal from '@/components/tasks/TaskEditModal.vue';
 import TaskDeleteConfirmModal from '@/components/tasks/TaskDeleteConfirmModal.vue';
 import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
 import { isOverdue, isToday, isTomorrow } from '@/helpers/checkTime';
-import type { Task } from '@/types/interfaces/task';
+import type { Task } from '@/types/models/Task';
 
 type Props = {
   task: { type: Task; required: true };
@@ -104,7 +104,7 @@ type Props = {
 
 const props = defineProps<Props>();
 const emit = defineEmits<{
-  (e: 'deleteTasks', id: string): void;
+  (e: 'deleteTask', id: string): void;
 }>();
 
 const store = useStoreTasks();
@@ -159,25 +159,25 @@ function cancelEditTask() {
   toggleEditModal();
 }
 
-function handleDuplicateTask(id: string) {
+function handleDuplicateTask(id: string): void {
   store.duplicateTask(id);
 }
 
-function handleUpdateDate(date) {
+function handleUpdateDate(date: Date): void {
   store.updateDate(props.taskId, date);
 }
 
-function handleUpdateTask(content: string) {
+function handleUpdateTask(content: string): void {
   toggleEditModal();
   store.updateTask(props.taskId, content);
 }
 
-function toggleIsDone(id: string) {
+function toggleIsDone(id: string): void {
   isDone.value = !isDone.value;
   store.toggleIsDone(id);
 }
 
-function toggleIsImportant(id: string) {
+function toggleIsImportant(id: string): void {
   isImportant.value = !isImportant.value;
   store.toggleIsImportant(id);
 }
