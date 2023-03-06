@@ -1,7 +1,7 @@
 <template>
   <ul
     class="flex justify-between w-full md:gap-2 md:py-4 py-2 p-0"
-    @click="filterTasks">
+    @click="handleFilterTasks">
     <li>
       <TaskFilterBadge
         id="all"
@@ -47,18 +47,20 @@ import TaskFilterBadge from '@/components/tasks/TaskFilterBadge.vue';
 const store = useStoreTasks();
 const { getAllTasks, getImportantTasks, getDoneTasks, getNotDoneTasks } = storeToRefs(store);
 
-const emits = defineEmits(['filterType']);
+const emit = defineEmits<{
+  (e: 'filterType', id: string): void;
+}>();
 
-function filterTasks(event: Event): void {
-  if (!(event.target as Element).closest('li')) return;
+function handleFilterTasks(event: Event): void {
+  const btn = (event.target as HTMLElement).closest('button');
 
-  const btn = (event.target as Element)?.closest('button');
+  if (!btn) return;
 
-  (event.currentTarget as HTMLButtonElement)
-    ?.querySelectorAll('button')
+  (event.currentTarget as HTMLUListElement)
+    .querySelectorAll('button')
     .forEach((btn) => btn.classList.remove('btn-active'));
-  btn?.classList.add('btn-active');
 
-  emits('filterType', btn?.id);
+  btn.classList.add('btn-active');
+  emit('filterType', btn.id);
 }
 </script>

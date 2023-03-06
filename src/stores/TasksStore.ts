@@ -45,7 +45,7 @@ export const useStoreTasks = defineStore('tasks', {
     },
   },
   actions: {
-    addTask(content: string, date: Date) {
+    addTask(content: string, date: Date | undefined) {
       const id = uuid();
       const newTask: Task = {
         id,
@@ -53,7 +53,7 @@ export const useStoreTasks = defineStore('tasks', {
         done: false,
         isImportant: false,
         createdAt: new Date(),
-        ...(date && { date: date }),
+        ...(date && { date }),
         subtasks: {},
       };
 
@@ -63,7 +63,7 @@ export const useStoreTasks = defineStore('tasks', {
       const taskToDel = findItem(id, this.tasks);
 
       this.deletedTasks.push(taskToDel);
-      this.tasks = this.tasks.filter((task) => task.id !== id);
+      this.tasks = this.tasks.filter((task) => task !== taskToDel);
     },
     toggleIsDone(id: string) {
       const index = findIndex(id, this.tasks);

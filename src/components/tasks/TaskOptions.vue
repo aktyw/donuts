@@ -107,8 +107,7 @@
           teleport="#drop"
           position="right"
           :min-date="new Date()"
-          :start-time="startTime"
-          dark
+          start-date="currentDate"
           @update:model-value="handleDate" />
         <button
           class="btn-md md:btn-sm"
@@ -158,66 +157,71 @@
 </template>
 
 <script setup lang="ts">
-import { computed, toRefs, ref } from 'vue';
+import { computed, toRefs, ref, toRef } from 'vue';
+import type { Ref } from 'vue';
 import Datepicker from '@vuepic/vue-datepicker';
-import { calcStartTime } from '@/helpers/checkTime.js';
 import blurElement from '@/helpers/blur';
 import '@vuepic/vue-datepicker/dist/main.css';
 
-const props = defineProps(['taskContent', 'taskId', 'taskIsDone', 'taskIsImportant', 'taskDate']);
-const emits = defineEmits([
-  'deleteTask',
-  'toggleIsImportant',
-  'toggleIsDone',
-  'handleDate',
-  'editTask',
-  'duplicateTask',
-]);
+type Props = {
+  taskContent: string;
+  taskId: string;
+  taskIsDone: boolean;
+  taskIsImportant: boolean;
+  taskDate?: Date;
+};
+
+const props = defineProps<Props>();
+
+const emit = defineEmits<{
+  (e: 'deleteTask', id: string): void;
+  (e: 'toggleIsImportant', id: string): void;
+  (e: 'toggleIsDone', id: string): void;
+  (e: 'handleDate', date: Date): void;
+  (e: 'editTask', id: string): void;
+  (e: 'duplicateTask', id: string): void;
+}>();
 
 const { taskId, taskIsDone: isDone, taskIsImportant: isImportant } = toRefs(props);
-
-const date = ref('');
-const currentDate = props.taskDate;
-const datepicker = ref(null);
+const date: Ref<Date | undefined> = ref();
+const currentDate = toRef(props, 'taskDate');
+const datepicker = ref();
 const showPicker = ref(false);
-const startTime = ref({});
-
 const activeStyle = ['active-state', 'active:bg-base-200', 'focus:fill-accent', 'fill-accent', 'text-accent'];
 const doneStyle = computed(() => (isDone.value ? activeStyle : ''));
 const importantStyle = computed(() => (isImportant.value ? activeStyle : ''));
 
-function handleDate(modelData) {
+function handleDate(modelData: Date): void {
   date.value = modelData;
-  emits('handleDate', date);
+  emit('handleDate', date.value);
 }
 
-function handleCalendar() {
-  startTime.value = calcStartTime();
+function handleCalendar(): void {
   datepicker.value.openMenu();
 }
 
-function handleDeleteTask(taskId) {
+function handleDeleteTask(taskId: string): void {
   blurElement();
-  emits('deleteTask', taskId);
+  emit('deleteTask', taskId);
 }
 
-function handleDuplicateTask(taskId) {
-  emits('duplicateTask', taskId);
+function handleDuplicateTask(taskId: string): void {
+  emit('duplicateTask', taskId);
 }
 
-function handleToggleImportant(taskId) {
-  emits('toggleIsImportant', taskId);
+function handleToggleImportant(taskId: string): void {
+  emit('toggleIsImportant', taskId);
 }
 
-function handleToggleIsDone(taskId) {
-  emits('toggleIsDone', taskId);
+function handleToggleIsDone(taskId: string): void {
+  emit('toggleIsDone', taskId);
 }
 
-function handleAddSubtask(taskId) {
+function handleAddSubtask(taskId: string): void {
   console.log('sub', taskId);
 }
 
-function handleEditTask(taskId) {
-  emits('editTask', taskId);
+function handleEditTask(taskId: string): void {
+  emit('editTask', taskId);
 }
 </script>

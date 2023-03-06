@@ -90,12 +90,12 @@ const emit = defineEmits<{
   (e: 'sortTasks', value: SortFilters): void;
 }>();
 
-function handleDeleteTask() {
+function handleDeleteTask(): void {
   blurElement();
   emit('deleteTasks');
 }
 
-function handleSortTasks(type: SortFilters) {
+function handleSortTasks(type: SortFilters): void {
   emit('sortTasks', type);
 }
 </script>

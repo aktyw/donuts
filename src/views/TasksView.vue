@@ -37,7 +37,6 @@
             teleport="#form"
             position="left"
             :min-date="new Date()"
-            :start-time="startTime"
             :disabled="!taskContent"
             dark />
 
@@ -66,7 +65,7 @@
 
         <TaskFilter
           v-if="store.tasks.length"
-          @filterType="updateFilterType" />
+          @filter-type="updateFilterType" />
 
         <ul class="md:w-96 w-80">
           <TaskCard
@@ -115,7 +114,8 @@ import TaskDeleteAlert from '@/components/tasks/TaskDeleteAlert.vue';
 import SettingsNavbar from '@/components/tasks/TasksSettingsNavbar.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import { vFocus } from '@/directives/vAutoFocus';
-import { calcStartTime } from '@/helpers/checkTime';
+import { Filters } from '@/types/models/Filters';
+import { UNDO_DELETE_TIME } from '@/config/popup';
 
 const store = useStoreTasks();
 const tasks = computed(() => store.getAllTasks);
@@ -124,12 +124,25 @@ const date: Ref<Date | undefined> = ref();
 const datepicker = ref();
 const inputTaskDate: Ref<Date | undefined> = ref();
 const showPicker = ref(false);
-const currentFilter = ref();
+const currentFilter: Ref<string> = ref('all');
 const alertIsActive = ref(false);
-const UNDO_DELETE_TIME = 3500; // config
-const undoTimeout = ref();
-const startTime = ref();
-const taskInput = ref();
+const undoTimeoutId: Ref<ReturnType<typeof setTimeout> | null> = ref(null);
+const taskInput: Ref<HTMLInputElement | null> = ref(null);
+
+const filteredTasks = computed(() => {
+  switch (currentFilter.value) {
+    case Filters.All:
+      return store.getAllTasks;
+    case Filters.Completed:
+      return store.getDoneTasks;
+    case Filters.Important:
+      return store.getImportantTasks;
+    case Filters.NotCompleted:
+      return store.getNotDoneTasks;
+    default:
+      return store.getAllTasks;
+  }
+});
 
 watch(date, (newDate) => {
   inputTaskDate.value = newDate;
@@ -139,27 +152,15 @@ watch(tasks, (value) => {
   if (value.length) resetFilters();
 });
 
-const filteredTasks = computed(() => {
-  switch (currentFilter.value) {
-    case 'all':
-      return store.getAllTasks;
-    case 'completed':
-      return store.getDoneTasks;
-    case 'important':
-      return store.getImportantTasks;
-    case 'not-completed':
-      return store.getNotDoneTasks;
-    default:
-      return store.getAllTasks;
-  }
-});
+function resetFilters(): void {
+  currentFilter.value = Filters.All;
+}
 
 function updateFilterType(type: string): void {
   currentFilter.value = type;
 }
 
 function handleCalendar(): void {
-  startTime.value = calcStartTime();
   datepicker.value?.openMenu();
 }
 
@@ -173,13 +174,15 @@ function addTask(): void {
 function deleteTask(taskId: string): void {
   store.deleteTask(taskId);
   alertIsActive.value = true;
-  undoTimeout.value = setTimeout(() => {
+  undoTimeoutId.value = setTimeout(() => {
     alertIsActive.value = false;
   }, UNDO_DELETE_TIME);
 }
 
 function undoDelete(): void {
-  clearTimeout(undoTimeout.value);
+  if (undoTimeoutId.value) {
+    clearTimeout(undoTimeoutId.value);
+  }
   alertIsActive.value = false;
   store.undoDelete(store.getDeletedTask);
 }
@@ -188,13 +191,11 @@ function closeDeleteAlert(): void {
   alertIsActive.value = !alertIsActive.value;
 }
 
-const showDateOnInput = computed(() => {
+const showDateOnInput = computed((): void | string => {
   const shortDate = date?.value?.toDateString().split(' ');
+
+  if (!shortDate) return;
 
   return `${shortDate[1]} ${shortDate[2]} `;
 });
-
-function resetFilters() {
-  currentFilter.value = 'all';
-}
 </script>

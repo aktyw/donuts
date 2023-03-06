@@ -17,11 +17,11 @@
           <slot name="content" />
         </p>
         <TaskTimeDetail
-          v-if="setDetailTime"
+          v-if="detailTime"
           :class="overdue"
           class="pt-0.5">
           <template #time>
-            <span class="pt-0.5 w-full">{{ setDetailTime }}</span>
+            <span class="pt-0.5 w-full">{{ detailTime }}</span>
           </template>
         </TaskTimeDetail>
       </div>
@@ -32,7 +32,7 @@
       :task-is-important="task.isImportant"
       :task-date="props.task.date"
       :task-content="task.content"
-      @task-is-important="toggleIsImportant"
+      @toggle-is-important="toggleIsImportant"
       @toggle-is-done="toggleIsDone"
       @edit-task="toggleEditModal"
       @delete-task="toggleDeleteModal"
@@ -96,10 +96,10 @@ import { isOverdue, isToday, isTomorrow } from '@/helpers/checkTime';
 import type { Task } from '@/types/models/Task';
 
 type Props = {
-  task: { type: Task; required: true };
-  taskContent: { type: string; required: true };
-  taskId: { type: string; required: true };
-  taskDate: { type: Date; required: false };
+  task: Task;
+  taskContent: string;
+  taskId: string;
+  taskDate?: Date;
 };
 
 const props = defineProps<Props>();
@@ -108,16 +108,14 @@ const emit = defineEmits<{
 }>();
 
 const store = useStoreTasks();
-
 const newContent = ref(props.taskContent);
-// to refactor to storerefs? or computed
 const isDone = ref(props.task.done);
 const isImportant = ref(props.task.isImportant);
 const editTask = ref(false);
 const deleteConfirm = ref(false);
 
 const deadline = computed(() => store.getTaskDate(props.taskId));
-const setDetailTime = computed(() => {
+const detailTime = computed(() => {
   if (!deadline.value) return;
   if (isOverdue(deadline.value)) {
     return 'Overdue';
@@ -136,25 +134,25 @@ const setDetailTime = computed(() => {
   return `${date[1]} ${date[2]}`;
 });
 
-const overdue = computed(() => (setDetailTime.value === 'Overdue' ? '[&>span]:text-error [&>svg]:fill-error' : ''));
+const overdue = computed(() => (detailTime.value === 'Overdue' ? '[&>span]:text-error [&>svg]:fill-error' : ''));
 
-function toggleDeleteModal() {
+function toggleDeleteModal(): void {
   deleteConfirm.value = !deleteConfirm.value;
 }
 
-function cancelDeleteTask() {
+function cancelDeleteTask(): void {
   toggleDeleteModal();
 }
 
-function handleDeleteTask(id: string) {
+function handleDeleteTask(id: string): void {
   emit('deleteTask', id);
 }
 
-function toggleEditModal() {
+function toggleEditModal(): void {
   editTask.value = !editTask.value;
 }
 
-function cancelEditTask() {
+function cancelEditTask(): void {
   newContent.value = props.taskContent;
   toggleEditModal();
 }

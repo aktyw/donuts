@@ -30,11 +30,11 @@ import { vFocus } from '@/directives/vAutoFocus.js';
 
 const emits = defineEmits(['undo', 'closeAlert']);
 
-function undoDelete() {
+function undoDelete(): void {
   emits('undo');
 }
 
-function closeDeleteAlert() {
+function closeDeleteAlert(): void {
   emits('closeAlert', true);
 }
 </script>

@@ -43,29 +43,30 @@ import { ref } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
 import TasksSettingsDropdown from '@/components/tasks/TasksSettingsDropdown.vue';
 import TaskDeleteConfirmModal from '@/components/tasks/TaskDeleteConfirmModal.vue';
+import type { Task } from '@/types/models/Task';
 
 const store = useStoreTasks();
 
 defineProps<{
-  tasks: string;
+  tasks: Task[];
 }>();
 
 const deleteConfirm = ref(false);
 
-function toggleDeleteModal() {
+function toggleDeleteModal(): void {
   deleteConfirm.value = !deleteConfirm.value;
 }
 
-function cancelDeleteTask() {
+function cancelDeleteTask(): void {
   toggleDeleteModal();
 }
 
-function handleDeleteAllTasks() {
+function handleDeleteAllTasks(): void {
   store.deleteAllTasks();
   toggleDeleteModal();
 }
 
-function handleSortTasks(sortType: string) {
+function handleSortTasks(sortType: string): void {
   console.log('handle sort task', sortType);
 }
 </script>
