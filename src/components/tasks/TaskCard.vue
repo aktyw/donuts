@@ -17,11 +17,11 @@
           <slot name="content" />
         </p>
         <TaskTimeDetail
-          v-if="detailTime"
+          v-if="showDetailTime"
           :class="overdue"
           class="pt-0.5">
           <template #time>
-            <span class="pt-0.5 w-full">{{ detailTime }}</span>
+            <span class="pt-0.5 w-full">{{ showDetailTime }}</span>
           </template>
         </TaskTimeDetail>
       </div>
@@ -92,8 +92,9 @@ import TaskOptions from '@/components/tasks/TaskOptions.vue';
 import TaskEditModal from '@/components/tasks/TaskEditModal.vue';
 import TaskDeleteConfirmModal from '@/components/tasks/TaskDeleteConfirmModal.vue';
 import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
-import { isOverdue, isToday, isTomorrow } from '@/helpers/checkTime';
+
 import type { Task } from '@/types/models/Task';
+import { useDetailTime } from '@/composables/useDetailTime';
 
 type Props = {
   task: Task;
@@ -113,28 +114,8 @@ const isDone = ref(props.task.done);
 const isImportant = ref(props.task.isImportant);
 const editTask = ref(false);
 const deleteConfirm = ref(false);
-
 const deadline = computed(() => store.getTaskDate(props.taskId));
-const detailTime = computed(() => {
-  if (!deadline.value) return;
-  if (isOverdue(deadline.value)) {
-    return 'Overdue';
-  }
-  if (isToday(deadline.value)) {
-    return `Today ${deadline.value.getHours().toString().padStart(2, '0')}:${deadline.value
-      .getMinutes()
-      .toString()
-      .padStart(2, '0')}`;
-  }
-  if (isTomorrow(deadline.value)) {
-    return 'Tomorrow';
-  }
-  const date = deadline.value.toDateString().split(' ');
-
-  return `${date[1]} ${date[2]}`;
-});
-
-const overdue = computed(() => (detailTime.value === 'Overdue' ? '[&>span]:text-error [&>svg]:fill-error' : ''));
+const { showDetailTime, overdue } = useDetailTime(deadline);
 
 function toggleDeleteModal(): void {
   deleteConfirm.value = !deleteConfirm.value;

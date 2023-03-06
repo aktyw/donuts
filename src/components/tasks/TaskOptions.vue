@@ -107,7 +107,6 @@
           teleport="#drop"
           position="right"
           :min-date="new Date()"
-          start-date="currentDate"
           @update:model-value="handleDate" />
         <button
           class="btn-md md:btn-sm"
@@ -157,7 +156,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, toRefs, ref, toRef } from 'vue';
+import { computed, toRefs, ref } from 'vue';
 import type { Ref } from 'vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import blurElement from '@/helpers/blur';
@@ -184,7 +183,7 @@ const emit = defineEmits<{
 
 const { taskId, taskIsDone: isDone, taskIsImportant: isImportant } = toRefs(props);
 const date: Ref<Date | undefined> = ref();
-const currentDate = toRef(props, 'taskDate');
+const currentDate = ref(props.taskDate);
 const datepicker = ref();
 const showPicker = ref(false);
 const activeStyle = ['active-state', 'active:bg-base-200', 'focus:fill-accent', 'fill-accent', 'text-accent'];
