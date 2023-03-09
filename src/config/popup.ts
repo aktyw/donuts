@@ -1,1 +1,1 @@
-export const UNDO_DELETE_TIME = 3500;
+export const SHOW_ALERT_TIME = 9993500;
