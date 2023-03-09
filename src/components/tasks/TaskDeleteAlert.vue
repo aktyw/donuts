@@ -10,7 +10,7 @@
         @click="undoDeleteTask">
         Undo
       </BaseButton>
-      <BaseButton @click="closeDeleteAlert">
+      <BaseButton @click="closeAlert">
         <template #icon>
           <svg
             class="fill-base-100 mx-2"
@@ -36,7 +36,7 @@ function undoDeleteTask(): void {
   emits('undo');
 }
 
-function closeDeleteAlert(): void {
+function closeAlert(): void {
   emits('closeAlert', true);
 }
 </script>

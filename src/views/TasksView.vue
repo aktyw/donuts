@@ -38,7 +38,7 @@
 
   <Teleport to="body">
     <TaskDeleteAlert
-      v-if="alertIsActive"
+      v-if="deleteAlertIsActive"
       class="flex flex-row absolute bottom-10 left-1/2 transform -translate-x-1/2 w-10/12 md:w-6/12 bg-neutral-focus text-neutral-content lg:w-fit"
       @undo="undoDeleteTask"
       @close-alert="closeDeleteAlert">
@@ -46,6 +46,14 @@
         <span class="text-center mx-4">Task deleted</span>
       </template>
     </TaskDeleteAlert>
+    <TaskDoneAlert
+      v-if="alertIsActive"
+
+      @close-alert="closeDoneAlert">
+      <template #default>
+        <span class="text-center mx-4">Task deleted</span>
+      </template>
+    </TaskDoneAlert>
   </Teleport>
 </template>
 
@@ -57,15 +65,16 @@ import TaskInput from '@/components/tasks/TaskInput.vue';
 import TaskCard from '@/components/tasks/TaskCard.vue';
 import TaskFilter from '@/components/tasks/TaskFilter.vue';
 import TaskDeleteAlert from '@/components/tasks/TaskDeleteAlert.vue';
+import TaskDoneAlert from '@/components/tasks/TaskDoneAlert.vue';
 import SettingsNavbar from '@/components/tasks/TasksSettingsNavbar.vue';
 import { Filters } from '@/types/models/Filters';
-import { UNDO_DELETE_TIME } from '@/config/popup';
+import { SHOW_ALERT_TIME } from '@/config/popup';
 import TasksEmptyMessage from '@/components/tasks/TasksEmptyMessage.vue';
 
 const store = useStoreTasks();
 const tasks = computed(() => store.getAllTasks);
 const currentFilter: Ref<string> = ref('all');
-const alertIsActive = ref(false);
+const deleteAlertIsActive = ref(false);
 const undoTimeoutId: Ref<ReturnType<typeof setTimeout> | null> = ref(null);
 
 const filteredTasks = computed(() => {
@@ -89,17 +98,17 @@ watch(tasks, (value) => {
 
 function deleteTask(taskId: string): void {
   store.deleteTask(taskId);
-  alertIsActive.value = true;
+  deleteAlertIsActive.value = true;
   undoTimeoutId.value = setTimeout(() => {
-    alertIsActive.value = false;
-  }, UNDO_DELETE_TIME);
+    deleteAlertIsActive.value = false;
+  }, SHOW_ALERT_TIME);
 }
 
 function undoDeleteTask(): void {
   if (undoTimeoutId.value) {
     clearTimeout(undoTimeoutId.value);
   }
-  alertIsActive.value = false;
+  deleteAlertIsActive.value = false;
   store.undoDeleteTask(store.getDeletedTask);
 }
 
@@ -111,7 +120,7 @@ function updateFilterType(type: string): void {
   currentFilter.value = type;
 }
 
-function closeDeleteAlert(): void {
-  alertIsActive.value = !alertIsActive.value;
+function closeAlert(type: string): void {
+  deleteAlertIsActive.value = !deleteAlertIsActive.value;
 }
 </script>

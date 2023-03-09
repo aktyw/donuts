@@ -113,7 +113,6 @@ const isDone = ref(props.task.done);
 const isImportant = ref(props.task.isImportant);
 const editTask = ref(false);
 const deleteConfirm = ref(false);
-
 const deadline = computed(() => store.getTaskDate(props.taskId));
 const { showDetailTime, markOverdue } = useTimeDetail(deadline);
 
