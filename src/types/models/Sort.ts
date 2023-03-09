@@ -4,3 +4,8 @@ export enum SortFilters {
   Created = 'byCreationDate',
   Default = 'default',
 }
+
+export enum SortOrder {
+  Ascending = 'Ascending',
+  Descending = 'Descending',
+}

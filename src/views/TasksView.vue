@@ -51,7 +51,7 @@
 
 <script setup lang="ts">
 import type { Ref } from 'vue';
-import { ref, watch, computed, onUpdated } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
 import TaskInput from '@/components/tasks/TaskInput.vue';
 import TaskCard from '@/components/tasks/TaskCard.vue';
@@ -81,10 +81,6 @@ const filteredTasks = computed(() => {
     default:
       return store.getAllTasks;
   }
-});
-
-onUpdated(() => {
-  console.log('updated');
 });
 
 watch(tasks, (value) => {

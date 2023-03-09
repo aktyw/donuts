@@ -1,8 +1,11 @@
 <template>
-  <div class="w-full flex justify-end gap-2 py-2 relative">
-    <TasksSettingsDropdown
-      @delete-tasks="toggleDeleteModal"
-      @sort-tasks="handleSortTasks">
+  <div class="w-full flex justify-between gap-2 py-2 relative">
+    <BaseHeading>
+      <template #default>
+        <h2 class="font-bold">Inbox</h2>
+      </template>
+    </BaseHeading>
+    <TasksSettingsDropdown @delete-tasks="toggleDeleteModal">
       <template #btn>
         <button
           class="hover:bg-base-200 focus:bg-base-200 btn btn-square rounded-md btn-xs bg-base-100 border-0 focus:outline focus:outline-1">
@@ -43,6 +46,7 @@ import { ref } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
 import TasksSettingsDropdown from '@/components/tasks/TasksSettingsDropdown.vue';
 import TaskDeleteConfirmModal from '@/components/tasks/TaskDeleteConfirmModal.vue';
+import BaseHeading from '../ui/BaseHeading.vue';
 import type { Task } from '@/types/models/Task';
 
 const store = useStoreTasks();
@@ -64,9 +68,5 @@ function cancelDeleteTask(): void {
 function handleDeleteAllTasks(): void {
   store.deleteAllTasks();
   toggleDeleteModal();
-}
-
-function handleSortTasks(sortType: string): void {
-  console.log('handle sort task', sortType);
 }
 </script>

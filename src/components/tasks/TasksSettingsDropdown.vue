@@ -22,7 +22,7 @@
             <path
               d="M5.625 21q-.7 0-1.162-.462Q4 20.075 4 19.375V6.625q0-.7.463-1.162Q4.925 5 5.625 5h1.75V2.775H8.45V5h7.175V2.775h1V5h1.75q.7 0 1.163.463.462.462.462 1.162v12.75q0 .7-.462 1.163-.463.462-1.163.462Zm0-1h12.75q.25 0 .437-.188.188-.187.188-.437v-8.75H5v8.75q0 .25.188.437.187.188.437.188ZM5 9.625h14v-3q0-.25-.188-.437Q18.625 6 18.375 6H5.625q-.25 0-.437.188Q5 6.375 5 6.625Zm0 0V6v3.625Z" />
           </svg>
-          Deadline
+          Due Date
         </button>
       </li>
       <li>
@@ -58,22 +58,17 @@
       </li>
 
       <li
-        v-if="isSorted"
         id="separator"
         class="border-1 m-1"
         aria-hidden="true" />
 
-      <li
-        v-if="isSorted"
-        class="px-4 py-1.5 font-semibold text-sm">
-        Order
-      </li>
-      <li v-if="isSorted">
+      <li class="px-4 py-1.5 font-semibold text-sm">Order</li>
+      <li>
         <button
           class="btn-md md:btn-sm"
           @click="toggleSortOrder()">
           <svg
-            v-if="isAscending"
+            v-if="sortOrderStatus === SortOrder.Ascending"
             xmlns="http://www.w3.org/2000/svg"
             height="24"
             width="24">
@@ -117,21 +112,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
 import blurElement from '@/helpers/blur';
-import { SortFilters } from '@/types/models/SortFilters';
+import { SortFilters, SortOrder } from '@/types/models/Sort';
 
 const store = useStoreTasks();
 const tasks = computed(() => store.getAllTasks);
-const isAscending = ref(true);
-const isSorted = ref(false);
+const sortOrderStatus = computed(() => store.getSortOrder);
 
 const emit = defineEmits<{
   (e: 'deleteTasks'): void;
 }>();
-
-const sortOrderStatus = computed(() => (isAscending.value ? 'Ascending (default)' : 'Descending'));
 
 function handleDeleteTask(): void {
   blurElement();
@@ -139,13 +131,10 @@ function handleDeleteTask(): void {
 }
 
 function handleSortTasks(type: SortFilters): void {
-  isSorted.value = true;
   store.sortTasks(type);
 }
 
 function toggleSortOrder(): void {
-  isAscending.value = !isAscending.value;
-  store.sortTasksReverse();
-  console.log(isAscending.value);
+  store.sortTasksChangeOrder();
 }
 </script>
