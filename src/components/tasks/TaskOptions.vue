@@ -16,6 +16,8 @@
     </button>
     <ul
       tabindex="0"
+      role="menu"
+      aria-label="show task options"
       class="dropdown-content menu py-0.5 shadow rounded-md w-52 bg-base-100 border border-base-300 text-base-content fill-base-content [& svg:not(.active-state)]:fill-base-content [&>li:hover>button:not(.active-state)]:bg-base-200 [& button:active]:text-base-content [&>button:active]:bg-base-200">
       <li>
         <button
@@ -107,6 +109,7 @@
           teleport="#drop"
           position="right"
           :min-date="new Date()"
+          :start-time="startTime"
           @update:model-value="handleDate" />
         <button
           class="btn-md md:btn-sm"
@@ -160,7 +163,6 @@ import { computed, toRefs, ref } from 'vue';
 import type { Ref } from 'vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import blurElement from '@/helpers/blur';
-import '@vuepic/vue-datepicker/dist/main.css';
 
 type Props = {
   taskContent: string;
@@ -186,6 +188,7 @@ const date: Ref<Date | undefined> = ref();
 const currentDate = ref(props.taskDate);
 const datepicker = ref();
 const showPicker = ref(false);
+const startTime = ref({ hours: 0, minutes: 0 });
 const activeStyle = ['active-state', 'active:bg-base-200', 'focus:fill-accent', 'fill-accent', 'text-accent'];
 const doneStyle = computed(() => (isDone.value ? activeStyle : ''));
 const importantStyle = computed(() => (isImportant.value ? activeStyle : ''));

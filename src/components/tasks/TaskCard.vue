@@ -6,7 +6,7 @@
       <label class="flex items-start h-full">
         <input
           type="checkbox"
-          class="checkbox"
+          class="checkbox rounded-full"
           :checked="isDone"
           :class="{ 'checkbox-accent': isImportant }" />
       </label>
@@ -18,10 +18,10 @@
         </p>
         <TaskTimeDetail
           v-if="showDetailTime"
-          :class="overdue"
+          :class="markOverdue"
           class="pt-0.5">
           <template #time>
-            <span class="pt-0.5 w-full">{{ showDetailTime }}</span>
+            <span class="pt-0.5">{{ showDetailTime }}</span>
           </template>
         </TaskTimeDetail>
       </div>
@@ -88,13 +88,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
+import type { Task } from '@/types/models/Task';
 import TaskOptions from '@/components/tasks/TaskOptions.vue';
 import TaskEditModal from '@/components/tasks/TaskEditModal.vue';
 import TaskDeleteConfirmModal from '@/components/tasks/TaskDeleteConfirmModal.vue';
 import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
-
-import type { Task } from '@/types/models/Task';
-import { useDetailTime } from '@/composables/useDetailTime';
+import { useTimeDetail } from '@/composables/useTimeDetail';
 
 type Props = {
   task: Task;
@@ -114,23 +113,34 @@ const isDone = ref(props.task.done);
 const isImportant = ref(props.task.isImportant);
 const editTask = ref(false);
 const deleteConfirm = ref(false);
-const deadline = computed(() => store.getTaskDate(props.taskId));
-const { showDetailTime, overdue } = useDetailTime(deadline);
 
-function toggleDeleteModal(): void {
-  deleteConfirm.value = !deleteConfirm.value;
+const deadline = computed(() => store.getTaskDate(props.taskId));
+const { showDetailTime, markOverdue } = useTimeDetail(deadline);
+
+function handleDeleteTask(id: string): void {
+  emit('deleteTask', id);
 }
 
 function cancelDeleteTask(): void {
   toggleDeleteModal();
 }
 
-function handleDeleteTask(id: string): void {
-  emit('deleteTask', id);
+function toggleDeleteModal(): void {
+  deleteConfirm.value = !deleteConfirm.value;
 }
 
 function toggleEditModal(): void {
   editTask.value = !editTask.value;
+}
+
+function toggleIsDone(id: string): void {
+  isDone.value = !isDone.value;
+  store.toggleIsDone(id);
+}
+
+function toggleIsImportant(id: string): void {
+  isImportant.value = !isImportant.value;
+  store.toggleIsImportant(id);
 }
 
 function cancelEditTask(): void {
@@ -149,15 +159,5 @@ function handleUpdateDate(date: Date): void {
 function handleUpdateTask(content: string): void {
   toggleEditModal();
   store.updateTask(props.taskId, content);
-}
-
-function toggleIsDone(id: string): void {
-  isDone.value = !isDone.value;
-  store.toggleIsDone(id);
-}
-
-function toggleIsImportant(id: string): void {
-  isImportant.value = !isImportant.value;
-  store.toggleIsImportant(id);
 }
 </script>

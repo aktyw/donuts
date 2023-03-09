@@ -4,10 +4,12 @@ import { findItem } from '@/helpers/findItem';
 import { findIndex } from '@/helpers/findIndex';
 import type { Task } from '@/types/models/Task';
 import type { State } from '@/types/models/State';
+import { SortFilters } from '@/types/models/SortFilters';
 
 export const useStoreTasks = defineStore('tasks', {
   state: (): State => ({
     tasks: [],
+    sortType: SortFilters.Default,
     deletedTasks: [],
   }),
   getters: {
@@ -35,7 +37,7 @@ export const useStoreTasks = defineStore('tasks', {
       return (id: string): Date | undefined => this.getTaskById(id)?.date;
     },
     getTasksSortedByDeadlineDate(state): Task[] {
-      return state.tasks.sort((taskA, taskB) => (taskA.date?.getTime() ?? -1) - (taskB.date?.getTime() ?? -1));
+      return state.tasks.sort((taskA, taskB) => (taskB.date?.getTime() ?? 1) - (taskA.date?.getTime() ?? 1));
     },
     getTasksSortedByTitle(state): Task[] {
       return state.tasks.sort((taskA, taskB) => taskA.content.localeCompare(taskB.content));
@@ -59,11 +61,25 @@ export const useStoreTasks = defineStore('tasks', {
 
       this.tasks.unshift(newTask);
     },
-    deleteTask(id: string): void {
-      const taskToDel = findItem(id, this.tasks);
+    sortTasks(type: SortFilters) {
+      switch (type) {
+        case SortFilters.Created:
+          this.tasks = this.tasks.sort((taskA, taskB) => taskA.createdAt.getTime() - taskB.createdAt.getTime());
+          break;
+        case SortFilters.Date:
+          this.tasks = this.tasks.sort((taskA, taskB) => {
+            console.log(taskA.date?.getTime() ?? Infinity, taskB.date?.getTime() ?? Infinity);
 
-      this.deletedTasks.push(taskToDel);
-      this.tasks = this.tasks.filter((task) => task !== taskToDel);
+            return (taskB.date?.getTime() ?? Infinity) - (taskA.date?.getTime() ?? Infinity);
+          });
+          break;
+        case SortFilters.Title:
+          this.tasks = this.tasks.sort((taskA, taskB) => taskA.content.localeCompare(taskB.content));
+          break;
+      }
+    },
+    sortTasksReverse(): void {
+      this.tasks = this.tasks.reverse();
     },
     toggleIsDone(id: string) {
       const index = findIndex(id, this.tasks);
@@ -75,9 +91,7 @@ export const useStoreTasks = defineStore('tasks', {
 
       this.tasks[index]['isImportant'] = !this.tasks[index]['isImportant'];
     },
-    undoDelete(task: Task): void {
-      this.tasks.unshift(task);
-    },
+
     updateTask(id: string, content: string): void {
       const task = findItem(id, this.tasks);
 
@@ -92,8 +106,10 @@ export const useStoreTasks = defineStore('tasks', {
       const task = findItem(id, this.tasks);
       const copyTask = JSON.parse(JSON.stringify(task));
       const newId = uuid();
+      const newCreatedAt = new Date();
 
       copyTask.id = newId;
+      copyTask.createdAt = newCreatedAt;
       if (copyTask.date) copyTask.date = new Date(copyTask.date);
 
       const taskIndex = this.tasks.findIndex((task) => task.id === id);
@@ -101,6 +117,15 @@ export const useStoreTasks = defineStore('tasks', {
       const tasksArrEnd = this.tasks.slice(taskIndex + 1);
 
       this.tasks = [...tasksArrStart, copyTask, ...tasksArrEnd];
+    },
+    deleteTask(id: string): void {
+      const taskToDel = findItem(id, this.tasks);
+
+      this.deletedTasks.push(taskToDel);
+      this.tasks = this.tasks.filter((task) => task !== taskToDel);
+    },
+    undoDeleteTask(task: Task): void {
+      this.tasks.unshift(task);
     },
     deleteAllTasks(): void {
       this.deletedTasks.push(...this.tasks);

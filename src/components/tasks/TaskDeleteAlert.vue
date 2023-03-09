@@ -7,7 +7,7 @@
       <BaseButton
         v-focus
         class="btn-ghost btn-sm text-accent capitalize md:btn-sm focus:outline focus:outline-1"
-        @click="undoDelete">
+        @click="undoDeleteTask">
         Undo
       </BaseButton>
       <button @click="closeDeleteAlert">
@@ -30,7 +30,7 @@ import { vFocus } from '@/directives/vAutoFocus.js';
 
 const emits = defineEmits(['undo', 'closeAlert']);
 
-function undoDelete(): void {
+function undoDeleteTask(): void {
   emits('undo');
 }
 

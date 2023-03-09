@@ -32,3 +32,8 @@ export const calcStartTime = (hours = 1): StartTime => {
     minutes: nextHour.getMinutes(),
   };
 };
+
+export const showDateWithTime = (dayType: string, time: Date): string => {
+  return `${dayType}
+        ${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}`;
+};

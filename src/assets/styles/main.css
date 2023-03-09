@@ -19,11 +19,11 @@
 /*  Vue Datapicker Themes */
 
 .dp__theme_light {
-  --dp-background-color: hsl(var(--n));
-  --dp-text-color: hsl(var(--nc));
+  --dp-background-color: hsl(var(--nc));
+  --dp-text-color: hsl(var(--ac));
   --dp-hover-color: hsl(var(--af));
-  --dp-hover-text-color: hsl(var(--ac));
-  --dp-hover-icon-color: hsl(var(--ac));
+  --dp-hover-text-color: hsl(var(--nc));
+  --dp-hover-icon-color: hsl(var(--nc));
   --dp-primary-color: hsl(var(--a));
   --dp-primary-text-color: #f8f5f5;
   --dp-secondary-color: #c0c4cc;
@@ -31,13 +31,13 @@
   --dp-menu-border-color: #ddd;
   --dp-border-color-hover: #aaaeb7;
   --dp-disabled-color: #f6f6f6;
-  --dp-icon-color: hsl(var(--nc));
+  --dp-icon-color: hsl(var(--ac));
   --dp-danger-color: hsl(var(--er));
   --dp-success-color: hsl(var(--a));
   --dp-success-color-disabled: #a3d9b1;
-  --dp-icon-color: #959595;
+  --dp-icon-color: hsl(var(--ac));
   --dp-danger-color: #ff6f60;
-  --dp-highlight-color: rgba(25, 118, 210, 0.1);
+  --dp-highlight-color: rgba(255, 255, 255, 0.1);
 }
 
 .dp__theme_dark {

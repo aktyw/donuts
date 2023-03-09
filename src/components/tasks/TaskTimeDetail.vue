@@ -1,7 +1,7 @@
 <template>
-  <div class="flex w-24 fill-accent text-accent text-xs">
+  <div class="flex fill-accent text-accent text-xs">
     <svg
-      class="relative right-1"
+      class="relative right-0.5"
       xmlns="http://www.w3.org/2000/svg"
       height="20"
       width="20">
