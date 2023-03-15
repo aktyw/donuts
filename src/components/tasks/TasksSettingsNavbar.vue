@@ -48,6 +48,9 @@ import TasksSettingsDropdown from '@/components/tasks/TasksSettingsDropdown.vue'
 import TaskDeleteConfirmModal from '@/components/tasks/TaskDeleteConfirmModal.vue';
 import BaseHeading from '../ui/BaseHeading.vue';
 import type { Task } from '@/types/models/Task';
+import { NotificationMessage } from '@/types/models/NotificationMessage';
+import { v4 as uuid } from 'uuid';
+import { SHOW_NOTIFICATION_TIME } from '@/config/popup';
 
 const store = useStoreTasks();
 
@@ -66,7 +69,14 @@ function cancelDeleteTask(): void {
 }
 
 function handleDeleteAllTasks(): void {
+  const id = uuid();
+
   store.deleteAllTasks();
   toggleDeleteModal();
+  store.addNotification(NotificationMessage.AllTasksDelete, id);
+
+  setTimeout(() => {
+    store.deleteNotification(id);
+  }, SHOW_NOTIFICATION_TIME);
 }
 </script>

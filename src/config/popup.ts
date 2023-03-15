@@ -1,1 +1,1 @@
-export const SHOW_ALERT_TIME = 9993500;
+export const SHOW_NOTIFICATION_TIME = 3500;

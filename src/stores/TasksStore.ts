@@ -2,9 +2,12 @@ import { defineStore } from 'pinia';
 import { v4 as uuid } from 'uuid';
 import { findItem } from '@/helpers/findItem';
 import { findIndex } from '@/helpers/findIndex';
+import { SortFilters, SortOrder } from '@/types/models/Sort';
 import type { Task } from '@/types/models/Task';
 import type { State } from '@/types/models/State';
-import { SortFilters, SortOrder } from '@/types/models/Sort';
+import type { Notification } from '@/types/models/Notification';
+import { NotificationMessage } from '@/types/models/NotificationMessage';
+import { NotificationAction } from '@/types/models/NotificationAction';
 
 export const useStoreTasks = defineStore('tasks', {
   state: (): State => ({
@@ -12,6 +15,8 @@ export const useStoreTasks = defineStore('tasks', {
     sortType: SortFilters.Default,
     sortOrder: SortOrder.Ascending,
     deletedTasks: [],
+    notifications: [],
+    temp: [],
   }),
   getters: {
     getAllTasks(state): Task[] {
@@ -56,6 +61,36 @@ export const useStoreTasks = defineStore('tasks', {
 
       this.tasks.unshift(newTask);
       this.sortTasks(this.sortType);
+    },
+    addNotification(message: string, id: string) {
+      let actionLabel;
+      let action;
+
+      if (message === NotificationMessage.TaskDelete) {
+        actionLabel = 'undo';
+        action = NotificationAction.TaskDelete;
+      } else if (message === NotificationMessage.AllTasksDelete) {
+        actionLabel = 'undo';
+        action = NotificationAction.AllTasksDelete;
+      }
+
+      const notification: Notification = {
+        id,
+        message,
+        ...(action && { action }),
+        ...(actionLabel && { actionLabel }),
+      };
+
+      this.notifications.push(notification);
+    },
+    deleteNotification(id: string) {
+      const notificationToDel = findItem(id, this.notifications);
+
+      this.notifications = this.notifications.filter((notification) => notification !== notificationToDel);
+
+      if (!this.notifications.some((notification) => notification.action === NotificationAction.AllTasksDelete)) {
+        this.temp = [];
+      }
     },
     sortTasks(type: SortFilters) {
       this.sortType = type;
@@ -128,13 +163,24 @@ export const useStoreTasks = defineStore('tasks', {
       this.deletedTasks.push(taskToDel);
       this.tasks = this.tasks.filter((task) => task !== taskToDel);
     },
-    undoDeleteTask(task: Task): void {
-      this.tasks.unshift(task);
+    undoDeleteTask(id: string): void {
+      const taskToRecover = findItem(id, this.deletedTasks);
+
+      this.tasks.unshift(taskToRecover);
+      this.deletedTasks = this.deletedTasks.filter((task) => task !== taskToRecover);
       this.sortTasks(this.sortType);
     },
-    deleteAllTasks(): void {
-      this.deletedTasks.push(...this.tasks);
+    deleteAllTasks() {
+      const delTasks = [...this.tasks];
+
+      this.deletedTasks.push(...delTasks);
       this.tasks = [];
+      this.temp.push(...delTasks);
+    },
+    undoDeleteAllTasks(): void {
+      this.tasks = [...this.tasks, ...this.temp];
+      this.temp = [];
+      this.sortTasks(this.sortType);
     },
   },
 });

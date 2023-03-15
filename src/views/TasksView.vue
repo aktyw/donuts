@@ -32,29 +32,9 @@
     </div>
 
     <TasksEmptyMessage v-if="!store.tasks.length"
-      ><template #default> No tasks. Time for chillout... </template></TasksEmptyMessage
-    >
+      ><template #default> No tasks. Time for chillout... </template>
+    </TasksEmptyMessage>
   </div>
-
-  <Teleport to="body">
-    <TaskDeleteAlert
-      v-if="deleteAlertIsActive"
-      class="flex flex-row absolute bottom-10 left-1/2 transform -translate-x-1/2 w-10/12 md:w-6/12 bg-neutral-focus text-neutral-content lg:w-fit"
-      @undo="undoDeleteTask"
-      @close-alert="closeDeleteAlert">
-      <template #default>
-        <span class="text-center mx-4">Task deleted</span>
-      </template>
-    </TaskDeleteAlert>
-    <TaskDoneAlert
-      v-if="alertIsActive"
-
-      @close-alert="closeDoneAlert">
-      <template #default>
-        <span class="text-center mx-4">Task deleted</span>
-      </template>
-    </TaskDoneAlert>
-  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -64,18 +44,15 @@ import { useStoreTasks } from '@/stores/TasksStore';
 import TaskInput from '@/components/tasks/TaskInput.vue';
 import TaskCard from '@/components/tasks/TaskCard.vue';
 import TaskFilter from '@/components/tasks/TaskFilter.vue';
-import TaskDeleteAlert from '@/components/tasks/TaskDeleteAlert.vue';
-import TaskDoneAlert from '@/components/tasks/TaskDoneAlert.vue';
 import SettingsNavbar from '@/components/tasks/TasksSettingsNavbar.vue';
-import { Filters } from '@/types/models/Filters';
-import { SHOW_ALERT_TIME } from '@/config/popup';
 import TasksEmptyMessage from '@/components/tasks/TasksEmptyMessage.vue';
+import { Filters } from '@/types/models/Filters';
+import { SHOW_NOTIFICATION_TIME } from '@/config/popup';
+import { NotificationMessage } from '@/types/models/NotificationMessage';
 
 const store = useStoreTasks();
 const tasks = computed(() => store.getAllTasks);
 const currentFilter: Ref<string> = ref('all');
-const deleteAlertIsActive = ref(false);
-const undoTimeoutId: Ref<ReturnType<typeof setTimeout> | null> = ref(null);
 
 const filteredTasks = computed(() => {
   switch (currentFilter.value) {
@@ -98,18 +75,11 @@ watch(tasks, (value) => {
 
 function deleteTask(taskId: string): void {
   store.deleteTask(taskId);
-  deleteAlertIsActive.value = true;
-  undoTimeoutId.value = setTimeout(() => {
-    deleteAlertIsActive.value = false;
-  }, SHOW_ALERT_TIME);
-}
+  store.addNotification(NotificationMessage.TaskDelete, taskId);
 
-function undoDeleteTask(): void {
-  if (undoTimeoutId.value) {
-    clearTimeout(undoTimeoutId.value);
-  }
-  deleteAlertIsActive.value = false;
-  store.undoDeleteTask(store.getDeletedTask);
+  setTimeout(() => {
+    store.deleteNotification(taskId);
+  }, SHOW_NOTIFICATION_TIME);
 }
 
 function resetFilters(): void {
@@ -118,9 +88,5 @@ function resetFilters(): void {
 
 function updateFilterType(type: string): void {
   currentFilter.value = type;
-}
-
-function closeAlert(type: string): void {
-  deleteAlertIsActive.value = !deleteAlertIsActive.value;
 }
 </script>
