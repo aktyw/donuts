@@ -31,7 +31,7 @@
       :task-is-done="task.done"
       :task-is-important="task.isImportant"
       :task-date="props.task.date"
-      :task-content="task.content"
+      :task-title="task.title"
       @toggle-is-important="toggleIsImportant"
       @toggle-is-done="toggleIsDone"
       @edit-task="toggleEditModal"
@@ -41,7 +41,7 @@
     <Teleport to="body">
       <TaskEditModal
         v-if="editTask"
-        v-model.trim="newContent"
+        v-model.trim="newTitle"
         :title="'Edit task'">
         <template #action>
           <button
@@ -51,8 +51,8 @@
           </button>
           <button
             class="btn btn-sm rounded-md capitalize font-semibold"
-            :disabled="!newContent.length"
-            @click="handleUpdateTask(newContent)">
+            :disabled="!newTitle.length"
+            @click="handleUpdateTask(newTitle)">
             Save
           </button>
         </template>
@@ -99,7 +99,7 @@ import { useNotification } from '@/composables/useNotification';
 
 type Props = {
   task: Task;
-  taskContent: string;
+  taskTitle: string;
   taskId: string;
   taskDate?: Date;
 };
@@ -110,7 +110,7 @@ const emit = defineEmits<{
 }>();
 
 const store = useStoreTasks();
-const newContent = ref(props.taskContent);
+const newTitle = ref(props.taskTitle);
 const isDone = ref(props.task.done);
 const isImportant = ref(props.task.isImportant);
 const editTask = ref(false);
@@ -146,7 +146,7 @@ function toggleIsImportant(id: string): void {
 }
 
 function cancelEditTask(): void {
-  newContent.value = props.taskContent;
+  newTitle.value = props.taskTitle;
   toggleEditModal();
 }
 

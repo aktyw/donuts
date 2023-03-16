@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <form
     id="form"
     class="relative flex lg:flex-row flex-col lg:items-start items-end lg:gap-8 gap-4 [&>(#cal)]:fill-white">
@@ -130,4 +130,4 @@ function handleCalendar(): void {
 function clearDate(): void {
   datepicker.value?.clearValue();
 }
-</script>
+</script> -->

@@ -47,13 +47,26 @@ export const useStoreTasks = defineStore('tasks', {
     },
   },
   actions: {
-    addTask(content: string, date: Date | undefined) {
+    // addTask({title: string, description: string, date: Date | undefined, isImportant:boolean}) {
+    addTask({
+      title,
+      description,
+      date,
+      isImportant,
+    }: {
+      title: string;
+      description: string;
+      date: Date | undefined;
+      isImportant: boolean;
+    }) {
+      console.log(title, description, date, isImportant);
       const id = uuid();
       const newTask: Task = {
         id,
-        content,
+        title,
+        ...(description && { description }),
         done: false,
-        isImportant: false,
+        isImportant,
         createdAt: new Date(),
         ...(date && { date }),
         subtasks: {},
@@ -105,7 +118,7 @@ export const useStoreTasks = defineStore('tasks', {
           );
           break;
         case SortFilters.Title:
-          this.tasks = this.tasks.sort((taskA, taskB) => taskA.content.localeCompare(taskB.content));
+          this.tasks = this.tasks.sort((taskA, taskB) => taskA.title.localeCompare(taskB.title));
           break;
       }
 
@@ -128,10 +141,10 @@ export const useStoreTasks = defineStore('tasks', {
       this.tasks[index]['isImportant'] = !this.tasks[index]['isImportant'];
     },
 
-    updateTask(id: string, content: string): void {
+    updateTask(id: string, title: string): void {
       const task = findItem(id, this.tasks);
 
-      task.content = content;
+      task.title = title;
       this.sortTasks(this.sortType);
     },
     updateDate(id: string, date: Date): void {

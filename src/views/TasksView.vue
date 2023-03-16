@@ -5,8 +5,12 @@
         :tasks="tasks"
         class="fill-base-content [&>button:hover]:fill-base-content [&>button:hover]:bg-base-300 [&>button]:p-0.5 [&>button]:rounded" />
 
-      <!-- <TaskInput /> -->
-      <TaskAddButton />
+      <TaskAddButton
+        v-if="!editorIsActive"
+        @click="showEditor" />
+      <TaskEditor
+        v-else
+        @close-editor="closeEditor" />
 
       <div
         class="flex flex-col items-start max-w-2xl py-2 relative"
@@ -21,11 +25,11 @@
             :key="task.id"
             :task="task"
             :task-id="task.id"
-            :task-content="task.content"
+            :task-title="task.title"
             :task-date="task.date"
             @delete-task="deleteTask">
             <template #content>
-              {{ task.content }}
+              {{ task.title }}
             </template>
           </TaskCard>
         </ul>
@@ -51,10 +55,12 @@ import { Filters } from '@/types/models/Filters';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { useNotification } from '@/composables/useNotification';
 import TaskAddButton from '@/components/tasks/TaskAddButton.vue';
+import TaskEditor from '@/components/tasks/TaskEditor.vue';
 
 const store = useStoreTasks();
 const tasks = computed(() => store.getAllTasks);
 const currentFilter: Ref<string> = ref('all');
+const editorIsActive = ref(false);
 
 const filteredTasks = computed(() => {
   switch (currentFilter.value) {
@@ -79,6 +85,14 @@ function deleteTask(taskId: string): void {
   store.deleteTask(taskId);
 
   useNotification(NotificationMessage.TaskDelete, taskId);
+}
+
+function showEditor(): void {
+  editorIsActive.value = true;
+}
+
+function closeEditor(): void {
+  editorIsActive.value = false;
 }
 
 function resetFilters(): void {

@@ -165,7 +165,7 @@ import Datepicker from '@vuepic/vue-datepicker';
 import blurElement from '@/helpers/blur';
 
 type Props = {
-  taskContent: string;
+  taskTitle: string;
   taskId: string;
   taskIsDone: boolean;
   taskIsImportant: boolean;

@@ -1,5 +1,5 @@
 <template>
-  <button>
+  <button class="normal-case">
     <slot name="icon" />
     <slot name="default" />
   </button>

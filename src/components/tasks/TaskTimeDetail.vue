@@ -1,5 +1,5 @@
 <template>
-  <div class="flex fill-accent text-accent text-xs">
+  <div class="flex text-xs">
     <svg
       class="relative right-0.5"
       xmlns="http://www.w3.org/2000/svg"
