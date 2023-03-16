@@ -47,8 +47,8 @@ import TaskFilter from '@/components/tasks/TaskFilter.vue';
 import SettingsNavbar from '@/components/tasks/TasksSettingsNavbar.vue';
 import TasksEmptyMessage from '@/components/tasks/TasksEmptyMessage.vue';
 import { Filters } from '@/types/models/Filters';
-import { SHOW_NOTIFICATION_TIME } from '@/config/popup';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
+import { useNotification } from '@/composables/useNotification';
 
 const store = useStoreTasks();
 const tasks = computed(() => store.getAllTasks);
@@ -75,11 +75,8 @@ watch(tasks, (value) => {
 
 function deleteTask(taskId: string): void {
   store.deleteTask(taskId);
-  store.addNotification(NotificationMessage.TaskDelete, taskId);
 
-  setTimeout(() => {
-    store.deleteNotification(taskId);
-  }, SHOW_NOTIFICATION_TIME);
+  useNotification(NotificationMessage.TaskDelete, taskId);
 }
 
 function resetFilters(): void {

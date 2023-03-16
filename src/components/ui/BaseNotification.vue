@@ -2,7 +2,7 @@
   <div
     id="notification"
     v-focus
-    class="alert flex md:w-6/12 bg-neutral-focus text-neutral-content lg:w-fit shadow-lg p-2"
+    class="alert flex bg-neutral-focus text-neutral-content lg:w-fit shadow-lg p-2"
     role="dialog">
     <div>
       <slot name="content" />

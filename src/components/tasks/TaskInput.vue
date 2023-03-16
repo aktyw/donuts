@@ -97,6 +97,8 @@ import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import { getBreakpoints } from '@/composables/useBreakpoints';
+import { NotificationMessage } from '@/types/models/NotificationMessage';
+import { useNotification } from '@/composables/useNotification';
 
 const store = useStoreTasks();
 const date: Ref<Date | undefined> = ref();
@@ -118,6 +120,7 @@ function addTask(): void {
   taskContent.value = '';
   taskInput.value?.focus();
   datepicker.value?.clearValue();
+  useNotification(NotificationMessage.TaskAdd);
 }
 
 function handleCalendar(): void {

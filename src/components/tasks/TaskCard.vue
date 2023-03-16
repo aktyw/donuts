@@ -94,6 +94,8 @@ import TaskEditModal from '@/components/tasks/TaskEditModal.vue';
 import TaskDeleteConfirmModal from '@/components/tasks/TaskDeleteConfirmModal.vue';
 import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
 import { useTimeDetail } from '@/composables/useTimeDetail';
+import { NotificationMessage } from '@/types/models/NotificationMessage';
+import { useNotification } from '@/composables/useNotification';
 
 type Props = {
   task: Task;
@@ -135,6 +137,7 @@ function toggleEditModal(): void {
 function toggleIsDone(id: string): void {
   isDone.value = !isDone.value;
   store.toggleIsDone(id);
+  isDone.value ? useNotification(NotificationMessage.Complete) : useNotification(NotificationMessage.NotComplete);
 }
 
 function toggleIsImportant(id: string): void {
@@ -149,14 +152,17 @@ function cancelEditTask(): void {
 
 function handleDuplicateTask(id: string): void {
   store.duplicateTask(id);
+  useNotification(NotificationMessage.Duplicate);
 }
 
 function handleUpdateDate(date: Date): void {
   store.updateDate(props.taskId, date);
+  useNotification(NotificationMessage.UpdateDate);
 }
 
 function handleUpdateTask(content: string): void {
   toggleEditModal();
   store.updateTask(props.taskId, content);
+  useNotification(NotificationMessage.UpdateTask);
 }
 </script>
