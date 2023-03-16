@@ -5,7 +5,8 @@
         :tasks="tasks"
         class="fill-base-content [&>button:hover]:fill-base-content [&>button:hover]:bg-base-300 [&>button]:p-0.5 [&>button]:rounded" />
 
-      <TaskInput />
+      <!-- <TaskInput /> -->
+      <TaskAddButton />
 
       <div
         class="flex flex-col items-start max-w-2xl py-2 relative"
@@ -41,7 +42,7 @@
 import type { Ref } from 'vue';
 import { ref, watch, computed } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
-import TaskInput from '@/components/tasks/TaskInput.vue';
+// import TaskInput from '@/components/tasks/TaskInput.vue';
 import TaskCard from '@/components/tasks/TaskCard.vue';
 import TaskFilter from '@/components/tasks/TaskFilter.vue';
 import SettingsNavbar from '@/components/tasks/TasksSettingsNavbar.vue';
@@ -49,6 +50,7 @@ import TasksEmptyMessage from '@/components/tasks/TasksEmptyMessage.vue';
 import { Filters } from '@/types/models/Filters';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { useNotification } from '@/composables/useNotification';
+import TaskAddButton from '@/components/tasks/TaskAddButton.vue';
 
 const store = useStoreTasks();
 const tasks = computed(() => store.getAllTasks);
