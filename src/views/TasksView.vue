@@ -5,13 +5,6 @@
         :tasks="tasks"
         class="fill-base-content [&>button:hover]:fill-base-content [&>button:hover]:bg-base-300 [&>button]:p-0.5 [&>button]:rounded" />
 
-      <TaskAddButton
-        v-if="!editorIsActive"
-        @click="showEditor" />
-      <TaskEditor
-        v-else
-        @close-editor="closeEditor" />
-
       <div
         class="flex flex-col items-start max-w-2xl py-2 relative"
         :class="{ 'h-1/2': !store.tasks.length }">
@@ -33,6 +26,12 @@
             </template>
           </TaskCard>
         </ul>
+        <TaskAddButton
+          v-if="!editorIsActive"
+          @click="showEditor" />
+        <TaskEditor
+          v-else
+          @close-editor="closeEditor" />
       </div>
     </div>
 
@@ -46,7 +45,6 @@
 import type { Ref } from 'vue';
 import { ref, watch, computed } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
-// import TaskInput from '@/components/tasks/TaskInput.vue';
 import TaskCard from '@/components/tasks/TaskCard.vue';
 import TaskFilter from '@/components/tasks/TaskFilter.vue';
 import SettingsNavbar from '@/components/tasks/TasksSettingsNavbar.vue';

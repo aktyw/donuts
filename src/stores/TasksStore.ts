@@ -47,7 +47,6 @@ export const useStoreTasks = defineStore('tasks', {
     },
   },
   actions: {
-    // addTask({title: string, description: string, date: Date | undefined, isImportant:boolean}) {
     addTask({
       title,
       description,
@@ -59,7 +58,6 @@ export const useStoreTasks = defineStore('tasks', {
       date: Date | undefined;
       isImportant: boolean;
     }) {
-      console.log(title, description, date, isImportant);
       const id = uuid();
       const newTask: Task = {
         id,

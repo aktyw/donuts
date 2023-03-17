@@ -118,7 +118,7 @@ import { useNotification } from '@/composables/useNotification';
 const store = useStoreTasks();
 const taskTitle = ref('');
 const taskDescription = ref('');
-const taskTitleInput: Ref<HTMLInputElement | null> = ref(null);
+const taskTitleInput: Ref<InstanceType<typeof HTMLInputElement> | null> = ref(null);
 const taskDescriptionInput: Ref<HTMLInputElement | null> = ref(null);
 const date: Ref<Date | undefined> = ref();
 const datepicker = ref();
@@ -148,6 +148,7 @@ function addTask(): void {
   taskTitle.value = '';
   taskDescription.value = '';
   taskIsImportant.value = false;
+  taskTitleInput.value?.focus();
   datepicker.value?.clearValue();
   clearDate();
 
