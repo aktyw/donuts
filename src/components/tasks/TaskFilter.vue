@@ -1,6 +1,6 @@
 <template>
   <ul
-    class="flex justify-between w-full md:gap-2 md:py-4 py-2 p-0"
+    class="flex justify-between w-full md:gap-2 md:py-3 py-2 p-0"
     @click="handleFilterTasks">
     <li>
       <TaskFilterBadge

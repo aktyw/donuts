@@ -1,20 +1,30 @@
 <template>
-  <li class="border-solid border-t border-base-200 last:border-solid last:border-b py-3 w-full flex justify-between">
-    <div
-      class="flex gap-4 cursor-pointer"
-      @click="toggleIsDone(task.id)">
-      <label class="flex items-start h-full">
-        <input
-          type="checkbox"
-          class="checkbox rounded-full"
-          :checked="isDone"
-          :class="{ 'checkbox-accent': isImportant }" />
-      </label>
-      <div class="flex flex-col">
+  <li
+    class="border-solid border-t border-base-200 last:border-solid last:border-b py-3 w-full flex justify-between"
+    @click="handleShowOptionsBtn"
+    @mouseover="handleShowOptionsBtn"
+    @mouseleave="handleHideOptionsBtn">
+    <div class="flex gap-4 w-full">
+      <div>
+        <label class="flex items-start cursor-pointer">
+          <input
+            type="checkbox"
+            class="checkbox rounded-full"
+            :checked="isDone"
+            :class="{ 'checkbox-accent': isImportant }"
+            @click="toggleIsDone(task.id)" />
+        </label>
+      </div>
+      <div class="flex flex-col w-full cursor-pointer">
         <p
           class="break-all h-full flex"
           :class="{ 'line-through': isDone, 'decoration-accent': isImportant }">
-          <slot name="content" />
+          {{ task.title }}
+        </p>
+        <p
+          class="break-all h-full flex text-sm"
+          :class="{ 'line-through': isDone, 'decoration-accent': isImportant }">
+          {{ task.description }}
         </p>
         <TaskTimeDetail
           v-if="showDetailTime"
@@ -27,6 +37,7 @@
       </div>
     </div>
     <TaskOptions
+      v-show="cardIsHover"
       :task-id="task.id"
       :task-is-done="task.done"
       :task-is-important="task.isImportant"
@@ -65,7 +76,7 @@
         <template #content>
           <p>
             Do you really want to delete
-            <span class="font-bold break-words">"{{ taskContent }}"</span> ?
+            <span class="font-bold break-words">"{{ task.title }}"</span> ?
           </p>
         </template>
         <template #action>
@@ -76,7 +87,7 @@
           </button>
           <button
             class="btn btn-sm rounded-md capitalize font-semibold"
-            @click="handleDeleteTask(taskId)">
+            @click="handleDeleteTask(task.id)">
             Delete
           </button>
         </template>
@@ -86,7 +97,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
 import type { Task } from '@/types/models/Task';
 import TaskOptions from '@/components/tasks/TaskOptions.vue';
@@ -96,12 +107,10 @@ import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { useNotification } from '@/composables/useNotification';
+import { useActiveElement } from '@vueuse/core';
 
 type Props = {
   task: Task;
-  taskTitle: string;
-  taskId: string;
-  taskDate?: Date;
 };
 
 const props = defineProps<Props>();
@@ -110,13 +119,35 @@ const emit = defineEmits<{
 }>();
 
 const store = useStoreTasks();
-const newTitle = ref(props.taskTitle);
+const newTitle = ref(props.task.title);
 const isDone = ref(props.task.done);
 const isImportant = ref(props.task.isImportant);
 const editTask = ref(false);
 const deleteConfirm = ref(false);
-const deadline = computed(() => store.getTaskDate(props.taskId));
+const deadline = computed(() => store.getTaskDate(props.task.id));
 const { showDetailTime, markOverdue } = useTimeDetail(deadline);
+const cardIsHover = ref(false);
+const optionsIsOpen = ref(false);
+const activeElement = useActiveElement();
+
+watch(activeElement, (el) => {
+  el?.closest('#drop') ? (optionsIsOpen.value = true) : (optionsIsOpen.value = false);
+});
+
+watch(optionsIsOpen, (val) => {
+  if (!val) handleHideOptionsBtn();
+});
+
+function handleHideOptionsBtn() {
+  if (optionsIsOpen.value) return;
+  cardIsHover.value = false;
+}
+
+function handleShowOptionsBtn() {
+  if (!optionsIsOpen.value) {
+    cardIsHover.value = true;
+  }
+}
 
 function handleDeleteTask(id: string): void {
   emit('deleteTask', id);
@@ -146,7 +177,7 @@ function toggleIsImportant(id: string): void {
 }
 
 function cancelEditTask(): void {
-  newTitle.value = props.taskTitle;
+  newTitle.value = props.task.title;
   toggleEditModal();
 }
 
@@ -156,13 +187,13 @@ function handleDuplicateTask(id: string): void {
 }
 
 function handleUpdateDate(date: Date): void {
-  store.updateDate(props.taskId, date);
+  store.updateDate(props.task.id, date);
   useNotification(NotificationMessage.UpdateDate);
 }
 
 function handleUpdateTask(content: string): void {
   toggleEditModal();
-  store.updateTask(props.taskId, content);
+  store.updateTask(props.task.id, content);
   useNotification(NotificationMessage.UpdateTask);
 }
 </script>

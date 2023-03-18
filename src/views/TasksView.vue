@@ -6,26 +6,22 @@
         class="fill-base-content [&>button:hover]:fill-base-content [&>button:hover]:bg-base-300 [&>button]:p-0.5 [&>button]:rounded" />
 
       <div
-        class="flex flex-col items-start max-w-2xl py-2 relative"
+        class="flex flex-col items-start max-w-2xl relative"
         :class="{ 'h-1/2': !store.tasks.length }">
         <TaskFilter
           v-if="store.tasks.length"
           @filter-type="updateFilterType" />
 
-        <ul class="md:w-96 w-80">
-          <TaskCard
-            v-for="task in filteredTasks"
-            :key="task.id"
-            :task="task"
-            :task-id="task.id"
-            :task-title="task.title"
-            :task-date="task.date"
-            @delete-task="deleteTask">
-            <template #content>
-              {{ task.title }}
-            </template>
-          </TaskCard>
-        </ul>
+        <section>
+          <ul class="md:w-96">
+            <TaskCard
+              v-for="task in filteredTasks"
+              :key="task.id"
+              :task="task"
+              @delete-task="deleteTask">
+            </TaskCard>
+          </ul>
+        </section>
         <TaskAddButton
           v-if="!editorIsActive"
           @click="showEditor" />

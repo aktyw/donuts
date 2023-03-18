@@ -1,7 +1,7 @@
 <template>
   <div
     id="drop"
-    class="dropdown md:dropdown-bottom dropdown-left h-0">
+    class="relative dropdown md:dropdown-bottom dropdown-left h-0">
     <button
       tabindex="0"
       class="btn btn-square rounded-md btn-xs bg-base-100 hover:bg-base-200 border-0 focus:bg-base-200">
@@ -208,6 +208,7 @@ function handleDeleteTask(taskId: string): void {
 }
 
 function handleDuplicateTask(taskId: string): void {
+  blurElement();
   emit('duplicateTask', taskId);
 }
 
