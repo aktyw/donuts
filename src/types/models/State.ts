@@ -4,8 +4,10 @@ import type { Notification } from '@/types/models/Notification';
 
 export type State = {
   tasks: Task[];
-  sortType: SortFilters;
-  sortOrder: SortOrder;
+  sort: {
+    type: SortFilters;
+    order: SortOrder;
+  };
   deletedTasks: Task[];
   notifications: Notification[];
   temp: Task[];

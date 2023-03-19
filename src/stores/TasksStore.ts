@@ -12,8 +12,10 @@ import { NotificationAction } from '@/types/models/NotificationAction';
 export const useStoreTasks = defineStore('tasks', {
   state: (): State => ({
     tasks: [],
-    sortType: SortFilters.Default,
-    sortOrder: SortOrder.Ascending,
+    sort: {
+      type: SortFilters.Default,
+      order: SortOrder.Ascending,
+    },
     deletedTasks: [],
     notifications: [],
     temp: [],
@@ -43,7 +45,10 @@ export const useStoreTasks = defineStore('tasks', {
       return (id: string): Date | undefined => this.getTaskById(id)?.date;
     },
     getSortOrder(): SortOrder {
-      return this.sortOrder;
+      return this.sort.order;
+    },
+    getSortType(): SortFilters {
+      return this.sort.type;
     },
   },
   actions: {
@@ -71,7 +76,7 @@ export const useStoreTasks = defineStore('tasks', {
       };
 
       this.tasks.push(newTask);
-      this.sortTasks(this.sortType);
+      this.sortTasks(this.sort.type);
     },
     addNotification(message: string, id: string) {
       let actionLabel;
@@ -104,7 +109,8 @@ export const useStoreTasks = defineStore('tasks', {
       }
     },
     sortTasks(type: SortFilters) {
-      this.sortType = type;
+      this.sort.type = type;
+      if (this.sort.type === SortFilters.Default) return;
 
       switch (type) {
         case SortFilters.Created:
@@ -120,13 +126,13 @@ export const useStoreTasks = defineStore('tasks', {
           break;
       }
 
-      if (this.sortOrder === SortOrder.Descending) {
+      if (this.sort.order === SortOrder.Descending) {
         this.tasks = this.tasks.reverse();
       }
     },
     sortTasksChangeOrder(): void {
-      this.sortOrder = this.sortOrder === SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
-      this.sortTasks(this.sortType);
+      this.sort.order = this.sort.order === SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
+      this.sortTasks(this.sort.type);
     },
     toggleIsDone(id: string) {
       const index = findIndex(id, this.tasks);
@@ -143,13 +149,13 @@ export const useStoreTasks = defineStore('tasks', {
       const task = findItem(id, this.tasks);
 
       task.title = title;
-      this.sortTasks(this.sortType);
+      this.sortTasks(this.sort.type);
     },
     updateDate(id: string, date: Date): void {
       const task = findItem(id, this.tasks);
 
       task.date = date;
-      this.sortTasks(this.sortType);
+      this.sortTasks(this.sort.type);
     },
     duplicateTask(id: string): void {
       const task = findItem(id, this.tasks);
@@ -166,7 +172,7 @@ export const useStoreTasks = defineStore('tasks', {
       const tasksArrEnd = this.tasks.slice(taskIndex + 1);
 
       this.tasks = [...tasksArrStart, copyTask, ...tasksArrEnd];
-      this.sortTasks(this.sortType);
+      this.sortTasks(this.sort.type);
     },
     deleteTask(id: string): void {
       const taskToDel = findItem(id, this.tasks);
@@ -179,7 +185,7 @@ export const useStoreTasks = defineStore('tasks', {
 
       this.tasks.unshift(taskToRecover);
       this.deletedTasks = this.deletedTasks.filter((task) => task !== taskToRecover);
-      this.sortTasks(this.sortType);
+      this.sortTasks(this.sort.type);
     },
     deleteAllTasks() {
       const delTasks = [...this.tasks];
@@ -191,7 +197,7 @@ export const useStoreTasks = defineStore('tasks', {
     undoDeleteAllTasks(): void {
       this.tasks = [...this.tasks, ...this.temp];
       this.temp = [];
-      this.sortTasks(this.sortType);
+      this.sortTasks(this.sort.type);
     },
   },
 });

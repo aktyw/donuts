@@ -13,7 +13,26 @@
           @filter-type="updateFilterType" />
 
         <section>
-          <ul class="md:w-96">
+          <ul
+            v-if="allowDrag"
+            class="md:w-96">
+            <draggable
+              v-model="dragTasks"
+              item-key="id"
+              @start="drag = true"
+              @end="drag = false">
+              <template #item="{ element }">
+                <TaskCard
+                  :key="element.id"
+                  :task="element"
+                  @delete-task="deleteTask">
+                </TaskCard>
+              </template>
+            </draggable>
+          </ul>
+          <ul
+            v-else
+            class="md:w-96">
             <TaskCard
               v-for="task in filteredTasks"
               :key="task.id"
@@ -39,10 +58,11 @@
 
 <script setup lang="ts">
 import type { Ref } from 'vue';
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, onUpdated } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
 import TaskCard from '@/components/tasks/TaskCard.vue';
 import TaskFilter from '@/components/tasks/TaskFilter.vue';
+import { SortFilters } from '@/types/models/Sort';
 import SettingsNavbar from '@/components/tasks/TasksSettingsNavbar.vue';
 import TasksEmptyMessage from '@/components/tasks/TasksEmptyMessage.vue';
 import { Filters } from '@/types/models/Filters';
@@ -50,12 +70,15 @@ import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { useNotification } from '@/composables/useNotification';
 import TaskAddButton from '@/components/tasks/TaskAddButton.vue';
 import TaskEditor from '@/components/tasks/TaskEditor.vue';
+import draggable from 'vuedraggable';
 
 const store = useStoreTasks();
 const tasks = computed(() => store.getAllTasks);
 const currentFilter: Ref<string> = ref('all');
 const editorIsActive = ref(false);
-
+const drag = ref(false);
+const allowDrag = ref(true);
+const sortType = computed(() => store.sort.type);
 const filteredTasks = computed(() => {
   switch (currentFilter.value) {
     case Filters.All:
@@ -70,9 +93,24 @@ const filteredTasks = computed(() => {
       return store.getAllTasks;
   }
 });
+const testTasks = ref(store.getAllTasks);
+const dragTasks = ref(testTasks);
+
+onUpdated(() => {
+  testTasks.value = store.getAllTasks;
+});
 
 watch(tasks, (value) => {
   if (value.length) resetFilters();
+});
+
+watch(sortType, (type) => {
+  console.log(type);
+  if (type === SortFilters.Default) {
+    allowDrag.value = true;
+  } else {
+    allowDrag.value = false;
+  }
 });
 
 function deleteTask(taskId: string): void {

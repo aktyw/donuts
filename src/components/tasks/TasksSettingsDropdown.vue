@@ -13,6 +13,22 @@
         <button
           class="btn-md md:btn-sm"
           :disabled="tasks.length < 2"
+          @click="handleSortTasks(SortFilters.Default)">
+          <svg
+            class="fill-base-content"
+            xmlns="http://www.w3.org/2000/svg"
+            height="24"
+            width="24">
+            <path
+              d="M16.775 19.775q-1.25 0-2.125-.888-.875-.887-.875-2.112 0-1.25.875-2.125t2.125-.875q1.225 0 2.113.875.887.875.887 2.125 0 1.225-.887 2.112-.888.888-2.113.888Zm0-1q.825 0 1.413-.587.587-.588.587-1.413 0-.825-.587-1.412-.588-.588-1.413-.588-.825 0-1.412.588-.588.587-.588 1.412t.588 1.413q.587.587 1.412.587Zm0-2Zm-9.55 0q-1.225 0-2.112-.888-.888-.887-.888-2.112 0-1.25.888-2.125.887-.875 2.112-.875 1.25 0 2.125.875t.875 2.125q0 1.225-.875 2.112-.875.888-2.125.888Zm0-1q.825 0 1.412-.587.588-.588.588-1.413 0-.825-.588-1.413-.587-.587-1.412-.587t-1.413.587q-.587.588-.587 1.413 0 .825.587 1.413.588.587 1.413.587Zm0-2ZM11 9.375q-1.25 0-2.125-.875T8 6.375q0-1.225.875-2.113.875-.887 2.125-.887t2.125.887Q14 5.15 14 6.375q0 1.25-.875 2.125T11 9.375Zm0-1q.825 0 1.413-.588Q13 7.2 13 6.375t-.587-1.412q-.588-.588-1.413-.588-.825 0-1.412.588Q9 5.55 9 6.375t.588 1.412q.587.588 1.412.588Zm0-2Z" />
+          </svg>
+          Default
+        </button>
+      </li>
+      <li>
+        <button
+          class="btn-md md:btn-sm"
+          :disabled="tasks.length < 2"
           @click="handleSortTasks(SortFilters.Date)">
           <svg
             class="fill-base-content"
@@ -57,37 +73,38 @@
         </button>
       </li>
 
+      <ul v-if="sortTypeStatus !== SortFilters.Default">
+        <li
+          class="border-1 m-1"
+          aria-hidden="true" />
+
+        <li class="px-4 py-1.5 font-semibold text-sm">Order</li>
+        <li>
+          <button
+            class="btn-md md:btn-sm"
+            @click="toggleSortOrder()">
+            <svg
+              v-if="sortOrderStatus === SortOrder.Ascending"
+              xmlns="http://www.w3.org/2000/svg"
+              height="24"
+              width="24">
+              <path d="m12 20.925-6.35-6.35.7-.7 5.15 5.15V2.9h1v16.125l5.15-5.15.7.7Z" />
+            </svg>
+            <svg
+              v-else
+              xmlns="http://www.w3.org/2000/svg"
+              height="24"
+              width="24">
+              <path d="M11.5 20.925V4.775L6.35 9.95l-.7-.7L12 2.9l6.35 6.35-.7.725L12.5 4.8v16.125Z" />
+            </svg>
+            {{ sortOrderStatus }}
+          </button>
+        </li>
+      </ul>
+
       <li
         class="border-1 m-1"
         aria-hidden="true" />
-
-      <li class="px-4 py-1.5 font-semibold text-sm">Order</li>
-      <li>
-        <button
-          class="btn-md md:btn-sm"
-          @click="toggleSortOrder()">
-          <svg
-            v-if="sortOrderStatus === SortOrder.Ascending"
-            xmlns="http://www.w3.org/2000/svg"
-            height="24"
-            width="24">
-            <path d="m12 20.925-6.35-6.35.7-.7 5.15 5.15V2.9h1v16.125l5.15-5.15.7.7Z" />
-          </svg>
-          <svg
-            v-else
-            xmlns="http://www.w3.org/2000/svg"
-            height="24"
-            width="24">
-            <path d="M11.5 20.925V4.775L6.35 9.95l-.7-.7L12 2.9l6.35 6.35-.7.725L12.5 4.8v16.125Z" />
-          </svg>
-          {{ sortOrderStatus }}
-        </button>
-      </li>
-
-      <li
-        class="border-1 m-1"
-        aria-hidden="true" />
-
       <li class="px-4 py-1.5 font-semibold text-sm">Tasks</li>
 
       <li>
@@ -117,6 +134,7 @@ import { SortFilters, SortOrder } from '@/types/models/Sort';
 
 const store = useStoreTasks();
 const tasks = computed(() => store.getAllTasks);
+const sortTypeStatus = computed(() => store.getSortType);
 const sortOrderStatus = computed(() => store.getSortOrder);
 
 const emit = defineEmits<{

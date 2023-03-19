@@ -189,7 +189,14 @@ const currentDate = computed(() => store.getTaskDate(props.task.id));
 const datepicker = ref();
 const showPicker = ref(false);
 const startTime = ref({ hours: 0, minutes: 0 });
-const activeStyle = ['active-state', 'active:bg-base-200', 'focus:fill-accent', 'fill-accent', 'text-accent'];
+const activeStyle = [
+  'active-state',
+  'active:bg-base-200',
+  'focus:fill-accent',
+  'fill-accent',
+  'text-accent',
+  'font-medium',
+];
 const doneStyle = computed(() => (isDone.value ? activeStyle : ''));
 const importantStyle = computed(() => (isImportant.value ? activeStyle : ''));
 const { showInputDetailTime } = useTimeDetail(currentDate);
