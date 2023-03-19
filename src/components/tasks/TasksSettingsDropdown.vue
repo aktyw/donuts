@@ -58,7 +58,6 @@
       </li>
 
       <li
-        id="separator"
         class="border-1 m-1"
         aria-hidden="true" />
 
@@ -86,7 +85,6 @@
       </li>
 
       <li
-        id="separator"
         class="border-1 m-1"
         aria-hidden="true" />
 

@@ -70,7 +70,7 @@ export const useStoreTasks = defineStore('tasks', {
         subtasks: {},
       };
 
-      this.tasks.unshift(newTask);
+      this.tasks.push(newTask);
       this.sortTasks(this.sortType);
     },
     addNotification(message: string, id: string) {

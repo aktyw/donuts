@@ -1,9 +1,5 @@
 <template>
-  <li
-    class="border-solid border-t border-base-200 last:border-solid last:border-b py-3 w-full flex justify-between"
-    @click="handleShowOptionsBtn"
-    @mouseover="handleShowOptionsBtn"
-    @mouseleave="handleHideOptionsBtn">
+  <li class="border-solid border-t border-base-200 last:border-solid last:border-b py-3 w-full flex justify-between">
     <div class="flex gap-4 w-full">
       <div>
         <label class="flex items-start cursor-pointer">
@@ -37,12 +33,12 @@
       </div>
     </div>
     <TaskOptions
-      v-show="cardIsHover"
       :task-id="task.id"
       :task-is-done="task.done"
       :task-is-important="task.isImportant"
       :task-date="props.task.date"
       :task-title="task.title"
+      :task="task"
       @toggle-is-important="toggleIsImportant"
       @toggle-is-done="toggleIsDone"
       @edit-task="toggleEditModal"
@@ -109,6 +105,10 @@ import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { useNotification } from '@/composables/useNotification';
 import { useActiveElement } from '@vueuse/core';
 
+// @click="handleShowOptionsBtn"
+//     @mouseover="handleShowOptionsBtn"
+//     @mouseleave="handleHideOptionsBtn"
+
 type Props = {
   task: Task;
 };
@@ -126,28 +126,28 @@ const editTask = ref(false);
 const deleteConfirm = ref(false);
 const deadline = computed(() => store.getTaskDate(props.task.id));
 const { showDetailTime, markOverdue } = useTimeDetail(deadline);
-const cardIsHover = ref(false);
-const optionsIsOpen = ref(false);
-const activeElement = useActiveElement();
+// const cardIsHover = ref(true);
+// const optionsIsOpen = ref(true);
+// const activeElement = useActiveElement();
+// v-show="cardIsHover"
+// watch(activeElement, (el) => {
+//   el?.closest('#dxxxxxxxxxxxrop') ? (optionsIsOpen.value = true) : (optionsIsOpen.value = false);
+// });
 
-watch(activeElement, (el) => {
-  el?.closest('#drop') ? (optionsIsOpen.value = true) : (optionsIsOpen.value = false);
-});
+// watch(optionsIsOpen, (val) => {
+//   if (!val) handleHideOptionsBtn();
+// });
 
-watch(optionsIsOpen, (val) => {
-  if (!val) handleHideOptionsBtn();
-});
+// function handleHideOptionsBtn() {
+//   if (optionsIsOpen.value) return;
+//   cardIsHover.value = false;
+// }
 
-function handleHideOptionsBtn() {
-  if (optionsIsOpen.value) return;
-  cardIsHover.value = false;
-}
-
-function handleShowOptionsBtn() {
-  if (!optionsIsOpen.value) {
-    cardIsHover.value = true;
-  }
-}
+// function handleShowOptionsBtn() {
+//   if (!optionsIsOpen.value) {
+//     cardIsHover.value = true;
+//   }
+// }
 
 function handleDeleteTask(id: string): void {
   emit('deleteTask', id);

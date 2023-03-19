@@ -1,7 +1,5 @@
 <template>
-  <div
-    id="drop"
-    class="relative dropdown md:dropdown-bottom dropdown-left h-0">
+  <div class="dropdown md:dropdown-bottom dropdown-left h-0">
     <button
       tabindex="0"
       class="btn btn-square rounded-md btn-xs bg-base-100 hover:bg-base-200 border-0 focus:bg-base-200">
@@ -15,8 +13,9 @@
       </svg>
     </button>
     <ul
-      tabindex="0"
+      ref="dropList"
       role="menu"
+      tabindex="0"
       aria-label="show task options"
       class="dropdown-content menu py-0.5 shadow rounded-md w-52 bg-base-100 border border-base-300 text-base-content fill-base-content [& svg:not(.active-state)]:fill-base-content [&>li:hover>button:not(.active-state)]:bg-base-200 [& button:active]:text-base-content [&>button:active]:bg-base-200">
       <li>
@@ -63,7 +62,6 @@
       </li>
 
       <li
-        id="separator"
         class="border-1 m-1"
         aria-hidden="true" />
 
@@ -97,23 +95,21 @@
         </button>
       </li>
       <li
-        id="separator"
         class="border-1 m-1"
         aria-hidden="true" />
       <li>
-        <Datepicker
-          v-show="showPicker"
-          ref="datepicker"
-          v-model="currentDate"
-          :value="date"
-          teleport="#drop"
-          position="right"
-          :min-date="new Date()"
-          :start-time="startTime"
-          @update:model-value="handleDate" />
         <button
           class="btn-md md:btn-sm"
           @click="handleCalendar">
+          <Datepicker
+            v-show="showPicker"
+            ref="datepicker"
+            :value="date"
+            :teleport="true"
+            :alt-position="customPosition"
+            :min-date="new Date()"
+            :start-time="startTime"
+            @update:model-value="handleDate" />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="24"
@@ -121,7 +117,7 @@
             <path
               d="m15.65 16.35.7-.7-3.85-3.85V7h-1v5.2ZM12 21q-1.875 0-3.512-.712-1.638-.713-2.85-1.926-1.213-1.212-1.926-2.85Q3 13.875 3 12t.712-3.513q.713-1.637 1.926-2.85 1.212-1.212 2.85-1.925Q10.125 3 12 3t3.513.712q1.637.713 2.85 1.925 1.212 1.213 1.925 2.85Q21 10.125 21 12t-.712 3.512q-.713 1.638-1.925 2.85-1.213 1.213-2.85 1.926Q13.875 21 12 21Zm0-9Zm0 8q3.325 0 5.663-2.337Q20 15.325 20 12t-2.337-5.663Q15.325 4 12 4T6.338 6.337Q4 8.675 4 12t2.338 5.663Q8.675 20 12 20Z" />
           </svg>
-          Set Date
+          {{ showInputDetailTime || 'Set Date' }}
         </button>
       </li>
       <li>
@@ -137,7 +133,6 @@
         </button>
       </li>
       <li
-        id="separator"
         class="border-1 m-1"
         aria-hidden="true" />
       <li>
@@ -163,9 +158,13 @@ import { computed, toRefs, ref } from 'vue';
 import type { Ref } from 'vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import blurElement from '@/helpers/blur';
+import { useTimeDetail } from '@/composables/useTimeDetail';
+import type { Task } from '@/types/models/Task';
+import { useStoreTasks } from '@/stores/TasksStore';
+import { useElementBounding } from '@vueuse/core';
 
 type Props = {
-  taskTitle: string;
+  task: Task;
   taskId: string;
   taskIsDone: boolean;
   taskIsImportant: boolean;
@@ -183,23 +182,31 @@ const emit = defineEmits<{
   (e: 'duplicateTask', id: string): void;
 }>();
 
+const store = useStoreTasks();
 const { taskId, taskIsDone: isDone, taskIsImportant: isImportant } = toRefs(props);
 const date: Ref<Date | undefined> = ref();
-const currentDate = ref(props.taskDate);
+const currentDate = computed(() => store.getTaskDate(props.task.id));
 const datepicker = ref();
 const showPicker = ref(false);
 const startTime = ref({ hours: 0, minutes: 0 });
 const activeStyle = ['active-state', 'active:bg-base-200', 'focus:fill-accent', 'fill-accent', 'text-accent'];
 const doneStyle = computed(() => (isDone.value ? activeStyle : ''));
 const importantStyle = computed(() => (isImportant.value ? activeStyle : ''));
+const { showInputDetailTime } = useTimeDetail(currentDate);
+const dropList: Ref<HTMLElement | undefined> = ref();
+const { x, y, width } = useElementBounding(dropList);
+
+function customPosition() {
+  return { top: y.value, left: x.value - width.value / 2 };
+}
+
+function handleCalendar() {
+  datepicker.value.openMenu();
+}
 
 function handleDate(modelData: Date): void {
   date.value = modelData;
   emit('handleDate', date.value);
-}
-
-function handleCalendar(): void {
-  datepicker.value.openMenu();
 }
 
 function handleDeleteTask(taskId: string): void {
