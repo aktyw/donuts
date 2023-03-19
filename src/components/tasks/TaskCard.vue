@@ -127,8 +127,8 @@ const editTask = ref(false);
 const deleteConfirm = ref(false);
 const deadline = computed(() => store.getTaskDate(props.task.id));
 const { showDetailTime, markOverdue } = useTimeDetail(deadline);
-const cardIsHover = ref(true);
-const optionsIsOpen = ref(true);
+const cardIsHover = ref(false);
+const optionsIsOpen = ref(false);
 const activeElement = useActiveElement();
 
 watch(activeElement, (el) => {
