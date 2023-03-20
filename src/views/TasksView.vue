@@ -9,9 +9,7 @@
         class="flex flex-col items-start max-w-2xl relative"
         :class="{ 'h-1/2': !store.tasks.default.length }">
         <SortStatusNavbar v-if="!allowDrag"> </SortStatusNavbar>
-        <TaskFilter
-          v-if="store.tasks.default.length && !allowDrag"
-          @filter-type="updateFilterType" />
+        <TaskFilter v-if="store.tasks.default.length && !allowDrag" />
 
         <section>
           <ul
@@ -59,7 +57,6 @@
 </template>
 
 <script setup lang="ts">
-import type { Ref } from 'vue';
 import { ref, watch, computed } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
 import { storeToRefs } from 'pinia';

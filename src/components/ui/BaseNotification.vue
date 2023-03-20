@@ -8,7 +8,9 @@
       <slot name="content" />
       <div class="flex gap-0">
         <slot name="action" />
-        <BaseButton @click="handleCloseAlert(notificationId)">
+        <BaseButton
+          class="hover:bg-base-content rounded btn-sm"
+          @click="handleCloseAlert(notificationId)">
           <template #icon>
             <svg
               class="fill-base-100 mx-2"

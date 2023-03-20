@@ -6,10 +6,10 @@
         <span class="flex flex-row gap-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            height="24"
-            width="24">
+            height="20"
+            width="20">
             <path
-              d="M6.225 13.5q-.625 0-1.062-.438-.438-.437-.438-1.062t.438-1.062Q5.6 10.5 6.225 10.5t1.063.438q.437.437.437 1.062t-.437 1.062q-.438.438-1.063.438Zm5.775 0q-.625 0-1.062-.438Q10.5 12.625 10.5 12t.438-1.062Q11.375 10.5 12 10.5t1.062.438q.438.437.438 1.062t-.438 1.062q-.437.438-1.062.438Zm5.775 0q-.625 0-1.062-.438-.438-.437-.438-1.062t.438-1.062q.437-.438 1.062-.438t1.063.438q.437.437.437 1.062t-.437 1.062q-.438.438-1.063.438Z" />
+              d="M9.917 16.583v-4.166h.666v1.75h6v.666h-6v1.75Zm-6.5-1.75v-.666h4.166v.666Zm3-2.75v-1.75h-3v-.666h3v-1.75h.666v4.166Zm3-1.75v-.666h7.166v.666Zm3-2.75V3.417h.666v1.75h3.5v.666h-3.5v1.75Zm-9-1.75v-.666h7.166v.666Z" />
           </svg>
           <span class="inline-flex items-center">View</span>
         </span>
@@ -23,6 +23,7 @@
       <li class="px-4 py-1.5 font-semibold text-sm">Sort</li>
       <li>
         <button
+          :class="{ 'font-semibold': sortTypeStatus === SortFilters.Default }"
           class="btn-md md:btn-sm"
           @click="handleSortTasks(SortFilters.Default)">
           <svg
@@ -38,6 +39,7 @@
       </li>
       <li>
         <button
+          :class="{ 'font-semibold': sortTypeStatus === SortFilters.Date }"
           class="btn-md md:btn-sm"
           @click="handleSortTasks(SortFilters.Date)">
           <svg
@@ -53,6 +55,7 @@
       </li>
       <li>
         <button
+          :class="{ 'font-semibold': sortTypeStatus === SortFilters.Created }"
           class="btn-md md:btn-sm"
           @click="handleSortTasks(SortFilters.Created)">
           <svg
@@ -67,6 +70,7 @@
       </li>
       <li>
         <button
+          :class="{ 'font-semibold': sortTypeStatus === SortFilters.Title }"
           class="btn-md md:btn-sm"
           @click="handleSortTasks(SortFilters.Title)">
           <svg
@@ -117,9 +121,16 @@
         <li>
           <button
             :disabled="!tasks.length"
+            :class="{ 'font-semibold': currentFilter === Filters.All }"
             class="btn-md md:btn-sm"
             @click="store.setFilter(Filters.All)">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path d="M4.15 16.65q-.275 0-.462-.188Q3.5 16.275 3.5 16t.188-.463q.187-.187.462-.187t.463.187q.187.188.187.463t-.187.462q-.188.188-.463.188Zm0-4q-.275 0-.462-.188Q3.5 12.275 3.5 12t.188-.463q.187-.187.462-.187t.463.187q.187.188.187.463t-.187.462q-.188.188-.463.188Zm0-4q-.275 0-.462-.188Q3.5 8.275 3.5 8t.188-.463q.187-.187.462-.187t.463.187Q4.8 7.725 4.8 8t-.187.462q-.188.188-.463.188Zm3.075 7.85v-1H20.5v1Zm0-4v-1H20.5v1Zm0-4v-1H20.5v1Z"/></svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24"
+              width="24">
+              <path
+                d="M4.15 16.65q-.275 0-.462-.188Q3.5 16.275 3.5 16t.188-.463q.187-.187.462-.187t.463.187q.187.188.187.463t-.187.462q-.188.188-.463.188Zm0-4q-.275 0-.462-.188Q3.5 12.275 3.5 12t.188-.463q.187-.187.462-.187t.463.187q.187.188.187.463t-.187.462q-.188.188-.463.188Zm0-4q-.275 0-.462-.188Q3.5 8.275 3.5 8t.188-.463q.187-.187.462-.187t.463.187Q4.8 7.725 4.8 8t-.187.462q-.188.188-.463.188Zm3.075 7.85v-1H20.5v1Zm0-4v-1H20.5v1Zm0-4v-1H20.5v1Z" />
+            </svg>
             {{ Filters.All }}
           </button>
         </li>
@@ -127,6 +138,7 @@
         <li>
           <button
             :disabled="!tasks.length"
+            :class="{ 'font-semibold': currentFilter === Filters.Priority }"
             class="btn-md md:btn-sm"
             @click="store.setFilter(Filters.Priority)">
             <svg
@@ -142,6 +154,7 @@
         <li>
           <button
             :disabled="!tasks.length"
+            :class="{ 'font-semibold': currentFilter === Filters.Completed }"
             class="btn-md md:btn-sm"
             @click="store.setFilter(Filters.Completed)">
             <svg
@@ -157,6 +170,7 @@
         <li>
           <button
             :disabled="!tasks.length"
+            :class="{ 'font-semibold': currentFilter === Filters.Uncompleted }"
             class="btn-md md:btn-sm"
             @click="store.setFilter(Filters.Uncompleted)">
             <svg
@@ -174,7 +188,7 @@
       <li
         class="border m-1"
         aria-hidden="true" />
-      <li class="px-4 py-1.5 font-semibold text-sm">Tasks</li>
+      <li class="px-4 py-1.5 font-semibold text-sm">Actions</li>
 
       <li>
         <button
@@ -191,6 +205,20 @@
           Delete all
         </button>
       </li>
+      <li v-if="sortTypeStatus !== SortFilters.Default">
+        <button
+          class="btn-md hover:text-error hover:fill-error focus:text-error focus:fill-error md:btn-sm fill-base-content"
+          @click="store.resetView()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24"
+            width="24">
+            <path
+              d="M19.825 21.25 2.75 4.175l.7-.725 17.1 17.1ZM3.5 6.725v-1h1.775v1Zm3 5.4v-1h4.2v1Zm3.05-5.4-1-1H20.5v1ZM10.5 17.5v-1h3v1Zm4.45-5.375-1-1h3.55v1Z" />
+          </svg>
+          Reset all
+        </button>
+      </li>
     </ul>
   </div>
 </template>
@@ -203,7 +231,12 @@ import { SortFilters, SortOrder } from '@/types/models/Sort';
 import { Filters } from '@/types/models/Filters';
 
 const store = useStoreTasks();
-const { getAllTasks: tasks, getSortType: sortTypeStatus, getSortOrder: sortOrderStatus } = storeToRefs(store);
+const {
+  getAllTasks: tasks,
+  getSortType: sortTypeStatus,
+  getSortOrder: sortOrderStatus,
+  getCurrentFilter: currentFilter,
+} = storeToRefs(store);
 
 const emit = defineEmits<{
   (e: 'deleteTasks'): void;

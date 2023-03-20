@@ -150,6 +150,10 @@ export const useStoreTasks = defineStore('tasks', {
     setFilter(type: Filters): void {
       this.tasks.currentFilter = type;
     },
+    resetView(): void {
+      this.sortToDefault();
+      this.tasks.currentFilter = Filters.All;
+    },
     sortToDefault(): void {
       this.sort.type = SortFilters.Default;
       this.sort.order = SortOrder.Ascending;
