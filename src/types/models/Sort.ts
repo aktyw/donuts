@@ -1,7 +1,7 @@
 export enum SortFilters {
-  Date = 'byDate',
-  Title = 'byTitle',
-  Created = 'byCreationDate',
+  Date = 'by due date',
+  Title = 'alphabetically',
+  Created = 'by date added',
   Default = 'default',
 }
 

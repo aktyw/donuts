@@ -8,6 +8,7 @@
       <div
         class="flex flex-col items-start max-w-2xl relative"
         :class="{ 'h-1/2': !store.tasks.length }">
+        <SortStatusNavbar v-if="sortTypeStatus !== SortFilters.Default && tasks"> </SortStatusNavbar>
         <TaskFilter
           v-if="store.tasks.length"
           @filter-type="updateFilterType" />
@@ -60,6 +61,7 @@
 import type { Ref } from 'vue';
 import { ref, watch, computed, onUpdated } from 'vue';
 import { useStoreTasks } from '@/stores/TasksStore';
+import { storeToRefs } from 'pinia';
 import TaskCard from '@/components/tasks/TaskCard.vue';
 import TaskFilter from '@/components/tasks/TaskFilter.vue';
 import { SortFilters } from '@/types/models/Sort';
@@ -71,14 +73,16 @@ import { useNotification } from '@/composables/useNotification';
 import TaskAddButton from '@/components/tasks/TaskAddButton.vue';
 import TaskEditor from '@/components/tasks/TaskEditor.vue';
 import draggable from 'vuedraggable';
+import SortStatusNavbar from '@/components/tasks/SortStatusNavbar.vue';
 
 const store = useStoreTasks();
-const tasks = computed(() => store.getAllTasks);
+
+const { getAllTasks: tasks, getSortType: sortTypeStatus, getSortOrder: sortOrderStatus } = storeToRefs(store);
+
 const currentFilter: Ref<string> = ref('all');
 const editorIsActive = ref(false);
 const drag = ref(false);
 const allowDrag = ref(true);
-const sortType = computed(() => store.sort.type);
 const filteredTasks = computed(() => {
   switch (currentFilter.value) {
     case Filters.All:
@@ -104,8 +108,7 @@ watch(tasks, (value) => {
   if (value.length) resetFilters();
 });
 
-watch(sortType, (type) => {
-  console.log(type);
+watch(sortTypeStatus, (type) => {
   if (type === SortFilters.Default) {
     allowDrag.value = true;
   } else {

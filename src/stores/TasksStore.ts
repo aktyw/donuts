@@ -44,11 +44,11 @@ export const useStoreTasks = defineStore('tasks', {
     getTaskDate() {
       return (id: string): Date | undefined => this.getTaskById(id)?.date;
     },
-    getSortOrder(): SortOrder {
-      return this.sort.order;
+    getSortOrder(state): SortOrder {
+      return state.sort.order;
     },
-    getSortType(): SortFilters {
-      return this.sort.type;
+    getSortType(state): SortFilters {
+      return state.sort.type;
     },
   },
   actions: {
@@ -129,6 +129,10 @@ export const useStoreTasks = defineStore('tasks', {
       if (this.sort.order === SortOrder.Descending) {
         this.tasks = this.tasks.reverse();
       }
+    },
+    sortToDefault(): void {
+      this.sort.type = SortFilters.Default
+      this.sort.order = SortOrder.Ascending;
     },
     sortTasksChangeOrder(): void {
       this.sort.order = this.sort.order === SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;

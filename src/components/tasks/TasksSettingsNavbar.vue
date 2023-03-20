@@ -5,6 +5,7 @@
         <h2 class="font-bold">Inbox</h2>
       </template>
     </BaseHeading>
+
     <TasksSettingsDropdown @delete-tasks="toggleDeleteModal">
       <template #btn>
         <button
