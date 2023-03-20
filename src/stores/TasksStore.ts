@@ -11,35 +11,38 @@ import { NotificationAction } from '@/types/models/NotificationAction';
 
 export const useStoreTasks = defineStore('tasks', {
   state: (): State => ({
-    tasks: [],
+    tasks: {
+      default: [],
+      sorted: [],
+      deleted: [],
+      temp: [],
+    },
     sort: {
       type: SortFilters.Default,
       order: SortOrder.Ascending,
     },
-    deletedTasks: [],
     notifications: [],
-    temp: [],
   }),
   getters: {
     getAllTasks(state): Task[] {
-      return state.tasks;
+      return state.tasks.default;
     },
     getTaskById(state) {
       return (id: string): Task | undefined => {
-        return state.tasks.find((task) => task.id === id);
+        return state.tasks.default.find((task) => task.id === id);
       };
     },
     getImportantTasks(state): Task[] {
-      return state.tasks.filter((task) => task.isImportant);
+      return state.tasks.default.filter((task) => task.isImportant);
     },
     getDoneTasks(state): Task[] {
-      return state.tasks.filter((task) => task.done);
+      return state.tasks.default.filter((task) => task.done);
     },
     getNotDoneTasks(state): Task[] {
-      return state.tasks.filter((task) => !task.done);
+      return state.tasks.default.filter((task) => !task.done);
     },
     getDeletedTask(state): Task {
-      return state.deletedTasks[this.deletedTasks.length - 1];
+      return state.tasks.deleted[state.tasks.deleted.length - 1];
     },
     getTaskDate() {
       return (id: string): Date | undefined => this.getTaskById(id)?.date;
@@ -75,7 +78,14 @@ export const useStoreTasks = defineStore('tasks', {
         subtasks: {},
       };
 
-      this.tasks.push(newTask);
+      this.tasks.default.push(newTask);
+      this.copyTasksState();
+    },
+    setDefaultPosition(tasks: Task[]): void {
+      this.tasks.default = tasks;
+    },
+    copyTasksState(): void {
+      this.tasks.sorted = [...this.tasks.default];
       this.sortTasks(this.sort.type);
     },
     addNotification(message: string, id: string) {
@@ -105,7 +115,7 @@ export const useStoreTasks = defineStore('tasks', {
       this.notifications = this.notifications.filter((notification) => notification !== notificationToDel);
 
       if (!this.notifications.some((notification) => notification.action === NotificationAction.AllTasksDelete)) {
-        this.temp = [];
+        this.tasks.temp = [];
       }
     },
     sortTasks(type: SortFilters) {
@@ -114,24 +124,26 @@ export const useStoreTasks = defineStore('tasks', {
 
       switch (type) {
         case SortFilters.Created:
-          this.tasks = this.tasks.sort((taskA, taskB) => taskB.createdAt.getTime() - taskA.createdAt.getTime());
+          this.tasks.sorted = [...this.tasks.default].sort(
+            (taskA, taskB) => taskB.createdAt.getTime() - taskA.createdAt.getTime()
+          );
           break;
         case SortFilters.Date:
-          this.tasks = this.tasks.sort(
+          this.tasks.sorted = [...this.tasks.default].sort(
             (taskA, taskB) => (taskA.date?.getTime() || Infinity) - (taskB.date?.getTime() || Infinity)
           );
           break;
         case SortFilters.Title:
-          this.tasks = this.tasks.sort((taskA, taskB) => taskA.title.localeCompare(taskB.title));
+          this.tasks.sorted = [...this.tasks.default].sort((taskA, taskB) => taskA.title.localeCompare(taskB.title));
           break;
       }
 
       if (this.sort.order === SortOrder.Descending) {
-        this.tasks = this.tasks.reverse();
+        this.tasks.sorted = this.tasks.sorted.reverse();
       }
     },
     sortToDefault(): void {
-      this.sort.type = SortFilters.Default
+      this.sort.type = SortFilters.Default;
       this.sort.order = SortOrder.Ascending;
     },
     sortTasksChangeOrder(): void {
@@ -139,30 +151,34 @@ export const useStoreTasks = defineStore('tasks', {
       this.sortTasks(this.sort.type);
     },
     toggleIsDone(id: string) {
-      const index = findIndex(id, this.tasks);
+      const index = findIndex(id, this.tasks.default);
 
-      this.tasks[index]['done'] = !this.tasks[index]['done'];
+      this.tasks.default[index]['done'] = !this.tasks.default[index]['done'];
+      this.copyTasksState();
     },
     toggleIsImportant(id: string) {
-      const index = findIndex(id, this.tasks);
+      const index = findIndex(id, this.tasks.default);
 
-      this.tasks[index]['isImportant'] = !this.tasks[index]['isImportant'];
+      this.tasks.default[index]['isImportant'] = !this.tasks.default[index]['isImportant'];
+      this.copyTasksState();
     },
 
     updateTask(id: string, title: string): void {
-      const task = findItem(id, this.tasks);
+      const task = findItem(id, this.tasks.default);
 
       task.title = title;
       this.sortTasks(this.sort.type);
+      this.copyTasksState();
     },
     updateDate(id: string, date: Date): void {
-      const task = findItem(id, this.tasks);
+      const task = findItem(id, this.tasks.default);
 
       task.date = date;
       this.sortTasks(this.sort.type);
+      this.copyTasksState();
     },
     duplicateTask(id: string): void {
-      const task = findItem(id, this.tasks);
+      const task = findItem(id, this.tasks.default);
       const copyTask = JSON.parse(JSON.stringify(task));
       const newId = uuid();
       const newCreatedAt = new Date();
@@ -171,37 +187,42 @@ export const useStoreTasks = defineStore('tasks', {
       copyTask.createdAt = newCreatedAt;
       if (copyTask.date) copyTask.date = new Date(copyTask.date);
 
-      const taskIndex = this.tasks.findIndex((task) => task.id === id);
-      const tasksArrStart = this.tasks.slice(0, taskIndex + 1);
-      const tasksArrEnd = this.tasks.slice(taskIndex + 1);
+      const taskIndex = this.tasks.default.findIndex((task) => task.id === id);
+      const tasksArrStart = this.tasks.default.slice(0, taskIndex + 1);
+      const tasksArrEnd = this.tasks.default.slice(taskIndex + 1);
 
-      this.tasks = [...tasksArrStart, copyTask, ...tasksArrEnd];
+      this.tasks.default = [...tasksArrStart, copyTask, ...tasksArrEnd];
       this.sortTasks(this.sort.type);
+      this.copyTasksState();
     },
     deleteTask(id: string): void {
-      const taskToDel = findItem(id, this.tasks);
+      const taskToDel = findItem(id, this.tasks.default);
 
-      this.deletedTasks.push(taskToDel);
-      this.tasks = this.tasks.filter((task) => task !== taskToDel);
+      this.tasks.deleted.push(taskToDel);
+      this.tasks.default = this.tasks.default.filter((task) => task !== taskToDel);
+      this.copyTasksState();
     },
     undoDeleteTask(id: string): void {
-      const taskToRecover = findItem(id, this.deletedTasks);
+      const taskToRecover = findItem(id, this.tasks.deleted);
 
-      this.tasks.unshift(taskToRecover);
-      this.deletedTasks = this.deletedTasks.filter((task) => task !== taskToRecover);
+      this.tasks.default.push(taskToRecover);
+      this.tasks.deleted = this.tasks.deleted.filter((task) => task !== taskToRecover);
       this.sortTasks(this.sort.type);
+      this.copyTasksState();
     },
     deleteAllTasks() {
-      const delTasks = [...this.tasks];
+      const delTasks = [...this.tasks.default];
 
-      this.deletedTasks.push(...delTasks);
-      this.tasks = [];
-      this.temp.push(...delTasks);
+      this.tasks.deleted.push(...delTasks);
+      this.tasks.default = [];
+      this.tasks.temp.push(...delTasks);
+      this.copyTasksState();
     },
     undoDeleteAllTasks(): void {
-      this.tasks = [...this.tasks, ...this.temp];
-      this.temp = [];
+      this.tasks.default = [...this.tasks.default, ...this.tasks.temp];
+      this.tasks.temp = [];
       this.sortTasks(this.sort.type);
+      this.copyTasksState();
     },
   },
 });

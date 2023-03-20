@@ -3,12 +3,15 @@ import type { SortFilters, SortOrder } from '@/types/models/Sort';
 import type { Notification } from '@/types/models/Notification';
 
 export type State = {
-  tasks: Task[];
+  tasks: {
+    default: Task[];
+    sorted: Task[];
+    deleted: Task[];
+    temp: Task[];
+  };
   sort: {
     type: SortFilters;
     order: SortOrder;
   };
-  deletedTasks: Task[];
   notifications: Notification[];
-  temp: Task[];
 };
