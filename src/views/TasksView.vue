@@ -77,6 +77,7 @@ const store = useStoreTasks();
 
 const {
   getAllTasks: tasks,
+  getAllTasksSorted: tasksSorted,
   getDoneTasks,
   getPriorityTasks,
   getNotDoneTasks,
@@ -91,7 +92,7 @@ const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
 const filteredTasks = computed(() => {
   switch (getCurrentFilter.value) {
     case Filters.All:
-      return tasks.value;
+      return tasksSorted.value;
     case Filters.Completed:
       return getDoneTasks.value;
     case Filters.Priority:

@@ -29,22 +29,22 @@ export const useStoreTasks = defineStore('tasks', {
     getAllTasks(state): Task[] {
       return state.tasks.default;
     },
+    getAllTasksSorted(state): Task[] {
+      return state.tasks.sorted;
+    },
     getTaskById(state) {
       return (id: string): Task | undefined => {
         return state.tasks.default.find((task) => task.id === id);
       };
     },
-    getCurrentFilter(state): Filters {
-      return state.tasks.currentFilter;
-    },
     getPriorityTasks(state): Task[] {
-      return state.tasks.default.filter((task) => task.isPriority);
+      return state.tasks.sorted.filter((task) => task.isPriority);
     },
     getDoneTasks(state): Task[] {
-      return state.tasks.default.filter((task) => task.done);
+      return state.tasks.sorted.filter((task) => task.done);
     },
     getNotDoneTasks(state): Task[] {
-      return state.tasks.default.filter((task) => !task.done);
+      return state.tasks.sorted.filter((task) => !task.done);
     },
     getDeletedTask(state): Task {
       return state.tasks.deleted[state.tasks.deleted.length - 1];
@@ -57,6 +57,9 @@ export const useStoreTasks = defineStore('tasks', {
     },
     getSortType(state): SortFilters {
       return state.sort.type;
+    },
+    getCurrentFilter(state): Filters {
+      return state.tasks.currentFilter;
     },
   },
   actions: {
@@ -123,6 +126,17 @@ export const useStoreTasks = defineStore('tasks', {
         this.tasks.temp = [];
       }
     },
+    setFilter(type: Filters): void {
+      this.tasks.currentFilter = type;
+    },
+    resetView(): void {
+      this.sortToDefault();
+      this.tasks.currentFilter = Filters.All;
+    },
+    sortToDefault(): void {
+      this.sort.type = SortFilters.Default;
+      this.sort.order = SortOrder.Ascending;
+    },
     sortTasks(type: SortFilters) {
       this.sort.type = type;
       if (this.sort.type === SortFilters.Default) return;
@@ -146,17 +160,6 @@ export const useStoreTasks = defineStore('tasks', {
       if (this.sort.order === SortOrder.Descending) {
         this.tasks.sorted = this.tasks.sorted.reverse();
       }
-    },
-    setFilter(type: Filters): void {
-      this.tasks.currentFilter = type;
-    },
-    resetView(): void {
-      this.sortToDefault();
-      this.tasks.currentFilter = Filters.All;
-    },
-    sortToDefault(): void {
-      this.sort.type = SortFilters.Default;
-      this.sort.order = SortOrder.Ascending;
     },
     sortTasksChangeOrder(): void {
       this.sort.order = this.sort.order === SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
