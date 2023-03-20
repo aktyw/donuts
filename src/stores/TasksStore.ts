@@ -6,6 +6,7 @@ import { SortFilters, SortOrder } from '@/types/models/Sort';
 import type { Task } from '@/types/models/Task';
 import type { State } from '@/types/models/State';
 import type { Notification } from '@/types/models/Notification';
+import { Filters } from '@/types/models/Filters';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { NotificationAction } from '@/types/models/NotificationAction';
 
@@ -16,6 +17,7 @@ export const useStoreTasks = defineStore('tasks', {
       sorted: [],
       deleted: [],
       temp: [],
+      currentFilter: Filters.All,
     },
     sort: {
       type: SortFilters.Default,
@@ -32,8 +34,11 @@ export const useStoreTasks = defineStore('tasks', {
         return state.tasks.default.find((task) => task.id === id);
       };
     },
-    getImportantTasks(state): Task[] {
-      return state.tasks.default.filter((task) => task.isImportant);
+    getCurrentFilter(state): Filters {
+      return state.tasks.currentFilter;
+    },
+    getPriorityTasks(state): Task[] {
+      return state.tasks.default.filter((task) => task.isPriority);
     },
     getDoneTasks(state): Task[] {
       return state.tasks.default.filter((task) => task.done);
@@ -59,12 +64,12 @@ export const useStoreTasks = defineStore('tasks', {
       title,
       description,
       date,
-      isImportant,
+      isPriority,
     }: {
       title: string;
       description: string;
       date: Date | undefined;
-      isImportant: boolean;
+      isPriority: boolean;
     }) {
       const id = uuid();
       const newTask: Task = {
@@ -72,7 +77,7 @@ export const useStoreTasks = defineStore('tasks', {
         title,
         ...(description && { description }),
         done: false,
-        isImportant,
+        isPriority,
         createdAt: new Date(),
         ...(date && { date }),
         subtasks: {},
@@ -142,6 +147,9 @@ export const useStoreTasks = defineStore('tasks', {
         this.tasks.sorted = this.tasks.sorted.reverse();
       }
     },
+    setFilter(type: Filters): void {
+      this.tasks.currentFilter = type;
+    },
     sortToDefault(): void {
       this.sort.type = SortFilters.Default;
       this.sort.order = SortOrder.Ascending;
@@ -156,10 +164,10 @@ export const useStoreTasks = defineStore('tasks', {
       this.tasks.default[index]['done'] = !this.tasks.default[index]['done'];
       this.copyTasksState();
     },
-    toggleIsImportant(id: string) {
+    toggleIsPriority(id: string) {
       const index = findIndex(id, this.tasks.default);
 
-      this.tasks.default[index]['isImportant'] = !this.tasks.default[index]['isImportant'];
+      this.tasks.default[index]['isPriority'] = !this.tasks.default[index]['isPriority'];
       this.copyTasksState();
     },
 

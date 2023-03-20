@@ -1,7 +1,7 @@
 <template>
-  <div class="flex w-full justify-end gap-2">
+  <div class="flex w-full justify-end gap-2 border-b border-base-200 pb-3">
     <button
-      class="btn-xs md:btn-xs hover:bg-base-200"
+      class="btn-xs hover:bg-base-200 rounded p-0"
       @click="toggleSortOrder()">
       <svg
         v-if="sortOrderStatus === SortOrder.Ascending"
@@ -20,7 +20,7 @@
     </button>
     <span class="text-xs font-semibold inline-flex items-center">Sorted {{ sortTypeStatus }}</span>
     <button
-      class="btn-xs hover:bg-base-200"
+      class="btn-xs hover:bg-base-200 rounded p-0"
       @click="reset">
       <svg
         xmlns="http://www.w3.org/2000/svg"

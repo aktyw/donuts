@@ -1,7 +1,7 @@
 <template>
   <BaseButton
     v-if="largerThanSm"
-    class="btn btn-sm btn-block btn-ghost p-0 text-left normal-case justify-start hover:bg-transparent [&:hover>svg]:fill-neutral-content [&:hover>svg]:bg-accent [&:hover]:text-accent transition-all duration-150 font-normal"
+    class="btn btn-sm btn-block btn-ghost p-0 text-left normal-case justify-start hover:bg-transparent [&:hover>svg]:fill-neutral-content [&:hover>svg]:bg-accent [&:hover]:text-accent transition-all duration-150 font-normal py-2"
     @click.prevent="showAddTaskEditor">
     <template #icon>
       <svg

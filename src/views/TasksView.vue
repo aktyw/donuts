@@ -8,7 +8,7 @@
       <div
         class="flex flex-col items-start max-w-2xl relative"
         :class="{ 'h-1/2': !store.tasks.default.length }">
-        <SortStatusNavbar v-if="!allowDrag && tasks.length"> </SortStatusNavbar>
+        <SortStatusNavbar v-if="!allowDrag"> </SortStatusNavbar>
         <TaskFilter
           v-if="store.tasks.default.length && !allowDrag"
           @filter-type="updateFilterType" />
@@ -81,25 +81,25 @@ const store = useStoreTasks();
 const {
   getAllTasks: tasks,
   getDoneTasks,
-  getImportantTasks,
+  getPriorityTasks,
   getNotDoneTasks,
   getSortType: sortTypeStatus,
-  getSortOrder: sortOrderStatus,
+  getCurrentFilter,
 } = storeToRefs(store);
 
-const currentFilter: Ref<string> = ref('all');
 const editorIsActive = ref(false);
 const drag = ref(true);
 const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
+
 const filteredTasks = computed(() => {
-  switch (currentFilter.value) {
+  switch (getCurrentFilter.value) {
     case Filters.All:
       return tasks.value;
     case Filters.Completed:
       return getDoneTasks.value;
-    case Filters.Important:
-      return getImportantTasks.value;
-    case Filters.NotCompleted:
+    case Filters.Priority:
+      return getPriorityTasks.value;
+    case Filters.Uncompleted:
       return getNotDoneTasks.value;
     default:
       return tasks.value;
@@ -109,7 +109,6 @@ const filteredTasks = computed(() => {
 const defTasks = ref(store.getAllTasks);
 
 watch(tasks, (newTasks, oldTasks) => {
-  if (newTasks.length) resetFilters();
   if (newTasks.length !== oldTasks.length) {
     defTasks.value = store.getAllTasks;
   }
@@ -131,13 +130,5 @@ function showEditor(): void {
 
 function closeEditor(): void {
   editorIsActive.value = false;
-}
-
-function resetFilters(): void {
-  currentFilter.value = Filters.All;
-}
-
-function updateFilterType(type: string): void {
-  currentFilter.value = type;
 }
 </script>

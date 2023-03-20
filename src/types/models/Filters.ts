@@ -1,6 +1,6 @@
 export enum Filters {
-  All = 'all',
-  Completed = 'completed',
-  Important = 'important',
-  NotCompleted = 'not-completed',
+  All = 'All',
+  Completed = 'Completed',
+  Priority = 'Priority',
+  Uncompleted = 'Uncompleted',
 }

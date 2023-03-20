@@ -59,8 +59,8 @@ import BaseButton from '@/components/ui/BaseButton.vue';
         </BaseButton>
         <BaseButton
           class="btn btn-xs btn-ghost rounded border border-base-300 font-normal pl-0.5 ml-3"
-          :class="{ 'bg-base-300': taskIsImportant }"
-          @click.prevent="toggleImportant"
+          :class="{ 'bg-base-300': taskIsPriority }"
+          @click.prevent="togglePriority"
           ><template #icon>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +70,7 @@ import BaseButton from '@/components/ui/BaseButton.vue';
                 d="M10 15.208q-.292 0-.479-.198-.188-.198-.188-.468 0-.292.198-.48.198-.187.469-.187.292 0 .479.198.188.198.188.469 0 .27-.198.468t-.469.198Zm-.438-3.166V3.958h.876v8.084Z" />
             </svg>
           </template>
-          <template #default>Important</template></BaseButton
+          <template #default>Priority</template></BaseButton
         >
       </div>
     </div>
@@ -126,7 +126,7 @@ const showPicker = ref(false);
 const { showInputDetailTime } = useTimeDetail(date);
 const startTime = ref({ hours: 0, minutes: 0 });
 const inputTaskDate: Ref<Date | undefined> = ref();
-const taskIsImportant = ref(false);
+const taskIsPriority = ref(false);
 
 const emit = defineEmits<{
   (e: 'closeEditor'): void;
@@ -141,13 +141,13 @@ function addTask(): void {
     title: taskTitle.value,
     description: taskDescription.value,
     date: date.value,
-    isImportant: taskIsImportant.value,
+    isPriority: taskIsPriority.value,
   };
 
   store.addTask(options);
   taskTitle.value = '';
   taskDescription.value = '';
-  taskIsImportant.value = false;
+  taskIsPriority.value = false;
   taskTitleInput.value?.focus();
   datepicker.value?.clearValue();
   clearDate();
@@ -159,8 +159,8 @@ function handleCalendar(): void {
   datepicker.value?.openMenu();
 }
 
-function toggleImportant(): void {
-  taskIsImportant.value = !taskIsImportant.value;
+function togglePriority(): void {
+  taskIsPriority.value = !taskIsPriority.value;
 }
 
 function clearDate(): void {

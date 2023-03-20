@@ -62,14 +62,14 @@
       </li>
 
       <li
-        class="border-1 m-1"
+        class="border m-1"
         aria-hidden="true" />
 
       <li>
         <button
           class="btn-md md:btn-sm"
-          :class="importantStyle"
-          @click="handleToggleImportant(taskId)">
+          :class="PriorityStyle"
+          @click="handleTogglePriority(taskId)">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="24"
@@ -77,7 +77,7 @@
             <path
               d="M12 18.85q-.425 0-.712-.3-.288-.3-.288-.7 0-.425.288-.712.287-.288.712-.288t.713.288q.287.287.287.712 0 .4-.287.7-.288.3-.713.3Zm-.725-3.8V4.15h1.45v10.9Z" />
           </svg>
-          Toggle Important
+          Toggle Priority
         </button>
       </li>
       <li>
@@ -95,7 +95,7 @@
         </button>
       </li>
       <li
-        class="border-1 m-1"
+        class="border m-1"
         aria-hidden="true" />
       <li>
         <button
@@ -167,7 +167,7 @@ type Props = {
   task: Task;
   taskId: string;
   taskIsDone: boolean;
-  taskIsImportant: boolean;
+  taskIsPriority: boolean;
   taskDate?: Date;
 };
 
@@ -175,7 +175,7 @@ const props = defineProps<Props>();
 
 const emit = defineEmits<{
   (e: 'deleteTask', id: string): void;
-  (e: 'toggleIsImportant', id: string): void;
+  (e: 'toggleIsPriority', id: string): void;
   (e: 'toggleIsDone', id: string): void;
   (e: 'handleDate', date: Date): void;
   (e: 'editTask', id: string): void;
@@ -183,7 +183,7 @@ const emit = defineEmits<{
 }>();
 
 const store = useStoreTasks();
-const { taskId, taskIsDone: isDone, taskIsImportant: isImportant } = toRefs(props);
+const { taskId, taskIsDone: isDone, taskIsPriority: isPriority } = toRefs(props);
 const date: Ref<Date | undefined> = ref();
 const currentDate = computed(() => store.getTaskDate(props.task.id));
 const datepicker = ref();
@@ -198,7 +198,7 @@ const activeStyle = [
   'font-medium',
 ];
 const doneStyle = computed(() => (isDone.value ? activeStyle : ''));
-const importantStyle = computed(() => (isImportant.value ? activeStyle : ''));
+const PriorityStyle = computed(() => (isPriority.value ? activeStyle : ''));
 const { showInputDetailTime } = useTimeDetail(currentDate);
 const dropList: Ref<HTMLElement | undefined> = ref();
 const { x, y, width } = useElementBounding(dropList);
@@ -226,8 +226,8 @@ function handleDuplicateTask(taskId: string): void {
   emit('duplicateTask', taskId);
 }
 
-function handleToggleImportant(taskId: string): void {
-  emit('toggleIsImportant', taskId);
+function handleTogglePriority(taskId: string): void {
+  emit('toggleIsPriority', taskId);
 }
 
 function handleToggleIsDone(taskId: string): void {

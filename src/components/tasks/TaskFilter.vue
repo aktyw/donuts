@@ -1,36 +1,40 @@
 <template>
-  <ul
-    class="flex justify-between w-full md:gap-2 md:py-3 py-2 p-0"
-    @click="handleFilterTasks">
+  <ul class="flex justify-between w-full md:gap-2 md:py-3 py-2 p-0">
     <li>
       <TaskFilterBadge
-        id="all"
-        class="btn-active">
-        <template #title> All </template>
+        :class="{ 'btn-active': getCurrentFilter === Filters.All }"
+        @click="handleFilterType(Filters.All)">
+        <template #title> {{ Filters.All }} </template>
         <template #amount>
           {{ getAllTasks.length }}
         </template>
       </TaskFilterBadge>
     </li>
     <li>
-      <TaskFilterBadge id="important">
-        <template #title> Important </template>
+      <TaskFilterBadge
+        :class="{ 'btn-active': getCurrentFilter === Filters.Priority }"
+        @click="handleFilterType(Filters.Priority)">
+        <template #title> {{ Filters.Priority }} </template>
         <template #amount>
-          {{ getImportantTasks.length }}
+          {{ getPriorityTasks.length }}
         </template>
       </TaskFilterBadge>
     </li>
     <li>
-      <TaskFilterBadge id="completed">
-        <template #title> Completed </template>
+      <TaskFilterBadge
+        :class="{ 'btn-active': getCurrentFilter === Filters.Completed }"
+        @click="handleFilterType(Filters.Completed)">
+        <template #title> {{ Filters.Completed }} </template>
         <template #amount>
           {{ getDoneTasks.length }}
         </template>
       </TaskFilterBadge>
     </li>
     <li>
-      <TaskFilterBadge id="not-completed">
-        <template #title> Uncompleted </template>
+      <TaskFilterBadge
+        :class="{ 'btn-active': getCurrentFilter === Filters.Uncompleted }"
+        @click="handleFilterType(Filters.Uncompleted)">
+        <template #title> {{ Filters.Uncompleted }} </template>
         <template #amount>
           {{ getNotDoneTasks.length }}
         </template>
@@ -43,24 +47,13 @@
 import { storeToRefs } from 'pinia';
 import { useStoreTasks } from '@/stores/TasksStore';
 import TaskFilterBadge from '@/components/tasks/TaskFilterBadge.vue';
+import { Filters } from '@/types/models/Filters';
 
 const store = useStoreTasks();
-const { getAllTasks, getImportantTasks, getDoneTasks, getNotDoneTasks } = storeToRefs(store);
+const { getCurrentFilter } = storeToRefs(store);
+const { getAllTasks, getPriorityTasks, getDoneTasks, getNotDoneTasks } = storeToRefs(store);
 
-const emit = defineEmits<{
-  (e: 'filterType', id: string): void;
-}>();
-
-function handleFilterTasks(event: Event): void {
-  const btn = (event.target as HTMLElement).closest('button');
-
-  if (!btn) return;
-
-  (event.currentTarget as HTMLUListElement)
-    .querySelectorAll('button')
-    .forEach((btn) => btn.classList.remove('btn-active'));
-
-  btn.classList.add('btn-active');
-  emit('filterType', btn.id);
+function handleFilterType(type: Filters): void {
+  store.setFilter(type);
 }
 </script>

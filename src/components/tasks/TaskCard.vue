@@ -1,6 +1,6 @@
 <template>
   <li
-    class="border-solid border-t border-base-200 last:border-solid last:border-b py-3 w-full flex justify-between"
+    class="border-t border-base-200 last:border-b py-3 w-full flex justify-between"
     @click="handleShowOptionsBtn"
     @mouseover="handleShowOptionsBtn"
     @mouseleave="handleHideOptionsBtn">
@@ -11,19 +11,19 @@
             type="checkbox"
             class="checkbox rounded-full"
             :checked="isDone"
-            :class="{ 'checkbox-accent': isImportant }"
+            :class="{ 'checkbox-accent': isPriority }"
             @click="toggleIsDone(task.id)" />
         </label>
       </div>
       <div class="flex flex-col w-full cursor-pointer">
         <p
           class="break-all h-full flex"
-          :class="{ 'line-through': isDone, 'decoration-accent': isImportant }">
+          :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
           {{ task.title }}
         </p>
         <p
           class="break-all h-full flex text-sm"
-          :class="{ 'line-through': isDone, 'decoration-accent': isImportant }">
+          :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
           {{ task.description }}
         </p>
         <TaskTimeDetail
@@ -40,11 +40,11 @@
       v-show="cardIsHover"
       :task-id="task.id"
       :task-is-done="task.done"
-      :task-is-important="task.isImportant"
+      :task-is-Priority="task.isPriority"
       :task-date="props.task.date"
       :task-title="task.title"
       :task="task"
-      @toggle-is-important="toggleIsImportant"
+      @toggle-is-Priority="toggleIsPriority"
       @toggle-is-done="toggleIsDone"
       @edit-task="toggleEditModal"
       @delete-task="toggleDeleteModal"
@@ -122,7 +122,7 @@ const emit = defineEmits<{
 const store = useStoreTasks();
 const newTitle = ref(props.task.title);
 const isDone = ref(props.task.done);
-const isImportant = ref(props.task.isImportant);
+const isPriority = ref(props.task.isPriority);
 const editTask = ref(false);
 const deleteConfirm = ref(false);
 const deadline = computed(() => store.getTaskDate(props.task.id));
@@ -172,9 +172,9 @@ function toggleIsDone(id: string): void {
   isDone.value ? useNotification(NotificationMessage.Complete) : useNotification(NotificationMessage.NotComplete);
 }
 
-function toggleIsImportant(id: string): void {
-  isImportant.value = !isImportant.value;
-  store.toggleIsImportant(id);
+function toggleIsPriority(id: string): void {
+  isPriority.value = !isPriority.value;
+  store.toggleIsPriority(id);
 }
 
 function cancelEditTask(): void {
