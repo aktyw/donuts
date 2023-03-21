@@ -106,8 +106,8 @@ const filteredTasks = computed(() => {
 
 const defTasks = ref(store.getAllTasks);
 
-watch(tasks, (newTasks, oldTasks) => {
-  if (newTasks.length !== oldTasks.length) {
+watch(tasks, (newTasks) => {
+  if (newTasks.length !== defTasks.value.length) {
     defTasks.value = store.getAllTasks;
   }
 });

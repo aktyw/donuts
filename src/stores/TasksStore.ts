@@ -9,16 +9,17 @@ import type { Notification } from '@/types/models/Notification';
 import { Filters } from '@/types/models/Filters';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { NotificationAction } from '@/types/models/NotificationAction';
+import { useStorage } from '@vueuse/core';
 
 export const useStoreTasks = defineStore('tasks', {
   state: (): State => ({
-    tasks: {
+    tasks: useStorage('tasks', {
       default: [],
       sorted: [],
       deleted: [],
       temp: [],
       currentFilter: Filters.All,
-    },
+    }),
     sort: {
       type: SortFilters.Default,
       order: SortOrder.Ascending,
