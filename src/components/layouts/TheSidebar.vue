@@ -1,5 +1,5 @@
 <template>
-  <div class="drawer drawer-mobile">
+  <div class="drawer drawer-mobile absolute">
     <input
       id="my-drawer-2"
       type="checkbox"
@@ -9,17 +9,16 @@
       <label
         for="my-drawer-2"
         class="btn btn-primary drawer-button lg:hidden"
-        >Open drawer</label
+        >Menu</label
       >
     </div>
     <div class="drawer-side">
-      <label
-        for="my-drawer-2"
-        class="drawer-overlay"></label>
-      <ul class="menu p-4 w-80 bg-base-100 text-base-content">
+      <ul class="menu p-4 w-80 bg-base-200 text-base-content">
         <!-- Sidebar content here -->
-        <li><a>Sidebar Item 1</a></li>
-        <li><a>Sidebar Item 2</a></li>
+        <slot name="links">
+          <li><a>Sidebar Item 1</a></li>
+          <li><a>Sidebar Item 2</a></li>
+        </slot>
       </ul>
     </div>
   </div>

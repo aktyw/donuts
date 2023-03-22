@@ -1,4 +1,5 @@
 <template>
+  <TasksSidebar />
   <div class="flex flex-col justify-start items-center full-h">
     <div>
       <SettingsNavbar
@@ -72,6 +73,7 @@ import TaskAddButton from '@/components/tasks/TaskAddButton.vue';
 import TaskEditor from '@/components/tasks/TaskEditor.vue';
 import draggable from 'vuedraggable';
 import SortStatusNavbar from '@/components/tasks/SortStatusNavbar.vue';
+import TasksSidebar from '@/components/tasks/TasksSidebar.vue';
 
 const store = useStoreTasks();
 
