@@ -68,7 +68,7 @@
       <li>
         <button
           class="btn-md md:btn-sm"
-          :class="PriorityStyle"
+          :class="priorityStyle"
           @click="handleTogglePriority(taskId)">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -166,9 +166,6 @@ import { useElementBounding } from '@vueuse/core';
 type Props = {
   task: Task;
   taskId: string;
-  taskIsDone: boolean;
-  taskIsPriority: boolean;
-  taskDate?: Date;
 };
 
 const props = defineProps<Props>();
@@ -183,15 +180,15 @@ const emit = defineEmits<{
 }>();
 
 const store = useStoreTasks();
-const { taskId, taskIsDone: isDone, taskIsPriority: isPriority } = toRefs(props);
+const { task, taskId } = toRefs(props);
 const date: Ref<Date | undefined> = ref();
 const currentDate = computed(() => store.getTaskDate(props.task.id));
 const datepicker = ref();
 const showPicker = ref(false);
 const startTime = ref({ hours: 0, minutes: 0 });
 const activeStyle = ['active-state', 'active:bg-base-200', 'font-semibold'];
-const doneStyle = computed(() => (isDone.value ? activeStyle : ''));
-const PriorityStyle = computed(() => (isPriority.value ? activeStyle : ''));
+const doneStyle = computed(() => (task.value.done ? activeStyle : ''));
+const priorityStyle = computed(() => (task.value.isPriority ? activeStyle : ''));
 const { showInputDetailTime } = useTimeDetail(currentDate);
 const dropList: Ref<HTMLElement | undefined> = ref();
 const { x, y, width } = useElementBounding(dropList);

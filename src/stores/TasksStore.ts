@@ -13,13 +13,44 @@ import { useStorage } from '@vueuse/core';
 
 export const useStoreTasks = defineStore('tasks', {
   state: (): State => ({
-    tasks: useStorage('tasks', {
-      default: [],
-      sorted: [],
-      deleted: [],
-      temp: [],
-      currentFilter: Filters.All,
-    }),
+    tasks: useStorage(
+      'tasks',
+      {
+        default: [],
+        sorted: [],
+        deleted: [],
+        temp: [],
+        currentFilter: Filters.All,
+      },
+      undefined,
+      {
+        serializer: {
+          read: (v: any) => {
+            const isoDateRegex = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/;
+
+            function isIsoDate(value: string) {
+              return isoDateRegex.exec(value);
+            }
+
+            function parseDate(ignored: string, value: string) {
+              if (typeof value !== 'string') {
+                return value;
+              }
+              if (isIsoDate(value)) {
+                return new Date(value);
+              }
+
+              return value;
+            }
+
+            return v ? JSON.parse(v, parseDate) : null;
+          },
+          write: (v: any) => {
+            return JSON.stringify(v);
+          },
+        },
+      }
+    ),
     sort: {
       type: SortFilters.Default,
       order: SortOrder.Ascending,

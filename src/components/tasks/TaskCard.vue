@@ -39,10 +39,6 @@
     <TaskOptions
       v-show="cardIsHover"
       :task-id="task.id"
-      :task-is-done="task.done"
-      :task-is-priority="task.isPriority"
-      :task-date="props.task.date"
-      :task-title="task.title"
       :task="task"
       @toggle-is-priority="toggleIsPriority"
       @toggle-is-done="toggleIsDone"
