@@ -34,11 +34,11 @@
 </template>
 
 <script setup lang="ts">
-import { useStoreTasks } from '@/stores/TasksStore';
+import { useTasksStore } from '@/stores/TasksStore';
 import { storeToRefs } from 'pinia';
 import { SortOrder } from '@/types/models/Sort';
 
-const store = useStoreTasks();
+const store = useTasksStore();
 
 const { getSortType: sortTypeStatus, getSortOrder: sortOrderStatus } = storeToRefs(store);
 

@@ -45,11 +45,11 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { useStoreTasks } from '@/stores/TasksStore';
+import { useTasksStore } from '@/stores/TasksStore';
 import TaskFilterBadge from '@/components/tasks/TaskFilterBadge.vue';
 import { Filters } from '@/types/models/Filters';
 
-const store = useStoreTasks();
+const store = useTasksStore();
 const { getCurrentFilter } = storeToRefs(store);
 const { getAllTasks, getPriorityTasks, getDoneTasks, getNotDoneTasks } = storeToRefs(store);
 

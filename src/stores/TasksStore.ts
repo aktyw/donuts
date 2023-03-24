@@ -11,7 +11,7 @@ import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { NotificationAction } from '@/types/models/NotificationAction';
 import { useStorage } from '@vueuse/core';
 
-export const useStoreTasks = defineStore('tasks', {
+export const useTasksStore = defineStore('tasks', {
   state: (): State => ({
     tasks: useStorage(
       'tasks',

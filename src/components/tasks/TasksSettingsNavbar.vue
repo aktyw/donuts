@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useStoreTasks } from '@/stores/TasksStore';
+import { useTasksStore } from '@/stores/TasksStore';
 import TasksSettingsDropdown from '@/components/tasks/TasksSettingsDropdown.vue';
 import TaskDeleteConfirmModal from '@/components/tasks/TaskDeleteConfirmModal.vue';
 import BaseHeading from '../ui/BaseHeading.vue';
@@ -38,7 +38,7 @@ import type { Task } from '@/types/models/Task';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { useNotification } from '@/composables/useNotification';
 
-const store = useStoreTasks();
+const store = useTasksStore();
 
 defineProps<{
   tasks: Task[];

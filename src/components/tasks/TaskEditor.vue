@@ -104,7 +104,7 @@ import BaseButton from '@/components/ui/BaseButton.vue';
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import type { Ref } from 'vue';
-import { useStoreTasks } from '@/stores/TasksStore';
+import { useTasksStore } from '@/stores/TasksStore';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
@@ -115,7 +115,7 @@ import TaskEditorInput from '@/components/tasks/TaskEditorInput.vue';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { useNotification } from '@/composables/useNotification';
 
-const store = useStoreTasks();
+const store = useTasksStore();
 const taskTitle = ref('');
 const taskDescription = ref('');
 const taskTitleInput: Ref<InstanceType<typeof HTMLInputElement> | null> = ref(null);

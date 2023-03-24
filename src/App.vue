@@ -1,5 +1,6 @@
 <template>
   <TheHeader />
+  <RouterView name="sidebar" />
   <RouterView />
   <TheNotification v-if="store.notifications.length" />
 </template>
@@ -8,7 +9,7 @@
 import { RouterView } from 'vue-router';
 import TheHeader from '@/components/layouts/TheHeader.vue';
 import TheNotification from '@/components/layouts/TheNotification.vue';
-import { useStoreTasks } from '@/stores/TasksStore';
+import { useTasksStore } from '@/stores/TasksStore';
 
-const store = useStoreTasks();
+const store = useTasksStore();
 </script>

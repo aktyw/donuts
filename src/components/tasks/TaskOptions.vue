@@ -160,7 +160,7 @@ import Datepicker from '@vuepic/vue-datepicker';
 import blurElement from '@/helpers/blur';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import type { Task } from '@/types/models/Task';
-import { useStoreTasks } from '@/stores/TasksStore';
+import { useTasksStore } from '@/stores/TasksStore';
 import { useElementBounding } from '@vueuse/core';
 
 type Props = {
@@ -179,7 +179,7 @@ const emit = defineEmits<{
   (e: 'duplicateTask', id: string): void;
 }>();
 
-const store = useStoreTasks();
+const store = useTasksStore();
 const { task, taskId } = toRefs(props);
 const date: Ref<Date | undefined> = ref();
 const currentDate = computed(() => store.getTaskDate(props.task.id));

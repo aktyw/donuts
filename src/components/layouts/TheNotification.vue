@@ -41,11 +41,11 @@
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseNotification from '@/components/ui/BaseNotification.vue';
 import { vFocus } from '@/directives/vAutoFocus.js';
-import { useStoreTasks } from '@/stores/TasksStore';
+import { useTasksStore } from '@/stores/TasksStore';
 import { storeToRefs } from 'pinia';
 import { NotificationAction } from '@/types/models/NotificationAction';
 
-const store = useStoreTasks();
+const store = useTasksStore();
 
 const { notifications } = storeToRefs(store);
 

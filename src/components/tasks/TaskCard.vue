@@ -95,7 +95,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { useStoreTasks } from '@/stores/TasksStore';
+import { useTasksStore } from '@/stores/TasksStore';
 import type { Task } from '@/types/models/Task';
 import TaskOptions from '@/components/tasks/TaskOptions.vue';
 import TaskEditModal from '@/components/tasks/TaskEditModal.vue';
@@ -111,11 +111,8 @@ type Props = {
 };
 
 const props = defineProps<Props>();
-const emit = defineEmits<{
-  (e: 'deleteTask', id: string): void;
-}>();
 
-const store = useStoreTasks();
+const store = useTasksStore();
 const newTitle = ref(props.task.title);
 const isDone = ref(props.task.done);
 const isPriority = ref(props.task.isPriority);
@@ -124,30 +121,32 @@ const deleteConfirm = ref(false);
 const deadline = computed(() => store.getTaskDate(props.task.id));
 const { showDetailTime, markOverdue } = useTimeDetail(deadline);
 const cardIsHover = ref(false);
-const optionsIsOpen = ref(false);
+const isOptionsOpen = ref(false);
 const activeElement = useActiveElement();
 
 watch(activeElement, (el) => {
-  el?.closest('.dropdown') ? (optionsIsOpen.value = true) : (optionsIsOpen.value = false);
+  el?.closest('.dropdown') ? (isOptionsOpen.value = true) : (isOptionsOpen.value = false);
 });
 
-watch(optionsIsOpen, (val) => {
+watch(isOptionsOpen, (val) => {
   if (!val) handleHideOptionsBtn();
 });
 
 function handleHideOptionsBtn() {
-  if (optionsIsOpen.value) return;
+  if (isOptionsOpen.value) return;
   cardIsHover.value = false;
 }
 
 function handleShowOptionsBtn() {
-  if (!optionsIsOpen.value) {
+  if (!isOptionsOpen.value) {
     cardIsHover.value = true;
   }
 }
 
 function handleDeleteTask(id: string): void {
-  emit('deleteTask', id);
+  store.deleteTask(id);
+
+  useNotification(NotificationMessage.TaskDelete, id);
 }
 
 function cancelDeleteTask(): void {

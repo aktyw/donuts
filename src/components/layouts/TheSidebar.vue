@@ -9,13 +9,17 @@
       <label
         for="my-drawer-2"
         class="btn btn-primary drawer-button lg:hidden"
-        >Menu</label
+        >Open drawer</label
       >
     </div>
     <div class="drawer-side">
       <ul class="menu p-4 w-80 bg-base-200 text-base-content">
-        <!-- Sidebar content here -->
         <slot name="links">
+          <li><a>Sidebar Item 1</a></li>
+          <li><a>Sidebar Item 2</a></li>
+        </slot>
+        <div class="divider"></div>
+        <slot name="project">
           <li><a>Sidebar Item 1</a></li>
           <li><a>Sidebar Item 2</a></li>
         </slot>

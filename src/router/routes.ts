@@ -2,6 +2,7 @@ import HomeView from '@/views/HomeView.vue';
 import TasksView from '@/views/TasksView.vue';
 import NotesView from '@/views/NotesView.vue';
 import LoginView from '@/views/LoginView.vue';
+import TasksSidebar from '@/components/tasks/TasksSidebar.vue';
 
 const routes = [
   {
@@ -12,12 +13,12 @@ const routes = [
   {
     path: '/tasks',
     name: 'tasks',
-    component: TasksView,
+    components: { default: TasksView, sidebar: TasksSidebar },
   },
   {
     path: '/notes',
     name: 'notes',
-    component: NotesView,
+    components: { default: NotesView, sidebar: TasksSidebar },
   },
   {
     path: '/login',
