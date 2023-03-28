@@ -1,4 +1,3 @@
-import BaseButton from '@/components/ui/BaseButton.vue';
 <template>
   <div class="navbar bg-accent sticky top-0 z-50">
     <div class="navbar-start">

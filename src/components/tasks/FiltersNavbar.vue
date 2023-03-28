@@ -1,8 +1,16 @@
 <template>
-  <div class="w-full flex justify-between gap-2 py-2 relative">
+  <div
+    class="w-full flex justify-between gap-2 py-2 relative fill-base-content [&>button:hover]:fill-base-content [&>button:hover]:bg-base-300 [&>button]:p-0.5 [&>button]:rounded">
     <BaseHeading>
       <template #default>
-        <h2 class="font-bold">Inbox</h2>
+        <h2 class="font-bold text-xl">
+          {{ title }}
+          <span
+            v-if="title === TASK_VIEW_TITLE.TODAY"
+            class="font-normal text-sm"
+            >{{ formattedDate }}</span
+          >
+        </h2>
       </template>
     </BaseHeading>
     <TasksSettingsDropdown @delete-tasks="toggleDeleteModal"></TasksSettingsDropdown>
@@ -31,18 +39,22 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useTasksStore } from '@/stores/TasksStore';
-import TasksSettingsDropdown from '@/components/tasks/TasksSettingsDropdown.vue';
+import TasksSettingsDropdown from '@/components/tasks/FiltersDropdown.vue';
 import TaskDeleteConfirmModal from '@/components/tasks/TaskDeleteConfirmModal.vue';
-import BaseHeading from '../ui/BaseHeading.vue';
-import type { Task } from '@/types/models/Task';
+import BaseHeading from '@/components/ui/BaseHeading.vue';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { useNotification } from '@/composables/useNotification';
+import { useNow, useDateFormat } from '@vueuse/core';
+import { TASK_VIEW_TITLE } from '@/types/models/Titles';
 
 const store = useTasksStore();
 
 defineProps<{
-  tasks: Task[];
+  title: string;
+  titleDate?: string | Date;
 }>();
+
+const formattedDate = useDateFormat(useNow(), 'ddd DD MMM', { locales: 'en-US' });
 
 const deleteConfirm = ref(false);
 

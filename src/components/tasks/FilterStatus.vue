@@ -47,6 +47,6 @@ function toggleSortOrder(): void {
 }
 
 function reset() {
-  store.sortToDefault();
+  store.resetSortSettings();
 }
 </script>

@@ -25,7 +25,7 @@
         <button
           :class="{ 'font-semibold': sortTypeStatus === SortFilters.Default }"
           class="btn-md md:btn-sm"
-          @click="handleSortTasks(SortFilters.Default)">
+          @click="store.setSortType(SortFilters.Default)">
           <svg
             class="fill-base-content"
             xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +41,7 @@
         <button
           :class="{ 'font-semibold': sortTypeStatus === SortFilters.Date }"
           class="btn-md md:btn-sm"
-          @click="handleSortTasks(SortFilters.Date)">
+          @click="store.setSortType(SortFilters.Date)">
           <svg
             class="fill-base-content"
             xmlns="http://www.w3.org/2000/svg"
@@ -57,7 +57,7 @@
         <button
           :class="{ 'font-semibold': sortTypeStatus === SortFilters.Created }"
           class="btn-md md:btn-sm"
-          @click="handleSortTasks(SortFilters.Created)">
+          @click="store.setSortType(SortFilters.Created)">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="24"
@@ -72,7 +72,7 @@
         <button
           :class="{ 'font-semibold': sortTypeStatus === SortFilters.Title }"
           class="btn-md md:btn-sm"
-          @click="handleSortTasks(SortFilters.Title)">
+          @click="store.setSortType(SortFilters.Title)">
           <svg
             class="fill-base-content"
             xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +94,7 @@
         <li>
           <button
             class="btn-md md:btn-sm"
-            @click="toggleSortOrder()">
+            @click="store.sortTasksChangeOrder()">
             <svg
               v-if="sortOrderStatus === SortOrder.Ascending"
               xmlns="http://www.w3.org/2000/svg"
@@ -170,9 +170,9 @@
         <li>
           <button
             :disabled="!tasks.length"
-            :class="{ 'font-semibold': currentFilter === Filters.Uncompleted }"
+            :class="{ 'font-semibold': currentFilter === Filters.NotCompleted }"
             class="btn-md md:btn-sm"
-            @click="store.setFilter(Filters.Uncompleted)">
+            @click="store.setFilter(Filters.NotCompleted)">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="24"
@@ -180,7 +180,7 @@
               <path
                 d="M12 21q-1.875 0-3.512-.712-1.638-.713-2.85-1.926-1.213-1.212-1.926-2.85Q3 13.875 3 12t.712-3.513q.713-1.637 1.926-2.85 1.212-1.212 2.85-1.925Q10.125 3 12 3t3.513.712q1.637.713 2.85 1.925 1.212 1.213 1.925 2.85Q21 10.125 21 12t-.712 3.512q-.713 1.638-1.925 2.85-1.213 1.213-2.85 1.926Q13.875 21 12 21Zm0-1q3.35 0 5.675-2.325Q20 15.35 20 12q0-3.35-2.325-5.675Q15.35 4 12 4 8.65 4 6.325 6.325 4 8.65 4 12q0 3.35 2.325 5.675Q8.65 20 12 20Zm0-8Z" />
             </svg>
-            {{ Filters.Uncompleted }}
+            {{ Filters.NotCompleted }}
           </button>
         </li>
       </ul>
@@ -245,13 +245,5 @@ const emit = defineEmits<{
 function handleDeleteTask(): void {
   blurElement();
   emit('deleteTasks');
-}
-
-function handleSortTasks(type: SortFilters): void {
-  store.sortTasks(type);
-}
-
-function toggleSortOrder(): void {
-  store.sortTasksChangeOrder();
 }
 </script>

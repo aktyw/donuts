@@ -149,7 +149,6 @@ function addTask(): void {
   taskDescription.value = '';
   taskIsPriority.value = false;
   taskTitleInput.value?.focus();
-  datepicker.value?.clearValue();
   clearDate();
 
   useNotification(NotificationMessage.TaskAdd);

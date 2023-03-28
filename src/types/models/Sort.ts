@@ -6,6 +6,6 @@ export enum SortFilters {
 }
 
 export enum SortOrder {
-  Ascending = 'Ascending',
-  Descending = 'Descending',
+  Ascending = 'ascending',
+  Descending = 'descending',
 }
