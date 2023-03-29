@@ -8,14 +8,12 @@ import BaseButton from '@/components/ui/BaseButton.vue';
         ref="taskTitleInput"
         v-model.trim="taskTitle"
         v-focus
-        type="text"
         maxlength="100"
         placeholder="Task name">
       </TaskEditorInput>
       <TaskEditorInput
         ref="taskDescriptionInput"
         v-model.trim="taskDescription"
-        type="text"
         maxlength="240"
         placeholder="Description">
       </TaskEditorInput>
@@ -75,7 +73,7 @@ import BaseButton from '@/components/ui/BaseButton.vue';
       </div>
     </div>
     <div class="flex justify-between border-t p-2">
-      <div>Project</div>
+      <ProjectList v-model:name="project" />
       <div>
         <BaseButton
           class="btn btn-xs border-transparent mr-2 bg-base-200 hover:bg-base-300 text-neutral-focus"
@@ -84,7 +82,7 @@ import BaseButton from '@/components/ui/BaseButton.vue';
         >
         <BaseButton
           class="btn btn-xs bg-accent border-transparent hover:bg-accent-focus text-neutral-content"
-          :disabled="!taskTitle"
+          :disabled="!taskTitle || !project"
           @click.prevent="addTask"
           >Add task</BaseButton
         >
@@ -102,9 +100,10 @@ import BaseButton from '@/components/ui/BaseButton.vue';
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, computed, onUpdated, onMounted } from 'vue';
 import type { Ref } from 'vue';
 import { useTasksStore } from '@/stores/TasksStore';
+import { useRouter } from 'vue-router';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
@@ -114,8 +113,14 @@ import { vFocus } from '@/directives/vAutoFocus';
 import TaskEditorInput from '@/components/tasks/TaskEditorInput.vue';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { useNotification } from '@/composables/useNotification';
+import ProjectList from '@/components/tasks/ProjectList.vue';
+import { useProjectsStore } from '@/stores/ProjectsStore';
+import { storeToRefs } from 'pinia';
 
+const projectStore = useProjectsStore();
+const { getAllProjects } = storeToRefs(projectStore);
 const store = useTasksStore();
+const router = useRouter();
 const taskTitle = ref('');
 const taskDescription = ref('');
 const taskTitleInput: Ref<InstanceType<typeof HTMLInputElement> | null> = ref(null);
@@ -127,6 +132,20 @@ const { showInputDetailTime } = useTimeDetail(date);
 const startTime = ref({ hours: 0, minutes: 0 });
 const inputTaskDate: Ref<Date | undefined> = ref();
 const taskIsPriority = ref(false);
+const project = ref('');
+
+const projectName = computed(() => {
+  return getAllProjects.value.find((pro) => router.currentRoute.value.name === pro.name);
+});
+
+onMounted(() => {
+  project.value = projectName.value ?? 'Inbox';
+});
+
+onUpdated(() => {
+  console.log(project.value);
+  console.log(projectName.value);
+});
 
 const emit = defineEmits<{
   (e: 'closeEditor'): void;
@@ -142,6 +161,7 @@ function addTask(): void {
     description: taskDescription.value,
     date: date.value,
     isPriority: taskIsPriority.value,
+    project: project.value,
   };
 
   store.addTask(options);

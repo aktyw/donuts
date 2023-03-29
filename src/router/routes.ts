@@ -15,6 +15,7 @@ const routes = [
   },
   {
     path: '/tasks',
+    redirect: { name: 'inbox' },
     name: 'tasks',
     components: { default: TasksView, sidebar: TasksSidebar },
     children: [

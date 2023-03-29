@@ -105,11 +105,13 @@ export const useTasksStore = defineStore('tasks', {
       description,
       date,
       isPriority,
+      project,
     }: {
       title: string;
       description: string;
       date: Date | undefined;
       isPriority: boolean;
+      project: string;
     }) {
       const id = uuid();
       const newTask: Task = {
@@ -121,6 +123,7 @@ export const useTasksStore = defineStore('tasks', {
         createdAt: new Date(),
         ...(date && { date }),
         subtasks: {},
+        project,
       };
 
       this.tasks.default.push(newTask);

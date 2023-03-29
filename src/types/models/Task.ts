@@ -7,4 +7,5 @@ export interface Task {
   date?: Date;
   createdAt: Date;
   subtasks: {};
+  project: string;
 }
