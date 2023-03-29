@@ -28,9 +28,9 @@
 import { ref, computed } from 'vue';
 import { useTasksStore } from '@/stores/TasksStore';
 import { storeToRefs } from 'pinia';
-import FiltersNavbar from '@/components/tasks/FiltersNavbar.vue';
-import FiltersList from '@/components/tasks/FiltersList.vue';
-import FilterStatus from '@/components/tasks/FilterStatus.vue';
+import FiltersNavbar from '@/components/filters/FiltersNavbar.vue';
+import FiltersList from '@/components/filters/FiltersList.vue';
+import FilterStatus from '@/components/filters/FilterStatus.vue';
 import TasksEmptyMessage from '@/components/tasks/TasksEmptyMessage.vue';
 import TaskAddButton from '@/components/tasks/TaskAddButton.vue';
 import TaskEditor from '@/components/tasks/TaskEditor.vue';

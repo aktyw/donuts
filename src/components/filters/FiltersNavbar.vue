@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useTasksStore } from '@/stores/TasksStore';
-import TasksSettingsDropdown from '@/components/tasks/FiltersDropdown.vue';
+import TasksSettingsDropdown from '@/components/filters/FiltersDropdown.vue';
 import TaskDeleteConfirmModal from '@/components/tasks/TaskDeleteConfirmModal.vue';
 import BaseHeading from '@/components/ui/BaseHeading.vue';
 import { NotificationMessage } from '@/types/models/NotificationMessage';

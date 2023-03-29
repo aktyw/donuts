@@ -7,10 +7,16 @@ import TodayView from '@/views/TodayView.vue';
 import InboxView from '@/views/InboxView.vue';
 import ProjectView from '@/views/ProjectView.vue';
 
+interface ProjectViewRoute {
+  params: {
+    id: string;
+  };
+}
+
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'about',
     component: HomeView,
   },
   {
@@ -22,6 +28,7 @@ const routes = [
       {
         path: 'inbox',
         name: 'inbox',
+        alias: '/project/inbox',
         components: { default: InboxView, sidebar: TasksSidebar },
         props: { default: true, sidebar: false },
       },
@@ -33,6 +40,11 @@ const routes = [
       },
       {
         path: 'project/:id',
+        redirect: (to: ProjectViewRoute) => {
+          if (to.params.id === 'inbox') {
+            return { path: '/tasks/inbox' };
+          }
+        },
         name: 'project',
         component: ProjectView,
         props: true,

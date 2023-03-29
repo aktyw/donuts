@@ -2,12 +2,12 @@
   <TheSidebar>
     <template #links>
       <li>
-        <router-link to="/tasks/inbox"
+        <router-link :to="{ name: 'inbox' }"
           >Inbox <span>{{ store.getAllTasks.length }}</span></router-link
         >
       </li>
       <li>
-        <router-link to="/tasks/today"
+        <router-link :to="{ name: 'today' }"
           >Today <span>{{ store.getTodayTasks.length }}</span></router-link
         >
       </li>

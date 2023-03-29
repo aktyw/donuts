@@ -22,7 +22,7 @@
 import { computed } from 'vue';
 import { Filters } from '@/types/models/Filters';
 import type { Task } from '@/types/models/Task';
-import FiltersListOption from '@/components/tasks/FiltersListOption.vue';
+import FiltersListOption from '@/components/filters/FiltersListOption.vue';
 
 type Props = {
   tasks: Task[];

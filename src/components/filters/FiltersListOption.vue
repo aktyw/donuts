@@ -13,7 +13,7 @@ import TheBadge from '@/components/layouts/TheBadge.vue';
 </template>
 
 <script setup lang="ts">
-import TheBadge from '@/components/layouts/TheBadge.vue';
+import TheBadge from '@/components/ui/BaseBadge.vue';
 import type { Filters } from '@/types/models/Filters';
 import { storeToRefs } from 'pinia';
 import { useTasksStore } from '@/stores/TasksStore';
