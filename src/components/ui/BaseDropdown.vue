@@ -1,0 +1,23 @@
+<template>
+  <div class="dropdown dropdown-bottom">
+    <label
+      tabindex="0"
+      class="btn m-1">
+      <slot name="content"></slot>
+    </label>
+    <ul
+      tabindex="0"
+      class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+      <slot name="list">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24"
+          viewBox="0 96 960 960"
+          width="24">
+          <path
+            d="M480.074 835.999q-108.612 0-184.342-75.657-75.731-75.657-75.731-184.268 0-108.612 75.657-184.342 75.657-75.731 184.268-75.731 108.612 0 184.342 75.657 75.731 75.657 75.731 184.268 0 108.612-75.657 184.342-75.657 75.731-184.268 75.731Z" />
+        </svg>
+      </slot>
+    </ul>
+  </div>
+</template>

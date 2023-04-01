@@ -19,10 +19,12 @@
     "@vueuse/integrations": "^9.12.0",
     "daisyui": "^2.50.0",
     "focus-trap": "^7.2.0",
+    "nanoid": "^4.0.2",
     "pinia": "^2.0.28",
     "uuid": "^9.0.0",
     "vue": "^3.2.45",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",

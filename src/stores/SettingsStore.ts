@@ -15,8 +15,8 @@ export const useSettingsStore = defineStore('settings', {
     toggleMenu(): void {
       this.settings.isMenuOpen = !this.settings.isMenuOpen;
     },
-    setHomeView(view: string): void {
-      this.settings.homeView = view;
+    setHomeView(id: string): void {
+      this.settings.homeView = id;
     },
   },
 });

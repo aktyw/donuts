@@ -28,7 +28,6 @@ const routes = [
       {
         path: 'inbox',
         name: 'inbox',
-        alias: '/project/inbox',
         components: { default: InboxView, sidebar: TasksSidebar },
         props: { default: true, sidebar: false },
       },
@@ -36,18 +35,11 @@ const routes = [
         path: 'today',
         name: 'today',
         component: TodayView,
-        props: true,
       },
       {
         path: 'project/:id',
-        redirect: (to: ProjectViewRoute) => {
-          if (to.params.id === 'inbox') {
-            return { path: '/tasks/inbox' };
-          }
-        },
         name: 'project',
         component: ProjectView,
-        props: true,
       },
     ],
   },

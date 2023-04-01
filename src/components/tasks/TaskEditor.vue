@@ -73,7 +73,11 @@ import BaseButton from '@/components/ui/BaseButton.vue';
       </div>
     </div>
     <div class="flex justify-between border-t p-2">
-      <ProjectList v-model:name="project" />
+      <div class="flex gap-1">
+        <ProjectList v-model:name="project" />
+        <ProjectAddButton @click.prevent="handleAddProject"></ProjectAddButton>
+        <ProjectEditor v-if="isProjectModalOpen"></ProjectEditor>
+      </div>
       <div>
         <BaseButton
           class="btn btn-xs border-transparent mr-2 bg-base-200 hover:bg-base-300 text-neutral-focus"
@@ -116,11 +120,14 @@ import { useNotification } from '@/composables/useNotification';
 import ProjectList from '@/components/projects/ProjectList.vue';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { storeToRefs } from 'pinia';
+import ProjectAddButton from '@/components/projects/ProjectAddButton.vue';
+import ProjectEditor from '@/components/projects/ProjectEditor.vue';
 
 const projectStore = useProjectsStore();
 const { getAllProjects } = storeToRefs(projectStore);
 const store = useTasksStore();
 const router = useRouter();
+
 const taskTitle = ref('');
 const taskDescription = ref('');
 const taskTitleInput: Ref<InstanceType<typeof HTMLInputElement> | null> = ref(null);
@@ -133,6 +140,7 @@ const startTime = ref({ hours: 0, minutes: 0 });
 const inputTaskDate: Ref<Date | undefined> = ref();
 const taskIsPriority = ref(false);
 const project = ref('');
+const isProjectModalOpen = ref(false);
 
 const projectName = computed(() => {
   return getAllProjects.value.find((pro) => router.currentRoute.value.name === pro.name);
@@ -172,6 +180,10 @@ function addTask(): void {
   clearDate();
 
   useNotification(NotificationMessage.TaskAdd);
+}
+
+function handleAddProject(): void {
+  isProjectModalOpen.value = true;
 }
 
 function handleCalendar(): void {

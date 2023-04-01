@@ -5,7 +5,6 @@
       type="checkbox"
       class="drawer-toggle" />
     <div class="drawer-content flex flex-col items-center justify-center">
-      <!-- Page content here -->
       <label
         for="my-drawer-2"
         class="btn btn-primary drawer-button lg:hidden"
@@ -16,12 +15,9 @@
       <ul
         class="menu p-4 w-80 bg-base-200 text-base-content [&>li>a]:justify-between [&>li>.router-link-exact-active]:bg-base-300">
         <slot name="links"></slot>
-        <div class="divider"></div>
-        <slot name="projects">
-          <li><a>Sidebar Item 1</a></li>
-          <li><a>Sidebar Item 2</a></li>
-        </slot>
       </ul>
     </div>
   </div>
 </template>
+
+<script setup lang="ts"></script>
