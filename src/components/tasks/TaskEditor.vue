@@ -76,7 +76,11 @@ import BaseButton from '@/components/ui/BaseButton.vue';
       <div class="flex gap-1">
         <ProjectList v-model:name="project" />
         <ProjectAddButton @click.prevent="handleAddProject"></ProjectAddButton>
-        <ProjectEditor v-if="isProjectModalOpen"></ProjectEditor>
+        <teleport to="body">
+          <ProjectEditor
+            v-if="isProjectModalOpen"
+            @close-editor="handleCloseEditor"></ProjectEditor>
+        </teleport>
       </div>
       <div>
         <BaseButton
@@ -150,10 +154,10 @@ onMounted(() => {
   project.value = projectName.value ?? 'Inbox';
 });
 
-onUpdated(() => {
-  console.log(project.value);
-  console.log(projectName.value);
-});
+// onUpdated(() => {
+//   console.log(project.value);
+//   console.log(projectName.value);
+// });
 
 const emit = defineEmits<{
   (e: 'closeEditor'): void;
@@ -180,6 +184,10 @@ function addTask(): void {
   clearDate();
 
   useNotification(NotificationMessage.TaskAdd);
+}
+
+function handleCloseEditor(): void {
+  isProjectModalOpen.value = false;
 }
 
 function handleAddProject(): void {

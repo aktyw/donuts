@@ -1,13 +1,14 @@
 <template>
   <div class="dropdown dropdown-bottom">
+    <BaseLabel>Color</BaseLabel>
     <label
       tabindex="0"
-      class="btn m-1">
+      class="btn mt-2 w-full justify-start bg-transparent text-base-content hover:bg-transparent text-left normal-case gap-2">
       <slot name="content"></slot>
     </label>
     <ul
       tabindex="0"
-      class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+      class="dropdown-content menu flex flex-col flex-nowrap cursor-pointer [&>li:hover]:bg-base-200 [&>li:hover>*]:bg-base-200 [&>li>*]:transition [&>li>*]:hover:transition shadow bg-base-100 rounded-box overflow-y-auto max-h-80 w-full">
       <slot name="list">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -21,3 +22,7 @@
     </ul>
   </div>
 </template>
+
+<script setup lang="ts">
+import BaseLabel from '@/components/ui/BaseLabel.vue';
+</script>

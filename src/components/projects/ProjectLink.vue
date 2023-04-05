@@ -1,10 +1,12 @@
 <template>
   <li>
-    <RouterLink :to="to">
-      <div class="flex gap-1">
+    <RouterLink
+      class="py-2 hover:bg-base-300"
+      :to="to">
+      <div class="flex gap-2">
         <slot name="icon">
           <svg
-            :class="$attrs.class"
+            v-bind="$attrs"
             xmlns="http://www.w3.org/2000/svg"
             height="24"
             viewBox="0 96 960 960"

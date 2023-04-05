@@ -61,6 +61,11 @@ export const useTasksStore = defineStore('tasks', {
     getAllTasks(state): Task[] {
       return state.tasks.default;
     },
+    getProjectTasks(state): (projectId: string) => Task[] {
+      return (projectId) => {
+        return state.tasks.default.filter((task) => task.project === projectId);
+      };
+    },
     getTodayTasks(state): Task[] {
       return state.tasks.default.filter((task: Task) => {
         if (!task.date) return;
@@ -69,7 +74,7 @@ export const useTasksStore = defineStore('tasks', {
         }
       });
     },
-    getTaskById(state) {
+    getTaskById(state): (id: string) => Task | undefined {
       return (id: string): Task | undefined => {
         return state.tasks.default.find((task) => task.id === id);
       };

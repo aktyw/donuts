@@ -2,7 +2,7 @@
   <select
     class="select select-xs select-bordered w-[11rem] max-w-[11rem]"
     :value="name"
-    @change="$emit('update:name', $event.target.value)">
+    @change="$emit('update:name', ($event.target as HTMLInputElement).value)">
     <option
       v-for="project in projects"
       :key="project.id">

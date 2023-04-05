@@ -1,19 +1,17 @@
 <template>
-  <label
-    class="text-xl font-semibold mb-2"
-    :for="inputName"
-    >{{ label }}</label
-  >
+  <BaseLabel :for="inputName">{{ label }}</BaseLabel>
   <input
     ref="input"
     :name="inputName"
     :value="modelValue"
     class="input input-bordered mb-8"
+    v-bind="$attrs"
     @input="updateModelValue" />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import BaseLabel from '@/components/ui/BaseLabel.vue';
 
 const input = ref();
 

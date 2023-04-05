@@ -1,6 +1,6 @@
 <template>
   <main class="flex flex-col justify-start items-center full-h py-4">
-    <div
+    <!-- <div
       class="flex flex-col items-start max-w-2xl relative"
       :class="{ 'h-1/2': !store.tasks.default.length }">
       <FiltersNavbar :title="TASK_VIEW_TITLE.INBOX" />
@@ -18,15 +18,19 @@
         @close-editor="closeEditor" />
     </div>
 
+
     <TasksEmptyMessage v-if="!store.tasks.default.length">
       <template #default> No tasks. Time for chillout... </template>
-    </TasksEmptyMessage>
+    </TasksEmptyMessage> -->
+    <h2>{{ projectId }}</h2>
+
   </main>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onUpdated } from 'vue';
 import { useTasksStore } from '@/stores/TasksStore';
+import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import FiltersNavbar from '@/components/filters/FiltersNavbar.vue';
 import FiltersList from '@/components/filters/FiltersList.vue';
@@ -38,12 +42,20 @@ import TasksList from '@/components/tasks/TasksList.vue';
 import { SortFilters } from '@/types/models/Sort';
 import { TASK_VIEW_TITLE } from '@/types/models/Titles';
 import { useHandleTasks } from '@/composables/useHandleTasks';
+import type { Task } from '@/types/models/Task';
 
+const route = useRoute();
+const projectId = route.params;
 const store = useTasksStore();
 const { getAllTasks, getSortType: sortTypeStatus } = storeToRefs(store);
 const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
+// const projectTasks = computed(() => getProjectTasks.value(projectId.toString()));
 
-const tasks = useHandleTasks(getAllTasks);
+onUpdated(() => {
+  console.log(projectId);
+  // console.log(projectTasks.value);
+});
+// const tasks = useHandleTasks(projectTasks.value);
 
 const isEditorActive = ref(false);
 

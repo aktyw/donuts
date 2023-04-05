@@ -6,12 +6,13 @@ import TasksSidebar from '@/components/tasks/TasksSidebar.vue';
 import TodayView from '@/views/TodayView.vue';
 import InboxView from '@/views/InboxView.vue';
 import ProjectView from '@/views/ProjectView.vue';
+import ProjectsView from '@/views/ProjectsView.vue';
 
-interface ProjectViewRoute {
-  params: {
-    id: string;
-  };
-}
+// interface ProjectViewRoute {
+//   params: {
+//     id: string;
+//   };
+// }
 
 const routes = [
   {
@@ -28,7 +29,7 @@ const routes = [
       {
         path: 'inbox',
         name: 'inbox',
-        components: { default: InboxView, sidebar: TasksSidebar },
+        component: InboxView,
         props: { default: true, sidebar: false },
       },
       {
@@ -42,6 +43,11 @@ const routes = [
         component: ProjectView,
       },
     ],
+  },
+  {
+    path: '/projects',
+    name: 'projects',
+    components: { default: ProjectsView, sidebar: TasksSidebar },
   },
   {
     path: '/notes',
