@@ -1,5 +1,7 @@
 <template>
-  <TheSidebar>
+  <TheSidebar
+    :class="{ '-translate-x-full': isMenuOpen }"
+    class="transition duration-500">
     <template #links>
       <ProjectLink :to="{ name: 'inbox' }">
         <template #icon>
@@ -49,6 +51,7 @@ import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useTasksStore } from '@/stores/TasksStore';
 import { useProjectsStore } from '@/stores/ProjectsStore';
+import { useSettingsStore } from '@/stores/SettingsStore';
 import TheSidebar from '@/components/layouts/TheSidebar.vue';
 import ProjectLink from '@/components/projects/ProjectLink.vue';
 import ProjectEditor from '@/components/projects/ProjectEditor.vue';
@@ -59,8 +62,10 @@ import IconInbox from '@/components/icons/IconInbox.vue';
 
 const store = useTasksStore();
 const projectsStore = useProjectsStore();
+const settingsStore = useSettingsStore();
 const isProjectModalOpen = ref(false);
 const { getAllProjects: projects } = storeToRefs(projectsStore);
+const { getMenuStatus: isMenuOpen } = storeToRefs(settingsStore);
 
 function handleOpenEditor(): void {
   isProjectModalOpen.value = true;

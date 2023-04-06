@@ -1,5 +1,5 @@
 <template>
-  <main class="flex flex-col justify-start items-center full-h py-4">
+  <main class="flex flex-col justify-start items-center py-4">
     <div
       class="flex flex-col items-start max-w-2xl relative"
       :class="{ 'h-1/2': !store.tasks.default.length }">

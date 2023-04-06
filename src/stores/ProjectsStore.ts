@@ -13,6 +13,11 @@ export const useProjectsStore = defineStore('projects', {
     getAllProjects(state) {
       return state.projects;
     },
+    getProjectById(state): (id: string) => Projects | undefined {
+      return (id) => {
+        return state.projects.find((p) => p.id === id);
+      };
+    },
   },
   actions: {
     addProject({ name, color }: Projects) {

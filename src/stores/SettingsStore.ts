@@ -10,6 +10,9 @@ export const useSettingsStore = defineStore('settings', {
     getHomeView(state): string {
       return state.settings.homeView;
     },
+    getMenuStatus(state): boolean {
+      return state.settings.isMenuOpen;
+    },
   },
   actions: {
     toggleMenu(): void {

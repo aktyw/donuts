@@ -1,5 +1,5 @@
 <template>
-  <div class="drawer drawer-mobile absolute">
+  <div class="drawer drawer-mobile fixed">
     <input
       id="my-drawer-2"
       type="checkbox"

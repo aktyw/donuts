@@ -1,13 +1,13 @@
 <template>
-  <main class="flex flex-col justify-start items-center full-h py-4">
-    <!-- <div
+  <main class="flex flex-col justify-start items-center py-4">
+    <div
       class="flex flex-col items-start max-w-2xl relative"
       :class="{ 'h-1/2': !store.tasks.default.length }">
-      <FiltersNavbar :title="TASK_VIEW_TITLE.INBOX" />
+      <FiltersNavbar :title="project?.name ?? 'Inbox'" />
       <FilterStatus v-if="!allowDrag" />
       <FiltersList
         v-if="store.tasks.default.length && !allowDrag"
-        :tasks="getAllTasks" />
+        :tasks="tasks" />
       <TasksList :tasks="tasks" />
 
       <TaskAddButton
@@ -18,18 +18,16 @@
         @close-editor="closeEditor" />
     </div>
 
-
     <TasksEmptyMessage v-if="!store.tasks.default.length">
       <template #default> No tasks. Time for chillout... </template>
-    </TasksEmptyMessage> -->
-    <h2>{{ projectId }}</h2>
-
+    </TasksEmptyMessage>
   </main>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onUpdated } from 'vue';
+import { ref, computed } from 'vue';
 import { useTasksStore } from '@/stores/TasksStore';
+import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import FiltersNavbar from '@/components/filters/FiltersNavbar.vue';
@@ -40,22 +38,19 @@ import TaskAddButton from '@/components/tasks/TaskAddButton.vue';
 import TaskEditor from '@/components/tasks/TaskEditor.vue';
 import TasksList from '@/components/tasks/TasksList.vue';
 import { SortFilters } from '@/types/models/Sort';
-import { TASK_VIEW_TITLE } from '@/types/models/Titles';
 import { useHandleTasks } from '@/composables/useHandleTasks';
-import type { Task } from '@/types/models/Task';
 
 const route = useRoute();
-const projectId = route.params;
+const projectId = computed(() => route.params.id as string);
 const store = useTasksStore();
-const { getAllTasks, getSortType: sortTypeStatus } = storeToRefs(store);
+const projectsStore = useProjectsStore();
+const { getProjectTasks, getSortType: sortTypeStatus } = storeToRefs(store);
+const { getProjectById } = storeToRefs(projectsStore);
+const project = computed(() => getProjectById.value(projectId.value));
 const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
-// const projectTasks = computed(() => getProjectTasks.value(projectId.toString()));
+const projectTasks = computed(() => getProjectTasks.value(projectId.value));
 
-onUpdated(() => {
-  console.log(projectId);
-  // console.log(projectTasks.value);
-});
-// const tasks = useHandleTasks(projectTasks.value);
+const tasks = useHandleTasks(projectTasks);
 
 const isEditorActive = ref(false);
 

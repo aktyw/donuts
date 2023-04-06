@@ -62,7 +62,7 @@ export const useTasksStore = defineStore('tasks', {
       return state.tasks.default;
     },
     getProjectTasks(state): (projectId: string) => Task[] {
-      return (projectId) => {
+      return (projectId = 'inbox') => {
         return state.tasks.default.filter((task) => task.project === projectId);
       };
     },
