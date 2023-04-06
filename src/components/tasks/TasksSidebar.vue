@@ -1,7 +1,7 @@
 <template>
   <TheSidebar
-    :class="{ '-translate-x-full': isMenuOpen }"
-    class="transition duration-500">
+    :class="{ '-translate-x-full': !isMenuOpen }"
+    class="transition duration-300">
     <template #links>
       <ProjectLink :to="{ name: 'inbox' }">
         <template #icon>

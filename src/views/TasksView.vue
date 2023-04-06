@@ -1,4 +1,6 @@
 <template>
-  <RouterView name="sidebar" />
-  <RouterView />
+  <div class="">
+    <RouterView name="sidebar" />
+    <RouterView />
+  </div>
 </template>

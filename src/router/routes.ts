@@ -30,7 +30,6 @@ const routes = [
         path: 'inbox',
         name: 'inbox',
         component: InboxView,
-        props: { default: true, sidebar: false },
       },
       {
         path: 'today',

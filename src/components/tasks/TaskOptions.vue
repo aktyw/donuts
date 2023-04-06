@@ -1,5 +1,8 @@
 <template>
-  <div class="dropdown md:dropdown-bottom dropdown-left h-0">
+  <div
+    ref="dropdown"
+    class="dropdown dropdown-left h-0 overflow-visible"
+    :class="!isRoomForDropdown ? 'dropdown-top' : 'dropdown-bottom'">
     <button
       tabindex="0"
       class="btn btn-square rounded-md btn-xs bg-base-100 hover:bg-base-200 border-0 focus:bg-base-200">
@@ -112,6 +115,7 @@ import IconBell from '@/components/icons/IconBell.vue';
 import IconRecycleBin from '@/components/icons/IconRecycleBin.vue';
 import BaseDividerSmall from '@/components/ui/BaseDividerSmall.vue';
 import OptionListButton from '@/components/tasks/OptionListButton.vue';
+import { useWindowSize } from '@vueuse/core';
 
 type Props = {
   task: Task;
@@ -140,8 +144,13 @@ const activeStyle = ['active-state', 'active:bg-base-200', 'font-semibold'];
 const doneStyle = computed(() => (task.value.done ? activeStyle : ''));
 const priorityStyle = computed(() => (task.value.isPriority ? activeStyle : ''));
 const { showInputDetailTime } = useTimeDetail(currentDate);
+const dropdown: Ref<HTMLElement | undefined> = ref();
 const dropList: Ref<HTMLElement | undefined> = ref();
-const { x, y, width } = useElementBounding(dropList);
+const { x, y, width, height: listHeight } = useElementBounding(dropList);
+const { bottom: dropBottom } = useElementBounding(dropdown);
+const { height: windowHeight } = useWindowSize();
+
+const isRoomForDropdown = computed(() => dropBottom.value - windowHeight.value < -listHeight.value);
 
 function customPosition() {
   return { top: y.value, left: x.value - width.value / 2 };

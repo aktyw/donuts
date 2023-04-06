@@ -1,22 +1,23 @@
-<template>
-  <div class="drawer drawer-mobile fixed">
+<!-- <template>
+  <div class="drawer z-50">
     <input
       id="my-drawer-2"
       type="checkbox"
       class="drawer-toggle" />
-    <div class="drawer-content flex flex-col items-center justify-center">
-      <label
-        for="my-drawer-2"
-        class="btn btn-primary drawer-button lg:hidden"
-        >Open drawer</label
-      >
-    </div>
     <div class="drawer-side">
       <ul
         class="menu p-4 w-80 bg-base-200 text-base-content [&>li>a]:justify-between [&>li>.router-link-exact-active]:bg-base-300">
         <slot name="links"></slot>
       </ul>
     </div>
+  </div>
+</template> -->
+<template>
+  <div class="fixed z-50 h-full">
+    <ul
+      class="menu p-4 w-80 bg-base-200 text-base-content [&>li>a]:justify-between [&>li>.router-link-exact-active]:bg-base-300 h-full">
+      <slot name="links"></slot>
+    </ul>
   </div>
 </template>
 

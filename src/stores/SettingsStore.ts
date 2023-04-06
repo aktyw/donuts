@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 export const useSettingsStore = defineStore('settings', {
   state: () => ({
     settings: {
-      isMenuOpen: false,
+      isMenuOpen: true,
       homeView: 'inbox',
     },
   }),

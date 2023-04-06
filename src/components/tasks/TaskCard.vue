@@ -37,7 +37,7 @@
       </div>
     </div>
     <TaskOptions
-      v-show="cardIsHover"
+      v-if="cardIsHover"
       :task-id="task.id"
       :task="task"
       @toggle-is-priority="toggleIsPriority"
