@@ -1,6 +1,8 @@
 <template>
   <li
-    class="border-t border-base-200 last:border-b py-3 w-full flex justify-between"
+    ref="card"
+    class="border-t border-base-200 last:border-b py-3 w-full flex justify-between duration-1000"
+    :class="{ 'bg-base-300  duration-1000 ': showBacklight }"
     @click="handleShowOptionsBtn"
     @mouseover="handleShowOptionsBtn"
     @mouseleave="handleHideOptionsBtn">
@@ -37,15 +39,17 @@
       </div>
     </div>
     <TaskOptions
-      v-if="cardIsHover"
+      v-show="cardIsHover"
       :task-id="task.id"
       :task="task"
+      :coords="{ cardX, cardY, cardBottom }"
       @toggle-is-priority="toggleIsPriority"
       @toggle-is-done="toggleIsDone"
       @edit-task="toggleEditModal"
       @delete-task="toggleDeleteModal"
       @handle-date="handleUpdateDate"
-      @duplicate-task="handleDuplicateTask" />
+      @duplicate-task="handleDuplicateTask"
+      @picker-open="setCardBacklight" />
     <Teleport to="body">
       <TaskEditModal
         v-if="editTask"
@@ -95,6 +99,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
+import type { Ref } from 'vue';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { Task } from '@/types/models/Task';
 import TaskOptions from '@/components/tasks/TaskOptions.vue';
@@ -105,13 +110,13 @@ import { useTimeDetail } from '@/composables/useTimeDetail';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { useNotification } from '@/composables/useNotification';
 import { useActiveElement } from '@vueuse/core';
+import { useElementBounding } from '@vueuse/core';
 
 type Props = {
   task: Task;
 };
 
 const props = defineProps<Props>();
-
 const store = useTasksStore();
 const newTitle = ref(props.task.title);
 const isDone = ref(props.task.done);
@@ -123,6 +128,9 @@ const { showDetailTime, markOverdue } = useTimeDetail(deadline);
 const cardIsHover = ref(false);
 const isOptionsOpen = ref(false);
 const activeElement = useActiveElement();
+const card: Ref<HTMLElement | undefined> = ref();
+const { x: cardX, y: cardY, bottom: cardBottom } = useElementBounding(card);
+const showBacklight = ref(false);
 
 watch(activeElement, (el) => {
   el?.closest('.dropdown') ? (isOptionsOpen.value = true) : (isOptionsOpen.value = false);
@@ -131,6 +139,13 @@ watch(activeElement, (el) => {
 watch(isOptionsOpen, (val) => {
   if (!val) handleHideOptionsBtn();
 });
+
+function setCardBacklight() {
+  showBacklight.value = true;
+  setTimeout(() => {
+    showBacklight.value = false;
+  }, 800);
+}
 
 function handleHideOptionsBtn() {
   if (isOptionsOpen.value) return;

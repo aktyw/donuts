@@ -1,7 +1,9 @@
 <template>
-  <main class="flex flex-col justify-start items-center py-4">
+  <main
+    :class="{ 'ml-80': isMenuOpen }"
+    class="transition-all duration-300 w-full flex flex-col justify-start items-center py-8">
     <div
-      class="flex flex-col items-start max-w-2xl relative"
+      class="flex flex-col items-start relative w-2/3 max-w-[800px]"
       :class="{ 'h-1/2': !store.tasks.default.length }">
       <FiltersNavbar :title="TASK_VIEW_TITLE.INBOX" />
       <FilterStatus v-if="!allowDrag" />
@@ -27,6 +29,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useTasksStore } from '@/stores/TasksStore';
+import { useSettingsStore } from '@/stores/SettingsStore';
 import { storeToRefs } from 'pinia';
 import FiltersNavbar from '@/components/filters/FiltersNavbar.vue';
 import FiltersList from '@/components/filters/FiltersList.vue';
@@ -40,6 +43,8 @@ import { TASK_VIEW_TITLE } from '@/types/models/Titles';
 import { useHandleTasks } from '@/composables/useHandleTasks';
 
 const store = useTasksStore();
+const settingsStore = useSettingsStore();
+const { getMenuStatus: isMenuOpen } = storeToRefs(settingsStore);
 const { getAllTasks, getSortType: sortTypeStatus } = storeToRefs(store);
 const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
 

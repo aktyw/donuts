@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar bg-accent sticky top-0 z-50">
+  <header class="sticky p-0 navbar bg-accent z-50">
     <div class="navbar-start">
       <div class="dropdown">
         <label
@@ -37,6 +37,7 @@
           </li>
         </ul>
       </div>
+
       <div class="flex-none">
         <BaseButton
           class="btn btn-square btn-ghost"
@@ -99,7 +100,7 @@
         Login
       </router-link>
     </div>
-  </div>
+  </header>
 </template>
 
 <script setup lang="ts">

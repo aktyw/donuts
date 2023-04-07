@@ -62,12 +62,14 @@
         v-show="showPicker"
         ref="datepicker"
         :value="date"
+        :alt-position="setCustomPosition"
         :teleport="true"
-        :alt-position="customPosition"
         :min-date="new Date()"
         :start-time="startTime"
         @update:model-value="handleDate" />
-      <OptionListButton @click="handleCalendar">
+      <OptionListButton
+        ref="calendarOption"
+        @click="handleCalendar">
         <template #icon>
           <IconClock />
         </template>
@@ -96,14 +98,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, toRefs, ref } from 'vue';
+import { computed, toRefs, ref, onMounted } from 'vue';
 import type { Ref } from 'vue';
+import type { Task } from '@/types/models/Task';
 import Datepicker from '@vuepic/vue-datepicker';
 import blurElement from '@/helpers/blur';
 import { useTimeDetail } from '@/composables/useTimeDetail';
-import type { Task } from '@/types/models/Task';
 import { useTasksStore } from '@/stores/TasksStore';
-import { useElementBounding } from '@vueuse/core';
+import { useElementBounding, useWindowSize } from '@vueuse/core';
 import IconVerticalDots from '@/components/icons/IconVerticalDots.vue';
 import IconPen from '@/components/icons/IconPen.vue';
 import IconDuplicate from '@/components/icons/IconDuplicate.vue';
@@ -115,11 +117,15 @@ import IconBell from '@/components/icons/IconBell.vue';
 import IconRecycleBin from '@/components/icons/IconRecycleBin.vue';
 import BaseDividerSmall from '@/components/ui/BaseDividerSmall.vue';
 import OptionListButton from '@/components/tasks/OptionListButton.vue';
-import { useWindowSize } from '@vueuse/core';
 
 type Props = {
   task: Task;
   taskId: string;
+  coords: {
+    cardX: number;
+    cardY: number;
+    cardBottom: number;
+  };
 };
 
 const props = defineProps<Props>();
@@ -131,33 +137,47 @@ const emit = defineEmits<{
   (e: 'handleDate', date: Date): void;
   (e: 'editTask', id: string): void;
   (e: 'duplicateTask', id: string): void;
+  (e: 'pickerOpen'): void;
 }>();
 
 const store = useTasksStore();
 const { task, taskId } = toRefs(props);
+
 const date: Ref<Date | undefined> = ref();
 const currentDate = computed(() => store.getTaskDate(props.task.id));
+const { showInputDetailTime } = useTimeDetail(currentDate);
 const datepicker = ref();
 const showPicker = ref(false);
-const startTime = ref({ hours: 0, minutes: 0 });
+const startTime = ref({ hours: 12, minutes: 0 });
+
 const activeStyle = ['active-state', 'active:bg-base-200', 'font-semibold'];
 const doneStyle = computed(() => (task.value.done ? activeStyle : ''));
 const priorityStyle = computed(() => (task.value.isPriority ? activeStyle : ''));
-const { showInputDetailTime } = useTimeDetail(currentDate);
+
+const body = ref();
+const calendarOption: Ref<HTMLElement | undefined> = ref();
 const dropdown: Ref<HTMLElement | undefined> = ref();
 const dropList: Ref<HTMLElement | undefined> = ref();
-const { x, y, width, height: listHeight } = useElementBounding(dropList);
+const { height: listHeight } = useElementBounding(dropList);
 const { bottom: dropBottom } = useElementBounding(dropdown);
+const { y: bodyY } = useElementBounding(body);
 const { height: windowHeight } = useWindowSize();
+const isRoomForDropdown = computed(() => dropBottom.value - windowHeight.value <= -listHeight.value);
 
-const isRoomForDropdown = computed(() => dropBottom.value - windowHeight.value < -listHeight.value);
-
-function customPosition() {
-  return { top: y.value, left: x.value - width.value / 2 };
+function setCustomPosition() {
+  return {
+    top: props.coords.cardBottom + -bodyY.value,
+    left: props.coords.cardX,
+  };
 }
+
+onMounted(() => {
+  body.value = document.body;
+});
 
 function handleCalendar() {
   datepicker.value.openMenu();
+  emit('pickerOpen');
 }
 
 function handleDate(modelData: Date): void {

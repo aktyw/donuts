@@ -1,8 +1,8 @@
 <template>
-  <section>
-    <ul
+  <section class="w-full">
+    <!-- <ul
       v-if="allowDrag"
-      class="md:w-96">
+      class="w-1/4">
       <draggable
         v-model="store.tasks.default"
         item-key="id"
@@ -15,11 +15,9 @@
           </TaskCard>
         </template>
       </draggable>
-    </ul>
+    </ul> -->
 
-    <ul
-      v-else
-      class="md:w-96">
+    <ul>
       <TaskCard
         v-for="task in tasks"
         :key="task.id"
