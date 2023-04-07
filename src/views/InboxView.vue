@@ -45,6 +45,7 @@ import { useHandleTasks } from '@/composables/useHandleTasks';
 const store = useTasksStore();
 const settingsStore = useSettingsStore();
 const { getMenuStatus: isMenuOpen } = storeToRefs(settingsStore);
+
 const { getAllTasks, getSortType: sortTypeStatus } = storeToRefs(store);
 const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
 
