@@ -3,7 +3,7 @@
     :class="{ 'ml-80': isMenuOpen }"
     class="transition-all duration-300 w-full flex flex-col justify-start items-center py-8">
     <div
-      class="relative flex flex-col items-start w-2/3 max-w-[800px] px-12"
+      class="flex flex-col items-start relative w-2/3 max-w-[800px]"
       :class="{ 'h-1/2': !store.tasks.default.length }">
       <FiltersNavbar :title="TASK_VIEW_TITLE.INBOX" />
       <FilterStatus v-if="!allowDrag" />

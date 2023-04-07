@@ -2,7 +2,6 @@ import BaseButton from '@/components/ui/BaseButton.vue';
 <template>
   <form
     id="form"
-    ref="form"
     class="relative border w-full rounded-lg focus-within:border-accent-content">
     <div class="p-2">
       <TaskEditorInput
@@ -101,8 +100,8 @@ import BaseButton from '@/components/ui/BaseButton.vue';
       v-show="showPicker"
       ref="datepicker"
       v-model="date"
-      :alt-position="setCustomPosition"
-      :teleport="true"
+      teleport="#form"
+      position="right"
       :min-date="new Date()"
       :start-time="startTime" />
   </form>
@@ -126,7 +125,6 @@ import { useProjectsStore } from '@/stores/ProjectsStore';
 import { storeToRefs } from 'pinia';
 import ProjectAddButton from '@/components/projects/ProjectAddButton.vue';
 import ProjectEditor from '@/components/projects/ProjectEditor.vue';
-import { useElementBounding } from '@vueuse/core';
 
 const projectStore = useProjectsStore();
 const store = useTasksStore();
@@ -145,15 +143,6 @@ const taskIsPriority = ref(false);
 const isProjectModalOpen = ref(false);
 const projectId = ref('inbox');
 const project = ref();
-const form: Ref<HTMLElement | undefined> = ref();
-const { bottom, x } = useElementBounding(form);
-
-function setCustomPosition() {
-  return {
-    top: bottom.value,
-    left: x.value,
-  };
-}
 
 const emit = defineEmits<{
   (e: 'closeEditor'): void;
