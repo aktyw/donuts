@@ -1,7 +1,7 @@
 <template>
   <div
     class="collapse"
-    :class="{ 'collapse-open': isOpenProjectList }">
+    :class="{ 'collapse-open overflow-visible': isOpenProjectList }">
     <div class="collapse-title flex text-xl font-medium hover:bg-base-300 rounded-lg p-0 min-h-0">
       <RouterLink
         class="block px-4 py-2 text-left text-lg font-normal w-full h-full"
@@ -23,7 +23,7 @@
       </BaseButton>
     </div>
 
-    <div class="collapse-content p-0">
+    <div class="collapse-content p-0 overflow-visible">
       <slot name="project-links"></slot>
     </div>
   </div>

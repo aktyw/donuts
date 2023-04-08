@@ -30,6 +30,11 @@
               :name="name"
               :fill="color">
               {{ name }}
+              <template #options>
+                <span class="absolute right-1 top-2">
+                  <ProjectOptions :id="id" />
+                </span>
+              </template>
             </ProjectLink>
           </template>
         </ProjectAccordion>
@@ -56,6 +61,7 @@ import BaseDivider from '@/components/ui/BaseDivider.vue';
 import ProjectAccordion from '@/components/projects/ProjectAccordion.vue';
 import IconCalendarToday from '@/components/icons/IconCalendarToday.vue';
 import IconInbox from '@/components/icons/IconInbox.vue';
+import ProjectOptions from '@/components/projects/ProjectOptions.vue';
 
 const store = useTasksStore();
 const projectsStore = useProjectsStore();

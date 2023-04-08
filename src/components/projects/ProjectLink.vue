@@ -1,7 +1,7 @@
 <template>
   <li>
     <RouterLink
-      class="py-2 hover:bg-base-300"
+      class="flex items-center py-2 hover:bg-base-300"
       :to="to">
       <div class="flex gap-2">
         <slot name="icon">
@@ -18,6 +18,7 @@
         <slot name="name">{{ name }}</slot>
       </div>
       <slot name="amount"></slot>
+      <slot name="options"> </slot>
     </RouterLink>
   </li>
 </template>
