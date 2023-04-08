@@ -27,4 +27,8 @@ const { getMenuStatus: isMenuOpen } = storeToRefs(settingsStore);
 #app {
   height: 100vh;
 }
+
+body {
+  overflow: hidden;
+}
 </style>

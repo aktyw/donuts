@@ -101,7 +101,7 @@ import BaseButton from '@/components/ui/BaseButton.vue';
       ref="datepicker"
       v-model="date"
       teleport="#form"
-      position="right"
+      position="left"
       :min-date="new Date()"
       :start-time="startTime" />
   </form>

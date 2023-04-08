@@ -61,9 +61,9 @@
       <Datepicker
         v-show="showPicker"
         ref="datepicker"
-        :value="date"
-        :alt-position="setCustomPosition"
+        :value="currentDate"
         :teleport="true"
+        :alt-position="setCustomPosition"
         :min-date="new Date()"
         :start-time="startTime"
         @update:model-value="handleDate" />
@@ -162,7 +162,10 @@ const { height: listHeight } = useElementBounding(dropList);
 const { bottom: dropBottom } = useElementBounding(dropdown);
 const { y: bodyY } = useElementBounding(body);
 const { height: windowHeight } = useWindowSize();
-const isRoomForDropdown = computed(() => dropBottom.value - windowHeight.value <= -listHeight.value);
+const SAFE_BOTTOM_MARGIN = 50;
+const isRoomForDropdown = computed(
+  () => dropBottom.value - windowHeight.value + SAFE_BOTTOM_MARGIN <= -listHeight.value
+);
 
 function setCustomPosition() {
   return {

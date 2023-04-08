@@ -1,7 +1,7 @@
 <template>
   <main
     :class="{ 'ml-80': isMenuOpen }"
-    class="transition-all duration-300 w-full flex flex-col justify-start items-center py-8">
+    class="transition-all duration-300 w-full flex flex-col justify-start items-center py-8 pb-80">
     <div
       class="flex flex-col items-start relative w-2/3 max-w-[800px]"
       :class="{ 'h-1/2': !store.tasks.default.length }">
