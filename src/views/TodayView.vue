@@ -1,7 +1,7 @@
 <template>
-  <main class="flex flex-col justify-start items-center py-4">
+  <main>
     <div
-      class="flex flex-col items-start max-w-2xl relative"
+      class="flex flex-col items-start w-2/3 max-w-[800px]"
       :class="{ 'h-1/2': !store.tasks.default.length }">
       <FiltersNavbar :title="TASK_VIEW_TITLE.TODAY" />
       <FilterStatus v-if="!allowDrag" />

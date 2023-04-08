@@ -1,7 +1,7 @@
 <template>
   <li
     ref="card"
-    class="border-t border-base-200 last:border-b py-3 w-full flex justify-between duration-1000"
+    class="relative border-t border-base-200 last:border-b py-3 w-full flex justify-between duration-1000"
     :class="{ 'bg-base-300  duration-1000 ': showBacklight }"
     @click="handleShowOptionsBtn"
     @mouseover="handleShowOptionsBtn"
@@ -45,12 +45,17 @@
               >
             </template>
           </TaskTimeDetail>
-          <TaskProjectDetail v-if="project">
+          <TaskProjectDetail
+            v-if="project"
+            class="items-center">
             <template #name>
               {{ project.name }}
             </template>
             <template #color>
-              <IconColor :fill="project.color" />
+              <IconColor
+                :fill="project.color"
+                height="18"
+                width="18" />
             </template>
           </TaskProjectDetail>
         </div>
@@ -158,6 +163,7 @@ const { x: cardX, y: cardY, bottom: cardBottom } = useElementBounding(card);
 const showBacklight = ref(false);
 const { getProjectById } = storeToRefs(storeProjects);
 const project = getProjectById.value(props.task.project);
+const showProjectDetails = ref(false);
 
 watch(activeElement, (el) => {
   el?.closest('.dropdown') ? (isOptionsOpen.value = true) : (isOptionsOpen.value = false);

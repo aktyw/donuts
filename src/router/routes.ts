@@ -5,15 +5,10 @@ import LoginView from '@/views/LoginView.vue';
 import TasksSidebar from '@/components/tasks/TasksSidebar.vue';
 import NotesSidebar from '@/components/notes/NotesSidebar.vue';
 import TodayView from '@/views/TodayView.vue';
-import InboxView from '@/views/InboxView.vue';
 import ProjectView from '@/views/ProjectView.vue';
 import ProjectsView from '@/views/ProjectsView.vue';
 import NotesList from '@/components/notes/NotesList.vue';
-// interface ProjectViewRoute {
-//   params: {
-//     id: string;
-//   };
-// }
+
 
 const routes = [
   {
@@ -23,15 +18,10 @@ const routes = [
   },
   {
     path: '/tasks',
-    redirect: { name: 'inbox' },
+    redirect: { path: '/tasks/project/inbox' },
     name: 'tasks',
     components: { default: TasksView, sidebar: TasksSidebar },
     children: [
-      {
-        path: 'inbox',
-        name: 'inbox',
-        component: InboxView,
-      },
       {
         path: 'today',
         name: 'today',

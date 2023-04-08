@@ -1,7 +1,7 @@
 <template>
   <TheSidebar>
     <template #links>
-      <ProjectLink :to="{ name: 'inbox' }">
+      <ProjectLink :to="{ name: 'project', params: { id: 'inbox' } }">
         <template #icon>
           <IconInbox />
         </template>
@@ -60,7 +60,7 @@ import IconInbox from '@/components/icons/IconInbox.vue';
 const store = useTasksStore();
 const projectsStore = useProjectsStore();
 const isProjectModalOpen = ref(false);
-const { getAllProjects: projects } = storeToRefs(projectsStore);
+const { getProjects: projects } = storeToRefs(projectsStore);
 
 function handleOpenEditor(): void {
   isProjectModalOpen.value = true;
