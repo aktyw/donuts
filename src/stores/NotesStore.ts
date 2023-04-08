@@ -1,14 +1,21 @@
 import { defineStore } from 'pinia';
 export const useNotesStore = defineStore('notes', {
   state: () => ({
-    tasks: [
+    notes: [
       {
         id: 'id1',
-        content: 'lorem ipsum task',
-        done: false,
+        content: 'lorem ipsum note',
+      },
+      {
+        id: 'id2',
+        content: 'lorem ipsum note 2',
       },
     ],
   }),
-  getters: {},
+  getters: {
+    getAllNotes(state) {
+      return state.notes;
+    },
+  },
   actions: {},
 });

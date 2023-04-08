@@ -3,11 +3,12 @@ import TasksView from '@/views/TasksView.vue';
 import NotesView from '@/views/NotesView.vue';
 import LoginView from '@/views/LoginView.vue';
 import TasksSidebar from '@/components/tasks/TasksSidebar.vue';
+import NotesSidebar from '@/components/notes/NotesSidebar.vue';
 import TodayView from '@/views/TodayView.vue';
 import InboxView from '@/views/InboxView.vue';
 import ProjectView from '@/views/ProjectView.vue';
 import ProjectsView from '@/views/ProjectsView.vue';
-
+import NotesList from '@/components/notes/NotesList.vue';
 // interface ProjectViewRoute {
 //   params: {
 //     id: string;
@@ -51,7 +52,14 @@ const routes = [
   {
     path: '/notes',
     name: 'notes',
-    components: { default: NotesView, sidebar: TasksSidebar },
+    components: { default: NotesView, sidebar: NotesSidebar },
+    children: [
+      {
+        path: 'list',
+        name: 'noteList',
+        component: NotesList,
+      },
+    ],
   },
   {
     path: '/login',
