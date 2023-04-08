@@ -28,20 +28,39 @@
           :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
           {{ task.description }}
         </p>
-        <TaskTimeDetail
-          v-if="showDetailTime"
-          :class="markOverdue"
-          class="pt-0.5">
-          <template #time>
-            <span class="pt-0.5">{{ showDetailTime }}</span>
-          </template>
-        </TaskTimeDetail>
+        <div class="flex justify-between pt-1">
+          <TaskTimeDetail
+            :class="markOverdue"
+            class="pt-0.5">
+            <template #icon>
+              <IconCalendar
+                v-if="showDetailTime"
+                class="relative right-0.5" />
+            </template>
+            <template #time>
+              <span
+                v-if="showDetailTime"
+                class="pt-0.5"
+                >{{ showDetailTime }}</span
+              >
+            </template>
+          </TaskTimeDetail>
+          <TaskProjectDetail v-if="project">
+            <template #name>
+              {{ project.name }}
+            </template>
+            <template #color>
+              <IconColor :fill="project.color" />
+            </template>
+          </TaskProjectDetail>
+        </div>
       </div>
     </div>
     <TaskOptions
       v-show="cardIsHover"
       :task-id="task.id"
       :task="task"
+      class="absolute right-0"
       :coords="{ cardX, cardY, cardBottom }"
       @toggle-is-priority="toggleIsPriority"
       @toggle-is-done="toggleIsDone"
@@ -100,17 +119,22 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import type { Ref } from 'vue';
+import { storeToRefs } from 'pinia';
 import { useTasksStore } from '@/stores/TasksStore';
+import { useProjectsStore } from '@/stores/ProjectsStore';
 import type { Task } from '@/types/models/Task';
 import TaskOptions from '@/components/tasks/TaskOptions.vue';
 import TaskEditModal from '@/components/tasks/TaskEditModal.vue';
 import TaskDeleteConfirmModal from '@/components/tasks/TaskDeleteConfirmModal.vue';
 import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
+import TaskProjectDetail from '@/components/tasks/TaskProjectDetail.vue';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { useNotification } from '@/composables/useNotification';
 import { useActiveElement } from '@vueuse/core';
 import { useElementBounding } from '@vueuse/core';
+import IconColor from '@/components/icons/IconColor.vue';
+import IconCalendar from '@/components/icons/IconCalendar.vue';
 
 type Props = {
   task: Task;
@@ -118,6 +142,7 @@ type Props = {
 
 const props = defineProps<Props>();
 const store = useTasksStore();
+const storeProjects = useProjectsStore();
 const newTitle = ref(props.task.title);
 const isDone = ref(props.task.done);
 const isPriority = ref(props.task.isPriority);
@@ -131,6 +156,8 @@ const activeElement = useActiveElement();
 const card: Ref<HTMLElement | undefined> = ref();
 const { x: cardX, y: cardY, bottom: cardBottom } = useElementBounding(card);
 const showBacklight = ref(false);
+const { getProjectById } = storeToRefs(storeProjects);
+const project = getProjectById.value(props.task.project);
 
 watch(activeElement, (el) => {
   el?.closest('.dropdown') ? (isOptionsOpen.value = true) : (isOptionsOpen.value = false);
