@@ -7,7 +7,7 @@
         </template>
         <template #name> Inbox </template>
         <template #amount>
-          <span>{{ store.getAllTasks.length }}</span>
+          <span>{{ store.getProjectTasks('inbox').length }}</span>
         </template>
       </ProjectLink>
       <ProjectLink :to="{ name: 'today' }">

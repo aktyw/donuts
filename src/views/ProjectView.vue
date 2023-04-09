@@ -7,7 +7,7 @@
       <FilterStatus v-if="!allowDrag" />
       <FiltersList
         v-if="store.tasks.default.length && !allowDrag"
-        :tasks="tasks" />
+        :tasks="projectTasks" />
       <TasksList :tasks="tasks" />
 
       <TaskAddButton
