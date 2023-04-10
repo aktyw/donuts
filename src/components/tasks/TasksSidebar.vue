@@ -62,6 +62,7 @@ import ProjectAccordion from '@/components/projects/ProjectAccordion.vue';
 import IconCalendarToday from '@/components/icons/IconCalendarToday.vue';
 import IconInbox from '@/components/icons/IconInbox.vue';
 import ProjectOptions from '@/components/projects/ProjectOptions.vue';
+import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 
 const store = useTasksStore();
 const projectsStore = useProjectsStore();

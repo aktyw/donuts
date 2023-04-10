@@ -21,6 +21,9 @@
             :class="{ 'rotate-90': !isOpenProjectList }" />
         </template>
       </BaseButton>
+      <TheTooltip data="open">
+        <template #default> </template>
+      </TheTooltip>
     </div>
 
     <div class="collapse-content p-0 overflow-visible">
