@@ -54,8 +54,8 @@
             <template #color>
               <IconColor
                 :fill="project.color"
-                height="18"
-                width="18" />
+                height="16"
+                width="16" />
             </template>
           </TaskProjectDetail>
         </div>

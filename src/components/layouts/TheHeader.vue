@@ -29,20 +29,28 @@
       </div>
 
       <div class="flex gap-2">
-        <BaseButton
-          class="btn btn-sm btn-square btn-ghost"
-          @click="settingsStore.toggleMenu()">
-          <template #icon>
-            <IconMenu />
+        <TheTooltip :data="menuTooltip">
+          <template #default>
+            <BaseButton
+              class="btn btn-sm btn-square btn-ghost"
+              @click="settingsStore.toggleMenu()">
+              <template #icon>
+                <IconMenu />
+              </template>
+            </BaseButton>
           </template>
-        </BaseButton>
-        <BaseButton
-          class="btn btn-sm btn-square btn-ghost"
-          @click="router.push({ name: 'project', params: { id: home } })">
-          <template #icon>
-            <IconHome />
+        </TheTooltip>
+        <TheTooltip data="Go to home">
+          <template #default>
+            <BaseButton
+              class="btn btn-sm btn-square btn-ghost"
+              @click="router.push({ name: 'project', params: { id: home } })">
+              <template #icon>
+                <IconHome />
+              </template>
+            </BaseButton>
           </template>
-        </BaseButton>
+        </TheTooltip>
       </div>
     </div>
 
@@ -71,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useSettingsStore } from '@/stores/SettingsStore';
 import { storeToRefs } from 'pinia';
 import BaseButton from '@/components/ui/BaseButton.vue';
@@ -81,6 +89,7 @@ import IconHome from '@/components/icons/IconHome.vue';
 import IconList from '@/components/icons/IconList.vue';
 import HeaderLink from '@/components/header/HeaderLink.vue';
 import blurElement from '@/helpers/blur';
+import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 
 const item = ref();
 
@@ -89,5 +98,6 @@ function blurDropdown() {
 }
 const router = useRouter();
 const settingsStore = useSettingsStore();
-const { getHomeView: home } = storeToRefs(settingsStore);
+const { getHomeView: home, getMenuStatus: menuStatus } = storeToRefs(settingsStore);
+const menuTooltip = computed(() => (menuStatus.value ? 'Close menu' : 'Open menu'));
 </script>

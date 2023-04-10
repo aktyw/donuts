@@ -1,5 +1,5 @@
 <template>
-  <BaseButton class="btn-ghost btn-xs p-0 border border-base-300 rounded">
+  <BaseButton class="btn-ghost btn-xs p-0 border border-base-300 rounded hover:delay-150">
     <template #icon>
       <IconAdd />
     </template>
