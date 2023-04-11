@@ -1,9 +1,10 @@
 <template>
-  <div class="overflow-hidden h-full">
+  <div>
+    <BaseSkipLink />
     <TheHeader />
-    <div class="flex h-full">
+    <div class="flex pt-12 h-[calc(100vh-48px)]">
       <RouterView name="sidebar" />
-      <RouterView class="w-full overflow-y-auto mb-12" />
+      <RouterView class="w-full h-[calc(100vh-48px)] pt-10" />
     </div>
     <TheNotification v-if="store.notifications.length" />
   </div>
@@ -13,15 +14,12 @@
 import TheHeader from '@/components/layouts/TheHeader.vue';
 import TheNotification from '@/components/layouts/TheNotification.vue';
 import { useTasksStore } from '@/stores/TasksStore';
+import BaseSkipLink from '@/components/ui/BaseSkipLink.vue';
 
 const store = useTasksStore();
 </script>
 
 <style>
-#app {
-  height: 100vh;
-}
-
 body {
   overflow: hidden;
 }

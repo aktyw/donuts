@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main id="main">
     <div
       class="flex flex-col items-start w-2/3 max-w-[800px]"
       :class="{ 'h-1/2': !store.tasks.default.length }">

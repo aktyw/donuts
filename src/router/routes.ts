@@ -9,7 +9,6 @@ import ProjectView from '@/views/ProjectView.vue';
 import ProjectsView from '@/views/ProjectsView.vue';
 import NotesList from '@/components/notes/NotesList.vue';
 
-
 const routes = [
   {
     path: '/',

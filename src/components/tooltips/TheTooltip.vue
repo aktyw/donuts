@@ -4,7 +4,8 @@
     :class="{ 'tooltip-open': focused }"
     :data-tip="data"
     @focusin="focused = true"
-    @focusout="focused = false">
+    @focusout="focused = false"
+    @click="focused = false">
     <slot></slot>
   </div>
 </template>

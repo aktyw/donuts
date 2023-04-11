@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full flex justify-between gap-2 py-2 relative fill-base-content [&>button:hover]:fill-base-content [&>button:hover]:bg-base-300 [&>button]:p-0.5 [&>button]:rounded">
+    class="w-full flex justify-between gap-2 pb-2 relative fill-base-content [&>button:hover]:fill-base-content [&>button:hover]:bg-base-300 [&>button]:p-0.5 [&>button]:rounded">
     <BaseHeading>
       <template #default>
         <h2 class="font-bold text-xl">

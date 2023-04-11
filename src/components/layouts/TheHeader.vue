@@ -1,5 +1,5 @@
 <template>
-  <header class="sticky p-0 px-6 navbar bg-base-300 z-50 min-h-12">
+  <header class="fixed top-0 p-0 px-6 navbar bg-base-300 z-50 min-h-12">
     <div class="navbar-start flex flex-row-reverse justify-between w-full lg:w-1/2">
       <div
         ref="item"

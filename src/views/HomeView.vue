@@ -1,6 +1,6 @@
 <template>
-  <div class="hero bg-base-200">
-    <div class="hero-content full-h flex-col lg:flex-row-reverse lg:gap-8">
+  <div class="hero bg-base-200 h-screen ">
+    <div class="hero-content flex-col lg:flex-row-reverse lg:gap-8">
       <img
         src="@/assets/images/donut-air.png"
         class="rounded-lg lg:max-w-xl" />

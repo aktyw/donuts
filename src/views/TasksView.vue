@@ -1,7 +1,7 @@
 <template>
   <RouterView
     :class="{ 'ml-80': isMenuOpen }"
-    class="transition-all duration-300 w-full flex flex-col justify-start items-center py-8 pb-80" />
+    class="overflow-y-auto transition-all duration-300 flex flex-col justify-start items-center pb-80 py-8" />
 </template>
 
 <script setup lang="ts">
