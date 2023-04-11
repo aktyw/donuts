@@ -33,9 +33,12 @@
           <template #default>
             <BaseButton
               class="btn btn-sm btn-square btn-ghost"
+              aria-label="Toggle menu"
               @click="settingsStore.toggleMenu()">
               <template #icon>
-                <IconMenu />
+                <IconMenu
+                  focusable="false"
+                  aria-hidden="true" />
               </template>
             </BaseButton>
           </template>
@@ -44,9 +47,12 @@
           <template #default>
             <BaseButton
               class="btn btn-sm btn-square btn-ghost"
+              aria-label="Go to home"
               @click="router.push({ name: 'project', params: { id: home } })">
               <template #icon>
-                <IconHome />
+                <IconHome
+                  focusable="false"
+                  aria-hidden="true" />
               </template>
             </BaseButton>
           </template>

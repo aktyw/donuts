@@ -5,6 +5,7 @@
     :class="!isRoomForDropdown ? 'dropdown-top' : 'dropdown-bottom'">
     <button
       tabindex="0"
+      aria-label="Show task options"
       class="btn btn-square rounded-md btn-xs bg-base-100 hover:bg-base-200 border-0 focus:bg-base-200">
       <IconVerticalDots class="fill-base-content" />
     </button>
@@ -13,7 +14,6 @@
       ref="dropList"
       role="menu"
       tabindex="0"
-      aria-label="show task options"
       class="dropdown-content menu py-0.5 shadow rounded-md w-52 bg-base-100 border border-base-300 text-base-content fill-base-content [& svg:not(.active-state)]:fill-base-content [&>li:hover>button:not(.active-state)]:bg-base-200 [& button:active]:text-base-content [&>button:active]:bg-base-200">
       <OptionListButton @click="handleEditTask(taskId)">
         <template #icon>

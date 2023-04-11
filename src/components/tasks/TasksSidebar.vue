@@ -1,34 +1,53 @@
 <template>
   <TheSidebar>
     <template #links>
-      <ProjectLink :to="{ name: 'project', params: { id: 'inbox' } }">
-        <template #icon>
-          <IconInbox />
+      <TheTooltip
+        class="tooltip-right"
+        data="Go to Inbox">
+        <template #default>
+          <ProjectLink :to="{ name: 'project', params: { id: 'inbox' } }">
+            <template #icon>
+              <IconInbox />
+            </template>
+            <template #name> Inbox </template>
+            <template #amount>
+              <span>{{ store.getProjectTasks('inbox').length }}</span>
+            </template>
+          </ProjectLink>
         </template>
-        <template #name> Inbox </template>
-        <template #amount>
-          <span>{{ store.getProjectTasks('inbox').length }}</span>
+      </TheTooltip>
+
+      <TheTooltip
+        class="tooltip-right"
+        data="Go to Today">
+        <template #default>
+          <ProjectLink :to="{ name: 'today' }">
+            <template #icon>
+              <IconCalendarToday />
+            </template>
+            <template #name> Today </template>
+            <template #amount>
+              <span>{{ store.getTodayTasks.length }}</span>
+            </template>
+          </ProjectLink>
         </template>
-      </ProjectLink>
-      <ProjectLink :to="{ name: 'today' }">
-        <template #icon>
-          <IconCalendarToday />
-        </template>
-        <template #name> Today </template>
-        <template #amount>
-          <span>{{ store.getTodayTasks.length }}</span>
-        </template>
-      </ProjectLink>
+      </TheTooltip>
+
       <BaseDivider></BaseDivider>
+
       <div>
-        <ProjectAccordion @open-project-editor="handleOpenEditor">
+        <ProjectAccordion
+          :class="{ 'collapse-open': isProjectFocus }"
+          @open-project-editor="handleOpenEditor">
           <template #project-links>
             <ProjectLink
               v-for="{ id, name, color } in projects"
               :key="id"
               :to="{ name: 'project', params: { id: id } }"
               :name="name"
-              :fill="color">
+              :fill="color"
+              @focusin="isProjectFocus = true"
+              @focusout="isProjectFocus = false">
               {{ name }}
               <template #options>
                 <span class="absolute right-1 top-2">
@@ -67,6 +86,7 @@ import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 const store = useTasksStore();
 const projectsStore = useProjectsStore();
 const isProjectModalOpen = ref(false);
+const isProjectFocus = ref(false);
 const { getProjects: projects } = storeToRefs(projectsStore);
 
 function handleOpenEditor(): void {

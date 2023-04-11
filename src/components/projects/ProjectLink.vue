@@ -1,7 +1,7 @@
 <template>
   <li>
     <RouterLink
-      class="flex items-center py-2 hover:bg-base-300"
+      class="flex items-center justify-between py-2 hover:bg-base-300"
       :to="to">
       <div class="flex gap-2">
         <slot name="icon">
