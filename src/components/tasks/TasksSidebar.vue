@@ -2,6 +2,7 @@
   <TheSidebar>
     <template #links>
       <TheTooltip
+        :is="'li'"
         class="tooltip-right"
         data="Go to Inbox">
         <template #default>
@@ -18,6 +19,7 @@
       </TheTooltip>
 
       <TheTooltip
+        :is="'li'"
         class="tooltip-right"
         data="Go to Today">
         <template #default>
@@ -40,21 +42,23 @@
           :class="{ 'collapse-open': isProjectFocus }"
           @open-project-editor="handleOpenEditor">
           <template #project-links>
-            <ProjectLink
+            <li
               v-for="{ id, name, color } in projects"
               :key="id"
-              :to="{ name: 'project', params: { id: id } }"
-              :name="name"
-              :fill="color"
               @focusin="isProjectFocus = true"
               @focusout="isProjectFocus = false">
-              {{ name }}
-              <template #options>
-                <span class="absolute right-1 top-2">
-                  <ProjectOptions :id="id" />
-                </span>
-              </template>
-            </ProjectLink>
+              <ProjectLink
+                :to="{ name: 'project', params: { id: id } }"
+                :name="name"
+                :fill="color">
+                {{ name }}
+                <template #options>
+                  <span class="absolute right-1 top-2">
+                    <ProjectOptions :id="id" />
+                  </span>
+                </template>
+              </ProjectLink>
+            </li>
           </template>
         </ProjectAccordion>
         <teleport to="body">
@@ -90,6 +94,11 @@ const isProjectFocus = ref(false);
 const { getProjects: projects } = storeToRefs(projectsStore);
 
 function handleOpenEditor(): void {
+  const activeElement = document.activeElement as HTMLElement;
+
+  if (activeElement) {
+    activeElement.blur();
+  }
   isProjectModalOpen.value = true;
 }
 

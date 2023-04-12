@@ -1,5 +1,6 @@
 <template>
-  <div
+  <component
+    :is="is"
     class="tooltip tooltip-bottom after:hidden hover:before:delay-500 before:duration-200 after:duration-100"
     :class="{ 'tooltip-open': focused }"
     :data-tip="data"
@@ -7,7 +8,7 @@
     @focusout="focused = false"
     @click="focused = false">
     <slot></slot>
-  </div>
+  </component>
 </template>
 
 <script setup lang="ts">
@@ -17,6 +18,10 @@ const focused = ref(false);
 
 type Props = {
   data: string;
+  is?: string;
 };
-defineProps<Props>();
+
+withDefaults(defineProps<Props>(), {
+  is: 'div',
+});
 </script>
