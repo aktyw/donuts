@@ -3,17 +3,23 @@
     ref="dropdown"
     class="dropdown dropdown-left dropdown-bottom h-0">
     <button
-      tabindex="0"
-      class="btn btn-square rounded-md btn-xs bg-base-200 hover:bg-base-100 border-0 focus:bg-base-200">
-      <IconHorizontalDots class="fill-base-content" />
+      class="btn btn-square rounded-md btn-xs bg-transparent hover:bg-transparent border-0 focus:bg-base-200 focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
+      aria-label="show task options">
+      <IconHorizontalDots class="fill-base-content hover:fill-neutral" />
     </button>
 
     <ul
       ref="dropList"
       role="menu"
       tabindex="0"
-      aria-label="show task options"
       class="dropdown-content menu py-0.5 shadow rounded-md w-52 bg-base-100 border border-base-300 text-base-content fill-base-content [& svg:not(.active-state)]:fill-base-content [&>li:hover>button:not(.active-state)]:bg-base-200 [& button:active]:text-base-content [&>button:active]:bg-base-200">
+      <teleport to="body">
+        <ProjectModalEdit
+          v-if="isProjectModalOpen"
+          :project="project"
+          @close-editor="handleCloseEditor">
+        </ProjectModalEdit>
+      </teleport>
       <OptionListButton @click="handleEditProject(props.id)">
         <template #icon>
           <IconPen />
@@ -59,6 +65,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from 'vue';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { storeToRefs } from 'pinia';
 import IconHorizontalDots from '@/components/icons/IconHorizontalDots.vue';
@@ -69,15 +76,19 @@ import IconRecycleBin from '@/components/icons/IconRecycleBin.vue';
 import IconHeart from '@/components/icons/IconHeart.vue';
 import BaseDividerSmall from '@/components/ui/BaseDividerSmall.vue';
 import OptionListButton from '@/components/tasks/OptionListButton.vue';
-
-const projectsStore = useProjectsStore();
-const { getProjectById } = storeToRefs(projectsStore);
+import ProjectModalEdit from '@/components/projects/ProjectModalEdit.vue';
 
 type Props = {
   id: string;
 };
 
 const props = defineProps<Props>();
+
+const projectsStore = useProjectsStore();
+const { getProjectById } = storeToRefs(projectsStore);
+const isProjectModalOpen = ref(false);
+
+const project = computed(() => getProjectById.value(props.id));
 
 // const emit = defineEmits<{
 //   (e: 'deleteTask', id: string): void;
@@ -89,9 +100,12 @@ const props = defineProps<Props>();
 //   (e: 'pickerOpen'): void;
 // }>();
 
-function handleEditProject(id: string): void {
-  // emit('toggleIsPriority', taskId);
-  console.log('handling', id);
+function handleEditProject(): void {
+  isProjectModalOpen.value = true;
+}
+
+function handleCloseEditor(): void {
+  isProjectModalOpen.value = false;
 }
 
 function handleAddToFav(id: string): void {

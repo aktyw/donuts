@@ -1,5 +1,5 @@
 <template>
-  <TheSidebar>
+  <TheSidebar ref="sidebar">
     <template #links>
       <TheTooltip
         :is="'li'"
@@ -45,16 +45,19 @@
             <li
               v-for="{ id, name, color } in projects"
               :key="id"
-              @focusin="isProjectFocus = true"
-              @focusout="isProjectFocus = false">
+              @focusin="handleShowOptions(id)"
+              @mouseover="handleShowOptions(id)"
+              @mouseleave="handleHideOptions">
               <ProjectLink
                 :to="{ name: 'project', params: { id: id } }"
                 :name="name"
                 :fill="color">
                 {{ name }}
                 <template #options>
-                  <span class="absolute right-1 top-2">
-                    <ProjectOptions :id="id" />
+                  <span class="absolute right-0 -top-1 bg-transparent">
+                    <ProjectOptions
+                      v-show="showId === id"
+                      :id="id" />
                   </span>
                 </template>
               </ProjectLink>
@@ -86,23 +89,37 @@ import IconCalendarToday from '@/components/icons/IconCalendarToday.vue';
 import IconInbox from '@/components/icons/IconInbox.vue';
 import ProjectOptions from '@/components/projects/ProjectOptions.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import { useActiveElement } from '@vueuse/core';
 
+const activeElement = useActiveElement();
 const store = useTasksStore();
 const projectsStore = useProjectsStore();
 const isProjectModalOpen = ref(false);
 const isProjectFocus = ref(false);
+const isOpen = ref(false);
+const sidebar = ref();
+const showId = ref();
 const { getProjects: projects } = storeToRefs(projectsStore);
 
 function handleOpenEditor(): void {
-  const activeElement = document.activeElement as HTMLElement;
-
-  if (activeElement) {
-    activeElement.blur();
+  if (activeElement.value) {
+    activeElement.value.blur();
   }
   isProjectModalOpen.value = true;
 }
 
 function handleCloseEditor(): void {
   isProjectModalOpen.value = false;
+}
+
+function handleShowOptions(id: string): void {
+  if (isOpen.value) return;
+  showId.value = id;
+}
+
+function handleHideOptions(): void {
+  if (!isOpen.value) {
+    showId.value = null;
+  }
 }
 </script>

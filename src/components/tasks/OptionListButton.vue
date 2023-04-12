@@ -1,6 +1,7 @@
 <template>
   <li>
-    <BaseButton class="btn-md md:btn-sm">
+    <BaseButton
+      class="btn-md md:btn-sm focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent">
       <template #icon>
         <slot name="icon" />
       </template>

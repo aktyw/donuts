@@ -22,12 +22,12 @@
       </template>
       <template #action>
         <button
-          class="btn bg-base-200 text-base-content hover:bg-base-300 border-0 btn-sm rounded-md capitalize font-semibold focus:outline focus:outline-1"
+          class="btn bg-base-200 text-base-content hover:bg-base-300 border-0 btn-sm rounded-md capitalize font-semibold focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
           @click="cancelDeleteTask">
           Cancel
         </button>
         <button
-          class="btn btn-sm rounded-md capitalize font-semibold"
+          class="btn btn-sm rounded-md capitalize font-semibold focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
           @click="handleDeleteAllTasks">
           Delete
         </button>

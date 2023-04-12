@@ -4,7 +4,7 @@
     ref="input"
     :name="inputName"
     :value="modelValue"
-    class="input input-bordered mb-8"
+    class="input input-bordered mb-8 focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
     v-bind="$attrs"
     @input="updateModelValue" />
 </template>

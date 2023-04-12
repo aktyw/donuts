@@ -2,7 +2,7 @@
   <div class="dropdown dropdown-bottom dropdown-end">
     <label tabindex="0">
       <button
-        class="w-full hover:bg-base-200 focus:bg-base-200 btn btn-square rounded-md btn-xs bg-base-100 border-0 focus:outline focus:outline-1 text-slate-900 font-normal normal-case">
+        class="w-full hover:bg-base-200 focus:bg-base-200 btn btn-square rounded-md btn-xs bg-base-100 border-0 text-slate-900 font-normal normal-case focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent">
         <span class="flex flex-row gap-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"

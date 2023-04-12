@@ -5,7 +5,7 @@
       data="Reverse order">
       <template #default>
         <button
-          class="btn-xs hover:bg-base-200 rounded p-0"
+          class="btn-xs hover:bg-base-200 rounded p-0 focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
           aria-label="Reverse order"
           @click="toggleSortOrder()">
           <svg
@@ -35,7 +35,7 @@
       data="Reset sorting options">
       <template #default>
         <button
-          class="btn-xs hover:bg-base-200 rounded p-0"
+          class="btn-xs hover:bg-base-200 rounded p-0 focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
           aria-label="Reset sorting options"
           @click="reset">
           <svg

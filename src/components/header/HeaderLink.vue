@@ -1,7 +1,7 @@
 <template>
   <li>
     <RouterLink
-      class="btn btn-md lg:btn-sm bg-base-300 border-0 normal-case text-base font-normal text-base-content hover:bg-base-200 rounded"
+      class="btn btn-md lg:btn-sm bg-base-300 border-0 normal-case text-base font-normal text-base-content hover:bg-base-200 rounded focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
       :active-class="isMobile"
       :to="to">
       <div class="flex gap-2">
@@ -19,7 +19,7 @@ import { getBreakpoints } from '@/composables/useBreakpoints';
 
 const isMobile = computed(() => {
   if (smAndSmaller) {
-    return 'bg-neutral text-neutral-content hover:text-neutral-content focus:bg-neutral';
+    return 'bg-neutral text-neutral-content hover:text-neutral focus:bg-neutral';
   }
 
   return 'bg-base-300 text-base-content hover:text-base-300 focus:bg-base-300';

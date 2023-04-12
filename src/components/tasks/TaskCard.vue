@@ -8,12 +8,13 @@
     @mouseleave="handleHideOptionsBtn">
     <div class="flex gap-4 w-full">
       <div>
-        <label class="flex items-start cursor-pointer">
+        <label
+          class="flex items-start cursor-pointer focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent">
           <input
             type="checkbox"
-            class="checkbox rounded-full"
+            class="checkbox rounded-full focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
             :checked="isDone"
-            :class="{ 'checkbox-accent': isPriority }"
+            :class="{ 'checkbox-accent': isPriority, 'checkbox-success': isDone }"
             @click="toggleIsDone(task.id)" />
         </label>
       </div>
@@ -162,7 +163,7 @@ const card: Ref<HTMLElement | undefined> = ref();
 const { x: cardX, y: cardY, bottom: cardBottom } = useElementBounding(card);
 const showBacklight = ref(false);
 const { getProjectById } = storeToRefs(storeProjects);
-const project = getProjectById.value(props.task.project);
+const project = computed(() => getProjectById.value(props.task.project));
 const showProjectDetails = ref(false);
 
 watch(activeElement, (el) => {
