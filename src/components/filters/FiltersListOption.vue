@@ -14,10 +14,11 @@ import TheBadge from '@/components/layouts/TheBadge.vue';
 </template>
 
 <script setup lang="ts">
-import TheBadge from '@/components/ui/BaseBadge.vue';
-import type { Filters } from '@/types/models/Filters';
 import { storeToRefs } from 'pinia';
+
+import TheBadge from '@/components/ui/BaseBadge.vue';
 import { useTasksStore } from '@/stores/TasksStore';
+import type { Filters } from '@/types/models/Filters';
 import type { Task } from '@/types/models/Task';
 
 const store = useTasksStore();

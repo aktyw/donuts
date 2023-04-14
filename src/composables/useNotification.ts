@@ -1,7 +1,8 @@
-import { NOTIFICATION_DURATION } from '@/config/popup';
-import type { NotificationMessage } from '@/types/models/NotificationMessage';
-import { useTasksStore } from '@/stores/TasksStore';
 import { v4 as uuid } from 'uuid';
+
+import { NOTIFICATION_DURATION } from '@/config/popup';
+import { useTasksStore } from '@/stores/TasksStore';
+import type { NotificationMessage } from '@/types/models/NotificationMessage';
 
 export function useNotification(message: NotificationMessage, id: string = uuid()) {
   const store = useTasksStore();

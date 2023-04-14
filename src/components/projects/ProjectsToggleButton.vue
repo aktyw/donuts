@@ -10,8 +10,8 @@
 </template>
 
 <script setup lang="ts">
-import BaseButton from '@/components/ui/BaseButton.vue';
 import IconChevronDown from '@/components/icons/IconChevronDown.vue';
+import BaseButton from '@/components/ui/BaseButton.vue';
 
 type Props = {
   isOpen: boolean;

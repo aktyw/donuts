@@ -13,8 +13,9 @@
 </template>
 
 <script setup lang="ts">
-import { useProjectsStore } from '@/stores/ProjectsStore';
 import { storeToRefs } from 'pinia';
+
+import { useProjectsStore } from '@/stores/ProjectsStore';
 
 const store = useProjectsStore();
 const { getAllProjects: projects } = storeToRefs(store);

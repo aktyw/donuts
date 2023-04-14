@@ -25,20 +25,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useTasksStore } from '@/stores/TasksStore';
-import { useProjectsStore } from '@/stores/ProjectsStore';
-import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
-import FiltersNavbar from '@/components/filters/FiltersNavbar.vue';
+import { computed, ref } from 'vue';
+import { useRoute } from 'vue-router';
+
 import FiltersList from '@/components/filters/FiltersList.vue';
+import FiltersNavbar from '@/components/filters/FiltersNavbar.vue';
 import FilterStatus from '@/components/filters/FilterStatus.vue';
-import TasksEmptyMessage from '@/components/tasks/TasksEmptyMessage.vue';
 import TaskAddButton from '@/components/tasks/TaskAddButton.vue';
 import TaskEditor from '@/components/tasks/TaskEditor.vue';
+import TasksEmptyMessage from '@/components/tasks/TasksEmptyMessage.vue';
 import TasksList from '@/components/tasks/TasksList.vue';
-import { SortFilters } from '@/types/models/Sort';
 import { useHandleTasks } from '@/composables/useHandleTasks';
+import { useProjectsStore } from '@/stores/ProjectsStore';
+import { useTasksStore } from '@/stores/TasksStore';
+import { SortFilters } from '@/types/models/Sort';
 
 const route = useRoute();
 const projectId = computed(() => route.params.id as string);

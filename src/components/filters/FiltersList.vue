@@ -24,9 +24,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+
+import FiltersListOption from '@/components/filters/FiltersListOption.vue';
 import { Filters } from '@/types/models/Filters';
 import type { Task } from '@/types/models/Task';
-import FiltersListOption from '@/components/filters/FiltersListOption.vue';
 
 type Props = {
   tasks: Task[];

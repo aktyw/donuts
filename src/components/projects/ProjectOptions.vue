@@ -90,23 +90,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useProjectsStore } from '@/stores/ProjectsStore';
 import { storeToRefs } from 'pinia';
-import IconHorizontalDots from '@/components/icons/IconHorizontalDots.vue';
-import IconPen from '@/components/icons/IconPen.vue';
-import IconDuplicate from '@/components/icons/IconDuplicate.vue';
+import { computed, ref } from 'vue';
+
 import IconArchive from '@/components/icons/IconArchive.vue';
-import IconRecycleBin from '@/components/icons/IconRecycleBin.vue';
+import IconDuplicate from '@/components/icons/IconDuplicate.vue';
 import IconHeart from '@/components/icons/IconHeart.vue';
 import IconHeartMinus from '@/components/icons/IconHeartMinus.vue';
-import BaseDividerSmall from '@/components/ui/BaseDividerSmall.vue';
-import OptionListButton from '@/components/tasks/OptionListButton.vue';
+import IconHorizontalDots from '@/components/icons/IconHorizontalDots.vue';
+import IconPen from '@/components/icons/IconPen.vue';
+import IconRecycleBin from '@/components/icons/IconRecycleBin.vue';
 import ProjectModalEdit from '@/components/projects/ProjectModalEdit.vue';
 import ModalDeleteConfirm from '@/components/tasks/ModalDeleteConfirm.vue';
+import OptionListButton from '@/components/tasks/OptionListButton.vue';
+import BaseDividerSmall from '@/components/ui/BaseDividerSmall.vue';
 import { useNotification } from '@/composables/useNotification';
-import { NotificationMessage } from '@/types/models/NotificationMessage';
 import blurElement from '@/helpers/blur';
+import { useProjectsStore } from '@/stores/ProjectsStore';
+import { NotificationMessage } from '@/types/models/NotificationMessage';
 
 type Props = {
   id: string;

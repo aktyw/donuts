@@ -76,20 +76,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { storeToRefs } from 'pinia';
 import { useActiveElement } from '@vueuse/core';
-import { useTasksStore } from '@/stores/TasksStore';
-import { useProjectsStore } from '@/stores/ProjectsStore';
-import TheSidebar from '@/components/layouts/TheSidebar.vue';
-import ProjectLink from '@/components/projects/ProjectLink.vue';
-import ProjectEditor from '@/components/projects/ProjectEditor.vue';
-import BaseDivider from '@/components/ui/BaseDivider.vue';
-import ProjectAccordion from '@/components/projects/ProjectAccordion.vue';
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
+
 import IconCalendarToday from '@/components/icons/IconCalendarToday.vue';
 import IconInbox from '@/components/icons/IconInbox.vue';
+import TheSidebar from '@/components/layouts/TheSidebar.vue';
+import ProjectAccordion from '@/components/projects/ProjectAccordion.vue';
+import ProjectEditor from '@/components/projects/ProjectEditor.vue';
+import ProjectLink from '@/components/projects/ProjectLink.vue';
 import ProjectOptions from '@/components/projects/ProjectOptions.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import BaseDivider from '@/components/ui/BaseDivider.vue';
+import { useProjectsStore } from '@/stores/ProjectsStore';
+import { useTasksStore } from '@/stores/TasksStore';
 
 const activeElement = useActiveElement();
 const store = useTasksStore();

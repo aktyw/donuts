@@ -66,21 +66,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
-import { useProjectsStore } from '@/stores/ProjectsStore';
-import BaseDivider from '../ui/BaseDivider.vue';
-import BaseInput from '@/components/ui/BaseInput.vue';
-import BaseDropdown from '@/components/ui/BaseDropdown.vue';
-import BaseButton from '@/components/ui/BaseButton.vue';
-import { COLORS } from '@/types/models/Colors';
+import { nanoid } from 'nanoid';
+import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
+
 import IconColor from '@/components/icons/IconColor.vue';
 import IconDone from '@/components/icons/IconDone.vue';
-import { useNotification } from '@/composables/useNotification';
-import { NotificationMessage } from '../../types/models/NotificationMessage';
-import { nanoid } from 'nanoid';
-import { useRouter } from 'vue-router';
+import BaseButton from '@/components/ui/BaseButton.vue';
+import BaseDropdown from '@/components/ui/BaseDropdown.vue';
+import BaseInput from '@/components/ui/BaseInput.vue';
 import BaseToggle from '@/components/ui/BaseToggle.vue';
+import { useNotification } from '@/composables/useNotification';
+import { useProjectsStore } from '@/stores/ProjectsStore';
+import { COLORS } from '@/types/models/Colors';
+
+import { NotificationMessage } from '../../types/models/NotificationMessage';
+import BaseDivider from '../ui/BaseDivider.vue';
 
 const router = useRouter();
 const projectStore = useProjectsStore();

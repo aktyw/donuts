@@ -37,14 +37,15 @@
 </template>
 
 <script setup lang="ts">
+import { useDateFormat, useNow } from '@vueuse/core';
 import { ref } from 'vue';
-import { useTasksStore } from '@/stores/TasksStore';
+
 import TasksSettingsDropdown from '@/components/filters/FiltersDropdown.vue';
 import ModalDeleteConfirm from '@/components/tasks/ModalDeleteConfirm.vue';
 import BaseHeading from '@/components/ui/BaseHeading.vue';
-import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { useNotification } from '@/composables/useNotification';
-import { useNow, useDateFormat } from '@vueuse/core';
+import { useTasksStore } from '@/stores/TasksStore';
+import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { TASK_VIEW_TITLE } from '@/types/models/Titles';
 
 const store = useTasksStore();

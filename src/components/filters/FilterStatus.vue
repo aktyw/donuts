@@ -54,10 +54,11 @@
 </template>
 
 <script setup lang="ts">
-import { useTasksStore } from '@/stores/TasksStore';
 import { storeToRefs } from 'pinia';
-import { SortOrder } from '@/types/models/Sort';
+
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import { useTasksStore } from '@/stores/TasksStore';
+import { SortOrder } from '@/types/models/Sort';
 
 const store = useTasksStore();
 

@@ -9,8 +9,9 @@
 </template>
 
 <script setup lang="ts">
-import { useNotesStore } from '@/stores/NotesStore';
 import { storeToRefs } from 'pinia';
+
+import { useNotesStore } from '@/stores/NotesStore';
 
 const store = useNotesStore();
 const { getAllNotes: notes } = storeToRefs(store);

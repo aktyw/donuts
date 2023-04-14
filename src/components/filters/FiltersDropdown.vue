@@ -224,11 +224,12 @@
 </template>
 
 <script setup lang="ts">
-import { useTasksStore } from '@/stores/TasksStore';
 import { storeToRefs } from 'pinia';
+
 import blurElement from '@/helpers/blur';
-import { SortFilters, SortOrder } from '@/types/models/Sort';
+import { useTasksStore } from '@/stores/TasksStore';
 import { Filters } from '@/types/models/Filters';
+import { SortFilters, SortOrder } from '@/types/models/Sort';
 
 const store = useTasksStore();
 const {

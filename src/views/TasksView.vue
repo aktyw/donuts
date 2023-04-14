@@ -5,8 +5,9 @@
 </template>
 
 <script setup lang="ts">
-import { useSettingsStore } from '@/stores/SettingsStore';
 import { storeToRefs } from 'pinia';
+
+import { useSettingsStore } from '@/stores/SettingsStore';
 
 const settingsStore = useSettingsStore();
 const { getMenuStatus: isMenuOpen } = storeToRefs(settingsStore);

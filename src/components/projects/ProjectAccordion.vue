@@ -43,8 +43,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import ProjectsToggleButton from '@/components/projects/ProjectsToggleButton.vue';
+
 import ProjectAddButton from '@/components/projects/ProjectAddButton.vue';
+import ProjectsToggleButton from '@/components/projects/ProjectsToggleButton.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 
 const isOpenProjectList = ref(false);

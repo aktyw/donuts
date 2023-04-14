@@ -8,6 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import BaseButton from '@/components/ui/BaseButton.vue';
 import IconAdd from '@/components/icons/IconAdd.vue';
+import BaseButton from '@/components/ui/BaseButton.vue';
 </script>

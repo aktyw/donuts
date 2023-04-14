@@ -38,11 +38,12 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
+
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseNotification from '@/components/ui/BaseNotification.vue';
 import { vFocus } from '@/directives/vAutoFocus.js';
 import { useTasksStore } from '@/stores/TasksStore';
-import { storeToRefs } from 'pinia';
 import { NotificationAction } from '@/types/models/NotificationAction';
 
 const store = useTasksStore();

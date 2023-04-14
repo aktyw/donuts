@@ -98,24 +98,25 @@
 </template>
 
 <script setup lang="ts">
-import { computed, toRefs, ref, onMounted, type Ref } from 'vue';
-import type { Task } from '@/types/models/Task';
 import Datepicker from '@vuepic/vue-datepicker';
-import blurElement from '@/helpers/blur';
-import { useTimeDetail } from '@/composables/useTimeDetail';
-import { useTasksStore } from '@/stores/TasksStore';
 import { useElementBounding, useWindowSize } from '@vueuse/core';
-import IconVerticalDots from '@/components/icons/IconVerticalDots.vue';
-import IconPen from '@/components/icons/IconPen.vue';
+import { computed, onMounted, type Ref, ref, toRefs } from 'vue';
+
+import IconAddSubtask from '@/components/icons/IconAddSubtask.vue';
+import IconBell from '@/components/icons/IconBell.vue';
+import IconClock from '@/components/icons/IconClock.vue';
+import IconDone from '@/components/icons/IconDone.vue';
 import IconDuplicate from '@/components/icons/IconDuplicate.vue';
 import IconImportant from '@/components/icons/IconImportant.vue';
-import IconAddSubtask from '@/components/icons/IconAddSubtask.vue';
-import IconDone from '@/components/icons/IconDone.vue';
-import IconClock from '@/components/icons/IconClock.vue';
-import IconBell from '@/components/icons/IconBell.vue';
+import IconPen from '@/components/icons/IconPen.vue';
 import IconRecycleBin from '@/components/icons/IconRecycleBin.vue';
-import BaseDividerSmall from '@/components/ui/BaseDividerSmall.vue';
+import IconVerticalDots from '@/components/icons/IconVerticalDots.vue';
 import OptionListButton from '@/components/tasks/OptionListButton.vue';
+import BaseDividerSmall from '@/components/ui/BaseDividerSmall.vue';
+import { useTimeDetail } from '@/composables/useTimeDetail';
+import blurElement from '@/helpers/blur';
+import { useTasksStore } from '@/stores/TasksStore';
+import type { Task } from '@/types/models/Task';
 
 type Props = {
   task: Task;

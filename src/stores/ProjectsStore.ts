@@ -1,9 +1,10 @@
-import { defineStore } from 'pinia';
 import { useStorage } from '@vueuse/core';
-import type { Projects } from '@/types/models/Projects';
+import { nanoid } from 'nanoid';
+import { defineStore } from 'pinia';
+
 import { findIndex } from '@/helpers/findIndex';
 import { findItem } from '@/helpers/findItem';
-import { nanoid } from 'nanoid';
+import type { Projects } from '@/types/models/Projects';
 
 type PartialProject = Omit<Projects, 'active'>;
 

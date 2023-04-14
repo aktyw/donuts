@@ -18,7 +18,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
   },
-  plugins: ['vuejs-accessibility'],
+  plugins: ['vuejs-accessibility', 'simple-import-sort'],
   rules: {
     'prettier/prettier': 'error',
     // 'vuejs-accessibility/rule-name': 'error',
@@ -26,6 +26,8 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'vue/component-name-in-template-casing': ['error', 'PascalCase'],
     'linebreak-style': ['error', process.platform === 'win32' ? 'windows' : 'unix'],
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
     'vue/padding-line-between-blocks': ['error', 'always'],
     'padding-line-between-statements': [
       'error',

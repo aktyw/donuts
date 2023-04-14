@@ -26,19 +26,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useTasksStore } from '@/stores/TasksStore';
 import { storeToRefs } from 'pinia';
-import FiltersNavbar from '@/components/filters/FiltersNavbar.vue';
+import { computed, ref } from 'vue';
+
 import FiltersList from '@/components/filters/FiltersList.vue';
+import FiltersNavbar from '@/components/filters/FiltersNavbar.vue';
 import FilterStatus from '@/components/filters/FilterStatus.vue';
-import TasksEmptyMessage from '@/components/tasks/TasksEmptyMessage.vue';
 import TaskAddButton from '@/components/tasks/TaskAddButton.vue';
 import TaskEditor from '@/components/tasks/TaskEditor.vue';
+import TasksEmptyMessage from '@/components/tasks/TasksEmptyMessage.vue';
 import TasksList from '@/components/tasks/TasksList.vue';
+import { useHandleTasks } from '@/composables/useHandleTasks';
+import { useTasksStore } from '@/stores/TasksStore';
 import { SortFilters } from '@/types/models/Sort';
 import { TASK_VIEW_TITLE } from '@/types/models/Titles';
-import { useHandleTasks } from '@/composables/useHandleTasks';
 
 const store = useTasksStore();
 

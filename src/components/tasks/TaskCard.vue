@@ -123,23 +123,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, type Ref } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useTasksStore } from '@/stores/TasksStore';
-import { useProjectsStore } from '@/stores/ProjectsStore';
-import type { Task } from '@/types/models/Task';
-import TaskOptions from '@/components/tasks/TaskOptions.vue';
-import TaskEditModal from '@/components/tasks/TaskEditModal.vue';
-import ModalDeleteConfirm from '@/components/tasks/ModalDeleteConfirm.vue';
-import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
-import TaskProjectDetail from '@/components/tasks/TaskProjectDetail.vue';
-import { useTimeDetail } from '@/composables/useTimeDetail';
-import { NotificationMessage } from '@/types/models/NotificationMessage';
-import { useNotification } from '@/composables/useNotification';
 import { useActiveElement } from '@vueuse/core';
 import { useElementBounding } from '@vueuse/core';
-import IconColor from '@/components/icons/IconColor.vue';
+import { storeToRefs } from 'pinia';
+import { computed, type Ref, ref, watch } from 'vue';
+
 import IconCalendar from '@/components/icons/IconCalendar.vue';
+import IconColor from '@/components/icons/IconColor.vue';
+import ModalDeleteConfirm from '@/components/tasks/ModalDeleteConfirm.vue';
+import TaskEditModal from '@/components/tasks/TaskEditModal.vue';
+import TaskOptions from '@/components/tasks/TaskOptions.vue';
+import TaskProjectDetail from '@/components/tasks/TaskProjectDetail.vue';
+import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
+import { useNotification } from '@/composables/useNotification';
+import { useTimeDetail } from '@/composables/useTimeDetail';
+import { useProjectsStore } from '@/stores/ProjectsStore';
+import { useTasksStore } from '@/stores/TasksStore';
+import { NotificationMessage } from '@/types/models/NotificationMessage';
+import type { Task } from '@/types/models/Task';
 
 type Props = {
   task: Task;

@@ -108,22 +108,24 @@ import BaseButton from '@/components/ui/BaseButton.vue';
 </template>
 
 <script setup lang="ts">
-import { ref, watch, type Ref } from 'vue';
-import { useTasksStore } from '@/stores/TasksStore';
-import BaseButton from '@/components/ui/BaseButton.vue';
-import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
-import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
-import { useTimeDetail } from '@/composables/useTimeDetail';
-import { vFocus } from '@/directives/vAutoFocus';
-import TaskEditorInput from '@/components/tasks/TaskEditorInput.vue';
-import { NotificationMessage } from '@/types/models/NotificationMessage';
-import { useNotification } from '@/composables/useNotification';
-import ProjectList from '@/components/projects/ProjectList.vue';
-import { useProjectsStore } from '@/stores/ProjectsStore';
+
+import Datepicker from '@vuepic/vue-datepicker';
 import { storeToRefs } from 'pinia';
+import { type Ref, ref, watch } from 'vue';
+
 import ProjectAddButton from '@/components/projects/ProjectAddButton.vue';
 import ProjectEditor from '@/components/projects/ProjectEditor.vue';
+import ProjectList from '@/components/projects/ProjectList.vue';
+import TaskEditorInput from '@/components/tasks/TaskEditorInput.vue';
+import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
+import BaseButton from '@/components/ui/BaseButton.vue';
+import { useNotification } from '@/composables/useNotification';
+import { useTimeDetail } from '@/composables/useTimeDetail';
+import { vFocus } from '@/directives/vAutoFocus';
+import { useProjectsStore } from '@/stores/ProjectsStore';
+import { useTasksStore } from '@/stores/TasksStore';
+import { NotificationMessage } from '@/types/models/NotificationMessage';
 
 const projectStore = useProjectsStore();
 const store = useTasksStore();
