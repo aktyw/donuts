@@ -20,21 +20,22 @@
           @close-editor="handleCloseEditor">
         </ProjectModalEdit>
       </teleport>
-      <OptionListButton @click="handleEditProject(props.id)">
+      <OptionListButton @click="handleOpenEditor">
         <template #icon>
           <IconPen />
         </template>
         <template #default>Edit project</template>
       </OptionListButton>
 
-      <OptionListButton @click="handleAddToFav(props.id)">
+      <OptionListButton @click="handleAddToFav">
         <template #icon>
-          <IconHeart />
+          <IconHeartMinus v-if="project.favorite" />
+          <IconHeart v-else />
         </template>
-        <template #default>Add to favorites</template>
+        <template #default>{{ project.favorite ? 'Remove from favorites' : 'Add to favorites' }}</template>
       </OptionListButton>
 
-      <OptionListButton @click="handleDuplicateProject(props.id)">
+      <OptionListButton @click="handleDuplicateProject">
         <template #icon>
           <IconDuplicate />
         </template>
@@ -45,7 +46,7 @@
 
       <OptionListButton
         class="hover:text-error hover:fill-error focus:text-error focus:fill-error fill-base-content"
-        @click="handleArchiveProject(props.id)">
+        @click="handleArchiveProject">
         <template #icon>
           <IconArchive />
         </template>
@@ -54,13 +55,37 @@
 
       <OptionListButton
         class="hover:text-error hover:fill-error focus:text-error focus:fill-error fill-base-content"
-        @click="handleDeleteProject(props.id)">
+        @click="toggleDeleteModal">
         <template #icon>
           <IconRecycleBin />
         </template>
         <template #default>Delete project</template>
       </OptionListButton>
     </ul>
+    <Teleport to="body">
+      <ModalDeleteConfirm
+        v-if="deleteConfirm"
+        :title="'Delete task'">
+        <template #content>
+          <p>
+            Do you really want to delete project
+            <span class="font-bold break-words">"{{ project.name }}"</span> ?
+          </p>
+        </template>
+        <template #action>
+          <button
+            class="btn bg-base-200 text-base-content hover:bg-base-300 border-0 btn-sm rounded-md capitalize font-semibold focus:outline focus:outline-1"
+            @click="cancelDeleteProject">
+            Cancel
+          </button>
+          <button
+            class="btn btn-sm rounded-md capitalize font-semibold"
+            @click="handleDeleteProject">
+            Delete
+          </button>
+        </template>
+      </ModalDeleteConfirm>
+    </Teleport>
   </div>
 </template>
 
@@ -74,33 +99,36 @@ import IconDuplicate from '@/components/icons/IconDuplicate.vue';
 import IconArchive from '@/components/icons/IconArchive.vue';
 import IconRecycleBin from '@/components/icons/IconRecycleBin.vue';
 import IconHeart from '@/components/icons/IconHeart.vue';
+import IconHeartMinus from '@/components/icons/IconHeartMinus.vue';
 import BaseDividerSmall from '@/components/ui/BaseDividerSmall.vue';
 import OptionListButton from '@/components/tasks/OptionListButton.vue';
 import ProjectModalEdit from '@/components/projects/ProjectModalEdit.vue';
+import ModalDeleteConfirm from '@/components/tasks/ModalDeleteConfirm.vue';
+import { useNotification } from '@/composables/useNotification';
+import { NotificationMessage } from '@/types/models/NotificationMessage';
+import blurElement from '@/helpers/blur';
 
 type Props = {
   id: string;
 };
 
 const props = defineProps<Props>();
-
+const deleteConfirm = ref(false);
 const projectsStore = useProjectsStore();
 const { getProjectById } = storeToRefs(projectsStore);
 const isProjectModalOpen = ref(false);
 
-const project = computed(() => getProjectById.value(props.id));
+const project = computed(() => {
+  const p = getProjectById.value(props.id);
 
-// const emit = defineEmits<{
-//   (e: 'deleteTask', id: string): void;
-//   (e: 'toggleIsPriority', id: string): void;
-//   (e: 'toggleIsDone', id: string): void;
-//   (e: 'handleDate', date: Date): void;
-//   (e: 'editTask', id: string): void;
-//   (e: 'duplicateTask', id: string): void;
-//   (e: 'pickerOpen'): void;
-// }>();
+  if (!p) {
+    throw new Error(`Project with id ${props.id} not found. Try to add New Project or use Inbox instead.`);
+  }
 
-function handleEditProject(): void {
+  return p;
+});
+
+function handleOpenEditor(): void {
   isProjectModalOpen.value = true;
 }
 
@@ -108,24 +136,31 @@ function handleCloseEditor(): void {
   isProjectModalOpen.value = false;
 }
 
-function handleAddToFav(id: string): void {
-  // emit('toggleIsDone', taskId);
-  console.log('handling', id);
+function handleAddToFav(): void {
+  projectsStore.toggleFavoriteStatus(props.id);
 }
 
-function handleDuplicateProject(id: string): void {
-  // blurElement();
-  // emit('duplicateTask', taskId);
-  console.log('handling', id);
+function handleDuplicateProject(): void {
+  projectsStore.duplicateProject(props.id);
+  useNotification(NotificationMessage.DuplicateProject);
+  blurElement();
 }
 
-function handleArchiveProject(id: string): void {
-  // console.log('sub', taskId);
-  console.log('handling', id);
+function handleDeleteProject(): void {
+  projectsStore.deleteProject(props.id);
+  useNotification(NotificationMessage.DeleteProject);
 }
 
-function handleDeleteProject(id: string): void {
-  // emit('editTask', taskId);
-  console.log('handling', id);
+function cancelDeleteProject(): void {
+  toggleDeleteModal();
+}
+
+function toggleDeleteModal(): void {
+  deleteConfirm.value = !deleteConfirm.value;
+}
+
+function handleArchiveProject(): void {
+  projectsStore.archiveProject(props.id);
+  useNotification(NotificationMessage.ArchiveProject);
 }
 </script>

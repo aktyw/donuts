@@ -14,7 +14,10 @@ export const COLORS = [
   { name: 'Yellow', hex: '#ffeb3b' },
   { name: 'Amber', hex: '#ffc107' },
   { name: 'Orange', hex: '#ff9800' },
-  { name: 'Deep Orange', hex: '#ff5722' },
+  { name: 'Brown', hex: '#795548' },
+  { name: 'Gray', hex: '#9e9e9e' },
+  { name: 'Blue Gray', hex: '#607d8b' },
+  { name: 'Black', hex: '#000000' },
 ] as const;
 
 type COLORS = (typeof COLORS)[keyof typeof COLORS];

@@ -41,6 +41,7 @@
               </li>
             </template>
           </BaseDropdown>
+          <BaseToggle v-model="favorite"><template #title> Add to favorite</template></BaseToggle>
         </div>
         <div class="flex justify-end gap-4 text-lg mt-8">
           <BaseButton
@@ -75,13 +76,14 @@ import BaseButton from '@/components/ui/BaseButton.vue';
 import { COLORS } from '@/types/models/Colors';
 import IconColor from '@/components/icons/IconColor.vue';
 import IconDone from '@/components/icons/IconDone.vue';
+import { useNotification } from '@/composables/useNotification';
+import { NotificationMessage } from '../../types/models/NotificationMessage';
+import { nanoid } from 'nanoid';
+import { useRouter } from 'vue-router';
+import BaseToggle from '@/components/ui/BaseToggle.vue';
 
+const router = useRouter();
 const projectStore = useProjectsStore();
-
-// defineProps<{
-//   modelValue: string;
-//   title: string;
-// }>();
 
 const emit = defineEmits<{
   (event: 'update:modelValue', payload: string): void;
@@ -89,6 +91,7 @@ const emit = defineEmits<{
 }>();
 const projectName = ref('');
 const colorName = ref('Blue');
+const favorite = ref(false);
 const target = ref();
 
 const colorHex = computed(() => {
@@ -106,11 +109,15 @@ function closeEditor(): void {
 }
 
 function addProject(): void {
-  const project = { name: projectName.value, color: colorHex.value };
+  const id = nanoid();
+  const project = { name: projectName.value, color: colorHex.value, id, favorite: favorite.value };
 
   projectStore.addProject(project);
-
   projectName.value = '';
+
+  useNotification(NotificationMessage.AddProject);
+  closeEditor();
+  router.push({ name: 'project', params: { id: id } });
 }
 
 useFocusTrap(target, {

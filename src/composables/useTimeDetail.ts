@@ -1,5 +1,4 @@
-import type { ComputedRef, Ref } from 'vue';
-import { computed } from 'vue';
+import { computed, type Ref, type ComputedRef } from 'vue';
 import { isOverdue, isToday, isTomorrow, showDateWithTime } from '@/helpers/checkTime';
 import { Time } from '@/types/models/TimeDetails';
 import { useTimeAgo } from '@vueuse/core';

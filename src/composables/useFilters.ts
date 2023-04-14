@@ -1,5 +1,4 @@
-import { computed } from 'vue';
-import type { ComputedRef } from 'vue';
+import { computed, type ComputedRef } from 'vue';
 import type { Task } from '@/types/models/Task';
 import { useTasksStore } from '@/stores/TasksStore';
 import { Filters } from '@/types/models/Filters';

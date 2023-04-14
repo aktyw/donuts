@@ -108,8 +108,7 @@ import BaseButton from '@/components/ui/BaseButton.vue';
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import type { Ref } from 'vue';
+import { ref, watch, type Ref } from 'vue';
 import { useTasksStore } from '@/stores/TasksStore';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import Datepicker from '@vuepic/vue-datepicker';

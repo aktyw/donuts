@@ -1,9 +1,13 @@
 import { defineStore } from 'pinia';
-import { nanoid } from 'nanoid';
 import { useStorage } from '@vueuse/core';
 import type { Projects } from '@/types/models/Projects';
+import { findIndex } from '@/helpers/findIndex';
+import { findItem } from '@/helpers/findItem';
+import { nanoid } from 'nanoid';
 
-const inbox: Projects = Object.freeze({ name: 'Inbox', id: 'inbox', color: '#000000', active: true });
+type PartialProject = Omit<Projects, 'active'>;
+
+const inbox: Projects = Object.freeze({ name: 'Inbox', id: 'inbox', color: '#000000', active: true, favorite: false });
 
 export const useProjectsStore = defineStore('projects', {
   state: () => ({
@@ -13,8 +17,17 @@ export const useProjectsStore = defineStore('projects', {
     getAllProjects(state) {
       return state.projects;
     },
+    getActiveProjects(state) {
+      return state.projects.filter((p) => p.active);
+    },
+    getArchiveProjects(state) {
+      return state.projects.filter((p) => !p.active);
+    },
     getProjects(state) {
       return state.projects.filter((p) => p.id !== 'inbox');
+    },
+    getFavoriteProjects(state) {
+      return state.projects.filter((p) => p.favorite);
     },
     getProjectById(state): (id: string) => Projects | undefined {
       return (id) => {
@@ -23,26 +36,37 @@ export const useProjectsStore = defineStore('projects', {
     },
   },
   actions: {
-    addProject({ name, color }: Projects) {
+    addProject({ name, color, id, favorite }: PartialProject) {
       const project = {
         name,
-        id: nanoid(),
+        id,
         color,
         active: true,
+        favorite,
       };
 
       this.projects.push(project);
     },
     deleteProject(id: string) {
-      if (this.projects.find((p) => p.id === id) === this.projects[0]) {
-        throw new Error('Cannot delete Inbox');
-      }
+      const project = findItem(id, this.projects);
 
-      this.projects = this.projects.filter((p) => p.id !== id);
+      this.projects = this.projects.filter((p) => p !== project);
     },
-    updateProject(id: string, update: Partial<Projects>) {
+    archiveProject(id: string) {
+      const projectIdx = findIndex(id, this.projects);
+
+      this.projects[projectIdx]['active'] = false;
+    },
+    activateProject(id: string) {
+      const projectIdx = findIndex(id, this.projects);
+
+      this.projects[projectIdx]['active'] = true;
+    },
+    updateProject(update: PartialProject) {
+      const { id } = update;
+
       if (this.projects.find((p) => p.id === id) === this.projects[0]) {
-        throw new Error('Cannot update Inbox');
+        throw new Error('Cannot update project');
       }
 
       const projectIndex = this.projects.findIndex((p) => p.id === id);
@@ -50,6 +74,25 @@ export const useProjectsStore = defineStore('projects', {
       if (projectIndex !== -1) {
         this.projects[projectIndex] = { ...this.projects[projectIndex], ...update };
       }
+    },
+    toggleFavoriteStatus(id: string) {
+      const projectIdx = findIndex(id, this.projects);
+
+      this.projects[projectIdx]['favorite'] = !this.projects[projectIdx]['favorite'];
+    },
+    duplicateProject(id: string) {
+      const project = findItem(id, this.projects);
+      const copyProject = JSON.parse(JSON.stringify(project));
+      const newId = nanoid();
+
+      copyProject.id = newId;
+      copyProject.name = `Copy of ${project.name}`;
+      const projectIdx = findIndex(id, this.projects);
+
+      const projectStarts = this.projects.slice(0, projectIdx + 1);
+      const projectEnds = this.projects.slice(projectIdx + 1);
+
+      this.projects = [...projectStarts, copyProject, ...projectEnds];
     },
   },
 });

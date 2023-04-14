@@ -14,7 +14,7 @@
       </template>
     </BaseHeading>
     <TasksSettingsDropdown @delete-tasks="toggleDeleteModal"></TasksSettingsDropdown>
-    <TaskDeleteConfirmModal
+    <ModalDeleteConfirm
       v-if="deleteConfirm"
       :title="'Delete task'">
       <template #content>
@@ -32,7 +32,7 @@
           Delete
         </button>
       </template>
-    </TaskDeleteConfirmModal>
+    </ModalDeleteConfirm>
   </div>
 </template>
 
@@ -40,7 +40,7 @@
 import { ref } from 'vue';
 import { useTasksStore } from '@/stores/TasksStore';
 import TasksSettingsDropdown from '@/components/filters/FiltersDropdown.vue';
-import TaskDeleteConfirmModal from '@/components/tasks/TaskDeleteConfirmModal.vue';
+import ModalDeleteConfirm from '@/components/tasks/ModalDeleteConfirm.vue';
 import BaseHeading from '@/components/ui/BaseHeading.vue';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { useNotification } from '@/composables/useNotification';

@@ -78,6 +78,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
+import { useActiveElement } from '@vueuse/core';
 import { useTasksStore } from '@/stores/TasksStore';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import TheSidebar from '@/components/layouts/TheSidebar.vue';
@@ -89,7 +90,6 @@ import IconCalendarToday from '@/components/icons/IconCalendarToday.vue';
 import IconInbox from '@/components/icons/IconInbox.vue';
 import ProjectOptions from '@/components/projects/ProjectOptions.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
-import { useActiveElement } from '@vueuse/core';
 
 const activeElement = useActiveElement();
 const store = useTasksStore();

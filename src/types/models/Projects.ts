@@ -3,4 +3,5 @@ export interface Projects {
   id: string;
   color: string;
   active: boolean;
+  favorite: boolean;
 }

@@ -98,8 +98,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, toRefs, ref, onMounted } from 'vue';
-import type { Ref } from 'vue';
+import { computed, toRefs, ref, onMounted, type Ref } from 'vue';
 import type { Task } from '@/types/models/Task';
 import Datepicker from '@vuepic/vue-datepicker';
 import blurElement from '@/helpers/blur';

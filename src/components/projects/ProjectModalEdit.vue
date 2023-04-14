@@ -40,6 +40,7 @@
               </li>
             </template>
           </BaseDropdown>
+          <BaseToggle v-model="favorite"><template #title> Add to favorite</template></BaseToggle>
         </div>
         <div class="flex justify-end gap-4 text-lg mt-8">
           <BaseButton
@@ -51,7 +52,7 @@
             class="btn btn-md bg-accent border-transparent hover:bg-accent-focus text-neutral-content normal-case text-lg"
             :disabled="!projectName.length"
             @click.prevent="updateProject">
-            Update project
+            Save
           </BaseButton>
         </div>
       </form>
@@ -76,13 +77,20 @@ import IconColor from '@/components/icons/IconColor.vue';
 import IconDone from '@/components/icons/IconDone.vue';
 import type { Projects } from '@/types/models/Projects';
 import { useNotification } from '@/composables/useNotification';
-import { NotificationMessage } from '../../types/models/NotificationMessage';
+import { NotificationMessage } from '@/types/models/NotificationMessage';
+import { useRouter } from 'vue-router';
+import BaseToggle from '@/components/ui/BaseToggle.vue';
 
+const router = useRouter();
 const projectStore = useProjectsStore();
 
 type Props = {
   project: Projects;
 };
+
+onMounted(() => {
+  console.log(props.project.favorite);
+});
 
 const props = defineProps<Props>();
 
@@ -92,13 +100,14 @@ const emit = defineEmits<{
 }>();
 
 const projectName = ref(props.project.name);
+const favorite = ref(props.project.favorite);
 const target = ref();
 const color = computed(() => COLORS.find((c) => c.hex === props.project.color) ?? { name: 'Blue', hex: '#2196f3' });
 const colorHex = ref(color.value.hex);
 const colorName = ref(color.value.name);
 
 onMounted(() => {
-  console.log(props.project);
+  console.log(props.project.favorite);
 });
 function handleSetColor(name: string, hex: string) {
   colorName.value = name;
@@ -110,13 +119,14 @@ function closeEditor(): void {
 }
 
 function updateProject(): void {
-  console.log('update');
-  const project = { name: projectName.value, color: colorHex };
+  const project = { name: projectName.value, color: colorHex.value, id: props.project.id, favorite: favorite.value };
 
-  projectStore.updateProject(props.project.id, project);
-
+  projectStore.updateProject(project);
   projectName.value = '';
+
   useNotification(NotificationMessage.UpdateProject);
+  closeEditor();
+  router.push({ name: 'project', params: { id: props.project.id } });
 }
 
 useFocusTrap(target, {

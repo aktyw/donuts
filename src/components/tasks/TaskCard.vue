@@ -96,7 +96,7 @@
       </TaskEditModal>
     </Teleport>
     <Teleport to="body">
-      <TaskDeleteConfirmModal
+      <ModalDeleteConfirm
         v-if="deleteConfirm"
         :title="'Delete task'">
         <template #content>
@@ -117,21 +117,20 @@
             Delete
           </button>
         </template>
-      </TaskDeleteConfirmModal>
+      </ModalDeleteConfirm>
     </Teleport>
   </li>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import type { Ref } from 'vue';
+import { ref, computed, watch, type Ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useTasksStore } from '@/stores/TasksStore';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import type { Task } from '@/types/models/Task';
 import TaskOptions from '@/components/tasks/TaskOptions.vue';
 import TaskEditModal from '@/components/tasks/TaskEditModal.vue';
-import TaskDeleteConfirmModal from '@/components/tasks/TaskDeleteConfirmModal.vue';
+import ModalDeleteConfirm from '@/components/tasks/ModalDeleteConfirm.vue';
 import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
 import TaskProjectDetail from '@/components/tasks/TaskProjectDetail.vue';
 import { useTimeDetail } from '@/composables/useTimeDetail';

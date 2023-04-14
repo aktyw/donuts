@@ -7,5 +7,9 @@ export enum NotificationMessage {
   UpdateDate = 'Date updated successfully',
   UpdateTask = 'Task updated successfully',
   UpdateProject = 'Project updated successfully',
+  DeleteProject = 'Project deleted',
+  AddProject = 'Project added successfully',
   Duplicate = 'Task duplicated successfully',
+  DuplicateProject = 'Project duplicated successfully',
+  ArchiveProject = 'Project archived',
 }
