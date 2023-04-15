@@ -24,7 +24,7 @@
         <template #icon>
           <IconPen />
         </template>
-        <template #default>Edit project</template>
+        Edit project
       </OptionListButton>
 
       <OptionListButton @click="handleAddToFav">
@@ -32,14 +32,14 @@
           <IconHeartMinus v-if="project.favorite" />
           <IconHeart v-else />
         </template>
-        <template #default>{{ project.favorite ? 'Remove from favorites' : 'Add to favorites' }}</template>
+        {{ project.favorite ? 'Remove from favorites' : 'Add to favorites' }}
       </OptionListButton>
 
       <OptionListButton @click="handleDuplicateProject">
         <template #icon>
           <IconDuplicate />
         </template>
-        <template #default>Duplicate project</template>
+        Duplicate project
       </OptionListButton>
 
       <BaseDividerSmall />
@@ -50,7 +50,7 @@
         <template #icon>
           <IconArchive />
         </template>
-        <template #default>Archive project</template>
+        Archive project
       </OptionListButton>
 
       <OptionListButton
@@ -59,7 +59,7 @@
         <template #icon>
           <IconRecycleBin />
         </template>
-        <template #default>Delete project</template>
+        Delete project
       </OptionListButton>
     </ul>
     <Teleport to="body">

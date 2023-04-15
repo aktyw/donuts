@@ -19,7 +19,7 @@
     </div>
     <slot name="amount"></slot>
   </RouterLink>
-  <slot name="options"> </slot>
+  <slot name="options"></slot>
 </template>
 
 <script setup lang="ts">

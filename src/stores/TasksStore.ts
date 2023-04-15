@@ -1,16 +1,17 @@
+import { useStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { v4 as uuid } from 'uuid';
-import { findItem } from '@/helpers/findItem';
-import { findIndex } from '@/helpers/findIndex';
-import { SortFilters, SortOrder } from '@/types/models/Sort';
-import type { Task } from '@/types/models/Task';
-import type { State } from '@/types/models/State';
-import type { Notification } from '@/types/models/Notification';
-import { Filters } from '@/types/models/Filters';
-import { NotificationMessage } from '@/types/models/NotificationMessage';
-import { NotificationAction } from '@/types/models/NotificationAction';
-import { useStorage } from '@vueuse/core';
+
 import { isToday } from '@/helpers/checkTime';
+import { findIndex } from '@/helpers/findIndex';
+import { findItem } from '@/helpers/findItem';
+import { Filters } from '@/types/models/Filters';
+import type { Notification } from '@/types/models/Notification';
+import { NotificationAction } from '@/types/models/NotificationAction';
+import { NotificationMessage } from '@/types/models/NotificationMessage';
+import { SortFilters, SortOrder } from '@/types/models/Sort';
+import type { State } from '@/types/models/State';
+import type { Task } from '@/types/models/Task';
 
 export const useTasksStore = defineStore('tasks', {
   state: (): State => ({
@@ -63,7 +64,7 @@ export const useTasksStore = defineStore('tasks', {
     },
     getProjectTasks(state): (projectId: string) => Task[] {
       return (projectId = 'inbox') => {
-        return state.tasks.default.filter((task) => task.project === projectId);
+        return state.tasks.default.filter((task) => task.projectId === projectId);
       };
     },
     getTodayTasks(state): Task[] {
@@ -110,13 +111,13 @@ export const useTasksStore = defineStore('tasks', {
       description,
       date,
       isPriority,
-      project,
+      projectId,
     }: {
       title: string;
       description: string;
       date: Date | undefined;
       isPriority: boolean;
-      project: string;
+      projectId: string;
     }) {
       const id = uuid();
       const newTask: Task = {
@@ -128,7 +129,7 @@ export const useTasksStore = defineStore('tasks', {
         createdAt: new Date(),
         ...(date && { date }),
         subtasks: {},
-        project,
+        projectId,
       };
 
       this.tasks.default.push(newTask);

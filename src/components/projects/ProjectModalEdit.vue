@@ -80,13 +80,13 @@ import { useNotification } from '@/composables/useNotification';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { COLORS } from '@/types/models/Colors';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
-import type { Projects } from '@/types/models/Projects';
+import type { Project } from '@/types/models/Projects';
 
 const router = useRouter();
 const projectStore = useProjectsStore();
 
 type Props = {
-  project: Projects;
+  project: Project;
 };
 
 onMounted(() => {

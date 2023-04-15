@@ -5,45 +5,44 @@
         :is="'li'"
         class="tooltip-right"
         data="Go to Inbox">
-        <template #default>
-          <ProjectLink :to="{ name: 'project', params: { id: 'inbox' } }">
-            <template #icon>
-              <IconInbox />
-            </template>
-            <template #name> Inbox </template>
-            <template #amount>
-              <span>{{ store.getProjectTasks('inbox').length }}</span>
-            </template>
-          </ProjectLink>
-        </template>
+        <ProjectLink :to="{ name: 'project', params: { id: 'inbox' } }">
+          <template #icon>
+            <IconInbox />
+          </template>
+          <template #name> Inbox </template>
+          <template #amount>
+            <span>{{ store.getProjectTasks('inbox').length }}</span>
+          </template>
+        </ProjectLink>
       </TheTooltip>
 
       <TheTooltip
         :is="'li'"
         class="tooltip-right"
         data="Go to Today">
-        <template #default>
-          <ProjectLink :to="{ name: 'today' }">
-            <template #icon>
-              <IconCalendarToday />
-            </template>
-            <template #name> Today </template>
-            <template #amount>
-              <span>{{ store.getTodayTasks.length }}</span>
-            </template>
-          </ProjectLink>
-        </template>
+        <ProjectLink :to="{ name: 'today' }">
+          <template #icon>
+            <IconCalendarToday />
+          </template>
+          <template #name> Today </template>
+          <template #amount>
+            <span>{{ store.getTodayTasks.length }}</span>
+          </template>
+        </ProjectLink>
       </TheTooltip>
 
       <BaseDivider></BaseDivider>
 
-      <div>
+      <div
+        v-if="favActiveProjects.length"
+        class="pb-4">
         <ProjectAccordion
+          :title="'Favorites'"
           :class="{ 'collapse-open': isProjectFocus }"
           @open-project-editor="handleOpenEditor">
           <template #project-links>
             <li
-              v-for="{ id, name, color } in projects"
+              v-for="{ id, name, color } in favActiveProjects"
               :key="id"
               @focusin="handleShowOptions(id)"
               @mouseover="handleShowOptions(id)"
@@ -64,13 +63,43 @@
             </li>
           </template>
         </ProjectAccordion>
-        <teleport to="body">
-          <ProjectEditor
-            v-if="isProjectModalOpen"
-            @close-editor="handleCloseEditor">
-          </ProjectEditor>
-        </teleport>
       </div>
+
+      <div>
+        <ProjectAccordion
+          :title="'Projects'"
+          :class="{ 'collapse-open': isProjectFocus }"
+          @open-project-editor="handleOpenEditor">
+          <template #project-links>
+            <li
+              v-for="{ id, name, color } in activeProjects"
+              :key="id"
+              @focusin="handleShowOptions(id)"
+              @mouseover="handleShowOptions(id)"
+              @mouseleave="handleHideOptions">
+              <ProjectLink
+                :to="{ name: 'project', params: { id: id } }"
+                :name="name"
+                :fill="color">
+                {{ name }}
+                <template #options>
+                  <span class="absolute right-0 -top-1 bg-transparent">
+                    <ProjectOptions
+                      v-show="showId === id"
+                      :id="id" />
+                  </span>
+                </template>
+              </ProjectLink>
+            </li>
+          </template>
+        </ProjectAccordion>
+      </div>
+      <teleport to="body">
+        <ProjectEditor
+          v-if="isProjectModalOpen"
+          @close-editor="handleCloseEditor">
+        </ProjectEditor>
+      </teleport>
     </template>
   </TheSidebar>
 </template>
@@ -100,7 +129,7 @@ const isProjectFocus = ref(false);
 const isOpen = ref(false);
 const sidebar = ref();
 const showId = ref();
-const { getProjects: projects } = storeToRefs(projectsStore);
+const { getActiveProjects: activeProjects, getActiveFavoriteProjects: favActiveProjects } = storeToRefs(projectsStore);
 
 function handleOpenEditor(): void {
   if (activeElement.value) {

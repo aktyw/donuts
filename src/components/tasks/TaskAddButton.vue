@@ -12,7 +12,7 @@
         <path d="M11.5 18.5v-6h-6v-1h6v-6h1v6h6v1h-6v6Z" />
       </svg>
     </template>
-    <template #default>Add task</template>
+    Add task
   </BaseButton>
 
   <BaseButton

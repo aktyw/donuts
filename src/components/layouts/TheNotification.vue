@@ -17,9 +17,7 @@
             v-focus
             class="inline-flex items-center btn-ghost btn-sm text-accent hover:bg-base-content capitalize md:btn-sm focus:outline focus:outline-1 rounded"
             @click="handleAction(notification.id, notification.action!)">
-            <template #default>
-              {{ notification.actionLabel }}
-            </template>
+            {{ notification.actionLabel }}
             <template #icon>
               <svg
                 class="fill-accent"

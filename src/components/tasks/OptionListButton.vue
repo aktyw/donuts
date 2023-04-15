@@ -5,9 +5,7 @@
       <template #icon>
         <slot name="icon" />
       </template>
-      <template #default>
-        <slot />
-      </template>
+      <slot />
     </BaseButton>
   </li>
 </template>

@@ -15,16 +15,16 @@
         @click="showEditor" />
       <TaskEditor
         v-else
+        :current-project="currentProject"
         @close-editor="closeEditor" />
     </div>
 
-    <TasksEmptyMessage v-if="!store.tasks.default.length">
-      <template #default> No tasks. Time for chillout... </template>
-    </TasksEmptyMessage>
+    <TasksEmptyMessage v-if="!store.tasks.default.length"> No tasks. Time for chillout... </TasksEmptyMessage>
   </main>
 </template>
 
 <script setup lang="ts">
+import { useRouteParams } from '@vueuse/router';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
@@ -41,6 +41,7 @@ import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import { SortFilters } from '@/types/models/Sort';
 
+const userId = useRouteParams('id');
 const route = useRoute();
 const projectId = computed(() => route.params.id as string);
 const store = useTasksStore();
@@ -50,6 +51,7 @@ const { getProjectById } = storeToRefs(projectsStore);
 const project = computed(() => getProjectById.value(projectId.value));
 const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
 const projectTasks = computed(() => getProjectTasks.value(projectId.value));
+const currentProject = computed(() => getProjectById.value((userId.value as string) ?? 'inbox'));
 
 const tasks = useHandleTasks(projectTasks);
 

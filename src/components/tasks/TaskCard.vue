@@ -163,7 +163,7 @@ const card: Ref<HTMLElement | undefined> = ref();
 const { x: cardX, y: cardY, bottom: cardBottom } = useElementBounding(card);
 const showBacklight = ref(false);
 const { getProjectById } = storeToRefs(storeProjects);
-const project = computed(() => getProjectById.value(props.task.project));
+const project = computed(() => getProjectById.value(props.task.projectId));
 const showProjectDetails = ref(false);
 
 watch(activeElement, (el) => {

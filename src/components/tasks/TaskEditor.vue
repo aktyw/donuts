@@ -32,14 +32,7 @@ import BaseButton from '@/components/ui/BaseButton.vue';
           <template
             v-if="!date"
             #icon>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="20"
-              width="20"
-              class="mr-1">
-              <path
-                d="M12.417 15q-.646 0-1.115-.469t-.469-1.114q0-.646.469-1.115t1.115-.469q.645 0 1.114.469.469.469.469 1.115 0 .645-.469 1.114-.469.469-1.114.469Zm-7.25 1.917q-.479 0-.782-.313-.302-.312-.302-.771V6.167q0-.459.302-.771.303-.313.782-.313H7.5v-2.25H8v2.25h4.083v-2.25h.417v2.25h2.333q.479 0 .782.313.302.312.302.771v9.666q0 .459-.302.771-.303.313-.782.313Zm0-.417h9.666q.25 0 .459-.208.208-.209.208-.459V9.667h-11v6.166q0 .25.208.459.209.208.459.208ZM4.5 9.25h11V6.167q0-.25-.208-.459-.209-.208-.459-.208H5.167q-.25 0-.459.208-.208.209-.208.459Zm0 0V5.5v3.75Z" />
-            </svg>
+            <IconCalendar class="mr-1" />
           </template>
         </BaseButton>
         <BaseButton
@@ -47,12 +40,7 @@ import BaseButton from '@/components/ui/BaseButton.vue';
           class="btn-ghost btn-xs p-0 border border-base-300 rounded"
           @click.prevent="clearDate">
           <template #icon>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="24"
-              width="24">
-              <path d="m6.4 18.3-.7-.7 5.6-5.6-5.6-5.6.7-.7 5.6 5.6 5.6-5.6.7.7-5.6 5.6 5.6 5.6-.7.7-5.6-5.6Z" />
-            </svg>
+            <IconClose />
           </template>
         </BaseButton>
         <BaseButton
@@ -60,21 +48,17 @@ import BaseButton from '@/components/ui/BaseButton.vue';
           :class="{ 'bg-base-300': taskIsPriority }"
           @click.prevent="togglePriority"
           ><template #icon>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="20"
-              width="20">
-              <path
-                d="M10 15.208q-.292 0-.479-.198-.188-.198-.188-.468 0-.292.198-.48.198-.187.469-.187.292 0 .479.198.188.198.188.469 0 .27-.198.468t-.469.198Zm-.438-3.166V3.958h.876v8.084Z" />
-            </svg>
+            <IconImportantSmall />
           </template>
-          <template #default>Priority</template></BaseButton
-        >
+          Priority
+        </BaseButton>
       </div>
     </div>
     <div class="flex justify-between border-t p-2">
       <div class="flex gap-1">
-        <ProjectList @handle-select-id="getProject" />
+        <ProjectList
+          v-model="selectedProject"
+          :current-project="currentProject" />
         <ProjectAddButton @click.prevent="handleAddProject"></ProjectAddButton>
         <teleport to="body">
           <ProjectEditor
@@ -90,7 +74,7 @@ import BaseButton from '@/components/ui/BaseButton.vue';
         >
         <BaseButton
           class="btn btn-xs bg-accent border-transparent hover:bg-accent-focus text-neutral-content"
-          :disabled="!taskTitle || !projectId"
+          :disabled="!taskTitle || !selectedProject"
           @click.prevent="addTask"
           >Add task</BaseButton
         >
@@ -111,9 +95,11 @@ import BaseButton from '@/components/ui/BaseButton.vue';
 import '@vuepic/vue-datepicker/dist/main.css';
 
 import Datepicker from '@vuepic/vue-datepicker';
-import { storeToRefs } from 'pinia';
-import { type Ref, ref, watch } from 'vue';
+import { type Ref, ref, watch, watchEffect } from 'vue';
 
+import IconCalendar from '@/components/icons/IconCalendar.vue';
+import IconClose from '@/components/icons/IconClose.vue';
+import IconImportantSmall from '@/components/icons/IconImportantSmall.vue';
 import ProjectAddButton from '@/components/projects/ProjectAddButton.vue';
 import ProjectEditor from '@/components/projects/ProjectEditor.vue';
 import ProjectList from '@/components/projects/ProjectList.vue';
@@ -123,13 +109,21 @@ import BaseButton from '@/components/ui/BaseButton.vue';
 import { useNotification } from '@/composables/useNotification';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import { vFocus } from '@/directives/vAutoFocus';
-import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
+import type { Project } from '@/types/models/Projects';
 
-const projectStore = useProjectsStore();
+type Props = {
+  currentProject?: Project | undefined;
+};
+
+const emit = defineEmits<{
+  (e: 'closeEditor'): void;
+}>();
+
+const props = defineProps<Props>();
+
 const store = useTasksStore();
-const { getAllProjects } = storeToRefs(projectStore);
 const taskTitle = ref('');
 const taskDescription = ref('');
 const taskTitleInput: Ref<InstanceType<typeof HTMLInputElement> | null> = ref(null);
@@ -142,15 +136,14 @@ const startTime = ref({ hours: 0, minutes: 0 });
 const inputTaskDate: Ref<Date | undefined> = ref();
 const taskIsPriority = ref(false);
 const isProjectModalOpen = ref(false);
-const projectId = ref('inbox');
-const project = ref();
-
-const emit = defineEmits<{
-  (e: 'closeEditor'): void;
-}>();
+const selectedProject = ref(props.currentProject);
 
 watch(date, (newDate) => {
   inputTaskDate.value = newDate;
+});
+
+watchEffect(() => {
+  selectedProject.value = props.currentProject;
 });
 
 function addTask(): void {
@@ -159,7 +152,7 @@ function addTask(): void {
     description: taskDescription.value,
     date: date.value,
     isPriority: taskIsPriority.value,
-    project: projectId.value,
+    projectId: selectedProject.value?.id ?? 'inbox',
   };
 
   store.addTask(options);
@@ -170,11 +163,6 @@ function addTask(): void {
   clearDate();
 
   useNotification(NotificationMessage.TaskAdd);
-}
-
-function getProject(id: string): void {
-  projectId.value = id;
-  project.value = getAllProjects.value.find((p) => p.id === id);
 }
 
 function handleCloseEditor(): void {

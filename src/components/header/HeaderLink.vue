@@ -6,7 +6,7 @@
       :to="to">
       <div class="flex gap-2">
         <slot name="icon"> </slot>
-        <slot name="name">{{ name }}</slot>
+        <slot>{{ name }}</slot>
       </div>
     </RouterLink>
   </li>

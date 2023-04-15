@@ -1,35 +1,40 @@
 <template>
   <select
+    v-model="selectedProject"
     class="select select-xs select-bordered w-[11rem] max-w-[11rem]"
-    @change="handlePassId">
+    @change="$emit('update:modelValue', selectedProject)">
     <option
-      v-for="{ id, name: title } in projects"
-      :id="id"
-      :key="id"
-      :name="title">
-      {{ title }}
+      v-for="project in activeProjects"
+      :key="project.id"
+      :name="project.name"
+      :value="project">
+      {{ project.name }}
     </option>
   </select>
 </template>
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+import { ref, watchEffect } from 'vue';
 
 import { useProjectsStore } from '@/stores/ProjectsStore';
+import type { Project } from '@/types/models/Projects';
+
+type Props = {
+  currentProject: Project | undefined;
+};
+
+const props = defineProps<Props>();
 
 const store = useProjectsStore();
-const { getAllProjects: projects } = storeToRefs(store);
+const { getAllActiveProjects: activeProjects } = storeToRefs(store);
+const selectedProject = ref(props.currentProject);
 
-const emit = defineEmits<{
-  (e: 'handleSelectId', selectedId: string): void;
+watchEffect(() => {
+  selectedProject.value = props.currentProject;
+});
+
+defineEmits<{
+  (e: 'update:modelValue'): void;
 }>();
-
-function handlePassId(event: Event) {
-  const target = event.target as HTMLSelectElement;
-  const selectedIndex = target.selectedIndex;
-  const selectedOption = target.options[selectedIndex];
-  const selectedId = selectedOption.id;
-
-  emit('handleSelectId', selectedId);
-}
 </script>

@@ -1,8 +1,9 @@
 import type { ComputedRef } from 'vue';
-import type { Task } from '@/types/models/Task';
-import { useSort } from '@/composables/useSort';
+
 import { useFilters } from '@/composables/useFilters';
 import { useOrder } from '@/composables/useOrder';
+import { useSort } from '@/composables/useSort';
+import type { Task } from '@/types/models/Task';
 
 export function useHandleTasks(tasks: ComputedRef<Task[]>) {
   const { sortedTasks } = useSort(tasks);

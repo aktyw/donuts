@@ -7,28 +7,24 @@
         <RouterLink
           class="block px-4 py-1 text-left text-base font-normal w-full h-full focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
           :to="{ name: 'projects' }">
-          <template #default> Projects </template>
+          {{ title }}
         </RouterLink>
       </h2>
       <div class="flex">
         <TheTooltip
           class="!tooltip-top"
           data="Add project">
-          <template #default>
-            <ProjectAddButton
-              class="hover:bg-base-300 h-full p-1 border-none"
-              @click.prevent="handleProjectEditor">
-            </ProjectAddButton>
-          </template>
+          <ProjectAddButton
+            class="hover:bg-base-300 h-full p-1 border-none"
+            @click.prevent="handleProjectEditor">
+          </ProjectAddButton>
         </TheTooltip>
         <TheTooltip
           class="!tooltip-top"
           data="Toggle list of projects">
-          <template #default>
-            <ProjectsToggleButton
-              :is-open="isOpenProjectList"
-              @click="toggleProjectList"></ProjectsToggleButton>
-          </template>
+          <ProjectsToggleButton
+            :is-open="isOpenProjectList"
+            @click="toggleProjectList"></ProjectsToggleButton>
         </TheTooltip>
       </div>
     </div>
@@ -49,6 +45,10 @@ import ProjectsToggleButton from '@/components/projects/ProjectsToggleButton.vue
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 
 const isOpenProjectList = ref(false);
+
+defineProps<{
+  title: string;
+}>();
 
 const emit = defineEmits<{
   (e: 'openProjectEditor'): void;

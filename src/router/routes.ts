@@ -1,13 +1,13 @@
-import HomeView from '@/views/HomeView.vue';
-import TasksView from '@/views/TasksView.vue';
-import NotesView from '@/views/NotesView.vue';
-import LoginView from '@/views/LoginView.vue';
-import TasksSidebar from '@/components/tasks/TasksSidebar.vue';
-import NotesSidebar from '@/components/notes/NotesSidebar.vue';
-import TodayView from '@/views/TodayView.vue';
-import ProjectView from '@/views/ProjectView.vue';
-import ProjectsView from '@/views/ProjectsView.vue';
 import NotesList from '@/components/notes/NotesList.vue';
+import NotesSidebar from '@/components/notes/NotesSidebar.vue';
+import TasksSidebar from '@/components/tasks/TasksSidebar.vue';
+import HomeView from '@/views/HomeView.vue';
+import LoginView from '@/views/LoginView.vue';
+import NotesView from '@/views/NotesView.vue';
+import ProjectsView from '@/views/ProjectsView.vue';
+import ProjectView from '@/views/ProjectView.vue';
+import TasksView from '@/views/TasksView.vue';
+import TodayView from '@/views/TodayView.vue';
 
 const routes = [
   {

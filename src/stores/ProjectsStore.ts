@@ -4,11 +4,14 @@ import { defineStore } from 'pinia';
 
 import { findIndex } from '@/helpers/findIndex';
 import { findItem } from '@/helpers/findItem';
-import type { Projects } from '@/types/models/Projects';
+import type { HasId } from '@/types/models/HasId';
+import type { Project } from '@/types/models/Projects';
 
-type PartialProject = Omit<Projects, 'active'>;
+type PartialProject = Omit<Project, 'active'>;
 
-const inbox: Projects = Object.freeze({ name: 'Inbox', id: 'inbox', color: '#000000', active: true, favorite: false });
+const inbox: Project = Object.freeze({ name: 'Inbox', id: 'inbox', color: '#000000', active: true, favorite: false });
+
+const isNotInbox = (p: HasId): boolean => p.id !== 'inbox';
 
 export const useProjectsStore = defineStore('projects', {
   state: () => ({
@@ -18,19 +21,25 @@ export const useProjectsStore = defineStore('projects', {
     getAllProjects(state) {
       return state.projects;
     },
-    getActiveProjects(state) {
+    getAllActiveProjects(state) {
       return state.projects.filter((p) => p.active);
     },
+    getActiveProjects(state) {
+      return state.projects.filter((p) => p.active && isNotInbox(p));
+    },
     getArchiveProjects(state) {
-      return state.projects.filter((p) => !p.active);
+      return state.projects.filter((p) => !p.active && isNotInbox(p));
     },
     getProjects(state) {
-      return state.projects.filter((p) => p.id !== 'inbox');
+      return state.projects.filter((p) => isNotInbox(p));
     },
     getFavoriteProjects(state) {
       return state.projects.filter((p) => p.favorite);
     },
-    getProjectById(state): (id: string) => Projects | undefined {
+    getActiveFavoriteProjects(state) {
+      return state.projects.filter((p) => p.favorite && p.active);
+    },
+    getProjectById(state): (id: string) => Project | undefined {
       return (id) => {
         return state.projects.find((p) => p.id === id);
       };

@@ -19,21 +19,21 @@
         <template #icon>
           <IconPen />
         </template>
-        <template #default>Edit Task</template>
+        Edit Task
       </OptionListButton>
 
       <OptionListButton @click="handleAddSubtask(taskId)">
         <template #icon>
           <IconAddSubtask />
         </template>
-        <template #default>Add Subtask</template>
+        Add Subtask
       </OptionListButton>
 
       <OptionListButton @click="handleDuplicateTask(taskId)">
         <template #icon>
           <IconDuplicate />
         </template>
-        <template #default>Duplicate Task</template>
+        Duplicate Task
       </OptionListButton>
 
       <BaseDividerSmall />
@@ -44,7 +44,7 @@
         <template #icon>
           <IconImportant />
         </template>
-        <template #default>Toggle Priority</template>
+        Toggle Priority
       </OptionListButton>
 
       <OptionListButton
@@ -53,7 +53,7 @@
         <template #icon>
           <IconDone />
         </template>
-        <template #default>Toggle Done</template>
+        Toggle Done
       </OptionListButton>
 
       <BaseDividerSmall />
@@ -73,14 +73,14 @@
         <template #icon>
           <IconClock />
         </template>
-        <template #default>{{ showInputDetailTime || 'Set Date' }}</template>
+        {{ showInputDetailTime || 'Set Date' }}
       </OptionListButton>
 
       <OptionListButton>
         <template #icon>
           <IconBell />
         </template>
-        <template #default>Set Reminder</template>
+        Set Reminder
       </OptionListButton>
 
       <BaseDividerSmall />
@@ -91,7 +91,7 @@
         <template #icon>
           <IconRecycleBin />
         </template>
-        <template #default>Delete Task</template>
+        Delete Task
       </OptionListButton>
     </ul>
   </div>

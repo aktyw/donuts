@@ -13,72 +13,52 @@
           tabindex="0"
           class="menu menu-compact dropdown-content dropdown-left mt-2 shadow bg-base-200 w-48 gap-2 p-2 rounded-xl"
           @click="blurDropdown">
-          <HeaderLink to="/tasks">
-            <template #name> Tasks </template>
-          </HeaderLink>
-          <HeaderLink to="/notes">
-            <template #name> Notes </template>
-          </HeaderLink>
-          <HeaderLink to="/">
-            <template #name> About </template>
-          </HeaderLink>
-          <HeaderLink to="/login">
-            <template #name> Login </template>
-          </HeaderLink>
+          <HeaderLink to="/tasks"> Tasks </HeaderLink>
+          <HeaderLink to="/notes"> Notes </HeaderLink>
+          <HeaderLink to="/"> About </HeaderLink>
+          <HeaderLink to="/login"> Login </HeaderLink>
         </ul>
       </div>
 
       <div class="flex gap-2">
         <TheTooltip :data="menuTooltip">
-          <template #default>
-            <BaseButton
-              class="btn btn-sm btn-square btn-ghost"
-              aria-label="Toggle menu"
-              @click="settingsStore.toggleMenu()">
-              <template #icon>
-                <IconMenu
-                  focusable="false"
-                  aria-hidden="true" />
-              </template>
-            </BaseButton>
-          </template>
+          <BaseButton
+            class="btn btn-sm btn-square btn-ghost"
+            aria-label="Toggle menu"
+            @click="settingsStore.toggleMenu()">
+            <template #icon>
+              <IconMenu
+                focusable="false"
+                aria-hidden="true" />
+            </template>
+          </BaseButton>
         </TheTooltip>
         <TheTooltip data="Go to home">
-          <template #default>
-            <BaseButton
-              class="btn btn-sm btn-square btn-ghost"
-              aria-label="Go to home"
-              @click="router.push({ name: 'project', params: { id: home } })">
-              <template #icon>
-                <IconHome
-                  focusable="false"
-                  aria-hidden="true" />
-              </template>
-            </BaseButton>
-          </template>
+          <BaseButton
+            class="btn btn-sm btn-square btn-ghost"
+            aria-label="Go to home"
+            @click="router.push({ name: 'project', params: { id: home } })">
+            <template #icon>
+              <IconHome
+                focusable="false"
+                aria-hidden="true" />
+            </template>
+          </BaseButton>
         </TheTooltip>
       </div>
     </div>
 
     <div class="navbar-center hidden lg:flex">
       <ul class="menu-horizontal gap-4">
-        <HeaderLink to="/tasks">
-          <template #name> Tasks </template>
-        </HeaderLink>
-        <HeaderLink to="/notes">
-          <template #name> Notes </template>
-        </HeaderLink>
+        <HeaderLink to="/tasks"> Tasks </HeaderLink>
+        <HeaderLink to="/notes"> Notes </HeaderLink>
       </ul>
     </div>
 
     <div class="navbar-end hidden lg:flex">
       <ul class="flex flex-row gap-4">
-        <HeaderLink to="/">
-          <template #name> About </template>
-        </HeaderLink>
-        <HeaderLink to="/login">
-          <template #name> Login </template>
-        </HeaderLink>
+        <HeaderLink to="/"> About </HeaderLink>
+        <HeaderLink to="/login"> Login </HeaderLink>
       </ul>
     </div>
   </header>

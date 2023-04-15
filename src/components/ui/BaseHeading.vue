@@ -1,4 +1,4 @@
 <template>
-  <slot name="default"></slot>
+  <slot></slot>
   <slot name="icon"></slot>
 </template>
