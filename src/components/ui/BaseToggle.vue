@@ -8,7 +8,7 @@ import { onUpdated } from 'vue';
       @input="$emit('update:modelValue', ($event.target as HTMLInputElement).checked)" />
     <label class="label cursor-pointer">
       <span class="label-text">
-        <slot name="title"></slot>
+        <slot />
       </span>
     </label>
   </div>

@@ -14,11 +14,14 @@
       tabindex="0"
       class="dropdown-content menu py-0.5 shadow rounded-md w-52 bg-base-100 border border-base-300 text-base-content fill-base-content [& svg:not(.active-state)]:fill-base-content [&>li:hover>button:not(.active-state)]:bg-base-200 [& button:active]:text-base-content [&>button:active]:bg-base-200">
       <teleport to="body">
-        <ProjectModalEdit
+        <ProjectModal
           v-if="isProjectModalOpen"
           :project="project"
+          modal-title="Edit project"
+          action-title="Save"
+          @action="updateProject"
           @close-editor="handleCloseEditor">
-        </ProjectModalEdit>
+        </ProjectModal>
       </teleport>
       <OptionListButton @click="handleOpenEditor">
         <template #icon>
@@ -90,8 +93,10 @@
 </template>
 
 <script setup lang="ts">
+import { useRouteParams } from '@vueuse/router';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 import IconArchive from '@/components/icons/IconArchive.vue';
 import IconDuplicate from '@/components/icons/IconDuplicate.vue';
@@ -100,7 +105,7 @@ import IconHeartMinus from '@/components/icons/IconHeartMinus.vue';
 import IconHorizontalDots from '@/components/icons/IconHorizontalDots.vue';
 import IconPen from '@/components/icons/IconPen.vue';
 import IconRecycleBin from '@/components/icons/IconRecycleBin.vue';
-import ProjectModalEdit from '@/components/projects/ProjectModalEdit.vue';
+import ProjectModal from '@/components/projects/ProjectModal.vue';
 import ModalDeleteConfirm from '@/components/tasks/ModalDeleteConfirm.vue';
 import OptionListButton from '@/components/tasks/OptionListButton.vue';
 import BaseDividerSmall from '@/components/ui/BaseDividerSmall.vue';
@@ -108,16 +113,19 @@ import { useNotification } from '@/composables/useNotification';
 import blurElement from '@/helpers/blur';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
+import type { Project } from '@/types/models/Projects';
 
 type Props = {
   id: string;
 };
 
+const router = useRouter();
 const props = defineProps<Props>();
 const deleteConfirm = ref(false);
 const projectsStore = useProjectsStore();
 const { getProjectById } = storeToRefs(projectsStore);
 const isProjectModalOpen = ref(false);
+const projectId = useRouteParams('id');
 
 const project = computed(() => {
   const p = getProjectById.value(props.id);
@@ -148,8 +156,15 @@ function handleDuplicateProject(): void {
 }
 
 function handleDeleteProject(): void {
-  projectsStore.deleteProject(props.id);
-  useNotification(NotificationMessage.DeleteProject);
+  try {
+    if (projectId.value === project.value.id) {
+      router.replace({ name: 'tasks' });
+    }
+    projectsStore.deleteProject(props.id);
+    useNotification(NotificationMessage.DeleteProject);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 function cancelDeleteProject(): void {
@@ -163,5 +178,11 @@ function toggleDeleteModal(): void {
 function handleArchiveProject(): void {
   projectsStore.archiveProject(props.id);
   useNotification(NotificationMessage.ArchiveProject);
+}
+
+function updateProject(project: Project): void {
+  projectsStore.updateProject(project);
+  useNotification(NotificationMessage.UpdateProject);
+  handleCloseEditor();
 }
 </script>

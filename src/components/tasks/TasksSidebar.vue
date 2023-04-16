@@ -95,10 +95,13 @@
         </ProjectAccordion>
       </div>
       <teleport to="body">
-        <ProjectEditor
+        <ProjectModal
           v-if="isProjectModalOpen"
+          modal-title="Add project"
+          action-title="Add"
+          @action="addProject"
           @close-editor="handleCloseEditor">
-        </ProjectEditor>
+        </ProjectModal>
       </teleport>
     </template>
   </TheSidebar>
@@ -113,13 +116,16 @@ import IconCalendarToday from '@/components/icons/IconCalendarToday.vue';
 import IconInbox from '@/components/icons/IconInbox.vue';
 import TheSidebar from '@/components/layouts/TheSidebar.vue';
 import ProjectAccordion from '@/components/projects/ProjectAccordion.vue';
-import ProjectEditor from '@/components/projects/ProjectEditor.vue';
 import ProjectLink from '@/components/projects/ProjectLink.vue';
+import ProjectModal from '@/components/projects/ProjectModal.vue';
 import ProjectOptions from '@/components/projects/ProjectOptions.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 import BaseDivider from '@/components/ui/BaseDivider.vue';
+import { useNotification } from '@/composables/useNotification';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
+import { NotificationMessage } from '@/types/models/NotificationMessage';
+import type { Project } from '@/types/models/Projects';
 
 const activeElement = useActiveElement();
 const store = useTasksStore();
@@ -151,5 +157,11 @@ function handleHideOptions(): void {
   if (!isOpen.value) {
     showId.value = null;
   }
+}
+
+function addProject(project: Project): void {
+  projectsStore.addProject(project);
+  useNotification(NotificationMessage.AddProject);
+  handleCloseEditor();
 }
 </script>

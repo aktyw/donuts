@@ -3,7 +3,7 @@
     <div
       class="flex flex-col items-start w-2/3 max-w-[800px]"
       :class="{ 'h-1/2': !store.tasks.default.length }">
-      <FiltersNavbar :title="project?.name ?? 'Inbox'" />
+      <FiltersNavbar :title="currentProject?.name ?? 'Inbox'" />
       <FilterStatus v-if="!allowDrag" />
       <FiltersList
         v-if="store.tasks.default.length && !allowDrag"
@@ -27,7 +27,6 @@
 import { useRouteParams } from '@vueuse/router';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
-import { useRoute } from 'vue-router';
 
 import FiltersList from '@/components/filters/FiltersList.vue';
 import FiltersNavbar from '@/components/filters/FiltersNavbar.vue';
@@ -41,20 +40,15 @@ import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import { SortFilters } from '@/types/models/Sort';
 
-const userId = useRouteParams('id');
-const route = useRoute();
-const projectId = computed(() => route.params.id as string);
 const store = useTasksStore();
 const projectsStore = useProjectsStore();
 const { getProjectTasks, getSortType: sortTypeStatus } = storeToRefs(store);
 const { getProjectById } = storeToRefs(projectsStore);
-const project = computed(() => getProjectById.value(projectId.value));
+const projectId = useRouteParams('id');
 const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
-const projectTasks = computed(() => getProjectTasks.value(projectId.value));
-const currentProject = computed(() => getProjectById.value((userId.value as string) ?? 'inbox'));
-
+const projectTasks = computed(() => getProjectTasks.value(projectId.value as string));
+const currentProject = computed(() => getProjectById.value((projectId.value as string) ?? 'inbox'));
 const tasks = useHandleTasks(projectTasks);
-
 const isEditorActive = ref(false);
 
 function showEditor(): void {

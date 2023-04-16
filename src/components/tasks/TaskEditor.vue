@@ -61,9 +61,13 @@ import BaseButton from '@/components/ui/BaseButton.vue';
           :current-project="currentProject" />
         <ProjectAddButton @click.prevent="handleAddProject"></ProjectAddButton>
         <teleport to="body">
-          <ProjectEditor
+          <ProjectModal
             v-if="isProjectModalOpen"
-            @close-editor="handleCloseEditor"></ProjectEditor>
+            modal-title="Add project"
+            action-title="Add"
+            @action="addProject"
+            @close-editor="handleCloseEditor">
+          </ProjectModal>
         </teleport>
       </div>
       <div>
@@ -101,14 +105,15 @@ import IconCalendar from '@/components/icons/IconCalendar.vue';
 import IconClose from '@/components/icons/IconClose.vue';
 import IconImportantSmall from '@/components/icons/IconImportantSmall.vue';
 import ProjectAddButton from '@/components/projects/ProjectAddButton.vue';
-import ProjectEditor from '@/components/projects/ProjectEditor.vue';
 import ProjectList from '@/components/projects/ProjectList.vue';
+import ProjectModal from '@/components/projects/ProjectModal.vue';
 import TaskEditorInput from '@/components/tasks/TaskEditorInput.vue';
 import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import { useNotification } from '@/composables/useNotification';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import { vFocus } from '@/directives/vAutoFocus';
+import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
 import type { Project } from '@/types/models/Projects';
@@ -122,7 +127,7 @@ const emit = defineEmits<{
 }>();
 
 const props = defineProps<Props>();
-
+const projectsStore = useProjectsStore();
 const store = useTasksStore();
 const taskTitle = ref('');
 const taskDescription = ref('');
@@ -187,5 +192,11 @@ function clearDate(): void {
 
 function closeEditor(): void {
   emit('closeEditor');
+}
+
+function addProject(project: Project): void {
+  projectsStore.addProject(project);
+  useNotification(NotificationMessage.AddProject);
+  handleCloseEditor();
 }
 </script>

@@ -5,19 +5,19 @@
     <div
       ref="target"
       class="modal-box overflow-visible">
-      <h2 class="font-bold text-2xl">Edit project</h2>
+      <h2 class="font-bold text-2xl">{{ modalTitle }}</h2>
       <BaseDivider></BaseDivider>
       <form action="">
         <div class="flex flex-col">
           <BaseInput
-            ref="target"
             v-model.trim="projectName"
             label="Name"
             input-name="name"
             name="name"
             maxlength="64"
-            type="text" />
-          <BaseDropdown>
+            type="text"
+            :placeholder="projectName || 'Project name'" />
+          <BaseDropdown label-name="Color">
             <template #content>
               <IconColor :fill="colorHex" />
               <span class="text-base font-normal">{{ colorName }}</span>
@@ -40,76 +40,73 @@
               </li>
             </template>
           </BaseDropdown>
-          <BaseToggle v-model="favorite"><template #title> Add to favorite</template></BaseToggle>
+          <BaseToggle v-model="favorite"> Add to favorite </BaseToggle>
         </div>
         <div class="flex justify-end gap-4 text-lg mt-8">
-          <BaseButton
-            class="btn btn-md border-transparent bg-base-200 hover:bg-base-300 text-neutral-focus normal-case text-lg"
-            @click.prevent="closeEditor">
-            Cancel
-          </BaseButton>
-          <BaseButton
-            class="btn btn-md bg-accent border-transparent hover:bg-accent-focus text-neutral-content normal-case text-lg"
+          <ModalButton @click.prevent="closeEditor"> Cancel </ModalButton>
+          <ModalButton
             :disabled="!projectName.length"
-            @click.prevent="updateProject">
-            Save
-          </BaseButton>
+            @click.prevent="handleAction">
+            {{ actionTitle }}
+          </ModalButton>
         </div>
       </form>
-
-      <div class="modal-action gap-1">
-        <slot name="action" />
-      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
-import { computed, onMounted, ref } from 'vue';
+import { nanoid } from 'nanoid';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import IconColor from '@/components/icons/IconColor.vue';
 import IconDone from '@/components/icons/IconDone.vue';
-import BaseButton from '@/components/ui/BaseButton.vue';
+import ModalButton from '@/components/modals/ModalButton.vue';
 import BaseDivider from '@/components/ui/BaseDivider.vue';
 import BaseDropdown from '@/components/ui/BaseDropdown.vue';
 import BaseInput from '@/components/ui/BaseInput.vue';
 import BaseToggle from '@/components/ui/BaseToggle.vue';
-import { useNotification } from '@/composables/useNotification';
-import { useProjectsStore } from '@/stores/ProjectsStore';
 import { COLORS } from '@/types/models/Colors';
-import { NotificationMessage } from '@/types/models/NotificationMessage';
 import type { Project } from '@/types/models/Projects';
 
 const router = useRouter();
-const projectStore = useProjectsStore();
 
 type Props = {
-  project: Project;
+  project?: Project;
+  modalTitle: string;
+  actionTitle: string;
 };
-
-onMounted(() => {
-  console.log(props.project.favorite);
-});
 
 const props = defineProps<Props>();
 
 const emit = defineEmits<{
   (event: 'update:modelValue', payload: string): void;
   (event: 'closeEditor'): void;
+  (event: 'action', project: Project): void;
 }>();
 
-const projectName = ref(props.project.name);
-const favorite = ref(props.project.favorite);
+const projectName = ref(props.project?.name || '');
+const favorite = ref(props.project?.favorite || false);
 const target = ref();
-const color = computed(() => COLORS.find((c) => c.hex === props.project.color) ?? { name: 'Blue', hex: '#2196f3' });
+const color = computed(() => COLORS.find((c) => c.hex === props.project?.color) ?? { name: 'Blue', hex: '#2196f3' });
 const colorHex = ref(color.value.hex);
 const colorName = ref(color.value.name);
 
-onMounted(() => {
-  console.log(props.project.favorite);
-});
+function handleAction(): void {
+  const project = {
+    name: projectName.value,
+    color: colorHex.value,
+    id: props.project?.id ?? nanoid(),
+    favorite: favorite.value,
+    active: true,
+  };
+
+  router.push({ name: 'project', params: { id: project.id } });
+  emit('action', project);
+}
+
 function handleSetColor(name: string, hex: string) {
   colorName.value = name;
   colorHex.value = hex;
@@ -117,17 +114,6 @@ function handleSetColor(name: string, hex: string) {
 
 function closeEditor(): void {
   emit('closeEditor');
-}
-
-function updateProject(): void {
-  const project = { name: projectName.value, color: colorHex.value, id: props.project.id, favorite: favorite.value };
-
-  projectStore.updateProject(project);
-  projectName.value = '';
-
-  useNotification(NotificationMessage.UpdateProject);
-  closeEditor();
-  router.push({ name: 'project', params: { id: props.project.id } });
 }
 
 useFocusTrap(target, {

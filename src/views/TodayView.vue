@@ -43,15 +43,12 @@ import { TASK_VIEW_TITLE } from '@/types/models/Titles';
 
 const store = useTasksStore();
 const projectsStore = useProjectsStore();
-
 const { getSortType: sortTypeStatus, getTodayTasks: todayTasks } = storeToRefs(store);
 const { getProjectById } = storeToRefs(projectsStore);
-const inbox = getProjectById.value('inbox');
-
 const tasks = useHandleTasks(todayTasks);
-
-const isEditorActive = ref(false);
+const inbox = getProjectById.value('inbox');
 const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
+const isEditorActive = ref(false);
 
 function showEditor(): void {
   isEditorActive.value = true;
