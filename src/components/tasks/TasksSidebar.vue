@@ -56,7 +56,8 @@
                   <span class="absolute right-0 -top-1 bg-transparent">
                     <ProjectOptions
                       v-show="showId === id"
-                      :id="id" />
+                      :id="id"
+                      :is-favorites="true" />
                   </span>
                 </template>
               </ProjectLink>
@@ -67,6 +68,7 @@
 
       <div>
         <ProjectAccordion
+          route-name="projects"
           :title="'Projects'"
           :class="{ 'collapse-open': isProjectFocus }"
           @open-project-editor="handleOpenEditor">

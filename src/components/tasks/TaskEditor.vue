@@ -1,9 +1,8 @@
-import BaseButton from '@/components/ui/BaseButton.vue';
 <template>
   <form
     id="form"
-    class="relative border w-full rounded-lg focus-within:border-accent-content">
-    <div class="p-2">
+    class="relative border w-full rounded-lg focus-within:border-accent-content my-1.5">
+    <div class="px-2 py-2">
       <TaskEditorInput
         ref="taskTitleInput"
         v-model.trim="taskTitle"
@@ -24,7 +23,7 @@ import BaseButton from '@/components/ui/BaseButton.vue';
           class="!tooltip-top"
           data="Set due date">
           <BaseButton
-            class="btn btn-xs btn-ghost rounded border border-base-300 font-normal"
+            class="btn btn-xs btn-ghost rounded border border-base-300 hover:bg-base-200 font-normal"
             @click.prevent="handleCalendar">
             <template v-if="date">
               <TaskTimeDetail class="mx-1">
@@ -41,20 +40,25 @@ import BaseButton from '@/components/ui/BaseButton.vue';
             </template>
           </BaseButton>
         </TheTooltip>
-
         <TheTooltip
-          class="!tooltip-top"
-          data="Set priority">
+          class="!tooltip-top flex"
+          data="Clear date">
           <BaseButton
             v-if="date"
-            class="btn-ghost btn-xs p-0 border border-base-300 rounded"
+            aria-label="Clear date"
+            class="btn-ghost btn-xs p-0 border border-base-300 hover:bg-base-200 rounded"
             @click.prevent="clearDate">
             <template #icon>
               <IconClose />
             </template>
           </BaseButton>
+        </TheTooltip>
+
+        <TheTooltip
+          class="!tooltip-top flex"
+          data="Set priority">
           <BaseButton
-            class="btn btn-xs btn-ghost rounded border border-base-300 font-normal pl-0.5 ml-3"
+            class="btn btn-xs btn-ghost rounded border border-base-300 hover:bg-base-200 font-normal pl-0.5 ml-3"
             :class="{ 'bg-base-300': taskIsPriority }"
             @click.prevent="togglePriority"
             ><template #icon>
@@ -68,10 +72,18 @@ import BaseButton from '@/components/ui/BaseButton.vue';
 
     <div class="flex justify-between border-t p-2">
       <div class="flex gap-1">
-        <ProjectList
-          v-model="selectedProject"
-          :current-project="currentProject" />
-        <ProjectAddButton @click.prevent="handleAddProject"></ProjectAddButton>
+        <TheTooltip
+          class="!tooltip-top flex"
+          data="Select a project">
+          <ProjectList
+            v-model="selectedProject"
+            :current-project="currentProject" />
+        </TheTooltip>
+
+        <ProjectAddButton
+          class="h-full"
+          @click.prevent="handleAddProject"></ProjectAddButton>
+
         <teleport to="body">
           <ProjectModal
             v-if="isProjectModalOpen"
@@ -98,6 +110,7 @@ import BaseButton from '@/components/ui/BaseButton.vue';
         >
       </div>
     </div>
+
     <Datepicker
       v-show="showPicker"
       ref="datepicker"

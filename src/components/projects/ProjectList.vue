@@ -1,7 +1,7 @@
 <template>
   <select
     v-model="selectedProject"
-    class="select select-xs select-bordered w-[11rem] max-w-[11rem]"
+    class="select select-sm font-normal select-bordered w-[11rem] max-w-[11rem] focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent rounded-md"
     @change="$emit('update:modelValue', selectedProject)">
     <option
       v-for="project in activeProjects"
