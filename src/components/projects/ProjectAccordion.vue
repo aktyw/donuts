@@ -11,14 +11,10 @@
         </RouterLink>
       </h2>
       <div class="flex">
-        <TheTooltip
-          class="!tooltip-top"
-          data="Add project">
-          <ProjectAddButton
-            class="hover:bg-base-300 h-full p-1 border-none"
-            @click.prevent="handleProjectEditor">
-          </ProjectAddButton>
-        </TheTooltip>
+        <ProjectAddButton
+          class="hover:bg-base-300 h-full p-1 border-none"
+          @click.prevent="handleProjectEditor">
+        </ProjectAddButton>
         <TheTooltip
           class="!tooltip-top"
           data="Toggle list of projects">

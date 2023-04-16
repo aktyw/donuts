@@ -9,7 +9,8 @@ import BaseButton from '@/components/ui/BaseButton.vue';
         v-model.trim="taskTitle"
         v-focus
         maxlength="100"
-        placeholder="Task name">
+        placeholder="Task name"
+        class="font-semibold">
       </TaskEditorInput>
       <TaskEditorInput
         ref="taskDescriptionInput"
@@ -17,43 +18,54 @@ import BaseButton from '@/components/ui/BaseButton.vue';
         maxlength="240"
         placeholder="Description">
       </TaskEditorInput>
+
       <div class="mt-2 flex">
-        <BaseButton
-          class="btn btn-xs btn-ghost rounded border border-base-300 font-normal"
-          @click.prevent="handleCalendar">
-          <template v-if="date">
-            <TaskTimeDetail class="mx-1">
-              <template #time>
-                <span class="pt-0.5">{{ showInputDetailTime }}</span>
-              </template>
-            </TaskTimeDetail>
-          </template>
-          <template v-else> Due Date </template>
-          <template
-            v-if="!date"
-            #icon>
-            <IconCalendar class="mr-1" />
-          </template>
-        </BaseButton>
-        <BaseButton
-          v-if="date"
-          class="btn-ghost btn-xs p-0 border border-base-300 rounded"
-          @click.prevent="clearDate">
-          <template #icon>
-            <IconClose />
-          </template>
-        </BaseButton>
-        <BaseButton
-          class="btn btn-xs btn-ghost rounded border border-base-300 font-normal pl-0.5 ml-3"
-          :class="{ 'bg-base-300': taskIsPriority }"
-          @click.prevent="togglePriority"
-          ><template #icon>
-            <IconImportantSmall />
-          </template>
-          Priority
-        </BaseButton>
+        <TheTooltip
+          class="!tooltip-top"
+          data="Set due date">
+          <BaseButton
+            class="btn btn-xs btn-ghost rounded border border-base-300 font-normal"
+            @click.prevent="handleCalendar">
+            <template v-if="date">
+              <TaskTimeDetail class="mx-1">
+                <template #time>
+                  <span class="pt-0.5">{{ showInputDetailTime }}</span>
+                </template>
+              </TaskTimeDetail>
+            </template>
+            <template v-else> Due Date </template>
+            <template
+              v-if="!date"
+              #icon>
+              <IconCalendar class="mr-1" />
+            </template>
+          </BaseButton>
+        </TheTooltip>
+
+        <TheTooltip
+          class="!tooltip-top"
+          data="Set priority">
+          <BaseButton
+            v-if="date"
+            class="btn-ghost btn-xs p-0 border border-base-300 rounded"
+            @click.prevent="clearDate">
+            <template #icon>
+              <IconClose />
+            </template>
+          </BaseButton>
+          <BaseButton
+            class="btn btn-xs btn-ghost rounded border border-base-300 font-normal pl-0.5 ml-3"
+            :class="{ 'bg-base-300': taskIsPriority }"
+            @click.prevent="togglePriority"
+            ><template #icon>
+              <IconImportantSmall />
+            </template>
+            Priority
+          </BaseButton>
+        </TheTooltip>
       </div>
     </div>
+
     <div class="flex justify-between border-t p-2">
       <div class="flex gap-1">
         <ProjectList
@@ -70,14 +82,16 @@ import BaseButton from '@/components/ui/BaseButton.vue';
           </ProjectModal>
         </teleport>
       </div>
+
       <div>
         <BaseButton
-          class="btn btn-xs border-transparent mr-2 bg-base-200 hover:bg-base-300 text-neutral-focus"
+          class="btn btn-sm border-transparent mr-2 bg-base-200 hover:bg-base-300 text-neutral-focus"
           @click.prevent="closeEditor"
           >Cancel</BaseButton
         >
+
         <BaseButton
-          class="btn btn-xs bg-accent border-transparent hover:bg-accent-focus text-neutral-content"
+          class="btn btn-sm bg-accent border-transparent hover:bg-accent-focus text-neutral-content"
           :disabled="!taskTitle || !selectedProject"
           @click.prevent="addTask"
           >Add task</BaseButton
@@ -109,6 +123,7 @@ import ProjectList from '@/components/projects/ProjectList.vue';
 import ProjectModal from '@/components/projects/ProjectModal.vue';
 import TaskEditorInput from '@/components/tasks/TaskEditorInput.vue';
 import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
+import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import { useNotification } from '@/composables/useNotification';
 import { useTimeDetail } from '@/composables/useTimeDetail';
