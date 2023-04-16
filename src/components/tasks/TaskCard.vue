@@ -1,8 +1,8 @@
 <template>
   <li
     ref="card"
-    class="relative border-t border-base-200 last:border-b py-3 w-full flex justify-between duration-1000"
-    :class="{ 'bg-base-300  duration-1000 ': showBacklight }"
+    class="relative border-t border-base-200 py-3 w-full flex justify-between transition-colors duration-1000"
+    :class="{ 'bg-base-300  duration-1000 ': showBacklight, 'last:border-b': !isEditorActive }"
     @click="handleShowOptionsBtn"
     @mouseover="handleShowOptionsBtn"
     @mouseleave="handleHideOptionsBtn">
@@ -127,6 +127,7 @@ import { useActiveElement } from '@vueuse/core';
 import { useElementBounding } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { computed, type Ref, ref, watch } from 'vue';
+import { inject } from 'vue';
 
 import IconCalendar from '@/components/icons/IconCalendar.vue';
 import IconColor from '@/components/icons/IconColor.vue';
@@ -164,6 +165,7 @@ const { x: cardX, y: cardY, bottom: cardBottom } = useElementBounding(card);
 const showBacklight = ref(false);
 const { getProjectById } = storeToRefs(storeProjects);
 const project = computed(() => getProjectById.value(props.task.projectId));
+const isEditorActive = inject('isEditorActive');
 const showProjectDetails = ref(false);
 
 watch(activeElement, (el) => {

@@ -26,6 +26,7 @@
 <script setup lang="ts">
 import { useRouteParams } from '@vueuse/router';
 import { storeToRefs } from 'pinia';
+import { provide } from 'vue';
 import { computed, ref } from 'vue';
 
 import FiltersList from '@/components/filters/FiltersList.vue';
@@ -51,6 +52,7 @@ const currentProject = computed(() => getProjectById.value((projectId.value as s
 const tasks = useHandleTasks(projectTasks);
 const isEditorActive = ref(false);
 
+provide('isEditorActive', isEditorActive);
 function showEditor(): void {
   isEditorActive.value = true;
 }

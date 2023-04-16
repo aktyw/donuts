@@ -57,6 +57,12 @@
 
     <div class="navbar-end hidden lg:flex">
       <ul class="flex flex-row gap-4">
+        <ModalButton>
+          <template #icon>
+            <IconAdd />
+          </template>
+          <!-- <TaskQuickAdd /> -->
+        </ModalButton>
         <HeaderLink to="/"> About </HeaderLink>
         <HeaderLink to="/login"> Login </HeaderLink>
       </ul>
@@ -70,9 +76,12 @@ import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import HeaderLink from '@/components/header/HeaderLink.vue';
+import IconAdd from '@/components/icons/IconAdd.vue';
 import IconHome from '@/components/icons/IconHome.vue';
 import IconList from '@/components/icons/IconList.vue';
 import IconMenu from '@/components/icons/IconMenu.vue';
+import ModalButton from '@/components/modals/ModalButton.vue';
+import TaskQuickAdd from '@/components/tasks/TaskQuickAdd.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import blurElement from '@/helpers/blur';
