@@ -69,7 +69,7 @@
       <div>
         <ProjectAccordion
           route-name="projects"
-          :title="'Projects'"
+          title="Projects"
           :class="{ 'collapse-open': isProjectFocus }"
           @open-project-editor="handleOpenEditor">
           <template #project-links>
@@ -83,7 +83,6 @@
                 :to="{ name: 'project', params: { id: id } }"
                 :name="name"
                 :fill="color">
-                {{ name }}
                 <template #options>
                   <span class="absolute right-0 -top-1 bg-transparent">
                     <ProjectOptions

@@ -15,7 +15,7 @@
             d="M480.074 835.999q-108.612 0-184.342-75.657-75.731-75.657-75.731-184.268 0-108.612 75.657-184.342 75.657-75.731 184.268-75.731 108.612 0 184.342 75.657 75.731 75.657 75.731 184.268 0 108.612-75.657 184.342-75.657 75.731-184.268 75.731Z" />
         </svg>
       </slot>
-      <slot name="name">{{ name }}</slot>
+      <slot name="name">{{ calcName }}</slot>
     </div>
     <slot name="amount"></slot>
   </RouterLink>
@@ -23,12 +23,21 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import type { RouteLocationRaw } from 'vue-router';
 
 type Props = {
   to: RouteLocationRaw;
-  name?: string;
+  name: string;
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const calcName = computed(() => {
+  if (props.name.length >= 26) {
+    return props.name?.slice(0, 26).concat('...');
+  }
+
+  return props.name;
+});
 </script>

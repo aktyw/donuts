@@ -81,6 +81,7 @@
         </TheTooltip>
 
         <ProjectAddButton
+          v-if="!quickTask"
           class="h-full"
           @click.prevent="handleAddProject"></ProjectAddButton>
 
@@ -149,10 +150,12 @@ import type { Project } from '@/types/models/Projects';
 
 type Props = {
   currentProject?: Project | undefined;
+  quickTask?: boolean;
 };
 
 const emit = defineEmits<{
   (e: 'closeEditor'): void;
+  (e: 'addTask'): void;
 }>();
 
 const props = defineProps<Props>();
@@ -199,6 +202,7 @@ function addTask(): void {
   clearDate();
 
   useNotification(NotificationMessage.TaskAdd);
+  emit('addTask');
 }
 
 function handleCloseEditor(): void {

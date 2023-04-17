@@ -4,7 +4,9 @@
     <TaskEditor
       ref="target"
       class="!fixed top-24 right-96 bg-base-100 w-[480px] max-w-xl border-none shadow-[0_10px_55px_-20px_rgba(0,0,0,0.3)] shadow-base-content z-50"
-      @close-editor="handleCloseEditor" />
+      :quick-task="true"
+      @close-editor="handleCloseEditor"
+      @add-task="handleCloseEditor" />
   </div>
 </template>
 
