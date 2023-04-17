@@ -53,6 +53,7 @@ const tasks = useHandleTasks(projectTasks);
 const isEditorActive = ref(false);
 
 provide('isEditorActive', isEditorActive);
+
 function showEditor(): void {
   isEditorActive.value = true;
 }

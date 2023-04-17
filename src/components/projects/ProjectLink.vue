@@ -5,7 +5,8 @@
     v-bind="$attrs">
     <TheTooltip
       v-if="!customTooltip"
-      :data="name || ''">
+      :data="name || ''"
+      class="w-full">
       <div class="flex gap-2">
         <slot name="icon">
           <IconColor v-bind="$attrs" />
@@ -49,6 +50,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const calcName = computed(() => {
+  if (!props.name) return '';
   if (props.name.length >= 26) {
     return props.name?.slice(0, 26).concat('...');
   }
