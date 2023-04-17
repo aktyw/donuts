@@ -9,15 +9,19 @@
 </template>
 
 <script setup lang="ts">
+import { onClickOutside } from '@vueuse/core';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
 import { ref } from 'vue';
 
 import TaskEditor from './TaskEditor.vue';
 
-const target = ref();
+const target = ref(null);
+
 const emit = defineEmits<{
   (e: 'closeEditor'): void;
 }>();
+
+onClickOutside(target, () => handleCloseEditor());
 
 function handleCloseEditor(): void {
   emit('closeEditor');
