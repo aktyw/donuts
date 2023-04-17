@@ -16,7 +16,6 @@
         @click="showEditor" />
       <TaskEditor
         v-else
-        :current-project="inbox"
         @close-editor="closeEditor" />
     </div>
 
@@ -36,17 +35,13 @@ import TaskEditor from '@/components/tasks/TaskEditor.vue';
 import TasksEmptyMessage from '@/components/tasks/TasksEmptyMessage.vue';
 import TasksList from '@/components/tasks/TasksList.vue';
 import { useHandleTasks } from '@/composables/useHandleTasks';
-import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import { SortFilters } from '@/types/models/Sort';
 import { TASK_VIEW_TITLE } from '@/types/models/Titles';
 
 const store = useTasksStore();
-const projectsStore = useProjectsStore();
 const { getSortType: sortTypeStatus, getTodayTasks: todayTasks } = storeToRefs(store);
-const { getProjectById } = storeToRefs(projectsStore);
 const tasks = useHandleTasks(todayTasks);
-const inbox = getProjectById.value('inbox');
 const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
 const isEditorActive = ref(false);
 

@@ -5,7 +5,9 @@
         :is="'li'"
         class="tooltip-right"
         data="Go to Inbox">
-        <ProjectLink :to="{ name: 'project', params: { id: 'inbox' } }">
+        <ProjectLink
+          :custom-tooltip="true"
+          :to="{ name: 'project', params: { id: 'inbox' } }">
           <template #icon>
             <IconInbox />
           </template>
@@ -20,7 +22,9 @@
         :is="'li'"
         class="tooltip-right"
         data="Go to Today">
-        <ProjectLink :to="{ name: 'today' }">
+        <ProjectLink
+          :custom-tooltip="true"
+          :to="{ name: 'today' }">
           <template #icon>
             <IconCalendarToday />
           </template>
@@ -56,7 +60,8 @@
                   <span class="absolute right-0 -top-1 bg-transparent">
                     <ProjectOptions
                       v-show="showId === id"
-                      :id="id" />
+                      :id="id"
+                      :is-favorites="true" />
                   </span>
                 </template>
               </ProjectLink>
@@ -67,7 +72,8 @@
 
       <div>
         <ProjectAccordion
-          :title="'Projects'"
+          route-name="projects"
+          title="Projects"
           :class="{ 'collapse-open': isProjectFocus }"
           @open-project-editor="handleOpenEditor">
           <template #project-links>
@@ -81,7 +87,6 @@
                 :to="{ name: 'project', params: { id: id } }"
                 :name="name"
                 :fill="color">
-                {{ name }}
                 <template #options>
                   <span class="absolute right-0 -top-1 bg-transparent">
                     <ProjectOptions

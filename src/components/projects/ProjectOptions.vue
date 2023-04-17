@@ -38,16 +38,19 @@
         {{ project.favorite ? 'Remove from favorites' : 'Add to favorites' }}
       </OptionListButton>
 
-      <OptionListButton @click="handleDuplicateProject">
+      <OptionListButton
+        v-if="!isFavorites"
+        @click="handleDuplicateProject">
         <template #icon>
           <IconDuplicate />
         </template>
         Duplicate project
       </OptionListButton>
 
-      <BaseDividerSmall />
+      <BaseDividerSmall v-if="!isFavorites" />
 
       <OptionListButton
+        v-if="!isFavorites"
         class="hover:text-error hover:fill-error focus:text-error focus:fill-error fill-base-content"
         @click="handleArchiveProject">
         <template #icon>
@@ -57,6 +60,7 @@
       </OptionListButton>
 
       <OptionListButton
+        v-if="!isFavorites"
         class="hover:text-error hover:fill-error focus:text-error focus:fill-error fill-base-content"
         @click="toggleDeleteModal">
         <template #icon>
@@ -65,6 +69,7 @@
         Delete project
       </OptionListButton>
     </ul>
+
     <Teleport to="body">
       <ModalDeleteConfirm
         v-if="deleteConfirm"
@@ -117,6 +122,7 @@ import type { Project } from '@/types/models/Projects';
 
 type Props = {
   id: string;
+  isFavorites?: boolean;
 };
 
 const router = useRouter();

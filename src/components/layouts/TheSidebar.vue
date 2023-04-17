@@ -4,10 +4,12 @@
       '-translate-x-full ': !isMenuOpen,
     }"
     class="z-20 transition duration-300 h-screen fixed">
-    <ul
-      class="w-80 menu p-4 py-8 bg-base-200 text-base-content [&>li>a]:justify-between [&>li>.router-link-exact-active]:bg-base-300 h-full">
-      <slot name="links"></slot>
-    </ul>
+    <nav class="overflow-y-auto">
+      <ul
+        class="flex flex-nowrap w-80 menu p-4 bg-base-200 text-base-content [&>li>a]:justify-between [&>li>.router-link-exact-active]:bg-base-300 pb-40 overflow-x-hidden h-[calc(100vh-48px)]">
+        <slot name="links"></slot>
+      </ul>
+    </nav>
   </aside>
 </template>
 

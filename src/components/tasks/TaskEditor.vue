@@ -1,8 +1,8 @@
 <template>
   <form
     id="form"
-    class="relative border w-full rounded-lg focus-within:border-accent-content my-1.5">
-    <div class="px-2 py-2">
+    class="relative border w-full rounded-lg focus-within:border-accent-content my-1.5 px-4">
+    <div class="py-3">
       <TaskEditorInput
         ref="taskTitleInput"
         v-model.trim="taskTitle"
@@ -70,17 +70,18 @@
       </div>
     </div>
 
-    <div class="flex justify-between border-t p-2">
+    <div class="flex justify-between border-t py-3">
       <div class="flex gap-1">
         <TheTooltip
           class="!tooltip-top flex"
           data="Select a project">
           <ProjectList
             v-model="selectedProject"
-            :current-project="currentProject" />
+            :current-project="currentProject || inbox" />
         </TheTooltip>
 
         <ProjectAddButton
+          v-if="!quickTask"
           class="h-full"
           @click.prevent="handleAddProject"></ProjectAddButton>
 
@@ -126,6 +127,7 @@
 import '@vuepic/vue-datepicker/dist/main.css';
 
 import Datepicker from '@vuepic/vue-datepicker';
+import { storeToRefs } from 'pinia';
 import { type Ref, ref, watch, watchEffect } from 'vue';
 
 import IconCalendar from '@/components/icons/IconCalendar.vue';
@@ -148,10 +150,12 @@ import type { Project } from '@/types/models/Projects';
 
 type Props = {
   currentProject?: Project | undefined;
+  quickTask?: boolean;
 };
 
 const emit = defineEmits<{
   (e: 'closeEditor'): void;
+  (e: 'addTask'): void;
 }>();
 
 const props = defineProps<Props>();
@@ -169,6 +173,8 @@ const startTime = ref({ hours: 0, minutes: 0 });
 const inputTaskDate: Ref<Date | undefined> = ref();
 const taskIsPriority = ref(false);
 const isProjectModalOpen = ref(false);
+const { getProjectById } = storeToRefs(projectsStore);
+const inbox = getProjectById.value('inbox');
 const selectedProject = ref(props.currentProject);
 
 watch(date, (newDate) => {
@@ -176,7 +182,7 @@ watch(date, (newDate) => {
 });
 
 watchEffect(() => {
-  selectedProject.value = props.currentProject;
+  selectedProject.value = props.currentProject || inbox;
 });
 
 function addTask(): void {
@@ -196,6 +202,7 @@ function addTask(): void {
   clearDate();
 
   useNotification(NotificationMessage.TaskAdd);
+  emit('addTask');
 }
 
 function handleCloseEditor(): void {
