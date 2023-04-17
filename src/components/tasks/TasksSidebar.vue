@@ -5,7 +5,9 @@
         :is="'li'"
         class="tooltip-right"
         data="Go to Inbox">
-        <ProjectLink :to="{ name: 'project', params: { id: 'inbox' } }">
+        <ProjectLink
+          :custom-tooltip="true"
+          :to="{ name: 'project', params: { id: 'inbox' } }">
           <template #icon>
             <IconInbox />
           </template>
@@ -20,7 +22,9 @@
         :is="'li'"
         class="tooltip-right"
         data="Go to Today">
-        <ProjectLink :to="{ name: 'today' }">
+        <ProjectLink
+          :custom-tooltip="true"
+          :to="{ name: 'today' }">
           <template #icon>
             <IconCalendarToday />
           </template>
