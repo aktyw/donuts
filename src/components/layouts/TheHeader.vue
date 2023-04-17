@@ -57,16 +57,20 @@
 
     <div class="navbar-end hidden lg:flex">
       <ul class="flex flex-row gap-4">
-        <ModalButton>
+        <QuickTaskButton @click="isQuickTaskActive = true">
           <template #icon>
             <IconAdd />
           </template>
-          <!-- <TaskQuickAdd /> -->
-        </ModalButton>
+        </QuickTaskButton>
         <HeaderLink to="/"> About </HeaderLink>
         <HeaderLink to="/login"> Login </HeaderLink>
       </ul>
     </div>
+    <Teleport to="body">
+      <TaskQuickAdd
+        v-if="isQuickTaskActive"
+        @close-editor="handleCloseEditor" />
+    </Teleport>
   </header>
 </template>
 
@@ -80,20 +84,26 @@ import IconAdd from '@/components/icons/IconAdd.vue';
 import IconHome from '@/components/icons/IconHome.vue';
 import IconList from '@/components/icons/IconList.vue';
 import IconMenu from '@/components/icons/IconMenu.vue';
-import ModalButton from '@/components/modals/ModalButton.vue';
+import QuickTaskButton from '@/components/tasks/QuickTaskButton.vue';
 import TaskQuickAdd from '@/components/tasks/TaskQuickAdd.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import blurElement from '@/helpers/blur';
 import { useSettingsStore } from '@/stores/SettingsStore';
 
+const isQuickTaskActive = ref(false);
 const item = ref();
 
-function blurDropdown() {
-  blurElement();
-}
 const router = useRouter();
 const settingsStore = useSettingsStore();
 const { getHomeView: home, getMenuStatus: menuStatus } = storeToRefs(settingsStore);
 const menuTooltip = computed(() => (menuStatus.value ? 'Close menu' : 'Open menu'));
+
+function handleCloseEditor(): void {
+  isQuickTaskActive.value = false;
+}
+
+function blurDropdown() {
+  blurElement();
+}
 </script>
