@@ -29,6 +29,13 @@
         Add Subtask
       </OptionListButton>
 
+      <OptionListButton @click="handleMoveProject(taskId)">
+        <template #icon>
+          <IconMove />
+        </template>
+        Move To Project
+      </OptionListButton>
+
       <OptionListButton @click="handleDuplicateTask(taskId)">
         <template #icon>
           <IconDuplicate />
@@ -108,6 +115,7 @@ import IconClock from '@/components/icons/IconClock.vue';
 import IconDone from '@/components/icons/IconDone.vue';
 import IconDuplicate from '@/components/icons/IconDuplicate.vue';
 import IconImportant from '@/components/icons/IconImportant.vue';
+import IconMove from '@/components/icons/IconMove.vue';
 import IconPen from '@/components/icons/IconPen.vue';
 import IconRecycleBin from '@/components/icons/IconRecycleBin.vue';
 import IconVerticalDots from '@/components/icons/IconVerticalDots.vue';
@@ -191,6 +199,10 @@ function handleDate(modelData: Date): void {
 function handleDeleteTask(taskId: string): void {
   blurElement();
   emit('deleteTask', taskId);
+}
+
+function handleMoveProject(taskId: string): void {
+  console.log('Move project');
 }
 
 function handleDuplicateTask(taskId: string): void {

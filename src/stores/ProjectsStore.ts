@@ -1,9 +1,10 @@
 import { useStorage } from '@vueuse/core';
 import { nanoid } from 'nanoid';
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 
 import { findIndex } from '@/helpers/findIndex';
 import { findItem } from '@/helpers/findItem';
+import { useTasksStore } from '@/stores/TasksStore';
 import type { HasId } from '@/types/models/HasId';
 import type { Project } from '@/types/models/Projects';
 
@@ -103,6 +104,13 @@ export const useProjectsStore = defineStore('projects', {
       const projectEnds = this.projects.slice(projectIdx + 1);
 
       this.projects = [...projectStarts, copyProject, ...projectEnds];
+
+      const taskStore = useTasksStore();
+
+      const { getProjectTasks } = storeToRefs(taskStore);
+      const tasks = getProjectTasks.value(id);
+
+      tasks.forEach((task) => taskStore.duplicateTask(task.id, copyProject.id));
     },
   },
 });

@@ -201,7 +201,7 @@ export const useTasksStore = defineStore('tasks', {
 
       task.date = date;
     },
-    duplicateTask(id: string): void {
+    duplicateTask(id: string, projectId?: string): void {
       const task = findItem(id, this.tasks.default);
       const copyTask = JSON.parse(JSON.stringify(task));
       const newId = uuid();
@@ -210,6 +210,9 @@ export const useTasksStore = defineStore('tasks', {
       copyTask.id = newId;
       copyTask.createdAt = newCreatedAt;
       if (copyTask.date) copyTask.date = new Date(copyTask.date);
+      if (projectId) {
+        copyTask.projectId = projectId;
+      }
 
       const taskIndex = this.tasks.default.findIndex((task) => task.id === id);
       const tasksArrStart = this.tasks.default.slice(0, taskIndex + 1);
@@ -229,7 +232,7 @@ export const useTasksStore = defineStore('tasks', {
       this.tasks.default.push(taskToRecover);
       this.tasks.deleted = this.tasks.deleted.filter((task) => task !== taskToRecover);
     },
-    deleteAllTasks() {
+    deleteAllTasks(): void {
       const delTasks = [...this.tasks.default];
 
       this.tasks.deleted.push(...delTasks);
