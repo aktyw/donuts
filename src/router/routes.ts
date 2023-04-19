@@ -35,8 +35,21 @@ const routes = [
   },
   {
     path: '/projects',
+    redirect: { path: '/projects/active' },
     name: 'projects',
     components: { default: ProjectsView, sidebar: TasksSidebar },
+    children: [
+      {
+        path: 'active',
+        name: 'active',
+        component: ProjectsView,
+      },
+      {
+        path: 'archived',
+        name: 'archived',
+        component: ProjectsView,
+      },
+    ],
   },
   {
     path: '/notes',

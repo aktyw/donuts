@@ -26,6 +26,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
+import { provide } from 'vue';
 
 import FiltersList from '@/components/filters/FiltersList.vue';
 import FiltersNavbar from '@/components/filters/FiltersNavbar.vue';
@@ -44,6 +45,8 @@ const { getSortType: sortTypeStatus, getTodayTasks: todayTasks } = storeToRefs(s
 const tasks = useHandleTasks(todayTasks);
 const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
 const isEditorActive = ref(false);
+
+provide('isEditorActive', isEditorActive);
 
 function showEditor(): void {
   isEditorActive.value = true;
