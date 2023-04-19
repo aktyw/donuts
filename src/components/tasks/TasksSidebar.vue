@@ -38,7 +38,7 @@
       <BaseDivider></BaseDivider>
 
       <div
-        v-if="favActiveProjects.length"
+        v-if="!!favActiveProjects.length"
         class="pb-4">
         <ProjectAccordion
           :title="'Favorites'"

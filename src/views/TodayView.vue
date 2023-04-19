@@ -6,7 +6,7 @@
       <FiltersNavbar :title="TASK_VIEW_TITLE.TODAY" />
       <FilterStatus v-if="!allowDrag" />
       <FiltersList
-        v-if="store.tasks.default.length && !allowDrag"
+        v-if="!!store.tasks.default.length && !allowDrag"
         :tasks="todayTasks" />
 
       <TasksList :tasks="tasks" />

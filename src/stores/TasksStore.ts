@@ -201,6 +201,11 @@ export const useTasksStore = defineStore('tasks', {
 
       task.date = date;
     },
+    moveTask(id: string, projectId: string) {
+      const task = findItem(id, this.tasks.default);
+
+      task.projectId = projectId;
+    },
     duplicateTask(id: string, projectId?: string): void {
       const task = findItem(id, this.tasks.default);
       const copyTask = JSON.parse(JSON.stringify(task));

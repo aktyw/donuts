@@ -6,7 +6,7 @@
       <FiltersNavbar :title="currentProject?.name ?? 'Inbox'" />
       <FilterStatus v-if="!allowDrag" />
       <FiltersList
-        v-if="store.tasks.default.length && !allowDrag"
+        v-if="!!store.tasks.default.length && !allowDrag"
         :tasks="projectTasks" />
       <TasksList :tasks="tasks" />
 

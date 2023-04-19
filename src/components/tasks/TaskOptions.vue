@@ -29,12 +29,22 @@
         Add Subtask
       </OptionListButton>
 
-      <OptionListButton @click="handleMoveProject(taskId)">
+      <OptionListButton @click="openProjectList">
         <template #icon>
           <IconMove />
         </template>
         Move To Project
       </OptionListButton>
+
+      <Teleport to="body">
+        <ProjectListModal
+          v-if="isProjectListActive"
+          modal-title="Move to project"
+          :current-project="currentProject"
+          :task="props.task"
+          @close-editor="closeProjectList">
+        </ProjectListModal>
+      </Teleport>
 
       <OptionListButton @click="handleDuplicateTask(taskId)">
         <template #icon>
@@ -107,6 +117,7 @@
 <script setup lang="ts">
 import Datepicker from '@vuepic/vue-datepicker';
 import { useElementBounding, useWindowSize } from '@vueuse/core';
+import { storeToRefs } from 'pinia';
 import { computed, onMounted, type Ref, ref, toRefs } from 'vue';
 
 import IconAddSubtask from '@/components/icons/IconAddSubtask.vue';
@@ -119,10 +130,13 @@ import IconMove from '@/components/icons/IconMove.vue';
 import IconPen from '@/components/icons/IconPen.vue';
 import IconRecycleBin from '@/components/icons/IconRecycleBin.vue';
 import IconVerticalDots from '@/components/icons/IconVerticalDots.vue';
+import ProjectList from '@/components/projects/ProjectList.vue';
+import ProjectListModal from '@/components/projects/ProjectListModal.vue';
 import OptionListButton from '@/components/tasks/OptionListButton.vue';
 import BaseDividerSmall from '@/components/ui/BaseDividerSmall.vue';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import blurElement from '@/helpers/blur';
+import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { Task } from '@/types/models/Task';
 
@@ -149,8 +163,11 @@ const emit = defineEmits<{
 }>();
 
 const store = useTasksStore();
+const storeProjects = useProjectsStore();
 const { task, taskId } = toRefs(props);
-
+const { getProjectById } = storeToRefs(storeProjects);
+const currentProject = getProjectById.value(props.task.projectId);
+const isProjectListActive = ref(false);
 const date: Ref<Date | undefined> = ref();
 const currentDate = computed(() => store.getTaskDate(props.task.id));
 const { showInputDetailTime } = useTimeDetail(currentDate);
@@ -201,8 +218,12 @@ function handleDeleteTask(taskId: string): void {
   emit('deleteTask', taskId);
 }
 
-function handleMoveProject(taskId: string): void {
-  console.log('Move project');
+function openProjectList(): void {
+  isProjectListActive.value = true;
+}
+
+function closeProjectList(): void {
+  isProjectListActive.value = false;
 }
 
 function handleDuplicateTask(taskId: string): void {

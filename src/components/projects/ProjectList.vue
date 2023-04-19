@@ -21,7 +21,7 @@ import { useProjectsStore } from '@/stores/ProjectsStore';
 import type { Project } from '@/types/models/Projects';
 
 type Props = {
-  currentProject: Project | undefined;
+  currentProject?: Project | undefined;
 };
 
 const props = defineProps<Props>();

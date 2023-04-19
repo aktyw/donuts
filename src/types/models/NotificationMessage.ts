@@ -2,6 +2,7 @@ export enum NotificationMessage {
   TaskDelete = 'Task deleted',
   AllTasksDelete = 'All tasks deleted',
   TaskAdd = 'Task added successfully',
+  TaskMove = 'Task moved',
   Complete = 'Task completed',
   NotComplete = 'Task not completed',
   UpdateDate = 'Date updated successfully',
