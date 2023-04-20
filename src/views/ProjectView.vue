@@ -1,5 +1,7 @@
 <template>
-  <main id="main">
+  <main
+    v-if="currentProject?.active"
+    id="main">
     <div
       class="flex flex-col items-start w-2/3 max-w-[800px]"
       :class="{ 'h-1/2': !store.tasks.default.length }">
@@ -21,17 +23,26 @@
 
     <TasksEmptyMessage v-if="!store.tasks.default.length"> No tasks. Time for chillout... </TasksEmptyMessage>
   </main>
+
+  <main
+    v-else
+    id="main">
+    <div class="flex flex-col items-start w-2/3 max-w-[800px]">
+      <h2 class="font-bold text-xl pb-2.5">{{ currentProject?.name ?? 'Inbox' }}</h2>
+      <ProjectArchived :id="projectId" />
+    </div>
+  </main>
 </template>
 
 <script setup lang="ts">
 import { useRouteParams } from '@vueuse/router';
 import { storeToRefs } from 'pinia';
-import { provide } from 'vue';
-import { computed, ref } from 'vue';
+import { computed, provide, ref } from 'vue';
 
 import FiltersList from '@/components/filters/FiltersList.vue';
 import FiltersNavbar from '@/components/filters/FiltersNavbar.vue';
 import FilterStatus from '@/components/filters/FilterStatus.vue';
+import ProjectArchived from '@/components/projects/ProjectArchived.vue';
 import TaskAddButton from '@/components/tasks/TaskAddButton.vue';
 import TaskEditor from '@/components/tasks/TaskEditor.vue';
 import TasksEmptyMessage from '@/components/tasks/TasksEmptyMessage.vue';

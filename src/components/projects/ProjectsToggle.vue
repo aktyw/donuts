@@ -1,5 +1,5 @@
 <template>
-  <div class="m-10 flex justify-around items-center w-44 h-10 bg-base-200 rounded-full">
+  <div class="flex justify-around items-center w-40 h-9 bg-base-200 rounded-full">
     <ProjectToggleLink :to="{ name: 'active' }">Active</ProjectToggleLink>
     <ProjectToggleLink :to="{ name: 'archived' }">Archived</ProjectToggleLink>
   </div>

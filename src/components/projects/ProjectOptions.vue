@@ -23,14 +23,18 @@
           @close-editor="handleCloseEditor">
         </ProjectModal>
       </teleport>
-      <OptionListButton @click="handleOpenEditor">
+      <OptionListButton
+        v-if="!isArchived"
+        @click="handleOpenEditor">
         <template #icon>
           <IconPen />
         </template>
         Edit project
       </OptionListButton>
 
-      <OptionListButton @click="handleAddToFav">
+      <OptionListButton
+        v-if="!isArchived"
+        @click="handleAddToFav">
         <template #icon>
           <IconHeartMinus v-if="project.favorite" />
           <IconHeart v-else />
@@ -39,7 +43,7 @@
       </OptionListButton>
 
       <OptionListButton
-        v-if="!isFavorites"
+        v-if="!isFavorites && !isArchived"
         @click="handleDuplicateProject">
         <template #icon>
           <IconDuplicate />
@@ -47,16 +51,25 @@
         Duplicate project
       </OptionListButton>
 
-      <BaseDividerSmall v-if="!isFavorites" />
+      <BaseDividerSmall v-if="!isFavorites && !isArchived" />
 
       <OptionListButton
-        v-if="!isFavorites"
+        v-if="!isFavorites && !isArchived"
         class="hover:text-error hover:fill-error focus:text-error focus:fill-error fill-base-content"
         @click="handleArchiveProject">
         <template #icon>
           <IconArchive />
         </template>
         Archive project
+      </OptionListButton>
+
+      <OptionListButton
+        v-if="!isFavorites && isArchived"
+        @click="handleUnarchiveProject">
+        <template #icon>
+          <IconUnarchive />
+        </template>
+        Unarchive project
       </OptionListButton>
 
       <OptionListButton
@@ -110,6 +123,7 @@ import IconHeartMinus from '@/components/icons/IconHeartMinus.vue';
 import IconHorizontalDots from '@/components/icons/IconHorizontalDots.vue';
 import IconPen from '@/components/icons/IconPen.vue';
 import IconRecycleBin from '@/components/icons/IconRecycleBin.vue';
+import IconUnarchive from '@/components/icons/IconUnarchive.vue';
 import ProjectModal from '@/components/projects/ProjectModal.vue';
 import ModalDeleteConfirm from '@/components/tasks/ModalDeleteConfirm.vue';
 import OptionListButton from '@/components/tasks/OptionListButton.vue';
@@ -123,6 +137,7 @@ import type { Project } from '@/types/models/Projects';
 type Props = {
   id: string;
   isFavorites?: boolean;
+  isArchived?: boolean;
 };
 
 const router = useRouter();
@@ -182,8 +197,20 @@ function toggleDeleteModal(): void {
 }
 
 function handleArchiveProject(): void {
-  projectsStore.archiveProject(props.id);
-  useNotification(NotificationMessage.ArchiveProject);
+  try {
+    if (projectId.value === project.value.id) {
+      router.replace({ name: 'tasks' });
+    }
+    projectsStore.archiveProject(props.id);
+    useNotification(NotificationMessage.ArchiveProject);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function handleUnarchiveProject(): void {
+  projectsStore.activateProject(props.id);
+  useNotification(NotificationMessage.ActivateProject);
 }
 
 function updateProject(project: Project): void {
