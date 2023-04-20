@@ -75,7 +75,8 @@
       @delete-task="toggleDeleteModal"
       @handle-date="handleUpdateDate"
       @duplicate-task="handleDuplicateTask"
-      @picker-open="setCardBacklight" />
+      @picker-open="setCardBacklight"
+      @add-subtask="handleAddSubtask" />
 
     <Teleport to="body">
       <ModalDeleteConfirm
@@ -100,6 +101,12 @@
           </button>
         </template>
       </ModalDeleteConfirm>
+    </Teleport>
+    <Teleport to="body">
+      <TaskModal
+        v-if="isTaskModalActive"
+        :task="task"
+        @close-editor="isTaskModalActive = false" />
     </Teleport>
   </li>
 
@@ -126,6 +133,7 @@ import IconCalendar from '@/components/icons/IconCalendar.vue';
 import IconColor from '@/components/icons/IconColor.vue';
 import ModalDeleteConfirm from '@/components/tasks/ModalDeleteConfirm.vue';
 import TaskEditor from '@/components/tasks/TaskEditor.vue';
+import TaskModal from '@/components/tasks/TaskModal.vue';
 import TaskOptions from '@/components/tasks/TaskOptions.vue';
 import TaskProjectDetail from '@/components/tasks/TaskProjectDetail.vue';
 import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
@@ -143,22 +151,22 @@ type Props = {
 const props = defineProps<Props>();
 const store = useTasksStore();
 const storeProjects = useProjectsStore();
+const activeElement = useActiveElement();
+const { getProjectById } = storeToRefs(storeProjects);
+const project = computed(() => getProjectById.value(props.task.projectId));
 const isDone = ref(props.task.done);
 const isPriority = ref(props.task.isPriority);
-const editTask = ref(false);
 const deleteConfirm = ref(false);
 const deadline = computed(() => store.getTaskDate(props.task.id));
 const { showDetailTime, markOverdue } = useTimeDetail(deadline);
 const cardIsHover = ref(false);
 const isOptionsOpen = ref(false);
-const activeElement = useActiveElement();
 const card: Ref<HTMLElement | undefined> = ref();
 const { x: cardX, y: cardY, bottom: cardBottom } = useElementBounding(card);
 const showBacklight = ref(false);
-const { getProjectById } = storeToRefs(storeProjects);
-const project = computed(() => getProjectById.value(props.task.projectId));
+const editTask = ref(false);
 const isEditorActive = inject('isEditorActive');
-const showProjectDetails = ref(false);
+const isTaskModalActive = ref(false);
 
 watch(activeElement, (el) => {
   el?.closest('.dropdown') ? (isOptionsOpen.value = true) : (isOptionsOpen.value = false);
@@ -223,6 +231,10 @@ function handleDuplicateTask(id: string): void {
 function handleUpdateDate(date: Date): void {
   store.updateDate(props.task.id, date);
   useNotification(NotificationMessage.UpdateDate);
+}
+
+function handleAddSubtask(): void {
+  isTaskModalActive.value = true;
 }
 
 function handleUpdateTask(content: Partial<Task>): void {

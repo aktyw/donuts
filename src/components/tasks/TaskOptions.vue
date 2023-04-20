@@ -159,6 +159,7 @@ const emit = defineEmits<{
   (e: 'handleDate', date: Date): void;
   (e: 'editTask', id: string): void;
   (e: 'duplicateTask', id: string): void;
+  (e: 'addSubtask', id: string): void;
   (e: 'pickerOpen'): void;
 }>();
 
@@ -240,7 +241,7 @@ function handleToggleIsDone(taskId: string): void {
 }
 
 function handleAddSubtask(taskId: string): void {
-  console.log('sub', taskId);
+  emit('addSubtask', taskId);
 }
 
 function handleEditTask(taskId: string): void {

@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid';
 import { isToday } from '@/helpers/checkTime';
 import { findIndex } from '@/helpers/findIndex';
 import { findItem } from '@/helpers/findItem';
+import { useProjectsStore } from '@/stores/ProjectsStore';
 import { Filters } from '@/types/models/Filters';
 import type { Notification } from '@/types/models/Notification';
 import { NotificationAction } from '@/types/models/NotificationAction';
@@ -69,8 +70,12 @@ export const useTasksStore = defineStore('tasks', {
     },
     getTodayTasks(state): Task[] {
       return state.tasks.default.filter((task: Task) => {
-        if (!task.date) return;
-        if (isToday(task.date)) {
+        const projectsStore = useProjectsStore();
+
+        const activeProjectsId = projectsStore.getAllActiveProjects.map((p) => p.id);
+        const taskProjectIsActive = activeProjectsId.includes(task.projectId);
+
+        if (task.date && isToday(task.date) && taskProjectIsActive) {
           return task;
         }
       });
@@ -133,6 +138,10 @@ export const useTasksStore = defineStore('tasks', {
       };
 
       this.tasks.default.push(newTask);
+    },
+    addSubtask(originId: string, task: Partial<Task>) {
+      console.log(originId);
+      console.log(task);
     },
     addNotification(message: string, id: string) {
       let actionLabel;
