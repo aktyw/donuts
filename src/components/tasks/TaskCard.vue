@@ -1,5 +1,6 @@
 <template>
   <li
+    v-if="!editTask"
     ref="card"
     class="relative border-t border-base-200 py-3 w-full flex justify-between transition-colors duration-1000"
     :class="{ 'bg-base-300  duration-1000 ': showBacklight, 'last:border-b': !isEditorActive }"
@@ -75,26 +76,7 @@
       @handle-date="handleUpdateDate"
       @duplicate-task="handleDuplicateTask"
       @picker-open="setCardBacklight" />
-    <Teleport to="body">
-      <TaskEditModal
-        v-if="editTask"
-        v-model.trim="newTitle"
-        :title="'Edit task'">
-        <template #action>
-          <button
-            class="btn bg-base-200 text-base-content hover:bg-base-300 border-0 btn-sm rounded-md capitalize font-semibold"
-            @click="cancelEditTask">
-            Cancel
-          </button>
-          <button
-            class="btn btn-sm rounded-md capitalize font-semibold"
-            :disabled="!newTitle.length"
-            @click="handleUpdateTask(newTitle)">
-            Save
-          </button>
-        </template>
-      </TaskEditModal>
-    </Teleport>
+
     <Teleport to="body">
       <ModalDeleteConfirm
         v-if="deleteConfirm"
@@ -120,6 +102,17 @@
       </ModalDeleteConfirm>
     </Teleport>
   </li>
+
+  <TaskEditor
+    v-else
+    :is-edit="true"
+    :title="task.title"
+    :description="task.description"
+    :current-project="project"
+    :is-priority="isPriority"
+    :date="deadline"
+    @close-editor="toggleEditModal"
+    @update-task="handleUpdateTask" />
 </template>
 
 <script setup lang="ts">
@@ -132,7 +125,7 @@ import { inject } from 'vue';
 import IconCalendar from '@/components/icons/IconCalendar.vue';
 import IconColor from '@/components/icons/IconColor.vue';
 import ModalDeleteConfirm from '@/components/tasks/ModalDeleteConfirm.vue';
-import TaskEditModal from '@/components/tasks/TaskEditModal.vue';
+import TaskEditor from '@/components/tasks/TaskEditor.vue';
 import TaskOptions from '@/components/tasks/TaskOptions.vue';
 import TaskProjectDetail from '@/components/tasks/TaskProjectDetail.vue';
 import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
@@ -150,7 +143,6 @@ type Props = {
 const props = defineProps<Props>();
 const store = useTasksStore();
 const storeProjects = useProjectsStore();
-const newTitle = ref(props.task.title);
 const isDone = ref(props.task.done);
 const isPriority = ref(props.task.isPriority);
 const editTask = ref(false);
@@ -223,11 +215,6 @@ function toggleIsPriority(id: string): void {
   store.toggleIsPriority(id);
 }
 
-function cancelEditTask(): void {
-  newTitle.value = props.task.title;
-  toggleEditModal();
-}
-
 function handleDuplicateTask(id: string): void {
   store.duplicateTask(id);
   useNotification(NotificationMessage.Duplicate);
@@ -238,7 +225,7 @@ function handleUpdateDate(date: Date): void {
   useNotification(NotificationMessage.UpdateDate);
 }
 
-function handleUpdateTask(content: string): void {
+function handleUpdateTask(content: Partial<Task>): void {
   toggleEditModal();
   store.updateTask(props.task.id, content);
   useNotification(NotificationMessage.UpdateTask);

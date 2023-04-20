@@ -104,10 +104,18 @@
         >
 
         <BaseButton
+          v-if="!isEdit"
           class="btn btn-sm bg-accent border-transparent hover:bg-accent-focus text-neutral-content"
           :disabled="!taskTitle || !selectedProject"
           @click.prevent="addTask"
           >Add task</BaseButton
+        >
+        <BaseButton
+          v-if="isEdit"
+          class="btn btn-sm bg-accent border-transparent hover:bg-accent-focus text-neutral-content"
+          :disabled="!taskTitle || !selectedProject"
+          @click.prevent="handleUpdateTask"
+          >Save</BaseButton
         >
       </div>
     </div>
@@ -147,31 +155,38 @@ import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
 import type { Project } from '@/types/models/Projects';
+import type { Task } from '@/types/models/Task';
 
 type Props = {
+  isEdit?: boolean;
   currentProject?: Project | undefined;
   quickTask?: boolean;
+  isPriority?: boolean;
+  date?: Date;
+  title?: string;
+  description?: string;
 };
 
 const emit = defineEmits<{
   (e: 'closeEditor'): void;
   (e: 'addTask'): void;
+  (e: 'updateTask', options: Partial<Task>): void;
 }>();
 
 const props = defineProps<Props>();
 const projectsStore = useProjectsStore();
 const store = useTasksStore();
-const taskTitle = ref('');
-const taskDescription = ref('');
+const taskTitle = ref(props.title || '');
+const taskDescription = ref(props.description || '');
 const taskTitleInput: Ref<InstanceType<typeof HTMLInputElement> | null> = ref(null);
 const taskDescriptionInput: Ref<HTMLInputElement | null> = ref(null);
-const date: Ref<Date | undefined> = ref();
+const date: Ref<Date | undefined> = ref(props.date);
 const datepicker = ref();
 const showPicker = ref(false);
 const { showInputDetailTime } = useTimeDetail(date);
 const startTime = ref({ hours: 0, minutes: 0 });
 const inputTaskDate: Ref<Date | undefined> = ref();
-const taskIsPriority = ref(false);
+const taskIsPriority = ref(props.isPriority);
 const isProjectModalOpen = ref(false);
 const { getProjectById } = storeToRefs(projectsStore);
 const inbox = getProjectById.value('inbox');
@@ -203,6 +218,18 @@ function addTask(): void {
 
   useNotification(NotificationMessage.TaskAdd);
   emit('addTask');
+}
+
+function handleUpdateTask(): void {
+  const options = {
+    title: taskTitle.value,
+    description: taskDescription.value,
+    date: date.value,
+    isPriority: taskIsPriority.value,
+    projectId: selectedProject.value?.id ?? 'inbox',
+  };
+
+  emit('updateTask', options);
 }
 
 function handleCloseEditor(): void {

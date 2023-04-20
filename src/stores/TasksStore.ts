@@ -191,10 +191,11 @@ export const useTasksStore = defineStore('tasks', {
 
       this.tasks.default[index]['isPriority'] = !this.tasks.default[index]['isPriority'];
     },
-    updateTask(id: string, title: string): void {
+    updateTask(id: string, content: Partial<Task>): void {
       const task = findItem(id, this.tasks.default);
+      const index = findIndex(id, this.tasks.default);
 
-      task.title = title;
+      this.tasks.default[index] = { ...task, ...content };
     },
     updateDate(id: string, date: Date): void {
       const task = findItem(id, this.tasks.default);
