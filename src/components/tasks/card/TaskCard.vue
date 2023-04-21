@@ -34,7 +34,7 @@
             <template #icon>
               <IconCalendar
                 v-if="showDetailTime"
-                class="relative right-0.5" />
+                class="relative right-0.5 fill-base-content" />
             </template>
             <template #time>
               <span

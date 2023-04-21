@@ -1,0 +1,10 @@
+<template>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="20"
+    width="20"
+    class="fill-base-content">
+    <path
+      d="M9.917 16.583v-4.166h.666v1.75h6v.666h-6v1.75Zm-6.5-1.75v-.666h4.166v.666Zm3-2.75v-1.75h-3v-.666h3v-1.75h.666v4.166Zm3-1.75v-.666h7.166v.666Zm3-2.75V3.417h.666v1.75h3.5v.666h-3.5v1.75Zm-9-1.75v-.666h7.166v.666Z" />
+  </svg>
+</template>

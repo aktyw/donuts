@@ -108,6 +108,7 @@
           class="btn btn-sm bg-accent border-transparent hover:bg-accent-focus text-neutral-content"
           :disabled="!taskTitle || !selectedProject"
           @click.prevent="addTask"
+
           >Add task</BaseButton
         >
         <BaseButton

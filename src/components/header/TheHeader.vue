@@ -28,6 +28,7 @@
             @click="settingsStore.toggleMenu()">
             <template #icon>
               <IconMenu
+                class="fill-base-content"
                 focusable="false"
                 aria-hidden="true" />
             </template>
@@ -40,6 +41,7 @@
             @click="router.push({ name: 'project', params: { id: home } })">
             <template #icon>
               <IconHome
+                class="fill-base-content"
                 focusable="false"
                 aria-hidden="true" />
             </template>
@@ -59,7 +61,7 @@
       <ul class="flex flex-row gap-4">
         <QuickTaskButton @click="isQuickTaskActive = true">
           <template #icon>
-            <IconAdd />
+            <IconAdd class="fill-base-content" />
           </template>
         </QuickTaskButton>
         <HeaderLink to="/"> About </HeaderLink>
