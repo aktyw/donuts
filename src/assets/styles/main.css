@@ -19,8 +19,8 @@
 /*  Vue Datapicker Themes */
 
 .dp__theme_light {
-  --dp-background-color: hsl(var(--nc));
-  --dp-text-color: hsl(var(--ac));
+  --dp-background-color: hsl(var(--b1));
+  --dp-text-color: hsl(var(--nc));
   --dp-hover-color: hsl(var(--af));
   --dp-hover-text-color: hsl(var(--nc));
   --dp-hover-icon-color: hsl(var(--nc));
@@ -31,11 +31,11 @@
   --dp-menu-border-color: #ddd;
   --dp-border-color-hover: #aaaeb7;
   --dp-disabled-color: #f6f6f6;
-  --dp-icon-color: hsl(var(--ac));
+  --dp-icon-color: hsl(var(--nc));
   --dp-danger-color: hsl(var(--er));
   --dp-success-color: hsl(var(--a));
   --dp-success-color-disabled: #a3d9b1;
-  --dp-icon-color: hsl(var(--ac));
+  --dp-icon-color: hsl(var(--nc));
   --dp-danger-color: #ff6f60;
   --dp-highlight-color: rgba(255, 255, 255, 0.1);
 }

@@ -7,6 +7,7 @@
         data="Go to Inbox">
         <ProjectLink
           :custom-tooltip="true"
+          class="fill-primary"
           :to="{ name: 'project', params: { id: 'inbox' } }">
           <template #icon>
             <IconInbox />
@@ -24,6 +25,7 @@
         data="Go to Today">
         <ProjectLink
           :custom-tooltip="true"
+          class="fill-accent"
           :to="{ name: 'today' }">
           <template #icon>
             <IconCalendarToday />

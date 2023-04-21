@@ -3,7 +3,9 @@
     ref="target"
     class="modal modal-bottom sm:modal-middle modal-open"
     role="dialog">
-    <div class="!rounded-xl modal-box !max-h-screen overflow-visible p-0 md:min-w-[720px] min-h-[600px]">
+    <div
+      id="task-modal"
+      class="!rounded-xl modal-box !max-h-screen overflow-visible p-0 md:min-w-[720px] min-h-[600px]">
       <div class="flex justify-between items-center border-b px-4 h-14">
         <div>
           <ProjectLink
@@ -63,6 +65,7 @@
               @close-editor="isSubtaskEdtiorActive = false" />
             <SubtaskAddButton
               v-else
+              class="ml-6"
               @click="openSubtaskEditor" />
           </div>
         </main>
@@ -71,14 +74,14 @@
           <div class="flex flex-col">
             <TaskModalOption title="Project">
               <ProjectList
-                class="select-xs px-2 bg-base-200 hover:bg-base-100 transition duration-300 border-none w-full max-w-[16rem]"
+                class="select-sm px-2 bg-base-200 hover:bg-base-100 transition duration-300 border-none w-full max-w-[16rem]"
                 :current-project="currentProject" />
             </TaskModalOption>
             <TaskModalOption title="Due date">
               <Datepicker
                 ref="datepicker"
                 v-model="date"
-                teleport="#form"
+                position="center"
                 :min-date="new Date()"
                 :start-time="startTime" />
             </TaskModalOption>
