@@ -108,7 +108,6 @@
           class="btn btn-sm bg-accent border-transparent hover:bg-accent-focus text-neutral-content"
           :disabled="!taskTitle || !selectedProject"
           @click.prevent="addTask"
-
           >Add task</BaseButton
         >
         <BaseButton
@@ -137,7 +136,7 @@ import '@vuepic/vue-datepicker/dist/main.css';
 
 import Datepicker from '@vuepic/vue-datepicker';
 import { storeToRefs } from 'pinia';
-import { computed, type Ref, ref, watch, watchEffect } from 'vue';
+import { type Ref, ref, watch, watchEffect } from 'vue';
 
 import BaseButton from '@/components/base/BaseButton.vue';
 import IconCalendar from '@/components/icons/IconCalendar.vue';

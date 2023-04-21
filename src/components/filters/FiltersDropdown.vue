@@ -150,7 +150,6 @@ import IconCalendarToday from '@/components/icons/IconCalendarToday.vue';
 import IconChaos from '@/components/icons/IconChaos.vue';
 import IconCircle from '@/components/icons/IconCircle.vue';
 import IconCircleCheck from '@/components/icons/IconCircleCheck.vue';
-// import Icon from '@/components/icons/Icon.vue';
 import IconFiltersOff from '@/components/icons/IconFiltersOff.vue';
 import IconImportantSmall from '@/components/icons/IconImportantSmall.vue';
 import IconListAlt from '@/components/icons/IconListAlt.vue';
