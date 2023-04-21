@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
+import BaseButton from '@/components/base/BaseButton.vue';
 import IconAdd from '@/components/icons/IconAdd.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
-import BaseButton from '@/components/ui/BaseButton.vue';
 </script>

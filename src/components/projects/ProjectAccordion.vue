@@ -42,7 +42,7 @@
 import { computed, ref } from 'vue';
 
 import ProjectAddButton from '@/components/projects/ProjectAddButton.vue';
-import ProjectsToggleButton from '@/components/projects/ProjectsToggleButton.vue';
+import ProjectsToggleButton from '@/components/projects/toggle/ProjectsToggleButton.vue';
 
 const style = computed(
   () =>

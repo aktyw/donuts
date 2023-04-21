@@ -38,9 +38,9 @@
 import { useDateFormat, useNow } from '@vueuse/core';
 import { ref } from 'vue';
 
+import BaseHeading from '@/components/base/BaseHeading.vue';
 import TasksSettingsDropdown from '@/components/filters/FiltersDropdown.vue';
-import ModalDeleteConfirm from '@/components/tasks/ModalDeleteConfirm.vue';
-import BaseHeading from '@/components/ui/BaseHeading.vue';
+import ModalDeleteConfirm from '@/components/modals/ModalDeleteConfirm.vue';
 import { useNotification } from '@/composables/useNotification';
 import { useTasksStore } from '@/stores/TasksStore';
 import { NotificationMessage } from '@/types/models/NotificationMessage';

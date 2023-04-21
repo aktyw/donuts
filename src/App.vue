@@ -11,9 +11,9 @@
 </template>
 
 <script setup lang="ts">
-import TheHeader from '@/components/layouts/TheHeader.vue';
+import BaseSkipLink from '@/components/base/BaseSkipLink.vue';
+import TheHeader from '@/components/header/TheHeader.vue';
 import TheNotification from '@/components/layouts/TheNotification.vue';
-import BaseSkipLink from '@/components/ui/BaseSkipLink.vue';
 import { useTasksStore } from '@/stores/TasksStore';
 
 const store = useTasksStore();

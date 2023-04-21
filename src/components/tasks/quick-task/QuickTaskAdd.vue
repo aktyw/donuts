@@ -15,7 +15,7 @@ import { onClickOutside } from '@vueuse/core';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
 import { ref } from 'vue';
 
-import TaskEditor from './TaskEditor.vue';
+import TaskEditor from '@/components/tasks/editor/TaskEditor.vue';
 
 const target = ref(null);
 

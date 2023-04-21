@@ -20,9 +20,9 @@
 </template>
 
 <script setup lang="ts">
+import BaseButton from '@/components/base/BaseButton.vue';
 import IconAdd from '@/components/icons/IconAdd.vue';
 import IconAddBig from '@/components/icons/IconAddBig.vue';
-import BaseButton from '@/components/ui/BaseButton.vue';
 import { getBreakpoints } from '@/composables/useBreakpoints';
 
 const { smAndSmaller, largerThanSm } = getBreakpoints();

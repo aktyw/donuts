@@ -79,15 +79,15 @@ import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
+import BaseButton from '@/components/base/BaseButton.vue';
 import HeaderLink from '@/components/header/HeaderLink.vue';
 import IconAdd from '@/components/icons/IconAdd.vue';
 import IconHome from '@/components/icons/IconHome.vue';
 import IconList from '@/components/icons/IconList.vue';
 import IconMenu from '@/components/icons/IconMenu.vue';
-import QuickTaskButton from '@/components/tasks/QuickTaskButton.vue';
-import TaskQuickAdd from '@/components/tasks/TaskQuickAdd.vue';
+import TaskQuickAdd from '@/components/tasks/quick-task/QuickTaskAdd.vue';
+import QuickTaskButton from '@/components/tasks/quick-task/QuickTaskButton.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
-import BaseButton from '@/components/ui/BaseButton.vue';
 import blurElement from '@/helpers/blur';
 import { useSettingsStore } from '@/stores/SettingsStore';
 

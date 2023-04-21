@@ -8,28 +8,25 @@
     @mouseover="handleShowOptionsBtn"
     @mouseleave="handleHideOptionsBtn">
     <div class="flex gap-4 w-full">
-      <div>
-        <label
-          class="flex items-start cursor-pointer focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent">
-          <input
-            type="checkbox"
-            class="checkbox rounded-full focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
-            :checked="isDone"
-            :class="{ 'checkbox-accent': isPriority, 'checkbox-success': isDone }"
-            @click="toggleIsDone(task.id)" />
-        </label>
-      </div>
+      <TaskCheckbox
+        :is-done="task.done"
+        :is-priority="task.isPriority"
+        @toggle="toggleIsDone(task.id)" />
       <div class="flex flex-col w-full cursor-pointer">
-        <p
-          class="break-all h-full flex"
-          :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
-          {{ task.title }}
-        </p>
-        <p
-          class="break-all h-full flex text-sm"
-          :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
-          {{ task.description }}
-        </p>
+        <div
+          class="flex flex-col"
+          @click="handleOpenTaskModal">
+          <p
+            class="break-all h-full flex"
+            :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
+            {{ task.title }}
+          </p>
+          <p
+            class="break-all h-full flex text-sm"
+            :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
+            {{ task.description }}
+          </p>
+        </div>
         <div class="flex justify-between pt-1">
           <TaskTimeDetail
             :class="markOverdue"
@@ -106,7 +103,8 @@
       <TaskModal
         v-if="isTaskModalActive"
         :task="task"
-        @close-editor="isTaskModalActive = false" />
+        @toggle-is-done="toggleIsDone(task.id)"
+        @close-modal="isTaskModalActive = false" />
     </Teleport>
   </li>
 
@@ -131,12 +129,13 @@ import { inject } from 'vue';
 
 import IconCalendar from '@/components/icons/IconCalendar.vue';
 import IconColor from '@/components/icons/IconColor.vue';
-import ModalDeleteConfirm from '@/components/tasks/ModalDeleteConfirm.vue';
-import TaskEditor from '@/components/tasks/TaskEditor.vue';
-import TaskModal from '@/components/tasks/TaskModal.vue';
+import ModalDeleteConfirm from '@/components/modals/ModalDeleteConfirm.vue';
+import TaskCheckbox from '@/components/tasks/card/TaskCheckbox.vue';
+import TaskProjectDetail from '@/components/tasks/card/TaskProjectDetail.vue';
+import TaskTimeDetail from '@/components/tasks/card/TaskTimeDetail.vue';
+import TaskEditor from '@/components/tasks/editor/TaskEditor.vue';
+import TaskModal from '@/components/tasks/modal/TaskModal.vue';
 import TaskOptions from '@/components/tasks/TaskOptions.vue';
-import TaskProjectDetail from '@/components/tasks/TaskProjectDetail.vue';
-import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
 import { useNotification } from '@/composables/useNotification';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import { useProjectsStore } from '@/stores/ProjectsStore';
@@ -233,8 +232,13 @@ function handleUpdateDate(date: Date): void {
   useNotification(NotificationMessage.UpdateDate);
 }
 
+function handleOpenTaskModal(): void {
+  isTaskModalActive.value = true;
+}
+
 function handleAddSubtask(): void {
   isTaskModalActive.value = true;
+  console.log('Should open add task automatic');
 }
 
 function handleUpdateTask(content: Partial<Task>): void {

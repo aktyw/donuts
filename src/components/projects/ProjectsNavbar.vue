@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import ProjectAddButton from '@/components/projects/ProjectAddButton.vue';
-import ProjectsToggle from '@/components/projects/ProjectsToggle.vue';
+import ProjectsToggle from '@/components/projects/toggle/ProjectsToggle.vue';
 
 const emit = defineEmits<{
   (e: 'openProjectEditor'): void;

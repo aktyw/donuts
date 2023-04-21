@@ -6,5 +6,5 @@
 </template>
 
 <script setup lang="ts">
-import ProjectToggleLink from '@/components/projects/ProjectToggleLink.vue';
+import ProjectToggleLink from '@/components/projects/toggle/ProjectToggleLink.vue';
 </script>

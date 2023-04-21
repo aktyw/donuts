@@ -13,8 +13,8 @@
 </template>
 
 <script setup lang="ts">
+import BaseButton from '@/components/base/BaseButton.vue';
 import IconArchive from '@/components/icons/IconArchive.vue';
-import BaseButton from '@/components/ui/BaseButton.vue';
 import { useNotification } from '@/composables/useNotification';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { NotificationMessage } from '@/types/models/NotificationMessage';

@@ -81,7 +81,7 @@
         </TheTooltip>
 
         <ProjectAddButton
-          v-if="!quickTask"
+          v-if="!quickTask && !subTask"
           class="h-full"
           @click.prevent="handleAddProject"></ProjectAddButton>
 
@@ -136,18 +136,18 @@ import '@vuepic/vue-datepicker/dist/main.css';
 
 import Datepicker from '@vuepic/vue-datepicker';
 import { storeToRefs } from 'pinia';
-import { type Ref, ref, watch, watchEffect } from 'vue';
+import { computed, type Ref, ref, watch, watchEffect } from 'vue';
 
+import BaseButton from '@/components/base/BaseButton.vue';
 import IconCalendar from '@/components/icons/IconCalendar.vue';
 import IconClose from '@/components/icons/IconClose.vue';
 import IconImportantSmall from '@/components/icons/IconImportantSmall.vue';
 import ProjectAddButton from '@/components/projects/ProjectAddButton.vue';
 import ProjectList from '@/components/projects/ProjectList.vue';
 import ProjectModal from '@/components/projects/ProjectModal.vue';
-import TaskEditorInput from '@/components/tasks/TaskEditorInput.vue';
-import TaskTimeDetail from '@/components/tasks/TaskTimeDetail.vue';
+import TaskTimeDetail from '@/components/tasks/card/TaskTimeDetail.vue';
+import TaskEditorInput from '@/components/tasks/editor/TaskEditorInput.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
-import BaseButton from '@/components/ui/BaseButton.vue';
 import { useNotification } from '@/composables/useNotification';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import { vFocus } from '@/directives/vAutoFocus';
@@ -161,6 +161,7 @@ type Props = {
   isEdit?: boolean;
   currentProject?: Project | undefined;
   quickTask?: boolean;
+  subTask?: boolean;
   isPriority?: boolean;
   date?: Date;
   title?: string;

@@ -64,10 +64,10 @@ import { useRouter } from 'vue-router';
 import IconColor from '@/components/icons/IconColor.vue';
 import IconDone from '@/components/icons/IconDone.vue';
 import ModalButton from '@/components/modals/ModalButton.vue';
-import BaseDivider from '@/components/ui/BaseDivider.vue';
-import BaseDropdown from '@/components/ui/BaseDropdown.vue';
-import BaseInput from '@/components/ui/BaseInput.vue';
-import BaseToggle from '@/components/ui/BaseToggle.vue';
+import BaseDivider from '@/components/base/BaseDivider.vue';
+import BaseDropdown from '@/components/base/BaseDropdown.vue';
+import BaseInput from '@/components/base/BaseInput.vue';
+import BaseToggle from '@/components/base/BaseToggle.vue';
 import { COLORS } from '@/types/models/Colors';
 import type { Project } from '@/types/models/Projects';
 

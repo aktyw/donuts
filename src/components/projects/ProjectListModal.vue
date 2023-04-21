@@ -30,7 +30,7 @@ import { useRouter } from 'vue-router';
 
 import ModalButton from '@/components/modals/ModalButton.vue';
 import ProjectList from '@/components/projects/ProjectList.vue';
-import BaseModal from '@/components/ui/BaseModal.vue';
+import BaseModal from '@/components/base/BaseModal.vue';
 import { useNotification } from '@/composables/useNotification';
 import { useTasksStore } from '@/stores/TasksStore';
 import { NotificationMessage } from '@/types/models/NotificationMessage';

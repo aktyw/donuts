@@ -16,7 +16,7 @@ import TheBadge from '@/components/layouts/TheBadge.vue';
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 
-import TheBadge from '@/components/ui/BaseBadge.vue';
+import TheBadge from '@/components/base/BaseBadge.vue';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { Filters } from '@/types/models/Filters';
 import type { Task } from '@/types/models/Task';

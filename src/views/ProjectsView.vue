@@ -1,4 +1,4 @@
-import BaseHeading from '@/components/ui/BaseHeading.vue';
+import BaseHeading from '@/components/base/BaseHeading.vue';
 <template>
   <main
     class="overflow-y-auto transition-all duration-300 flex flex-col justify-start items-center pb-20 py-8"

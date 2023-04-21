@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-import BaseLabel from '@/components/ui/BaseLabel.vue';
+import BaseLabel from '@/components/base/BaseLabel.vue';
 
 const input = ref();
 

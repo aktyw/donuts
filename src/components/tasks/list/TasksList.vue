@@ -32,7 +32,7 @@ import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import draggable from 'vuedraggable';
 
-import TaskCard from '@/components/tasks/TaskCard.vue';
+import TaskCard from '@/components/tasks/card/TaskCard.vue';
 import { useTasksStore } from '@/stores/TasksStore';
 import { SortFilters } from '@/types/models/Sort';
 import type { Task } from '@/types/models/Task';

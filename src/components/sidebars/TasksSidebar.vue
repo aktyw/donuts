@@ -117,15 +117,15 @@ import { useActiveElement } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 
+import BaseDivider from '@/components/base/BaseDivider.vue';
 import IconCalendarToday from '@/components/icons/IconCalendarToday.vue';
 import IconInbox from '@/components/icons/IconInbox.vue';
-import TheSidebar from '@/components/layouts/TheSidebar.vue';
 import ProjectAccordion from '@/components/projects/ProjectAccordion.vue';
 import ProjectLink from '@/components/projects/ProjectLink.vue';
 import ProjectModal from '@/components/projects/ProjectModal.vue';
 import ProjectOptions from '@/components/projects/ProjectOptions.vue';
+import TheSidebar from '@/components/sidebars/TheSidebar.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
-import BaseDivider from '@/components/ui/BaseDivider.vue';
 import { useNotification } from '@/composables/useNotification';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
