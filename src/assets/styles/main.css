@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 ::selection {
-  background-color: hsl(var(--af));
-  color: hsl(var(--ac));
+  background-color: hsl(var(--n));
+  color: hsl(var(--nc));
 }
 
 .full-h {
@@ -19,7 +19,7 @@
 /*  Vue Datapicker Themes */
 
 .dp__theme_light {
-  --dp-background-color: hsl(var(--b1));
+  --dp-background-color: hsl(var(--b3));
   --dp-text-color: hsl(var(--nc));
   --dp-hover-color: hsl(var(--af));
   --dp-hover-text-color: hsl(var(--nc));

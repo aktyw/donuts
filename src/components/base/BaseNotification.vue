@@ -9,10 +9,10 @@
       <div class="flex gap-0">
         <slot name="action" />
         <BaseButton
-          class="hover:bg-base-content [&>svg]:hover:!fill-base-200 rounded btn-sm"
+          class="btn-sm hover:bg-neutral [&>svg]:hover:!fill-base-300 rounded-md"
           @click="handleCloseAlert(notificationId)">
           <template #icon>
-            <IconClose class="mx-2 fill-base-content" />
+            <IconClose class="mx-2 fill-neutral-content" />
           </template>
         </BaseButton>
       </div>

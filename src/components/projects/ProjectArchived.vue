@@ -5,7 +5,7 @@
       <p>This project is archived</p>
     </div>
     <BaseButton
-      class="bg-accent hover:bg-accent-focus transition-colors duration-300 font-semibold text-sm py-1.5 px-2.5 rounded-lg text-base-100"
+      class="bg-accent hover:bg-accent-focus focus:bg-accent-focus transition-colors duration-300 font-semibold text-sm py-1.5 px-2.5 rounded-lg text-base-100"
       @click="handleUnarchiveProject">
       Unarchive project
     </BaseButton>

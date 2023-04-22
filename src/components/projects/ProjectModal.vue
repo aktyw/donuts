@@ -45,8 +45,8 @@
         <div class="flex justify-end gap-4 text-lg mt-8">
           <ModalButton @click.prevent="closeEditor"> Cancel </ModalButton>
           <ModalButton
-            class="!bg-accent !hover:bg-accent-focus !text-base-content"
-            :class="{ '!bg-base-300': !projectName.length }"
+            class="bg-primary !text-primary-content hover:bg-primary-focus"
+            :class="{ '!bg-base-300  ': !projectName.length }"
             :disabled="!projectName.length"
             @click.prevent="handleAction">
             {{ actionTitle }}
