@@ -1,7 +1,7 @@
 <template>
-  <BaseButton class="btn btn-md border-transparent bg-base-200 hover:bg-base-300 text-base-content normal-case text-lg">
-    <slot />
+  <BaseButton class="btn btn-sm btn-primary border-transparent">
     <slot name="icon" />
+    <slot />
   </BaseButton>
 </template>
 

@@ -22,9 +22,7 @@
         <TheTooltip
           class="!tooltip-top"
           data="Set due date">
-          <BaseButton
-            class="btn btn-xs btn-ghost rounded border border-base-300 hover:bg-base-200 font-normal"
-            @click.prevent="handleCalendar">
+          <ButtonBadgeMedium @click.prevent="handleCalendar">
             <template v-if="date">
               <TaskTimeDetail class="mx-1">
                 <template #time>
@@ -38,8 +36,9 @@
               #icon>
               <IconCalendar class="mr-1" />
             </template>
-          </BaseButton>
+          </ButtonBadgeMedium>
         </TheTooltip>
+
         <TheTooltip
           class="!tooltip-top flex"
           data="Clear date">
@@ -57,15 +56,15 @@
         <TheTooltip
           class="!tooltip-top flex"
           data="Set priority">
-          <BaseButton
-            class="btn btn-xs btn-ghost rounded border border-base-300 hover:bg-base-200 font-normal pl-0.5 ml-3"
-            :class="{ 'bg-base-300': taskIsPriority }"
+          <ButtonBadgeMedium
+            class="pl-0.5 ml-3"
+            :is-toggle="taskIsPriority"
             @click.prevent="togglePriority"
             ><template #icon>
               <IconImportantSmall />
             </template>
             Priority
-          </BaseButton>
+          </ButtonBadgeMedium>
         </TheTooltip>
       </div>
     </div>
@@ -97,25 +96,18 @@
       </div>
 
       <div>
-        <BaseButton
-          class="btn btn-sm border-transparent mr-2 bg-base-200 hover:bg-base-300 text-neutral-focus"
-          @click.prevent="closeEditor"
-          >Cancel</BaseButton
-        >
-
-        <BaseButton
+        <ButtonSecondaryAction @click.prevent="closeEditor">Cancel</ButtonSecondaryAction>
+        <ButtonMainAction
           v-if="!isEdit"
-          class="btn btn-sm bg-accent border-transparent hover:bg-accent-focus text-neutral-content"
           :disabled="!taskTitle || !selectedProject"
           @click.prevent="addTask"
-          >Add task</BaseButton
+          >Add task</ButtonMainAction
         >
-        <BaseButton
+        <ButtonMainAction
           v-if="isEdit"
-          class="btn btn-sm bg-accent border-transparent hover:bg-accent-focus text-neutral-content"
           :disabled="!taskTitle || !selectedProject"
           @click.prevent="handleUpdateTask"
-          >Save</BaseButton
+          >Save</ButtonMainAction
         >
       </div>
     </div>
@@ -148,6 +140,9 @@ import ProjectModal from '@/components/projects/ProjectModal.vue';
 import TaskTimeDetail from '@/components/tasks/card/TaskTimeDetail.vue';
 import TaskEditorInput from '@/components/tasks/editor/TaskEditorInput.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import ButtonBadgeMedium from '@/components/ui/buttons/ButtonBadgeMedium.vue';
+import ButtonMainAction from '@/components/ui/buttons/ButtonMainAction.vue';
+import ButtonSecondaryAction from '@/components/ui/buttons/ButtonSecondaryAction.vue';
 import { useNotification } from '@/composables/useNotification';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import { vFocus } from '@/directives/vAutoFocus';

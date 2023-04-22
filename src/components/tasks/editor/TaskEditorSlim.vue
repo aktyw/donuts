@@ -19,16 +19,11 @@
       </TaskEditorInput>
 
       <div class="flex justify-end pt-2">
-        <BaseButton
-          class="btn btn-sm border-transparent mr-2 bg-base-200 hover:bg-base-300 text-neutral-focus"
-          @click.prevent="closeEditor"
-          >Cancel</BaseButton
-        >
-        <BaseButton
-          class="btn btn-sm bg-accent border-transparent hover:bg-accent-focus text-neutral-content"
+        <ButtonSecondaryAction @click.prevent="closeEditor">Cancel</ButtonSecondaryAction>
+        <ButtonMainAction
           :disabled="!taskTitle"
           @click.prevent="handleUpdateTask"
-          >Save</BaseButton
+          >Save</ButtonMainAction
         >
       </div>
     </div>
@@ -38,8 +33,9 @@
 <script setup lang="ts">
 import { type Ref, ref } from 'vue';
 
-import BaseButton from '@/components/base/BaseButton.vue';
 import TaskEditorInput from '@/components/tasks/editor/TaskEditorInput.vue';
+import ButtonMainAction from '@/components/ui/buttons/ButtonMainAction.vue';
+import ButtonSecondaryAction from '@/components/ui/buttons/ButtonSecondaryAction.vue';
 import { vFocus } from '@/directives/vAutoFocus';
 import type { Task } from '@/types/models/Task';
 

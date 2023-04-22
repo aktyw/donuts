@@ -45,6 +45,8 @@
         <div class="flex justify-end gap-4 text-lg mt-8">
           <ModalButton @click.prevent="closeEditor"> Cancel </ModalButton>
           <ModalButton
+            class="!bg-accent !hover:bg-accent-focus !text-base-content"
+            :class="{ '!bg-base-300': !projectName.length }"
             :disabled="!projectName.length"
             @click.prevent="handleAction">
             {{ actionTitle }}
@@ -61,13 +63,13 @@ import { nanoid } from 'nanoid';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import IconColor from '@/components/icons/IconColor.vue';
-import IconDone from '@/components/icons/IconDone.vue';
-import ModalButton from '@/components/modals/ModalButton.vue';
 import BaseDivider from '@/components/base/BaseDivider.vue';
 import BaseDropdown from '@/components/base/BaseDropdown.vue';
 import BaseInput from '@/components/base/BaseInput.vue';
 import BaseToggle from '@/components/base/BaseToggle.vue';
+import IconColor from '@/components/icons/IconColor.vue';
+import IconDone from '@/components/icons/IconDone.vue';
+import ModalButton from '@/components/modals/ModalButton.vue';
 import { COLORS } from '@/types/models/Colors';
 import type { Project } from '@/types/models/Projects';
 
