@@ -1,7 +1,11 @@
 <template>
   <li>
     <BaseButton
-      class="btn-md md:btn-sm focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent">
+      class="btn-md md:btn-sm focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
+      :class="{
+        'hover:text-error hover:fill-error focus:text-error focus:fill-error fill-base-content [&>svg]:hover:fill-error':
+          isDanger,
+      }">
       <template #icon>
         <slot name="icon" />
       </template>
@@ -12,4 +16,9 @@
 
 <script setup lang="ts">
 import BaseButton from '@/components/base/BaseButton.vue';
+
+type Props = {
+  isDanger?: boolean;
+};
+defineProps<Props>();
 </script>

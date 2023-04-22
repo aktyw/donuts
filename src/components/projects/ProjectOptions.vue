@@ -55,7 +55,7 @@
 
       <OptionListButton
         v-if="!isFavorites && !isArchived"
-        class="hover:text-error hover:fill-error focus:text-error focus:fill-error fill-base-content"
+        :is-danger="true"
         @click="handleArchiveProject">
         <template #icon>
           <IconArchive />
@@ -74,7 +74,7 @@
 
       <OptionListButton
         v-if="!isFavorites"
-        class="hover:text-error hover:fill-error focus:text-error focus:fill-error fill-base-content"
+        :is-danger="true"
         @click="toggleDeleteModal">
         <template #icon>
           <IconRecycleBin />
@@ -84,28 +84,19 @@
     </ul>
 
     <Teleport to="body">
-      <ModalDeleteConfirm
+      <ModalConfirmDelete
         v-if="deleteConfirm"
-        :title="'Delete task'">
+        :is-danger="true"
+        @cancel="cancelDeleteProject"
+        @action="handleDeleteProject"
+        >Delete project
         <template #content>
           <p>
             Do you really want to delete project
             <span class="font-bold break-words">"{{ project.name }}"</span> ?
           </p>
         </template>
-        <template #action>
-          <button
-            class="btn bg-base-200 text-base-content hover:bg-base-300 border-0 btn-sm rounded-md capitalize font-semibold focus:outline focus:outline-1"
-            @click="cancelDeleteProject">
-            Cancel
-          </button>
-          <button
-            class="btn btn-sm rounded-md capitalize font-semibold"
-            @click="handleDeleteProject">
-            Delete
-          </button>
-        </template>
-      </ModalDeleteConfirm>
+      </ModalConfirmDelete>
     </Teleport>
   </div>
 </template>
@@ -125,7 +116,7 @@ import IconHorizontalDots from '@/components/icons/IconHorizontalDots.vue';
 import IconPen from '@/components/icons/IconPen.vue';
 import IconRecycleBin from '@/components/icons/IconRecycleBin.vue';
 import IconUnarchive from '@/components/icons/IconUnarchive.vue';
-import ModalDeleteConfirm from '@/components/modals/ModalDeleteConfirm.vue';
+import ModalConfirmDelete from '@/components/modals/ModalConfirmDelete.vue';
 import ProjectModal from '@/components/projects/ProjectModal.vue';
 import OptionListButton from '@/components/tasks/list/OptionListButton.vue';
 import { useNotification } from '@/composables/useNotification';

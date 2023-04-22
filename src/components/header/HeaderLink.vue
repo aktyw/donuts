@@ -19,11 +19,9 @@ import type { RouteLocationRaw } from 'vue-router';
 import { getBreakpoints } from '@/composables/useBreakpoints';
 
 const isMobile = computed(() => {
-  if (smAndSmaller) {
-    return 'bg-neutral text-neutral-content hover:text-neutral focus:bg-neutral';
-  }
-
-  return 'bg-base-300 text-base-content hover:text-base-300 focus:bg-base-300';
+  return smAndSmaller
+    ? 'bg-neutral text-neutral-content hover:text-neutral focus:bg-neutral'
+    : 'bg-base-300 text-base-content hover:text-base-300 focus:bg-base-300';
 });
 
 const { smAndSmaller } = getBreakpoints();

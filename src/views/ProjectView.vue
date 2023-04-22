@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { useRouteParams } from '@vueuse/router';
 import { storeToRefs } from 'pinia';
-import { computed, provide, ref } from 'vue';
+import { computed, provide, readonly, ref } from 'vue';
 
 import FiltersList from '@/components/filters/FiltersList.vue';
 import FiltersNavbar from '@/components/filters/FiltersNavbar.vue';
@@ -56,7 +56,7 @@ const store = useTasksStore();
 const projectsStore = useProjectsStore();
 const { getProjectTasks, getSortType: sortTypeStatus } = storeToRefs(store);
 const { getProjectById } = storeToRefs(projectsStore);
-const projectId = useRouteParams('id');
+const projectId = useRouteParams<string>('id');
 const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
 const projectTasks = computed(() => getProjectTasks.value(projectId.value as string));
 const currentProject = computed(() => getProjectById.value((projectId.value as string) ?? 'inbox'));
@@ -64,6 +64,7 @@ const tasks = useHandleTasks(projectTasks);
 const isEditorActive = ref(false);
 
 provide('isEditorActive', isEditorActive);
+provide('tasks', readonly(projectTasks));
 
 function showEditor(): void {
   isEditorActive.value = true;

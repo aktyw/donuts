@@ -11,26 +11,17 @@
         >
       </h2>
     </BaseHeading>
-    <TasksSettingsDropdown @delete-tasks="toggleDeleteModal"></TasksSettingsDropdown>
-    <ModalDeleteConfirm
+    <FiltersDropdown @delete-tasks="toggleDeleteModal"></FiltersDropdown>
+    <ModalConfirmDelete
       v-if="deleteConfirm"
-      :title="'Delete task'">
+      :is-danger="true"
+      @cancel="cancelDeleteTask"
+      @action="handleDeleteAllTasks">
+      Delete task
       <template #content>
         <p>Do you really want to delete all tasks ?</p>
       </template>
-      <template #action>
-        <button
-          class="btn bg-base-200 text-base-content hover:bg-base-300 border-0 btn-sm rounded-md capitalize font-semibold focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
-          @click="cancelDeleteTask">
-          Cancel
-        </button>
-        <button
-          class="btn btn-sm rounded-md capitalize font-semibold focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
-          @click="handleDeleteAllTasks">
-          Delete
-        </button>
-      </template>
-    </ModalDeleteConfirm>
+    </ModalConfirmDelete>
   </div>
 </template>
 
@@ -39,8 +30,8 @@ import { useDateFormat, useNow } from '@vueuse/core';
 import { ref } from 'vue';
 
 import BaseHeading from '@/components/base/BaseHeading.vue';
-import TasksSettingsDropdown from '@/components/filters/FiltersDropdown.vue';
-import ModalDeleteConfirm from '@/components/modals/ModalDeleteConfirm.vue';
+import FiltersDropdown from '@/components/filters/FiltersDropdown.vue';
+import ModalConfirmDelete from '@/components/modals/ModalConfirmDelete.vue';
 import { useNotification } from '@/composables/useNotification';
 import { useTasksStore } from '@/stores/TasksStore';
 import { NotificationMessage } from '@/types/models/NotificationMessage';

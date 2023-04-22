@@ -25,16 +25,15 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
-import { provide } from 'vue';
+import { computed, provide, readonly, ref } from 'vue';
 
 import FiltersList from '@/components/filters/FiltersList.vue';
 import FiltersNavbar from '@/components/filters/FiltersNavbar.vue';
 import FilterStatus from '@/components/filters/FilterStatus.vue';
-import TaskAddButton from '@/components/tasks/list/TaskAddButton.vue';
 import TaskEditor from '@/components/tasks/editor/TaskEditor.vue';
-import TasksEmptyMessage from '@/components/tasks/TasksEmptyMessage.vue';
+import TaskAddButton from '@/components/tasks/list/TaskAddButton.vue';
 import TasksList from '@/components/tasks/list/TasksList.vue';
+import TasksEmptyMessage from '@/components/tasks/TasksEmptyMessage.vue';
 import { useHandleTasks } from '@/composables/useHandleTasks';
 import { useTasksStore } from '@/stores/TasksStore';
 import { SortFilters } from '@/types/models/Sort';
@@ -47,6 +46,7 @@ const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
 const isEditorActive = ref(false);
 
 provide('isEditorActive', isEditorActive);
+provide('tasks', readonly(todayTasks));
 
 function showEditor(): void {
   isEditorActive.value = true;

@@ -76,28 +76,19 @@
       @add-subtask="handleAddSubtask" />
 
     <Teleport to="body">
-      <ModalDeleteConfirm
+      <ModalConfirmDelete
         v-if="deleteConfirm"
-        :title="'Delete task'">
+        :is-danger="true"
+        @cancel="cancelDeleteTask"
+        @action="handleDeleteTask(task.id)"
+        >Delete task
         <template #content>
           <p>
             Do you really want to delete
             <span class="font-bold break-words">"{{ task.title }}"</span> ?
           </p>
         </template>
-        <template #action>
-          <button
-            class="btn bg-base-200 text-base-content hover:bg-base-300 border-0 btn-sm rounded-md capitalize font-semibold focus:outline focus:outline-1"
-            @click="cancelDeleteTask">
-            Cancel
-          </button>
-          <button
-            class="btn btn-sm rounded-md capitalize font-semibold"
-            @click="handleDeleteTask(task.id)">
-            Delete
-          </button>
-        </template>
-      </ModalDeleteConfirm>
+      </ModalConfirmDelete>
     </Teleport>
     <Teleport to="body">
       <TaskModal
@@ -129,7 +120,7 @@ import { inject } from 'vue';
 
 import IconCalendar from '@/components/icons/IconCalendar.vue';
 import IconColor from '@/components/icons/IconColor.vue';
-import ModalDeleteConfirm from '@/components/modals/ModalDeleteConfirm.vue';
+import ModalConfirmDelete from '@/components/modals/ModalConfirmDelete.vue';
 import TaskCheckbox from '@/components/tasks/card/TaskCheckbox.vue';
 import TaskProjectDetail from '@/components/tasks/card/TaskProjectDetail.vue';
 import TaskTimeDetail from '@/components/tasks/card/TaskTimeDetail.vue';

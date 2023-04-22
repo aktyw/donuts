@@ -10,7 +10,7 @@ module.exports = {
       {
         sandstorm: {
           primary: '#44862d',
-          'primary-focus': '#7efe5d',
+          'primary-focus': '#44c427',
           'primary-content': '#ffffff',
 
           secondary: '#a86900',
@@ -23,77 +23,84 @@ module.exports = {
 
           neutral: '#767872',
           'neutral-focus': '#3a3c38',
-          'neutral-content': '#1a1c18',
+          'neutral-content': '#fafaf3',
 
           'base-100': '#f9fef0',
           'base-200': '#eef3e5',
-          'base-300': '#c3c8bb',
+          'base-300': '#dfe4d7',
           'base-content': '#181d15',
 
-          info: '#ffffff',
-          success: '#ffffff',
-          warning: '#ffffff',
-          error: '#ffffff',
+          info: '#386668',
+          'info-content': '#ffffff',
+
+          success: '#146e00',
+          'success-content': '#ffffff',
+
+          warning: '#c3a624',
+          'warning-content': '#ffffff',
+
+          error: '#ba1a1a',
+          'error-content': '#ffffff',
         },
       },
-      {
-        moss: {
-          primary: '#255102',
-          'primary-focus': '#173800',
-          'primary-content': '#f8ffeb',
+      // {
+      //   moss: {
+      //     primary: '#255102',
+      //     'primary-focus': '#173800',
+      //     'primary-content': '#f8ffeb',
 
-          secondary: '#3f4a35',
-          'secondary-focus': '#141e0c',
-          'secondary-content': '#f0fee0',
+      //     secondary: '#3f4a35',
+      //     'secondary-focus': '#141e0c',
+      //     'secondary-content': '#f0fee0',
 
-          accent: '#7c7b01',
-          'accent-focus': '#b2b03d',
-          'accent-content': '#fffcc4',
+      //     accent: '#7c7b01',
+      //     'accent-focus': '#b2b03d',
+      //     'accent-content': '#fffcc4',
 
-          neutral: '#565500',
-          'neutral-focus': '#333200',
-          'neutral-content': '#fffcc4',
+      //     neutral: '#565500',
+      //     'neutral-focus': '#333200',
+      //     'neutral-content': '#fffcc4',
 
-          'base-100': '#fafeef',
-          'base-200': '#e0e4d6',
-          'base-300': '#a8ada0',
-          'base-content': '#1a1c18',
+      //     'base-100': '#fafeef',
+      //     'base-200': '#e0e4d6',
+      //     'base-300': '#a8ada0',
+      //     'base-content': '#1a1c18',
 
-          info: '#0b2000',
-          success: '#315d0f',
-          warning: '#cdcc56',
-          error: '#93000a',
-        },
-      },
-      {
-        moss: {
-          primary: '#255102',
-          'primary-focus': '#173800',
-          'primary-content': '#f8ffeb',
+      //     info: '#0b2000',
+      //     success: '#315d0f',
+      //     warning: '#cdcc56',
+      //     error: '#93000a',
+      //   },
+      // },
+      // {
+      //   moss: {
+      //     primary: '#255102',
+      //     'primary-focus': '#173800',
+      //     'primary-content': '#f8ffeb',
 
-          secondary: '#3f4a35',
-          'secondary-focus': '#141e0c',
-          'secondary-content': '#f0fee0',
+      //     secondary: '#3f4a35',
+      //     'secondary-focus': '#141e0c',
+      //     'secondary-content': '#f0fee0',
 
-          accent: '#7c7b01',
-          'accent-focus': '#b2b03d',
-          'accent-content': '#fffcc4',
+      //     accent: '#7c7b01',
+      //     'accent-focus': '#b2b03d',
+      //     'accent-content': '#fffcc4',
 
-          neutral: '#565500',
-          'neutral-focus': '#333200',
-          'neutral-content': '#fffcc4',
+      //     neutral: '#565500',
+      //     'neutral-focus': '#333200',
+      //     'neutral-content': '#fffcc4',
 
-          'base-100': '#fafeef',
-          'base-200': '#e0e4d6',
-          'base-300': '#a8ada0',
-          'base-content': '#1a1c18',
+      //     'base-100': '#fafeef',
+      //     'base-200': '#e0e4d6',
+      //     'base-300': '#a8ada0',
+      //     'base-content': '#1a1c18',
 
-          info: '#0b2000',
-          success: '#315d0f',
-          warning: '#cdcc56',
-          error: '#93000a',
-        },
-      },
+      //     info: '#0b2000',
+      //     success: '#315d0f',
+      //     warning: '#cdcc56',
+      //     error: '#93000a',
+      //   },
+      // },
     ],
   },
 };
