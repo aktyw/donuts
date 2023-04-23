@@ -15,9 +15,7 @@
 <script setup lang="ts">
 import BaseButton from '@/components/base/BaseButton.vue';
 import IconArchive from '@/components/icons/IconArchive.vue';
-import { useNotification } from '@/composables/useNotification';
 import { useProjectsStore } from '@/stores/ProjectsStore';
-import { NotificationMessage } from '@/types/models/NotificationMessage';
 
 type Props = {
   id: string;
@@ -27,6 +25,5 @@ const projectsStore = useProjectsStore();
 
 function handleUnarchiveProject(): void {
   projectsStore.activateProject(props.id);
-  useNotification(NotificationMessage.ActivateProject);
 }
 </script>

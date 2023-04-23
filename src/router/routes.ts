@@ -1,6 +1,7 @@
 import NotesList from '@/components/notes/NotesList.vue';
 import NotesSidebar from '@/components/notes/NotesSidebar.vue';
 import TasksSidebar from '@/components/sidebars/TasksSidebar.vue';
+import TaskModal from '@/components/tasks/modal/TaskModal.vue';
 import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
 import NotesView from '@/views/NotesView.vue';
@@ -30,6 +31,14 @@ const routes = [
         path: 'project/:id',
         name: 'project',
         component: ProjectView,
+        children: [
+          {
+            path: 'task/:taskid',
+            name: 'task',
+            component: TaskModal,
+            props: true,
+          },
+        ],
       },
     ],
   },

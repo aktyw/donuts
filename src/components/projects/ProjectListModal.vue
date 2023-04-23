@@ -28,12 +28,10 @@ import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
+import BaseModal from '@/components/base/BaseModal.vue';
 import ModalButton from '@/components/modals/ModalButton.vue';
 import ProjectList from '@/components/projects/ProjectList.vue';
-import BaseModal from '@/components/base/BaseModal.vue';
-import { useNotification } from '@/composables/useNotification';
 import { useTasksStore } from '@/stores/TasksStore';
-import { NotificationMessage } from '@/types/models/NotificationMessage';
 import type { Project } from '@/types/models/Projects';
 import type { Task } from '@/types/models/Task';
 
@@ -56,7 +54,6 @@ const target = ref();
 
 function handleMoveTask(): void {
   store.moveTask(props.task.id, selectedProject.value!.id);
-  useNotification(NotificationMessage.TaskMove);
 
   closeEditor();
 

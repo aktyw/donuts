@@ -14,4 +14,5 @@ export enum NotificationMessage {
   DuplicateProject = 'Project duplicated successfully',
   ArchiveProject = 'Project archived',
   ActivateProject = 'Project activated',
+  TaskPriority = 'Task priority changed',
 }

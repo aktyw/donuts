@@ -2,10 +2,12 @@ import { useStorage } from '@vueuse/core';
 import { nanoid } from 'nanoid';
 import { defineStore, storeToRefs } from 'pinia';
 
+import { useNotification } from '@/composables/useNotification';
 import { findIndex } from '@/helpers/findIndex';
 import { findItem } from '@/helpers/findItem';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { HasId } from '@/types/models/HasId';
+import { NotificationMessage } from '@/types/models/NotificationMessage';
 import type { Project } from '@/types/models/Projects';
 
 type PartialProject = Omit<Project, 'active'>;
@@ -57,21 +59,29 @@ export const useProjectsStore = defineStore('projects', {
       };
 
       this.projects.push(project);
+
+      useNotification(NotificationMessage.AddProject);
     },
     deleteProject(id: string) {
       const project = findItem(id, this.projects);
 
       this.projects = this.projects.filter((p) => p !== project);
+
+      useNotification(NotificationMessage.DeleteProject);
     },
     archiveProject(id: string) {
       const projectIdx = findIndex(id, this.projects);
 
       this.projects[projectIdx]['active'] = false;
+
+      useNotification(NotificationMessage.ArchiveProject);
     },
     activateProject(id: string) {
       const projectIdx = findIndex(id, this.projects);
 
       this.projects[projectIdx]['active'] = true;
+
+      useNotification(NotificationMessage.ActivateProject);
     },
     updateProject(update: PartialProject) {
       const { id } = update;
@@ -85,6 +95,8 @@ export const useProjectsStore = defineStore('projects', {
       if (projectIndex !== -1) {
         this.projects[projectIndex] = { ...this.projects[projectIndex], ...update };
       }
+
+      useNotification(NotificationMessage.UpdateProject);
     },
     toggleFavoriteStatus(id: string) {
       const projectIdx = findIndex(id, this.projects);
@@ -110,6 +122,8 @@ export const useProjectsStore = defineStore('projects', {
       const tasks = getProjectTasks.value(id);
 
       tasks.forEach(({ id }) => taskStore.duplicateTask(id, copyProject.id));
+
+      useNotification(NotificationMessage.DuplicateProject);
     },
   },
 });

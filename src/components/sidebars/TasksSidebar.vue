@@ -128,10 +128,8 @@ import ProjectModal from '@/components/projects/ProjectModal.vue';
 import ProjectOptions from '@/components/projects/ProjectOptions.vue';
 import TheSidebar from '@/components/sidebars/TheSidebar.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
-import { useNotification } from '@/composables/useNotification';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
-import { NotificationMessage } from '@/types/models/NotificationMessage';
 import type { Project } from '@/types/models/Projects';
 
 const activeElement = useActiveElement();
@@ -168,7 +166,6 @@ function handleHideOptions(): void {
 
 function addProject(project: Project): void {
   projectsStore.addProject(project);
-  useNotification(NotificationMessage.AddProject);
   handleCloseEditor();
 }
 </script>

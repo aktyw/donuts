@@ -13,9 +13,9 @@
         :is-priority="task.isPriority"
         @toggle="toggleIsDone(task.id)" />
       <div class="flex flex-col w-full cursor-pointer">
-        <div
+        <router-link
           class="flex flex-col"
-          @click="handleOpenTaskModal">
+          :to="{ name: 'task', params: { taskid: task.id } }">
           <p
             class="break-all h-full flex"
             :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
@@ -26,7 +26,7 @@
             :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
             {{ task.description }}
           </p>
-        </div>
+        </router-link>
         <div class="flex justify-between pt-1">
           <TaskTimeDetail
             :class="markOverdue"
@@ -90,13 +90,6 @@
         </template>
       </ModalConfirmDelete>
     </Teleport>
-    <Teleport to="body">
-      <TaskModal
-        v-if="isTaskModalActive"
-        :task="task"
-        @toggle-is-done="toggleIsDone(task.id)"
-        @close-modal="isTaskModalActive = false" />
-    </Teleport>
   </li>
 
   <TaskEditor
@@ -117,6 +110,7 @@ import { useElementBounding } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { computed, type Ref, ref, watch } from 'vue';
 import { inject } from 'vue';
+import { useRouter } from 'vue-router';
 
 import IconCalendar from '@/components/icons/IconCalendar.vue';
 import IconColor from '@/components/icons/IconColor.vue';
@@ -125,13 +119,10 @@ import TaskCheckbox from '@/components/tasks/card/TaskCheckbox.vue';
 import TaskProjectDetail from '@/components/tasks/card/TaskProjectDetail.vue';
 import TaskTimeDetail from '@/components/tasks/card/TaskTimeDetail.vue';
 import TaskEditor from '@/components/tasks/editor/TaskEditor.vue';
-import TaskModal from '@/components/tasks/modal/TaskModal.vue';
 import TaskOptions from '@/components/tasks/TaskOptions.vue';
-import { useNotification } from '@/composables/useNotification';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
-import { NotificationMessage } from '@/types/models/NotificationMessage';
 import type { Task } from '@/types/models/Task';
 
 type Props = {
@@ -139,6 +130,7 @@ type Props = {
 };
 
 const props = defineProps<Props>();
+const router = useRouter();
 const store = useTasksStore();
 const storeProjects = useProjectsStore();
 const activeElement = useActiveElement();
@@ -156,7 +148,6 @@ const { x: cardX, y: cardY, bottom: cardBottom } = useElementBounding(card);
 const showBacklight = ref(false);
 const editTask = ref(false);
 const isEditorActive = inject('isEditorActive');
-const isTaskModalActive = ref(false);
 
 watch(activeElement, (el) => {
   el?.closest('.dropdown') ? (isOptionsOpen.value = true) : (isOptionsOpen.value = false);
@@ -186,8 +177,6 @@ function handleShowOptionsBtn() {
 
 function handleDeleteTask(id: string): void {
   store.deleteTask(id);
-
-  useNotification(NotificationMessage.TaskDelete, id);
 }
 
 function cancelDeleteTask(): void {
@@ -205,7 +194,6 @@ function toggleEditModal(): void {
 function toggleIsDone(id: string): void {
   isDone.value = !isDone.value;
   store.toggleIsDone(id);
-  isDone.value ? useNotification(NotificationMessage.Complete) : useNotification(NotificationMessage.NotComplete);
 }
 
 function toggleIsPriority(id: string): void {
@@ -215,26 +203,18 @@ function toggleIsPriority(id: string): void {
 
 function handleDuplicateTask(id: string): void {
   store.duplicateTask(id);
-  useNotification(NotificationMessage.Duplicate);
 }
 
 function handleUpdateDate(date: Date): void {
   store.updateDate(props.task.id, date);
-  useNotification(NotificationMessage.UpdateDate);
-}
-
-function handleOpenTaskModal(): void {
-  isTaskModalActive.value = true;
 }
 
 function handleAddSubtask(): void {
-  isTaskModalActive.value = true;
-  console.log('Should open add task automatic');
+  router.push({ name: 'task', params: { taskid: props.task.id }, hash: '#subtask' });
 }
 
 function handleUpdateTask(content: Partial<Task>): void {
   toggleEditModal();
   store.updateTask(props.task.id, content);
-  useNotification(NotificationMessage.UpdateTask);
 }
 </script>

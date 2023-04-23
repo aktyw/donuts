@@ -119,10 +119,8 @@ import IconUnarchive from '@/components/icons/IconUnarchive.vue';
 import ModalConfirmDelete from '@/components/modals/ModalConfirmDelete.vue';
 import ProjectModal from '@/components/projects/ProjectModal.vue';
 import OptionListButton from '@/components/tasks/list/OptionListButton.vue';
-import { useNotification } from '@/composables/useNotification';
 import blurElement from '@/helpers/blur';
 import { useProjectsStore } from '@/stores/ProjectsStore';
-import { NotificationMessage } from '@/types/models/NotificationMessage';
 import type { Project } from '@/types/models/Projects';
 
 type Props = {
@@ -163,7 +161,6 @@ function handleAddToFav(): void {
 
 function handleDuplicateProject(): void {
   projectsStore.duplicateProject(props.id);
-  useNotification(NotificationMessage.DuplicateProject);
   blurElement();
 }
 
@@ -173,7 +170,6 @@ function handleDeleteProject(): void {
       router.replace({ name: 'tasks' });
     }
     projectsStore.deleteProject(props.id);
-    useNotification(NotificationMessage.DeleteProject);
   } catch (error) {
     console.log(error);
   }
@@ -193,7 +189,6 @@ function handleArchiveProject(): void {
       router.replace({ name: 'tasks' });
     }
     projectsStore.archiveProject(props.id);
-    useNotification(NotificationMessage.ArchiveProject);
   } catch (error) {
     console.log(error);
   }
@@ -201,12 +196,10 @@ function handleArchiveProject(): void {
 
 function handleUnarchiveProject(): void {
   projectsStore.activateProject(props.id);
-  useNotification(NotificationMessage.ActivateProject);
 }
 
 function updateProject(project: Project): void {
   projectsStore.updateProject(project);
-  useNotification(NotificationMessage.UpdateProject);
   handleCloseEditor();
 }
 </script>

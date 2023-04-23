@@ -143,12 +143,10 @@ import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 import ButtonBadgeMedium from '@/components/ui/buttons/ButtonBadgeMedium.vue';
 import ButtonMainAction from '@/components/ui/buttons/ButtonMainAction.vue';
 import ButtonSecondaryAction from '@/components/ui/buttons/ButtonSecondaryAction.vue';
-import { useNotification } from '@/composables/useNotification';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import { vFocus } from '@/directives/vAutoFocus';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
-import { NotificationMessage } from '@/types/models/NotificationMessage';
 import type { Project } from '@/types/models/Projects';
 import type { Task } from '@/types/models/Task';
 
@@ -212,7 +210,6 @@ function addTask(): void {
   taskTitleInput.value?.focus();
   clearDate();
 
-  useNotification(NotificationMessage.TaskAdd);
   emit('addTask');
 }
 
@@ -254,7 +251,6 @@ function closeEditor(): void {
 
 function addProject(project: Project): void {
   projectsStore.addProject(project);
-  useNotification(NotificationMessage.AddProject);
   handleCloseEditor();
 }
 </script>

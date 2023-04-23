@@ -22,6 +22,14 @@
     </div>
 
     <TasksEmptyMessage v-if="!store.tasks.default.length"> No tasks. Time for chillout... </TasksEmptyMessage>
+    <Teleport to="body">
+      <!-- <TaskModal
+        v-if="isTaskModalActive"
+        :task="task"
+        @toggle-is-done="toggleIsDone(task.id)"
+        @close-modal="isTaskModalActive = false" /> -->
+      <router-view></router-view>
+    </Teleport>
   </main>
 
   <main

@@ -31,10 +31,8 @@ import { useRoute } from 'vue-router';
 import ProjectModal from '@/components/projects/ProjectModal.vue';
 import ProjectsNavbar from '@/components/projects/ProjectsNavbar.vue';
 import ProjectsRecords from '@/components/projects/ProjectsRecords.vue';
-import { useNotification } from '@/composables/useNotification';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useSettingsStore } from '@/stores/SettingsStore';
-import { NotificationMessage } from '@/types/models/NotificationMessage';
 import type { Project } from '@/types/models/Projects';
 
 const route = useRoute();
@@ -66,7 +64,6 @@ function handleCloseEditor(): void {
 
 function addProject(project: Project): void {
   projectsStore.addProject(project);
-  useNotification(NotificationMessage.AddProject);
   handleCloseEditor();
 }
 </script>

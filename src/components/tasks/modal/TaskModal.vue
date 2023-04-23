@@ -42,7 +42,7 @@
               class="pt-3 mx-0.5 checkbox-xs"
               :is-done="task.done"
               :is-priority="task.isPriority"
-              @toggle="toggleIsDone" />
+              @click="toggleIsDone" />
             <TaskEditorSlim
               v-if="isTaskEditorActive"
               class="ml-1"
@@ -58,14 +58,17 @@
               <span>{{ task.description }}</span>
             </div>
           </div>
-          <div>
+          <div class="ml-8 relative">
+            <span
+              class="before:absolute before:top-0 before:left-0 before:w-2 before:h-10 before:bg-black before:content-none before:block"
+              >span</span
+            >
             <TaskEditor
               v-if="isSubtaskEdtiorActive"
               :sub-task="true"
               @close-editor="isSubtaskEdtiorActive = false" />
             <SubtaskAddButton
               v-else
-              class="ml-6"
               @click="openSubtaskEditor" />
           </div>
         </main>
@@ -102,8 +105,8 @@
 import Datepicker from '@vuepic/vue-datepicker';
 import { onClickOutside } from '@vueuse/core';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
-import { storeToRefs } from 'pinia';
-import { computed, type Ref, ref } from 'vue';
+import { computed, onMounted, onUpdated, type Ref, ref, toRefs } from 'vue';
+import { useRoute } from 'vue-router';
 
 import IconChevronDown from '@/components/icons/IconChevronDown.vue';
 import IconClose from '@/components/icons/IconClose.vue';
@@ -116,33 +119,39 @@ import TaskEditorSlim from '@/components/tasks/editor/TaskEditorSlim.vue';
 import SubtaskAddButton from '@/components/tasks/modal/SubtaskAddButton.vue';
 import TaskModalAction from '@/components/tasks/modal/TaskModalAction.vue';
 import TaskModalOption from '@/components/tasks/modal/TaskModalOption.vue';
-import { useNotification } from '@/composables/useNotification';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
-import { NotificationMessage } from '@/types/models/NotificationMessage';
 import type { Task } from '@/types/models/Task';
 
-type Props = {
-  task: Task;
-};
-const props = defineProps<Props>();
+const route = useRoute();
 
 const emit = defineEmits<{
   (event: 'update:modelValue', payload: string): void;
   (event: 'closeModal'): void;
-  (event: 'toggleIsDone'): void;
 }>();
+
 const storeProjects = useProjectsStore();
 const store = useTasksStore();
-const target = ref();
-const isTaskEditorActive = ref(false);
-const isSubtaskEdtiorActive = ref(false);
-const { getProjectById } = storeToRefs(storeProjects);
-const currentProject = getProjectById.value(props.task.projectId);
-const currentDate = computed(() => store.getTaskDate(props.task.id));
+
+const projectId = route.params.id as string;
+const taskId = route.params.taskid as string;
+const task = computed(() => store.getTaskById(taskId));
+const currentProject = computed(() => storeProjects.getProjectById(projectId));
+const currentDate = computed(() => store.getTaskDate(taskId));
 const date: Ref<Date | undefined> = ref(currentDate.value);
 const datepicker = ref();
 const startTime = ref({ hours: 12, minutes: 0 });
+const target = ref();
+const isTaskEditorActive = ref(false);
+const isSubtaskEdtiorActive = ref(false);
+
+onMounted(() => {
+  isSubtaskEdtiorActive.value = !!(route.hash === '#subtask');
+});
+
+onUpdated(() => {
+  console.log(task.value);
+});
 
 function openTaskEditor(): void {
   isTaskEditorActive.value = true;
@@ -155,13 +164,12 @@ function openSubtaskEditor(): void {
 }
 
 function handleUpdateTask(content: Partial<Task>): void {
-  store.updateTask(props.task.id, content);
+  store.updateTask(taskId, content);
   closeEditors();
-  useNotification(NotificationMessage.UpdateTask);
 }
 
 function toggleIsDone(): void {
-  emit('toggleIsDone');
+  store.toggleIsDone(taskId);
 }
 
 function closeEditors(): void {

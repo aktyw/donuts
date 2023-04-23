@@ -2,6 +2,7 @@ import { useStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { v4 as uuid } from 'uuid';
 
+import { useNotification } from '@/composables/useNotification';
 import { isToday } from '@/helpers/checkTime';
 import { findIndex } from '@/helpers/findIndex';
 import { findItem } from '@/helpers/findItem';
@@ -138,6 +139,7 @@ export const useTasksStore = defineStore('tasks', {
       };
 
       this.tasks.default.push(newTask);
+      useNotification(NotificationMessage.TaskAdd);
     },
     addSubtask(originId: string, task: Partial<Task>) {
       console.log(originId);
@@ -194,27 +196,39 @@ export const useTasksStore = defineStore('tasks', {
       const index = findIndex(id, this.tasks.default);
 
       this.tasks.default[index]['done'] = !this.tasks.default[index]['done'];
+
+      this.tasks.default[index]['done']
+        ? useNotification(NotificationMessage.Complete)
+        : useNotification(NotificationMessage.NotComplete);
     },
     toggleIsPriority(id: string) {
       const index = findIndex(id, this.tasks.default);
 
       this.tasks.default[index]['isPriority'] = !this.tasks.default[index]['isPriority'];
+
+      useNotification(NotificationMessage.TaskPriority);
     },
     updateTask(id: string, content: Partial<Task>): void {
       const task = findItem(id, this.tasks.default);
       const index = findIndex(id, this.tasks.default);
 
       this.tasks.default[index] = { ...task, ...content };
+
+      useNotification(NotificationMessage.UpdateTask);
     },
     updateDate(id: string, date: Date): void {
       const task = findItem(id, this.tasks.default);
 
       task.date = date;
+
+      useNotification(NotificationMessage.UpdateDate);
     },
     moveTask(id: string, projectId: string) {
       const task = findItem(id, this.tasks.default);
 
       task.projectId = projectId;
+
+      useNotification(NotificationMessage.TaskMove);
     },
     duplicateTask(id: string, projectId?: string): void {
       const task = findItem(id, this.tasks.default);
@@ -234,6 +248,8 @@ export const useTasksStore = defineStore('tasks', {
       const tasksArrEnd = this.tasks.default.slice(taskIndex + 1);
 
       this.tasks.default = [...tasksArrStart, copyTask, ...tasksArrEnd];
+
+      useNotification(NotificationMessage.Duplicate);
     },
     deleteTask(id: string): void {
       const taskToDel = findItem(id, this.tasks.default);
@@ -246,6 +262,8 @@ export const useTasksStore = defineStore('tasks', {
 
       this.tasks.default.push(taskToRecover);
       this.tasks.deleted = this.tasks.deleted.filter((task) => task !== taskToRecover);
+
+      useNotification(NotificationMessage.TaskDelete, id);
     },
     deleteAllTasks(): void {
       const delTasks = [...this.tasks.default];
@@ -253,6 +271,8 @@ export const useTasksStore = defineStore('tasks', {
       this.tasks.deleted.push(...delTasks);
       this.tasks.default = [];
       this.tasks.temp.push(...delTasks);
+
+      useNotification(NotificationMessage.AllTasksDelete);
     },
     undoDeleteAllTasks(): void {
       this.tasks.default = [...this.tasks.default, ...this.tasks.temp];

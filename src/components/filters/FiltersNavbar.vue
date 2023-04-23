@@ -32,9 +32,7 @@ import { ref } from 'vue';
 import BaseHeading from '@/components/base/BaseHeading.vue';
 import FiltersDropdown from '@/components/filters/FiltersDropdown.vue';
 import ModalConfirmDelete from '@/components/modals/ModalConfirmDelete.vue';
-import { useNotification } from '@/composables/useNotification';
 import { useTasksStore } from '@/stores/TasksStore';
-import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { TASK_VIEW_TITLE } from '@/types/models/Titles';
 
 const store = useTasksStore();
@@ -59,6 +57,5 @@ function cancelDeleteTask(): void {
 function handleDeleteAllTasks(): void {
   store.deleteAllTasks();
   toggleDeleteModal();
-  useNotification(NotificationMessage.AllTasksDelete);
 }
 </script>
