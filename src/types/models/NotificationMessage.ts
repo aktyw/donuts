@@ -4,7 +4,7 @@ export enum NotificationMessage {
   TaskAdd = 'Task added successfully',
   TaskMove = 'Task moved',
   Complete = 'Task completed',
-  NotComplete = 'Task not completed',
+  NotComplete = 'Task activated',
   UpdateDate = 'Date updated successfully',
   UpdateTask = 'Task updated successfully',
   UpdateProject = 'Project updated successfully',

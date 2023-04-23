@@ -10,12 +10,11 @@
         <div>
           <ProjectLink
             class="hover:!bg-base-100 hover:underline"
-            :to="{ name: 'project', params: { id: currentProject?.id } }"
-            :name="currentProject?.name"
+            :to="{ name: 'project', params: { id: selectedProject?.id } }"
+            :name="selectedProject?.name"
             :custom-tooltip="true"
-            :fill="currentProject?.color"
-            @click="closeModal">
-            <span class="items-center">{{ currentProject?.name }}</span>
+            :fill="selectedProject?.color">
+            <span class="items-center">{{ selectedProject?.name }}</span>
           </ProjectLink>
         </div>
         <nav class="flex gap-2 items-center">
@@ -42,7 +41,7 @@
               class="pt-3 mx-0.5 checkbox-xs"
               :is-done="task.done"
               :is-priority="task.isPriority"
-              @click="toggleIsDone" />
+              @toggle="toggleIsDone" />
             <TaskEditorSlim
               v-if="isTaskEditorActive"
               class="ml-1"
@@ -77,8 +76,9 @@
           <div class="flex flex-col">
             <TaskModalOption title="Project">
               <ProjectList
+                v-model="selectedProject"
                 class="select-sm px-2 bg-base-200 hover:bg-base-100 transition duration-300 border-none w-full max-w-[16rem]"
-                :current-project="currentProject" />
+                :current-project="selectedProject" />
             </TaskModalOption>
             <TaskModalOption title="Due date">
               <Datepicker
@@ -93,6 +93,7 @@
             <div>
               <h3>Labels +btn</h3>
               <p>List labels badges</p>
+              <p>{{ selectedProject }}</p>
             </div>
           </div>
         </aside>
@@ -105,8 +106,8 @@
 import Datepicker from '@vuepic/vue-datepicker';
 import { onClickOutside } from '@vueuse/core';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
-import { computed, onMounted, onUpdated, type Ref, ref, toRefs } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed, onMounted, onUpdated, type Ref, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 import IconChevronDown from '@/components/icons/IconChevronDown.vue';
 import IconClose from '@/components/icons/IconClose.vue';
@@ -124,10 +125,10 @@ import { useTasksStore } from '@/stores/TasksStore';
 import type { Task } from '@/types/models/Task';
 
 const route = useRoute();
+const router = useRouter();
 
-const emit = defineEmits<{
+defineEmits<{
   (event: 'update:modelValue', payload: string): void;
-  (event: 'closeModal'): void;
 }>();
 
 const storeProjects = useProjectsStore();
@@ -137,6 +138,7 @@ const projectId = route.params.id as string;
 const taskId = route.params.taskid as string;
 const task = computed(() => store.getTaskById(taskId));
 const currentProject = computed(() => storeProjects.getProjectById(projectId));
+const selectedProject = ref(currentProject.value);
 const currentDate = computed(() => store.getTaskDate(taskId));
 const date: Ref<Date | undefined> = ref(currentDate.value);
 const datepicker = ref();
@@ -150,7 +152,12 @@ onMounted(() => {
 });
 
 onUpdated(() => {
-  console.log(task.value);
+  // console.log(selectedProject.value);
+});
+
+watch(selectedProject, (project) => {
+  if (!project) return;
+  handleMoveTask(project!.id);
 });
 
 function openTaskEditor(): void {
@@ -177,11 +184,15 @@ function closeEditors(): void {
   isSubtaskEdtiorActive.value = false;
 }
 
-function closeModal(): void {
-  emit('closeModal');
+function handleMoveTask(projectId: string): void {
+  store.moveTask(taskId, projectId);
 }
 
-onClickOutside(target, () => closeModal());
+function closeModal(): void {
+  router.push({ name: 'project', params: { id: projectId } });
+}
+
+onClickOutside(target, () => router.push({ name: 'project', params: { id: route.params.id } }));
 
 useFocusTrap(target, {
   immediate: true,
