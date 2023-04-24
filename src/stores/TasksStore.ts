@@ -256,14 +256,13 @@ export const useTasksStore = defineStore('tasks', {
 
       this.tasks.deleted.push(taskToDel);
       this.tasks.default = this.tasks.default.filter((task) => task !== taskToDel);
+      useNotification(NotificationMessage.TaskDelete, id);
     },
     undoDeleteTask(id: string): void {
       const taskToRecover = findItem(id, this.tasks.deleted);
 
       this.tasks.default.push(taskToRecover);
       this.tasks.deleted = this.tasks.deleted.filter((task) => task !== taskToRecover);
-
-      useNotification(NotificationMessage.TaskDelete, id);
     },
     deleteAllTasks(): void {
       const delTasks = [...this.tasks.default];
