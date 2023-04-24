@@ -14,7 +14,7 @@
       ref="dropList"
       role="menu"
       tabindex="0"
-      class="dropdown-content menu py-0.5 shadow rounded-md w-52 bg-base-100 border border-base-300 text-base-content fill-base-content [& svg:not(.active-state)]:fill-base-content [&>li:hover>button:not(.active-state)]:bg-base-200 [& button:active]:text-base-content [&>button:active]:bg-base-200">
+      class="dropdown-content menu py-0.5 shadow rounded-md w-60 bg-base-100 border border-base-300 text-base-content fill-base-content [& svg:not(.active-state)]:fill-base-content [&>li:hover>button:not(.active-state)]:bg-base-200 [& button:active]:text-base-content [&>button:active]:bg-base-200">
       <OptionListButton @click="handleEditTask(taskId)">
         <template #icon>
           <IconPen />
@@ -51,6 +51,13 @@
           <IconDuplicate />
         </template>
         Duplicate Task
+      </OptionListButton>
+
+      <OptionListButton @click="handleCopyLinkTask(taskId)">
+        <template #icon>
+          <IconLink />
+        </template>
+        Copy link to task
       </OptionListButton>
 
       <BaseDividerSmall />
@@ -117,8 +124,10 @@
 <script setup lang="ts">
 import Datepicker from '@vuepic/vue-datepicker';
 import { useElementBounding, useWindowSize } from '@vueuse/core';
+import { useClipboard } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { computed, onMounted, type Ref, ref, toRefs } from 'vue';
+import { useRoute } from 'vue-router';
 
 import BaseDividerSmall from '@/components/base/BaseDividerSmall.vue';
 import IconAddSubtask from '@/components/icons/IconAddSubtask.vue';
@@ -127,16 +136,19 @@ import IconClock from '@/components/icons/IconClock.vue';
 import IconDone from '@/components/icons/IconDone.vue';
 import IconDuplicate from '@/components/icons/IconDuplicate.vue';
 import IconImportant from '@/components/icons/IconImportant.vue';
+import IconLink from '@/components/icons/IconLink.vue';
 import IconMove from '@/components/icons/IconMove.vue';
 import IconPen from '@/components/icons/IconPen.vue';
 import IconRecycleBin from '@/components/icons/IconRecycleBin.vue';
 import IconVerticalDots from '@/components/icons/IconVerticalDots.vue';
 import ProjectListModal from '@/components/projects/ProjectListModal.vue';
 import OptionListButton from '@/components/tasks/list/OptionListButton.vue';
+import { useNotification } from '@/composables/useNotification';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import blurElement from '@/helpers/blur';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
+import { NotificationMessage } from '@/types/models/NotificationMessage';
 import type { Task } from '@/types/models/Task';
 
 type Props = {
@@ -164,6 +176,7 @@ const emit = defineEmits<{
 
 const store = useTasksStore();
 const storeProjects = useProjectsStore();
+const route = useRoute();
 const { task, taskId } = toRefs(props);
 const { getProjectById } = storeToRefs(storeProjects);
 const currentProject = getProjectById.value(props.task.projectId);
@@ -192,6 +205,15 @@ const isRoomForDropdown = computed(
   () => dropBottom.value - windowHeight.value + SAFE_BOTTOM_MARGIN <= -listHeight.value
 );
 
+const source = ref(route.fullPath);
+const { copy } = useClipboard({ source });
+
+function handleCopyLinkTask(): void {
+  console.log(props.task.id);
+  copy(`${source.value}/task/${props.task.id}`);
+  useNotification(NotificationMessage.CopyLink);
+}
+
 function setCustomPosition() {
   return {
     top: props.coords.cardBottom + -bodyY.value,
@@ -218,14 +240,6 @@ function handleDeleteTask(taskId: string): void {
   emit('deleteTask', taskId);
 }
 
-function openProjectList(): void {
-  isProjectListActive.value = true;
-}
-
-function closeProjectList(): void {
-  isProjectListActive.value = false;
-}
-
 function handleDuplicateTask(taskId: string): void {
   blurElement();
   emit('duplicateTask', taskId);
@@ -245,5 +259,13 @@ function handleAddSubtask(taskId: string): void {
 
 function handleEditTask(taskId: string): void {
   emit('editTask', taskId);
+}
+
+function openProjectList(): void {
+  isProjectListActive.value = true;
+}
+
+function closeProjectList(): void {
+  isProjectListActive.value = false;
 }
 </script>

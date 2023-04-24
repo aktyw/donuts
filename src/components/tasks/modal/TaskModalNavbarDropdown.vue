@@ -18,7 +18,7 @@
       role="menu"
       tabindex="0"
       class="dropdown-content menu py-1 shadow rounded-md w-56 bg-base-100 border border-base-300 text-base-content fill-base-content [& svg:not(.active-state)]:fill-base-content [&>li:hover>button:not(.active-state)]:bg-base-200 [& button:active]:text-base-content [&>button:active]:bg-base-200">
-      <OptionListInfo> Added on 23 Apr · 20:09 </OptionListInfo>
+      <OptionListInfo> Added on {{ formattedCreatedAt }} </OptionListInfo>
 
       <BaseDividerSmall />
 
@@ -65,7 +65,9 @@
 </template>
 
 <script setup lang="ts">
+import { useClipboard, useDateFormat } from '@vueuse/core';
 import { type Ref, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 import BaseButton from '@/components/base/BaseButton.vue';
 import BaseDividerSmall from '@/components/base/BaseDividerSmall.vue';
@@ -78,8 +80,11 @@ import IconRecycleBin from '@/components/icons/IconRecycleBin.vue';
 import OptionListButton from '@/components/tasks/list/OptionListButton.vue';
 import OptionListInfo from '@/components/tasks/list/OptionListInfo.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import { useNotification } from '@/composables/useNotification';
+import blurElement from '@/helpers/blur';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
+import { NotificationMessage } from '@/types/models/NotificationMessage';
 import type { Task } from '@/types/models/Task';
 
 type Props = {
@@ -87,24 +92,29 @@ type Props = {
 };
 
 const props = defineProps<Props>();
-
+const store = useTasksStore();
 const emit = defineEmits<{
-  (e: 'copyLinkTask', id: string): void;
-  (e: 'duplicateTask', id: string): void;
   (e: 'viewActivityTask', id: string): void;
   (e: 'printTask', id: string): void;
   (e: 'deleteTask', id: string): void;
 }>();
+const route = useRoute();
 
+const formattedCreatedAt = useDateFormat(props.task.createdAt, 'DD MMM · HH:mm', { locales: 'en-US' });
 const dropdown: Ref<HTMLElement | undefined> = ref();
 const dropList: Ref<HTMLElement | undefined> = ref();
 
+const source = ref(route.fullPath);
+const { copy } = useClipboard({ source });
+
 function handleCopyLinkTask(): void {
-  emit('copyLinkTask', props.task.id);
+  copy(source.value);
+  useNotification(NotificationMessage.CopyLink);
 }
 
 function handleDuplicateTask(): void {
-  emit('duplicateTask', props.task.id);
+  store.duplicateTask(props.task.id);
+  blurElement();
 }
 
 function handleViewActivityTask(): void {
@@ -112,6 +122,7 @@ function handleViewActivityTask(): void {
 }
 
 function handlePrintTask(): void {
+  blurElement();
   emit('printTask', props.task.id);
 }
 

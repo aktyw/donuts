@@ -1,12 +1,12 @@
 <template>
   <div
-    class="modal modal-bottom sm:modal-middle modal-open"
+    class="modal sm:modal-middle modal-open"
     role="dialog">
     <div
       id="task-modal"
       ref="target"
-      class="!rounded-xl modal-box !max-h-screen overflow-visible p-0 md:min-w-[720px] min-h-[600px]">
-      <div class="flex justify-between items-center border-b px-4 h-14">
+      class="fixed flex flex-col modal-box top-12 !rounded-xl !max-h-screen overflow-visible p-0 md:min-w-[720px] min-h-[460px] h-[calc(100vh_-_6rem)]">
+      <div class="flex justify-between items-center border-b px-4 py-2">
         <div>
           <ProjectLink
             class="hover:!bg-base-100 hover:underline"
@@ -30,7 +30,8 @@
           </TaskModalAction>
           <TaskModalNavbarDropdown
             :task="task"
-            @delete-task="toggleDeleteModal" />
+            @delete-task="toggleDeleteModal"
+            @print-task="handlePrintTask" />
           <TaskModalAction
             tooltip-data="Close modal"
             @click.prevent="closeModal">
@@ -54,8 +55,8 @@
           </Teleport>
         </nav>
       </div>
-      <section class="flex">
-        <main class="flex flex-col gap-4 w-full p-4">
+      <section class="flex h-full">
+        <main class="flex flex-col gap-4 w-full h-full p-4">
           <div class="flex">
             <TaskCheckbox
               class="pt-3 mx-0.5 checkbox-xs"
@@ -69,14 +70,15 @@
               :description="task.description"
               @update-task="handleUpdateTask"
               @close-editor="isTaskEditorActive = false" />
-            <div
+            <TaskShowSlim
               v-else
-              class="flex flex-col rounded-md p-2 cursor-pointer gap-2 w-full ml-1"
               :class="{ 'line-through': task.done }"
               @click="openTaskEditor">
-              <span class="font-bold">{{ task.title }}</span>
-              <span>{{ task.description }}</span>
-            </div>
+              {{ task.title }}
+              <template #desc>
+                {{ task.description }}
+              </template>
+            </TaskShowSlim>
           </div>
           <div class="ml-8 relative">
             <span
@@ -93,7 +95,7 @@
           </div>
         </main>
 
-        <aside class="bg-base-200 rounded-br-xl w-96 p-4 min-h-[660px]">
+        <aside class="bg-base-200 rounded-br-xl w-96 p-4">
           <div class="flex flex-col">
             <TaskModalOption title="Project">
               <ProjectList
@@ -113,7 +115,7 @@
             </TaskModalOption>
             <TaskModalOption title="Priority">
               <TheTooltip
-                class="!tooltip-top flex"
+                class="!tooltip-top"
                 data="Set priority">
                 <ButtonBadgeMedium
                   :class="{ '!bg-base-100': task.isPriority }"
@@ -159,6 +161,8 @@ import SubtaskAddButton from '@/components/tasks/modal/SubtaskAddButton.vue';
 import TaskModalAction from '@/components/tasks/modal/TaskModalAction.vue';
 import TaskModalNavbarDropdown from '@/components/tasks/modal/TaskModalNavbarDropdown.vue';
 import TaskModalOption from '@/components/tasks/modal/TaskModalOption.vue';
+import TaskShowSlim from '@/components/tasks/modal/TaskShowSlim.vue';
+import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 import ButtonBadgeMedium from '@/components/ui/buttons/ButtonBadgeMedium.vue';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
@@ -253,6 +257,10 @@ function toggleIsDone(): void {
 
 function togglePriority(): void {
   store.toggleIsPriority(task.value.id);
+}
+
+function handlePrintTask(): void {
+  print();
 }
 
 function handleDeleteTask(): void {
