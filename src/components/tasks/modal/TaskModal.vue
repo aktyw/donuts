@@ -82,7 +82,7 @@
             <TaskModalOption title="Project">
               <ProjectList
                 v-model="selectedProject"
-                class="select-sm px-2 bg-base-200 hover:bg-base-100 transition duration-300 border-none w-full max-w-[16rem]"
+                class="select-sm px-2 bg-base-100 hover:bg-base-100 transition duration-300 border-none w-full max-w-[16rem]"
                 :current-project="taskProject"
                 @change="handleMoveTask" />
             </TaskModalOption>
@@ -95,7 +95,22 @@
                 :start-time="startTime"
                 @update:model-value="handleUpdateDate" />
             </TaskModalOption>
-            <TaskModalOption title="Priority"> </TaskModalOption>
+            <TaskModalOption title="Priority">
+              <TheTooltip
+                class="!tooltip-top flex"
+                data="Set priority">
+                <ButtonBadgeMedium
+                  :class="{ '!bg-base-100': task.isPriority }"
+                  class="hover:!bg-base-100"
+                  :is-toggle="task.isPriority"
+                  @click.prevent="togglePriority"
+                  ><template #icon>
+                    <IconImportantSmall class="-ml-1.5" />
+                  </template>
+                  Is priority
+                </ButtonBadgeMedium>
+              </TheTooltip>
+            </TaskModalOption>
 
             <div>
               <h3>Labels +btn</h3>
@@ -118,6 +133,7 @@ import { useRoute, useRouter } from 'vue-router';
 import IconChevronDown from '@/components/icons/IconChevronDown.vue';
 import IconClose from '@/components/icons/IconClose.vue';
 import IconHorizontalDots from '@/components/icons/IconHorizontalDots.vue';
+import IconImportantSmall from '@/components/icons/IconImportantSmall.vue';
 import ProjectLink from '@/components/projects/ProjectLink.vue';
 import ProjectList from '@/components/projects/ProjectList.vue';
 import TaskCheckbox from '@/components/tasks/card/TaskCheckbox.vue';
@@ -126,6 +142,7 @@ import TaskEditorSlim from '@/components/tasks/editor/TaskEditorSlim.vue';
 import SubtaskAddButton from '@/components/tasks/modal/SubtaskAddButton.vue';
 import TaskModalAction from '@/components/tasks/modal/TaskModalAction.vue';
 import TaskModalOption from '@/components/tasks/modal/TaskModalOption.vue';
+import ButtonBadgeMedium from '@/components/ui/buttons/ButtonBadgeMedium.vue';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { Task } from '@/types/models/Task';
@@ -229,6 +246,10 @@ function handleMoveTask(): void {
   if (selectedProject.value) {
     store.moveTask(task.value.id, selectedProject.value.id);
   }
+}
+
+function togglePriority(): void {
+  store.toggleIsPriority(task.value.id);
 }
 
 function closeModal(): void {
