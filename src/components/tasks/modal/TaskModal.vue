@@ -1,10 +1,10 @@
 <template>
   <div
-    ref="target"
     class="modal modal-bottom sm:modal-middle modal-open"
     role="dialog">
     <div
       id="task-modal"
+      ref="target"
       class="!rounded-xl modal-box !max-h-screen overflow-visible p-0 md:min-w-[720px] min-h-[600px]">
       <div class="flex justify-between items-center border-b px-4 h-14">
         <div>
@@ -234,9 +234,7 @@ function handleMoveTask(): void {
 function closeModal(): void {
   router.push({ name: 'project', params: { id: projectId } });
 }
-
-onClickOutside(target, () => router.push({ name: 'project', params: { id: projectId } })); // fix it
-
+onClickOutside(target, () => router.push({ name: 'project', params: { id: projectId } }));
 useFocusTrap(target, {
   immediate: true,
 });

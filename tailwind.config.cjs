@@ -3,6 +3,9 @@ module.exports = {
   content: ['./index.html', './src/**/*.{vue,js}'],
   theme: {
     extend: {},
+    fontFamily: {
+      sans: ['Lato', 'Mukta', 'system-ui'],
+    },
   },
   plugins: [require('daisyui')],
   daisyui: {
