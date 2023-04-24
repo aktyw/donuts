@@ -28,14 +28,30 @@
             @click="moveToNextTask">
             <IconChevronDown />
           </TaskModalAction>
-          <TaskModalAction tooltip-data="More actions">
-            <IconHorizontalDots />
-          </TaskModalAction>
+          <TaskModalNavbarDropdown
+            :task="task"
+            @delete-task="toggleDeleteModal" />
           <TaskModalAction
             tooltip-data="Close modal"
             @click.prevent="closeModal">
             <IconClose />
           </TaskModalAction>
+
+          <Teleport to="body">
+            <ModalConfirmDelete
+              v-if="deleteConfirm"
+              :is-danger="true"
+              @cancel="cancelDeleteTask"
+              @action="handleDeleteTask"
+              >Delete task
+              <template #content>
+                <p>
+                  Do you really want to delete
+                  <span class="font-bold break-words">{{ task.title }}</span> ?
+                </p>
+              </template>
+            </ModalConfirmDelete>
+          </Teleport>
         </nav>
       </div>
       <section class="flex">
@@ -132,8 +148,8 @@ import { useRoute, useRouter } from 'vue-router';
 
 import IconChevronDown from '@/components/icons/IconChevronDown.vue';
 import IconClose from '@/components/icons/IconClose.vue';
-import IconHorizontalDots from '@/components/icons/IconHorizontalDots.vue';
 import IconImportantSmall from '@/components/icons/IconImportantSmall.vue';
+import ModalConfirmDelete from '@/components/modals/ModalConfirmDelete.vue';
 import ProjectLink from '@/components/projects/ProjectLink.vue';
 import ProjectList from '@/components/projects/ProjectList.vue';
 import TaskCheckbox from '@/components/tasks/card/TaskCheckbox.vue';
@@ -141,6 +157,7 @@ import TaskEditor from '@/components/tasks/editor/TaskEditor.vue';
 import TaskEditorSlim from '@/components/tasks/editor/TaskEditorSlim.vue';
 import SubtaskAddButton from '@/components/tasks/modal/SubtaskAddButton.vue';
 import TaskModalAction from '@/components/tasks/modal/TaskModalAction.vue';
+import TaskModalNavbarDropdown from '@/components/tasks/modal/TaskModalNavbarDropdown.vue';
 import TaskModalOption from '@/components/tasks/modal/TaskModalOption.vue';
 import ButtonBadgeMedium from '@/components/ui/buttons/ButtonBadgeMedium.vue';
 import { useProjectsStore } from '@/stores/ProjectsStore';
@@ -165,6 +182,7 @@ const task = computed(() => store.getTaskById(taskId.value)!);
 const initialTasks = store.getProjectTasks(projectId);
 const taskProject = computed(() => storeProjects.getProjectById(task.value.projectId));
 const selectedProject = ref(taskProject.value);
+const deleteConfirm = ref(false);
 
 const currentDate = computed(() => store.getTaskDate(task.value.id));
 const date: Ref<Date | undefined> = ref(task.value.date);
@@ -214,8 +232,49 @@ async function moveToNextTask(): Promise<void> {
   }
 }
 
+function handleUpdateTask(content: Partial<Task>): void {
+  store.updateTask(taskId.value, content);
+  closeEditors();
+}
+
 function handleUpdateDate(date: Date): void {
   store.updateDate(taskId.value, date);
+}
+
+function handleMoveTask(): void {
+  if (selectedProject.value) {
+    store.moveTask(task.value.id, selectedProject.value.id);
+  }
+}
+
+function toggleIsDone(): void {
+  store.toggleIsDone(taskId.value);
+}
+
+function togglePriority(): void {
+  store.toggleIsPriority(task.value.id);
+}
+
+function handleDeleteTask(): void {
+  store.deleteTask(task.value.id);
+  closeModal();
+}
+
+function closeModal(): void {
+  router.push({ name: 'project', params: { id: projectId } });
+}
+
+function closeEditors(): void {
+  isTaskEditorActive.value = false;
+  isSubtaskEdtiorActive.value = false;
+}
+
+function toggleDeleteModal(): void {
+  deleteConfirm.value = !deleteConfirm.value;
+}
+
+function cancelDeleteTask(): void {
+  toggleDeleteModal();
 }
 
 function openTaskEditor(): void {
@@ -228,34 +287,11 @@ function openSubtaskEditor(): void {
   isSubtaskEdtiorActive.value = true;
 }
 
-function handleUpdateTask(content: Partial<Task>): void {
-  store.updateTask(taskId.value, content);
-  closeEditors();
-}
-
-function toggleIsDone(): void {
-  store.toggleIsDone(taskId.value);
-}
-
-function closeEditors(): void {
-  isTaskEditorActive.value = false;
-  isSubtaskEdtiorActive.value = false;
-}
-
-function handleMoveTask(): void {
-  if (selectedProject.value) {
-    store.moveTask(task.value.id, selectedProject.value.id);
-  }
-}
-
-function togglePriority(): void {
-  store.toggleIsPriority(task.value.id);
-}
-
-function closeModal(): void {
+onClickOutside(target, () => {
+  if (deleteConfirm.value) return;
   router.push({ name: 'project', params: { id: projectId } });
-}
-onClickOutside(target, () => router.push({ name: 'project', params: { id: projectId } }));
+});
+
 useFocusTrap(target, {
   immediate: true,
 });

@@ -4,7 +4,7 @@
       class="btn-md md:btn-sm"
       :class="{
         'font-semibold': isActive,
-        'hover:text-error hover:fill-error focus:text-error focus:fill-error md:btn-sm fill-base-content active:fill-error active:text-error':
+        'hover:text-error hover:fill-error focus:text-error focus:fill-error md:btn-sm fill-base-content active:fill-error active:text-error  ':
           isDanger,
       }"
       v-bind="$attrs"

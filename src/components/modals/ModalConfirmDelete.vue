@@ -3,7 +3,7 @@
     class="modal modal-bottom sm:modal-middle modal-open"
     role="dialog">
     <div class="modal-box">
-      <h3 class="font-semibold text-lg text-center py-2">
+      <h3 class="font-semibold text-lg text-center pb-6 pt-2">
         <slot />
       </h3>
       <slot name="content" />
@@ -13,7 +13,7 @@
         class="modal-action gap-1">
         <BaseButton
           class="btn bg-base-200 text-base-content hover:bg-base-300 border-0 btn-sm rounded-md capitalize font-semibold focus:outline focus:outline-1"
-          @cancel="$emit('cancel')">
+          @click="$emit('cancel')">
           Cancel
         </BaseButton>
         <BaseButton

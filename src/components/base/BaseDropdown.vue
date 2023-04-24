@@ -17,8 +17,8 @@
 </template>
 
 <script setup lang="ts">
-import IconColor from '@/components/icons/IconColor.vue';
 import BaseLabel from '@/components/base/BaseLabel.vue';
+import IconColor from '@/components/icons/IconColor.vue';
 
 type Props = {
   labelName: string;

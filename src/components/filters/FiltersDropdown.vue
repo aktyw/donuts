@@ -41,12 +41,15 @@
       </FiltersDropdownButtonItem>
 
       <ul v-if="sortTypeStatus !== SortFilters.Default && tasks.length > 0">
+        <BaseDividerSmall />
+
         <FiltersDropdownHeading>Order</FiltersDropdownHeading>
         <FiltersDropdownButtonItem @action="store.sortTasksChangeOrder()">
           <IconSouth v-if="sortOrderStatus === SortOrder.Ascending" />
           <IconNorth v-else />
           {{ sortOrderStatus }}
         </FiltersDropdownButtonItem>
+        <BaseDividerSmall />
 
         <FiltersDropdownHeading>Filters</FiltersDropdownHeading>
         <FiltersDropdownButtonItem
@@ -74,6 +77,8 @@
           {{ Filters.NotCompleted }}
         </FiltersDropdownButtonItem>
       </ul>
+      <BaseDividerSmall />
+
       <FiltersDropdownHeading>Actions</FiltersDropdownHeading>
       <FiltersDropdownButtonItem
         v-if="tasks"
@@ -98,6 +103,7 @@
 import { storeToRefs } from 'pinia';
 import { inject } from 'vue';
 
+import BaseDividerSmall from '@/components/base/BaseDividerSmall.vue';
 import FiltersDropdownButtonItem from '@/components/filters/FiltersDropdownButtonItem.vue';
 import FiltersDropdownHeading from '@/components/filters/FiltersDropdownHeading.vue';
 import IconAlphabet from '@/components/icons/IconAlphabet.vue';
@@ -121,7 +127,6 @@ import type { Task } from '@/types/models/Task';
 
 const store = useTasksStore();
 const {
-  // getAllTasks: tasks,
   getSortType: sortTypeStatus,
   getSortOrder: sortOrderStatus,
   getCurrentFilter: currentFilter,

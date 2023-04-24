@@ -38,7 +38,7 @@ import IconSouthSmall from '@/components/icons/IconSouthSmall.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 import { useTasksStore } from '@/stores/TasksStore';
 import { SortOrder } from '@/types/models/Sort';
- 
+
 const store = useTasksStore();
 
 const { getSortType: sortTypeStatus, getSortOrder: sortOrderStatus } = storeToRefs(store);

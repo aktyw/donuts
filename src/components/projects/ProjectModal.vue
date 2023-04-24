@@ -4,10 +4,13 @@
     role="dialog">
     <div
       ref="target"
-      class="modal-box overflow-visible">
-      <h2 class="font-bold text-2xl">{{ modalTitle }}</h2>
-      <BaseDivider></BaseDivider>
-      <form action="">
+      class="modal-box overflow-visible p-0">
+      <div class="border-b mb-4">
+        <h2 class="font-bold text-2xl p-4">{{ modalTitle }}</h2>
+      </div>
+      <form
+        action=""
+        class="p-4">
         <div class="flex flex-col">
           <BaseInput
             v-model.trim="projectName"

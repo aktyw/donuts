@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {},
     fontFamily: {
-      sans: ['Lato', 'Mukta', 'system-ui'],
+      sans: ['Inter', 'Lato', 'Mukta', 'system-ui'],
     },
   },
   plugins: [require('daisyui')],

@@ -85,7 +85,7 @@
         <template #content>
           <p>
             Do you really want to delete
-            <span class="font-bold break-words">"{{ task.title }}"</span> ?
+            <span class="font-bold break-words">{{ task.title }}</span> ?
           </p>
         </template>
       </ModalConfirmDelete>
