@@ -10,18 +10,22 @@
         <div>
           <ProjectLink
             class="hover:!bg-base-100 hover:underline"
-            :to="{ name: 'project', params: { id: selectedProject?.id } }"
-            :name="selectedProject?.name"
+            :to="{ name: 'project', params: { id: taskProject?.id || 'inbox' } }"
+            :name="taskProject?.name"
             :custom-tooltip="true"
-            :fill="selectedProject?.color">
-            <span class="items-center">{{ selectedProject?.name }}</span>
+            :fill="taskProject?.color">
+            <span class="items-center">{{ taskProject?.name }}</span>
           </ProjectLink>
         </div>
         <nav class="flex gap-2 items-center">
-          <TaskModalAction tooltip-data="Previous task">
+          <TaskModalAction
+            tooltip-data="Previous task"
+            @click="moveToPrevTask">
             <IconChevronDown class="rotate-180" />
           </TaskModalAction>
-          <TaskModalAction tooltip-data="Next task">
+          <TaskModalAction
+            tooltip-data="Next task"
+            @click="moveToNextTask">
             <IconChevronDown />
           </TaskModalAction>
           <TaskModalAction tooltip-data="More actions">
@@ -52,6 +56,7 @@
             <div
               v-else
               class="flex flex-col rounded-md p-2 cursor-pointer gap-2 w-full ml-1"
+              :class="{ 'line-through': task.done }"
               @click="openTaskEditor">
               <span class="font-bold">{{ task.title }}</span>
               <span>{{ task.description }}</span>
@@ -78,7 +83,8 @@
               <ProjectList
                 v-model="selectedProject"
                 class="select-sm px-2 bg-base-200 hover:bg-base-100 transition duration-300 border-none w-full max-w-[16rem]"
-                :current-project="selectedProject" />
+                :current-project="taskProject"
+                @change="handleMoveTask" />
             </TaskModalOption>
             <TaskModalOption title="Due date">
               <Datepicker
@@ -86,14 +92,14 @@
                 v-model="date"
                 position="center"
                 :min-date="new Date()"
-                :start-time="startTime" />
+                :start-time="startTime"
+                @update:model-value="handleUpdateDate" />
             </TaskModalOption>
             <TaskModalOption title="Priority"> </TaskModalOption>
 
             <div>
               <h3>Labels +btn</h3>
               <p>List labels badges</p>
-              <p>{{ selectedProject }}</p>
             </div>
           </div>
         </aside>
@@ -106,7 +112,7 @@
 import Datepicker from '@vuepic/vue-datepicker';
 import { onClickOutside } from '@vueuse/core';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
-import { computed, onMounted, onUpdated, type Ref, ref, watch } from 'vue';
+import { computed, onMounted, onUpdated, type Ref, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import IconChevronDown from '@/components/icons/IconChevronDown.vue';
@@ -124,6 +130,9 @@ import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { Task } from '@/types/models/Task';
 
+import { findIndex } from '../../../helpers/findIndex';
+import { findItem } from '../../../helpers/findItem';
+
 const route = useRoute();
 const router = useRouter();
 
@@ -133,14 +142,15 @@ defineEmits<{
 
 const storeProjects = useProjectsStore();
 const store = useTasksStore();
-
 const projectId = route.params.id as string;
-const taskId = route.params.taskid as string;
-const task = computed(() => store.getTaskById(taskId));
-const currentProject = computed(() => storeProjects.getProjectById(projectId));
-const selectedProject = ref(currentProject.value);
-const currentDate = computed(() => store.getTaskDate(taskId));
-const date: Ref<Date | undefined> = ref(currentDate.value);
+const taskId = computed(() => route.params.taskid as string);
+const task = computed(() => store.getTaskById(taskId.value)!);
+const initialTasks = store.getProjectTasks(projectId);
+const taskProject = computed(() => storeProjects.getProjectById(task.value.projectId));
+const selectedProject = ref(taskProject.value);
+
+const currentDate = computed(() => store.getTaskDate(task.value.id));
+const date: Ref<Date | undefined> = ref(task.value.date);
 const datepicker = ref();
 const startTime = ref({ hours: 12, minutes: 0 });
 const target = ref();
@@ -152,13 +162,44 @@ onMounted(() => {
 });
 
 onUpdated(() => {
-  // console.log(selectedProject.value);
+  // console.log(currentDate.value);
+  // console.log(date.value);
 });
 
-watch(selectedProject, (project) => {
-  if (!project) return;
-  handleMoveTask(project!.id);
-});
+async function moveToPrevTask(): Promise<void> {
+  try {
+    const idx = findIndex(taskId.value, initialTasks);
+
+    if (idx <= 0) return;
+    const { id: prevId } = findItem(initialTasks[idx - 1].id, initialTasks);
+
+    await router.push({ name: 'task', params: { taskid: prevId } });
+    selectedProject.value = taskProject.value;
+    date.value = currentDate.value;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function moveToNextTask(): Promise<void> {
+  try {
+    const idx = findIndex(taskId.value, initialTasks);
+
+    if (idx >= initialTasks.length - 1) return;
+
+    const { id: nextId } = findItem(initialTasks[idx + 1].id, initialTasks);
+
+    await router.push({ name: 'task', params: { taskid: nextId } });
+    selectedProject.value = taskProject.value;
+    date.value = currentDate.value;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function handleUpdateDate(date: Date): void {
+  store.updateDate(taskId.value, date);
+}
 
 function openTaskEditor(): void {
   isTaskEditorActive.value = true;
@@ -171,12 +212,12 @@ function openSubtaskEditor(): void {
 }
 
 function handleUpdateTask(content: Partial<Task>): void {
-  store.updateTask(taskId, content);
+  store.updateTask(taskId.value, content);
   closeEditors();
 }
 
 function toggleIsDone(): void {
-  store.toggleIsDone(taskId);
+  store.toggleIsDone(taskId.value);
 }
 
 function closeEditors(): void {
@@ -184,15 +225,17 @@ function closeEditors(): void {
   isSubtaskEdtiorActive.value = false;
 }
 
-function handleMoveTask(projectId: string): void {
-  store.moveTask(taskId, projectId);
+function handleMoveTask(): void {
+  if (selectedProject.value) {
+    store.moveTask(task.value.id, selectedProject.value.id);
+  }
 }
 
 function closeModal(): void {
   router.push({ name: 'project', params: { id: projectId } });
 }
 
-onClickOutside(target, () => router.push({ name: 'project', params: { id: route.params.id } }));
+onClickOutside(target, () => router.push({ name: 'project', params: { id: projectId } })); // fix it
 
 useFocusTrap(target, {
   immediate: true,
