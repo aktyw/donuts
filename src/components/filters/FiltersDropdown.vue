@@ -71,10 +71,10 @@
           {{ Filters.Completed }}
         </FiltersDropdownButtonItem>
         <FiltersDropdownButtonItem
-          :is-active="currentFilter === Filters.NotCompleted"
-          @action="store.setFilter(Filters.NotCompleted)">
+          :is-active="currentFilter === Filters.Active"
+          @action="store.setFilter(Filters.Active)">
           <IconCircle />
-          {{ Filters.NotCompleted }}
+          {{ Filters.Active }}
         </FiltersDropdownButtonItem>
       </ul>
       <BaseDividerSmall />

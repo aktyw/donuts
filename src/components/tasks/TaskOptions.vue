@@ -53,7 +53,7 @@
         Duplicate Task
       </OptionListButton>
 
-      <OptionListButton @click="handleCopyLinkTask(taskId)">
+      <OptionListButton @click="handleCopyLinkTask">
         <template #icon>
           <IconLink />
         </template>

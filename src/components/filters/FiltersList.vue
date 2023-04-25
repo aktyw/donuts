@@ -2,13 +2,8 @@
   <ul class="flex justify-between md:justify-end w-full lg:gap-4 md:py-3 py-2 p-0">
     <FiltersListOption
       aria-label=""
-      :tasks="tasks"
-      :filter-type="Filters.All" />
-
-    <FiltersListOption
-      aria-label=""
-      :tasks="priorityTasks"
-      :filter-type="Filters.Priority" />
+      :tasks="activeTasks"
+      :filter-type="Filters.Active" />
 
     <FiltersListOption
       aria-label=""
@@ -17,8 +12,13 @@
 
     <FiltersListOption
       aria-label=""
-      :tasks="notCompletedTasks"
-      :filter-type="Filters.NotCompleted" />
+      :tasks="priorityTasks"
+      :filter-type="Filters.Priority" />
+
+    <FiltersListOption
+      aria-label=""
+      :tasks="tasks"
+      :filter-type="Filters.All" />
   </ul>
 </template>
 
@@ -37,5 +37,5 @@ const props = defineProps<Props>();
 
 const priorityTasks = computed(() => props.tasks.filter((task) => task.isPriority));
 const completedTasks = computed(() => props.tasks.filter((task) => task.done));
-const notCompletedTasks = computed(() => props.tasks.filter((task) => !task.done));
+const activeTasks = computed(() => props.tasks.filter((task) => !task.done));
 </script>

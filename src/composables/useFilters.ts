@@ -13,7 +13,7 @@ export function useFilters(tasks: ComputedRef<Task[]>) {
       return tasks.value.filter((task) => task.done);
     } else if (currentFilter.value === Filters.Priority) {
       return tasks.value.filter((task) => task.isPriority);
-    } else if (currentFilter.value === Filters.NotCompleted) {
+    } else if (currentFilter.value === Filters.Active) {
       return tasks.value.filter((task) => !task.done);
     }
 
