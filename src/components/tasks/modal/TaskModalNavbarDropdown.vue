@@ -18,7 +18,7 @@
       role="menu"
       tabindex="0"
       class="dropdown-content menu py-1 shadow rounded-md w-56 bg-base-100 border border-base-300 text-base-content fill-base-content [& svg:not(.active-state)]:fill-base-content [&>li:hover>button:not(.active-state)]:bg-base-200 [& button:active]:text-base-content [&>button:active]:bg-base-200">
-      <OptionListInfo> Added on {{ formattedCreatedAt }} </OptionListInfo>
+      <OptionListInfo> Added on {{ formattedCreatedAt.value }} </OptionListInfo>
 
       <BaseDividerSmall />
 
@@ -66,7 +66,7 @@
 
 <script setup lang="ts">
 import { useClipboard, useDateFormat } from '@vueuse/core';
-import { type Ref, ref } from 'vue';
+import { computed, type Ref, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 import BaseButton from '@/components/base/BaseButton.vue';
@@ -82,7 +82,6 @@ import OptionListInfo from '@/components/tasks/list/OptionListInfo.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 import { useNotification } from '@/composables/useNotification';
 import blurElement from '@/helpers/blur';
-import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
 import type { Task } from '@/types/models/Task';
@@ -99,12 +98,12 @@ const emit = defineEmits<{
   (e: 'deleteTask', id: string): void;
 }>();
 const route = useRoute();
-
-const formattedCreatedAt = useDateFormat(props.task.createdAt, 'DD MMM · HH:mm', { locales: 'en-US' });
+const createdAt = computed(() => props.task.createdAt);
+const formattedCreatedAt = computed(() => useDateFormat(createdAt.value, 'DD MMM · HH:mm', { locales: 'en-US' }));
 const dropdown: Ref<HTMLElement | undefined> = ref();
 const dropList: Ref<HTMLElement | undefined> = ref();
 
-const source = ref(route.fullPath);
+const source = computed(() => route.fullPath);
 const { copy } = useClipboard({ source });
 
 function handleCopyLinkTask(): void {
