@@ -4,8 +4,12 @@ import { v4 as uuid } from 'uuid';
 
 import { useNotification } from '@/composables/useNotification';
 import { isToday } from '@/helpers/checkTime';
+import { createNewTask } from '@/helpers/createNewTask';
+import { findDeepTaskById } from '@/helpers/findDeepTaskById';
 import { findIndex } from '@/helpers/findIndex';
 import { findItem } from '@/helpers/findItem';
+import { toggleProp } from '@/helpers/toggleProp';
+import { updateEveryProp } from '@/helpers/updateEveryProp';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { Filters } from '@/types/models/Filters';
 import type { Notification } from '@/types/models/Notification';
@@ -13,7 +17,7 @@ import { NotificationAction } from '@/types/models/NotificationAction';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { SortFilters, SortOrder } from '@/types/models/Sort';
 import type { State } from '@/types/models/State';
-import type { Task } from '@/types/models/Task';
+import type { Task, TaskAddOptions, TaskAddSubtaskOptions } from '@/types/models/Task';
 
 export const useTasksStore = defineStore('tasks', {
   state: (): State => ({
@@ -82,18 +86,16 @@ export const useTasksStore = defineStore('tasks', {
       });
     },
     getTaskById(state): (id: string) => Task | undefined {
-      return (id: string): Task | undefined => {
-        return state.tasks.default.find((task) => task.id === id);
-      };
+      return (id: string): Task | undefined => findDeepTaskById(state.tasks.default, id);
     },
     getPriorityTasks(state): Task[] {
       return state.tasks.default.filter((task) => task.isPriority);
     },
     getCompletedTasks(state): Task[] {
-      return state.tasks.default.filter((task) => task.done);
+      return state.tasks.default.filter((task) => task.isDone);
     },
     getNotCompletedTasks(state): Task[] {
-      return state.tasks.default.filter((task) => !task.done);
+      return state.tasks.default.filter((task) => !task.isDone);
     },
     getDeletedTask(state): Task {
       return state.tasks.deleted[state.tasks.deleted.length - 1];
@@ -112,38 +114,34 @@ export const useTasksStore = defineStore('tasks', {
     },
   },
   actions: {
-    addTask({
-      title,
-      description,
-      date,
-      isPriority,
-      projectId,
-    }: {
-      title: string;
-      description: string;
-      date: Date | undefined;
-      isPriority: boolean;
-      projectId: string;
-    }) {
+    addTask(options: TaskAddOptions) {
+      const newTask = createNewTask(options);
+
+      this.tasks.default.push(newTask);
+
+      useNotification(NotificationMessage.TaskAdd);
+    },
+    addSubtask(subtask: TaskAddSubtaskOptions, parentId: string) {
+      const { title, description, isPriority, date, projectId } = subtask;
       const id = uuid();
-      const newTask: Task = {
+      const newSubTask: Task = {
         id,
         title,
         ...(description && { description }),
-        done: false,
+        isDone: false,
         isPriority,
         createdAt: new Date(),
         ...(date && { date }),
-        subtasks: {},
+        subtasks: [],
+        parentId,
         projectId,
       };
 
-      this.tasks.default.push(newTask);
+      const parentTaskIdx = findIndex(parentId, this.tasks.default);
+
+      this.tasks.default[parentTaskIdx].subtasks.push(newSubTask);
+
       useNotification(NotificationMessage.TaskAdd);
-    },
-    addSubtask(originId: string, task: Partial<Task>) {
-      console.log(originId);
-      console.log(task);
     },
     addNotification(message: string, id: string) {
       let actionLabel;
@@ -152,9 +150,9 @@ export const useTasksStore = defineStore('tasks', {
       if (message === NotificationMessage.TaskDelete) {
         actionLabel = 'undo';
         action = NotificationAction.TaskDelete;
-      } else if (message === NotificationMessage.AllTasksDelete) {
+      } else if (message === NotificationMessage.TasksAllDelete) {
         actionLabel = 'undo';
-        action = NotificationAction.AllTasksDelete;
+        action = NotificationAction.TasksAllDelete;
       }
 
       const notification: Notification = {
@@ -171,7 +169,7 @@ export const useTasksStore = defineStore('tasks', {
 
       this.notifications = this.notifications.filter((notification) => notification !== notificationToDel);
 
-      if (!this.notifications.some((notification) => notification.action === NotificationAction.AllTasksDelete)) {
+      if (!this.notifications.some((notification) => notification.action === NotificationAction.TasksAllDelete)) {
         this.tasks.temp = [];
       }
     },
@@ -193,69 +191,82 @@ export const useTasksStore = defineStore('tasks', {
       this.sort.order = this.sort.order === SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
     },
     toggleIsDone(id: string) {
-      const index = findIndex(id, this.tasks.default);
+      const task = findDeepTaskById(this.tasks.default, id);
 
-      this.tasks.default[index]['done'] = !this.tasks.default[index]['done'];
+      if (task) {
+        toggleProp(task, 'isDone');
+      }
 
-      this.tasks.default[index]['done']
-        ? useNotification(NotificationMessage.Complete)
-        : useNotification(NotificationMessage.NotComplete);
+      task?.isDone
+        ? useNotification(NotificationMessage.TaskComplete)
+        : useNotification(NotificationMessage.TaskActivate);
     },
     toggleIsPriority(id: string) {
-      const index = findIndex(id, this.tasks.default);
+      const task = findDeepTaskById(this.tasks.default, id);
 
-      this.tasks.default[index]['isPriority'] = !this.tasks.default[index]['isPriority'];
+      if (task) {
+        toggleProp(task, 'isPriority');
+      }
 
       useNotification(NotificationMessage.TaskPriority);
     },
     updateTask(id: string, content: Partial<Task>): void {
-      const task = findItem(id, this.tasks.default);
-      const index = findIndex(id, this.tasks.default);
+      const task = findDeepTaskById(this.tasks.default, id);
 
-      this.tasks.default[index] = { ...task, ...content };
+      if (task) {
+        Object.assign(task, content);
+      }
 
-      useNotification(NotificationMessage.UpdateTask);
+      useNotification(NotificationMessage.TaskUpdate);
     },
     updateDate(id: string, date: Date): void {
-      const task = findItem(id, this.tasks.default);
+      const task = findDeepTaskById(this.tasks.default, id);
 
-      task.date = date;
-
-      useNotification(NotificationMessage.UpdateDate);
+      if (task) {
+        task.date = date;
+      }
+      console.log(task);
+      useNotification(NotificationMessage.TaskDateUpdate);
     },
     moveTask(id: string, projectId: string) {
-      const task = findItem(id, this.tasks.default);
+      const task = findDeepTaskById(this.tasks.default, id);
 
-      task.projectId = projectId;
+      if (task) {
+        task.projectId = projectId;
+      }
 
       useNotification(NotificationMessage.TaskMove);
     },
     duplicateTask(id: string, projectId?: string): void {
-      const task = findItem(id, this.tasks.default);
-      const copyTask = JSON.parse(JSON.stringify(task));
-      const newId = uuid();
-      const newCreatedAt = new Date();
+      const task = findDeepTaskById(this.tasks.default, id);
 
-      copyTask.id = newId;
-      copyTask.createdAt = newCreatedAt;
-      if (copyTask.date) copyTask.date = new Date(copyTask.date);
+      const copyTask = JSON.parse(JSON.stringify(task));
+
+      updateEveryProp(copyTask);
+
+      // if (copyTask.date) copyTask.date = new Date(copyTask.date);
       if (projectId) {
         copyTask.projectId = projectId;
+        console.log(copyTask.projectId);
       }
+      console.log(copyTask);
 
-      const taskIndex = this.tasks.default.findIndex((task) => task.id === id);
-      const tasksArrStart = this.tasks.default.slice(0, taskIndex + 1);
-      const tasksArrEnd = this.tasks.default.slice(taskIndex + 1);
+      // const taskIndex = this.tasks.default.findIndex((task) => task.id === id);
+      // const tasksArrStart = this.tasks.default.slice(0, taskIndex + 1);
+      // const tasksArrEnd = this.tasks.default.slice(taskIndex + 1);
 
-      this.tasks.default = [...tasksArrStart, copyTask, ...tasksArrEnd];
+      // this.tasks.default = [...tasksArrStart, copyTask, ...tasksArrEnd];
 
-      useNotification(NotificationMessage.Duplicate);
+      useNotification(NotificationMessage.TaskDuplicate);
     },
     deleteTask(id: string): void {
-      const taskToDel = findItem(id, this.tasks.default);
+      const taskToDel = findDeepTaskById(this.tasks.default, id);
 
-      this.tasks.deleted.push(taskToDel);
-      this.tasks.default = this.tasks.default.filter((task) => task !== taskToDel);
+      if (taskToDel) {
+        this.tasks.deleted.push(taskToDel);
+        this.tasks.default = this.tasks.default.filter((task) => task !== taskToDel);
+      }
+
       useNotification(NotificationMessage.TaskDelete, id);
     },
     undoDeleteTask(id: string): void {
@@ -271,7 +282,7 @@ export const useTasksStore = defineStore('tasks', {
       this.tasks.default = [];
       this.tasks.temp.push(...delTasks);
 
-      useNotification(NotificationMessage.AllTasksDelete);
+      useNotification(NotificationMessage.TasksAllDelete);
     },
     undoDeleteAllTasks(): void {
       this.tasks.default = [...this.tasks.default, ...this.tasks.temp];

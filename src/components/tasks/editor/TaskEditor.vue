@@ -80,7 +80,7 @@
         </TheTooltip>
 
         <ProjectAddButton
-          v-if="!quickTask && !subTask"
+          v-if="!quickTask && !isSubTask"
           class="h-full"
           @click.prevent="handleAddProject"></ProjectAddButton>
 
@@ -98,9 +98,15 @@
       <div>
         <ButtonSecondaryAction @click.prevent="closeEditor">Cancel</ButtonSecondaryAction>
         <ButtonMainAction
-          v-if="!isEdit"
+          v-if="!isEdit && !isSubTask"
           :disabled="!taskTitle || !selectedProject"
-          @click.prevent="addTask"
+          @click.prevent="handleAddTask"
+          >Add task</ButtonMainAction
+        >
+        <ButtonMainAction
+          v-if="!isEdit && isSubTask"
+          :disabled="!taskTitle || !selectedProject"
+          @click.prevent="handleAddSubTask"
           >Add task</ButtonMainAction
         >
         <ButtonMainAction
@@ -148,13 +154,13 @@ import { vFocus } from '@/directives/vAutoFocus';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { Project } from '@/types/models/Projects';
-import type { Task } from '@/types/models/Task';
+import type { Task, TaskAddSubtaskOptions } from '@/types/models/Task';
 
 type Props = {
   isEdit?: boolean;
   currentProject?: Project | undefined;
   quickTask?: boolean;
-  subTask?: boolean;
+  isSubTask?: boolean;
   isPriority?: boolean;
   date?: Date;
   title?: string;
@@ -164,6 +170,7 @@ type Props = {
 const emit = defineEmits<{
   (e: 'closeEditor'): void;
   (e: 'addTask'): void;
+  (e: 'addSubTask', subtask: TaskAddSubtaskOptions): void;
   (e: 'updateTask', options: Partial<Task>): void;
 }>();
 
@@ -194,12 +201,12 @@ watchEffect(() => {
   selectedProject.value = props.currentProject || inbox;
 });
 
-function addTask(): void {
+function handleAddTask(): void {
   const options = {
     title: taskTitle.value,
     description: taskDescription.value,
-    date: date.value,
     isPriority: taskIsPriority.value,
+    date: date.value,
     projectId: selectedProject.value?.id ?? 'inbox',
   };
 
@@ -223,6 +230,18 @@ function handleUpdateTask(): void {
   };
 
   emit('updateTask', options);
+}
+
+function handleAddSubTask(): void {
+  const options = {
+    title: taskTitle.value,
+    description: taskDescription.value,
+    date: date.value,
+    isPriority: taskIsPriority.value,
+    projectId: selectedProject.value?.id ?? 'inbox',
+  };
+
+  emit('addSubTask', options);
 }
 
 function handleCloseEditor(): void {

@@ -60,7 +60,7 @@
           <div class="flex">
             <TaskCheckbox
               class="pt-3 mx-0.5 checkbox-xs"
-              :is-done="task.done"
+              :is-done="task.isDone"
               :is-priority="task.isPriority"
               @toggle="toggleIsDone" />
             <TaskEditorSlim
@@ -72,7 +72,7 @@
               @close-editor="isTaskEditorActive = false" />
             <TaskShowSlim
               v-else
-              :class="{ 'line-through': task.done }"
+              :class="{ 'line-through': task.isDone }"
               @click="openTaskEditor">
               {{ task.title }}
               <template #desc>
@@ -87,10 +87,12 @@
             >
             <TaskEditor
               v-if="isSubtaskEdtiorActive"
-              :sub-task="true"
+              :is-sub-task="true"
+              @add-sub-task="handleAddSubtask"
               @close-editor="isSubtaskEdtiorActive = false" />
             <SubtaskAddButton
               v-else
+              class="print:hidden"
               @click="openSubtaskEditor" />
           </div>
         </main>
@@ -166,7 +168,7 @@ import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 import ButtonBadgeMedium from '@/components/ui/buttons/ButtonBadgeMedium.vue';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
-import type { Task } from '@/types/models/Task';
+import type { Task, TaskAddSubtaskOptions } from '@/types/models/Task';
 
 import { findIndex } from '../../../helpers/findIndex';
 import { findItem } from '../../../helpers/findItem';
@@ -198,6 +200,9 @@ const isSubtaskEdtiorActive = ref(false);
 
 onMounted(() => {
   isSubtaskEdtiorActive.value = !!(route.hash === '#subtask');
+  console.log(taskId.value);
+  console.log(task.value);
+  console.log(taskProject.value);
 });
 
 onUpdated(() => {
@@ -249,6 +254,10 @@ function handleMoveTask(): void {
   if (selectedProject.value) {
     store.moveTask(task.value.id, selectedProject.value.id);
   }
+}
+
+function handleAddSubtask(subtask: TaskAddSubtaskOptions): void {
+  store.addSubtask(subtask, task.value.id);
 }
 
 function toggleIsDone(): void {

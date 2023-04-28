@@ -2,10 +2,17 @@ export interface Task {
   id: string;
   title: string;
   description?: string;
-  done: boolean;
+  isDone: boolean;
   isPriority: boolean;
   date?: Date;
   createdAt: Date;
-  subtasks: {};
   projectId: string;
+  parentId?: string;
+  subtasks: Task[];
 }
+
+export type TaskAddOptions = Omit<Task, 'id' | 'isDone' | 'createdAt' | 'subtasks'>;
+
+export type TaskAddSubtaskOptions = TaskAddOptions & {
+  parentId?: string;
+};

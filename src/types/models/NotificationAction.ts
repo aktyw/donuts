@@ -1,1 +1,1 @@
-export const NotificationAction = { TaskDelete: 'TaskDelete', AllTasksDelete: 'AllTasksDelete' };
+export const NotificationAction = { TaskDelete: 'TaskDelete', TasksAllDelete: 'TasksAllDelete' };

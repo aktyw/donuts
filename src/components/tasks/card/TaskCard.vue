@@ -2,14 +2,15 @@
   <li
     v-if="!editTask"
     ref="card"
-    class="relative border-t border-base-200 py-3 w-full flex justify-between transition-colors duration-1000"
-    :class="{ 'bg-base-300  duration-1000 ': showBacklight, 'last:border-b': !isEditorActive }"
+    v-bind="$attrs"
+    class="relative border-b border-base-200 py-3 flex justify-between transition-colors duration-1000"
+    :class="{ 'bg-base-300  duration-1000 ': showBacklight, 'last:border-b-0': isEditorActive }"
     @click="handleShowOptionsBtn"
     @mouseover="handleShowOptionsBtn"
     @mouseleave="handleHideOptionsBtn">
     <div class="flex gap-4 w-full">
       <TaskCheckbox
-        :is-done="task.done"
+        :is-done="task.isDone"
         :is-priority="task.isPriority"
         @toggle="toggleIsDone(task.id)" />
       <div class="flex flex-col w-full cursor-pointer">
@@ -93,7 +94,7 @@
   </li>
 
   <TaskEditor
-    v-else
+    v-if="editTask"
     :is-edit="true"
     :title="task.title"
     :description="task.description"
@@ -102,13 +103,14 @@
     :date="deadline"
     @close-editor="toggleEditModal"
     @update-task="handleUpdateTask" />
+  <slot />
 </template>
 
 <script setup lang="ts">
 import { useActiveElement } from '@vueuse/core';
 import { useElementBounding } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { computed, type Ref, ref, watch } from 'vue';
+import { computed, onMounted, type Ref, ref, watch } from 'vue';
 import { inject } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -136,7 +138,7 @@ const storeProjects = useProjectsStore();
 const activeElement = useActiveElement();
 const { getProjectById } = storeToRefs(storeProjects);
 const project = computed(() => getProjectById.value(props.task.projectId));
-const isDone = ref(props.task.done);
+const isDone = ref(props.task.isDone);
 const isPriority = ref(props.task.isPriority);
 const deleteConfirm = ref(false);
 const deadline = computed(() => store.getTaskDate(props.task.id));
@@ -148,6 +150,11 @@ const { x: cardX, y: cardY, bottom: cardBottom } = useElementBounding(card);
 const showBacklight = ref(false);
 const editTask = ref(false);
 const isEditorActive = inject('isEditorActive');
+
+onMounted(() => {
+  console.log(props.task);
+  console.log(deadline.value);
+});
 
 watch(activeElement, (el) => {
   el?.closest('.dropdown') ? (isOptionsOpen.value = true) : (isOptionsOpen.value = false);

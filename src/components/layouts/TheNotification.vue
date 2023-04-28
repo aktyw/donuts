@@ -47,7 +47,7 @@ function closeAlert(id: string): void {
 }
 
 function handleAction(id: string, action: string): void {
-  if (action === NotificationAction.AllTasksDelete) {
+  if (action === NotificationAction.TasksAllDelete) {
     undoDeleteAllTasks(id);
   } else if (action === NotificationAction.TaskDelete) {
     undoDeleteTask(id);

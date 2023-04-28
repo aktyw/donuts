@@ -189,7 +189,7 @@ const showPicker = ref(false);
 const startTime = ref({ hours: 12, minutes: 0 });
 
 const activeStyle = ['active-state', 'active:bg-base-200', 'font-semibold'];
-const doneStyle = computed(() => (task.value.done ? activeStyle : ''));
+const doneStyle = computed(() => (task.value.isDone ? activeStyle : ''));
 const priorityStyle = computed(() => (task.value.isPriority ? activeStyle : ''));
 
 const body = ref();
@@ -209,7 +209,6 @@ const source = ref(route.fullPath);
 const { copy } = useClipboard({ source });
 
 function handleCopyLinkTask(): void {
-  console.log(props.task.id);
   copy(`${source.value}/task/${props.task.id}`);
   useNotification(NotificationMessage.CopyLink);
 }

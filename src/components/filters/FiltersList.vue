@@ -36,6 +36,6 @@ type Props = {
 const props = defineProps<Props>();
 
 const priorityTasks = computed(() => props.tasks.filter((task) => task.isPriority));
-const completedTasks = computed(() => props.tasks.filter((task) => task.done));
-const activeTasks = computed(() => props.tasks.filter((task) => !task.done));
+const completedTasks = computed(() => props.tasks.filter((task) => task.isDone));
+const activeTasks = computed(() => props.tasks.filter((task) => !task.isDone));
 </script>

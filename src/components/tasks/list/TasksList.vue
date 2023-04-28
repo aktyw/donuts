@@ -22,6 +22,11 @@
         v-for="task in tasks"
         :key="task.id"
         :task="task">
+        <TasksList
+          v-if="task.subtasks.length > 0"
+          :tasks="task.subtasks"
+          class="pl-12">
+        </TasksList>
       </TaskCard>
     </ul>
   </section>
@@ -29,10 +34,11 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import draggable from 'vuedraggable';
 
 import TaskCard from '@/components/tasks/card/TaskCard.vue';
+import TasksList from '@/components/tasks/list/TasksList.vue';
 import { useTasksStore } from '@/stores/TasksStore';
 import { SortFilters } from '@/types/models/Sort';
 import type { Task } from '@/types/models/Task';
@@ -40,6 +46,8 @@ import type { Task } from '@/types/models/Task';
 type Props = {
   tasks: Task[];
 };
+
+onMounted(() => {});
 
 const props = defineProps<Props>();
 
