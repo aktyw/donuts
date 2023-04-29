@@ -8,7 +8,7 @@ export interface Task {
   createdAt: Date;
   projectId: string;
   parentId?: string | null;
-  childId?: string[] | [];
+  childId?: string[];
 }
 
 // export type TaskAddOptions = Omit<Task, 'id' | 'isDone' | 'createdAt' | 'subtasks'>;

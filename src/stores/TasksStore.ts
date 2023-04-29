@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid';
 import { useNotification } from '@/composables/useNotification';
 import { isToday } from '@/helpers/checkTime';
 import { createNewTask } from '@/helpers/createNewTask';
+import { duplicateTaskWithChildren } from '@/helpers/duplicateTaskWithChildren';
 import { findIndex } from '@/helpers/findIndex';
 import { findItem } from '@/helpers/findItem';
 import { useProjectsStore } from '@/stores/ProjectsStore';
@@ -88,6 +89,11 @@ export const useTasksStore = defineStore('tasks', {
     getTaskById(state): (id: string) => Task | undefined {
       return (id: string): Task | undefined => {
         return state.tasks.default.find((task) => task.id === id);
+      };
+    },
+    getAllTasksById(): (ids: string[]) => Task[] | undefined {
+      return (ids: string[]): Task[] | undefined => {
+        return ids.map((id) => this.getTaskById(id)) as Task[];
       };
     },
     getPriorityTasks(state): Task[] {
@@ -214,22 +220,13 @@ export const useTasksStore = defineStore('tasks', {
     },
     duplicateTask(id: string, projectId?: string): void {
       const task = findItem(id, this.tasks.default);
-      const copyTask = JSON.parse(JSON.stringify(task));
-      const newId = uuid();
-      const newCreatedAt = new Date();
 
-      copyTask.id = newId;
-      copyTask.createdAt = newCreatedAt;
-      if (copyTask.date) copyTask.date = new Date(copyTask.date);
-      if (projectId) {
-        copyTask.projectId = projectId;
-      }
+      duplicateTaskWithChildren(task);
+      // const taskIndex = this.tasks.default.findIndex((task: Task) => task.id === id);
+      // const tasksArrStart = this.tasks.default.slice(0, taskIndex + 1);
+      // const tasksArrEnd = this.tasks.default.slice(taskIndex + 1);
 
-      const taskIndex = this.tasks.default.findIndex((task) => task.id === id);
-      const tasksArrStart = this.tasks.default.slice(0, taskIndex + 1);
-      const tasksArrEnd = this.tasks.default.slice(taskIndex + 1);
-
-      this.tasks.default = [...tasksArrStart, copyTask, ...tasksArrEnd];
+      // this.tasks.default = [...tasksArrStart, copyTask, ...tasksArrEnd];
 
       useNotification(NotificationMessage.TaskDuplicate);
     },

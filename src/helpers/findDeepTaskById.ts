@@ -6,7 +6,7 @@ export function findDeepTaskById(tasks: Task[], id: string): Task | undefined {
   tasks.forEach((task) => {
     if (task.id === id) {
       found = task;
-    } else if (task.subtasks.length > 0) {
+    } else if (task.childId.length > 0) {
       found = findDeepTaskById(task.subtasks, id);
     }
   });
