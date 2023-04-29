@@ -2,7 +2,7 @@
   <div class="hero bg-base-200 h-screen">
     <div class="hero-content flex-col lg:flex-row-reverse lg:gap-8">
       <img
-        src="@/assets/images/donut-air.png"
+        src="@/assets/images/donut.png"
         class="rounded-lg lg:max-w-xl" />
       <div>
         <h1 class="text-5xl lg:text-7xl font-bold">
