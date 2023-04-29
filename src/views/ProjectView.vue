@@ -2,9 +2,7 @@
   <main
     v-if="currentProject?.active"
     id="main">
-    <div
-      class="flex flex-col items-start w-2/3 max-w-[800px]"
-      :class="{ 'h-1/2': !store.tasks.default.length }">
+    <div class="flex flex-col items-start w-2/3 max-w-[800px]">
       <FiltersNavbar :title="currentProject?.name ?? 'Inbox'" />
       <FilterStatus v-if="!allowDrag" />
       <FiltersList
@@ -21,7 +19,7 @@
         @close-editor="closeEditor" />
     </div>
 
-    <TasksEmptyMessage v-if="!store.tasks.default.length"> No tasks. Time for chillout... </TasksEmptyMessage>
+    <EmptyMessage v-if="!store.tasks.default.length" />
     <Teleport to="body">
       <router-view></router-view>
     </Teleport>
@@ -45,11 +43,11 @@ import { computed, provide, readonly, ref } from 'vue';
 import FiltersList from '@/components/filters/FiltersList.vue';
 import FiltersNavbar from '@/components/filters/FiltersNavbar.vue';
 import FilterStatus from '@/components/filters/FilterStatus.vue';
+import EmptyMessage from '@/components/messages/EmptyMessage.vue';
 import ProjectArchived from '@/components/projects/ProjectArchived.vue';
 import TaskEditor from '@/components/tasks/editor/TaskEditor.vue';
 import TaskAddButton from '@/components/tasks/list/TaskAddButton.vue';
 import TasksList from '@/components/tasks/list/TasksList.vue';
-import TasksEmptyMessage from '@/components/tasks/TasksEmptyMessage.vue';
 import { useHandleTasks } from '@/composables/useHandleTasks';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';

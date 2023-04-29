@@ -209,6 +209,7 @@ const source = ref(route.fullPath);
 const { copy } = useClipboard({ source });
 
 function handleCopyLinkTask(): void {
+  console.log(import.meta.env.BASE_URL);
   copy(`${source.value}/task/${props.task.id}`);
   useNotification(NotificationMessage.CopyLink);
 }

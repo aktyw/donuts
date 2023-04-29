@@ -212,13 +212,7 @@ const exitRoutePushName = computed(() => {
 
 onMounted(() => {
   isSubtaskEdtiorActive.value = !!(route.hash === '#subtask');
-
-  console.log(route.path);
-  console.log(initialTasks);
-  console.log(initialTasks);
 });
-
-// onUpdated(() => {});
 
 async function moveToPrevTask(): Promise<void> {
   try {
