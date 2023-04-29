@@ -7,9 +7,10 @@
       <FilterStatus v-if="!allowDrag" />
       <FiltersList
         v-if="!!store.tasks.default.length && !allowDrag"
-        :tasks="todayTasks" />
-
-      <TasksList :tasks="tasks" />
+        :tasks="tasks" />
+      <TasksList
+        :tasks="tasks"
+        :is-timeline="true" />
 
       <TaskAddButton
         v-if="!isEditorActive"
@@ -20,6 +21,9 @@
     </div>
 
     <TasksEmptyMessage v-if="!store.tasks.default.length"> No tasks. Time for chillout... </TasksEmptyMessage>
+    <Teleport to="body">
+      <router-view></router-view>
+    </Teleport>
   </main>
 </template>
 
@@ -40,7 +44,8 @@ import { SortFilters } from '@/types/models/Sort';
 import { TASK_VIEW_TITLE } from '@/types/models/Titles';
 
 const store = useTasksStore();
-const { getSortType: sortTypeStatus, getTodayTasks: todayTasks } = storeToRefs(store);
+const { getSortType: sortTypeStatus } = storeToRefs(store);
+const todayTasks = computed(() => store.getTodayTasks);
 const tasks = useHandleTasks(todayTasks);
 const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
 const isEditorActive = ref(false);

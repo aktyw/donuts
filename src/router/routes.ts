@@ -26,6 +26,14 @@ const routes = [
         path: 'today',
         name: 'today',
         component: TodayView,
+        children: [
+          {
+            path: 'task/:taskid',
+            name: 'taskToday',
+            component: TaskModal,
+            props: true,
+          },
+        ],
       },
       {
         path: 'project/:id',

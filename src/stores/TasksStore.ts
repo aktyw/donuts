@@ -5,11 +5,8 @@ import { v4 as uuid } from 'uuid';
 import { useNotification } from '@/composables/useNotification';
 import { isToday } from '@/helpers/checkTime';
 import { createNewTask } from '@/helpers/createNewTask';
-import { findDeepTaskById } from '@/helpers/findDeepTaskById';
 import { findIndex } from '@/helpers/findIndex';
 import { findItem } from '@/helpers/findItem';
-import { toggleProp } from '@/helpers/toggleProp';
-import { updateEveryProp } from '@/helpers/updateEveryProp';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { Filters } from '@/types/models/Filters';
 import type { Notification } from '@/types/models/Notification';
@@ -17,7 +14,7 @@ import { NotificationAction } from '@/types/models/NotificationAction';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { SortFilters, SortOrder } from '@/types/models/Sort';
 import type { State } from '@/types/models/State';
-import type { Task, TaskAddOptions, TaskAddSubtaskOptions } from '@/types/models/Task';
+import type { Task } from '@/types/models/Task';
 
 export const useTasksStore = defineStore('tasks', {
   state: (): State => ({
@@ -68,6 +65,9 @@ export const useTasksStore = defineStore('tasks', {
     getAllTasks(state): Task[] {
       return state.tasks.default;
     },
+    getRootTasks(state): Task[] {
+      return state.tasks.default.filter((task: Task) => !task.parentId);
+    },
     getProjectTasks(state): (projectId: string) => Task[] {
       return (projectId = 'inbox') => {
         return state.tasks.default.filter((task) => task.projectId === projectId);
@@ -86,7 +86,9 @@ export const useTasksStore = defineStore('tasks', {
       });
     },
     getTaskById(state): (id: string) => Task | undefined {
-      return (id: string): Task | undefined => findDeepTaskById(state.tasks.default, id);
+      return (id: string): Task | undefined => {
+        return state.tasks.default.find((task) => task.id === id);
+      };
     },
     getPriorityTasks(state): Task[] {
       return state.tasks.default.filter((task) => task.isPriority);
@@ -114,33 +116,15 @@ export const useTasksStore = defineStore('tasks', {
     },
   },
   actions: {
-    addTask(options: TaskAddOptions) {
+    addTask(options: Task) {
       const newTask = createNewTask(options);
 
       this.tasks.default.push(newTask);
+      if (newTask.parentId) {
+        const parent = this.getTaskById(newTask.parentId);
 
-      useNotification(NotificationMessage.TaskAdd);
-    },
-    addSubtask(subtask: TaskAddSubtaskOptions, parentId: string) {
-      const { title, description, isPriority, date, projectId } = subtask;
-      const id = uuid();
-      const newSubTask: Task = {
-        id,
-        title,
-        ...(description && { description }),
-        isDone: false,
-        isPriority,
-        createdAt: new Date(),
-        ...(date && { date }),
-        subtasks: [],
-        parentId,
-        projectId,
-      };
-
-      const parentTaskIdx = findIndex(parentId, this.tasks.default);
-
-      this.tasks.default[parentTaskIdx].subtasks.push(newSubTask);
-
+        parent?.childId?.push(newTask.id);
+      }
       useNotification(NotificationMessage.TaskAdd);
     },
     addNotification(message: string, id: string) {
@@ -191,82 +175,69 @@ export const useTasksStore = defineStore('tasks', {
       this.sort.order = this.sort.order === SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
     },
     toggleIsDone(id: string) {
-      const task = findDeepTaskById(this.tasks.default, id);
+      const index = findIndex(id, this.tasks.default);
 
-      if (task) {
-        toggleProp(task, 'isDone');
-      }
+      this.tasks.default[index]['isDone'] = !this.tasks.default[index]['isDone'];
 
-      task?.isDone
+      this.tasks.default[index]['isDone']
         ? useNotification(NotificationMessage.TaskComplete)
         : useNotification(NotificationMessage.TaskActivate);
     },
     toggleIsPriority(id: string) {
-      const task = findDeepTaskById(this.tasks.default, id);
+      const index = findIndex(id, this.tasks.default);
 
-      if (task) {
-        toggleProp(task, 'isPriority');
-      }
+      this.tasks.default[index]['isPriority'] = !this.tasks.default[index]['isPriority'];
 
       useNotification(NotificationMessage.TaskPriority);
     },
     updateTask(id: string, content: Partial<Task>): void {
-      const task = findDeepTaskById(this.tasks.default, id);
+      const task = findItem(id, this.tasks.default);
+      const index = findIndex(id, this.tasks.default);
 
-      if (task) {
-        Object.assign(task, content);
-      }
+      this.tasks.default[index] = { ...task, ...content };
 
       useNotification(NotificationMessage.TaskUpdate);
     },
     updateDate(id: string, date: Date): void {
-      const task = findDeepTaskById(this.tasks.default, id);
+      const task = findItem(id, this.tasks.default);
 
-      if (task) {
-        task.date = date;
-      }
-      console.log(task);
+      task.date = date;
+
       useNotification(NotificationMessage.TaskDateUpdate);
     },
     moveTask(id: string, projectId: string) {
-      const task = findDeepTaskById(this.tasks.default, id);
+      const task = findItem(id, this.tasks.default);
 
-      if (task) {
-        task.projectId = projectId;
-      }
+      task.projectId = projectId;
 
       useNotification(NotificationMessage.TaskMove);
     },
     duplicateTask(id: string, projectId?: string): void {
-      const task = findDeepTaskById(this.tasks.default, id);
-
+      const task = findItem(id, this.tasks.default);
       const copyTask = JSON.parse(JSON.stringify(task));
+      const newId = uuid();
+      const newCreatedAt = new Date();
 
-      updateEveryProp(copyTask);
-
-      // if (copyTask.date) copyTask.date = new Date(copyTask.date);
+      copyTask.id = newId;
+      copyTask.createdAt = newCreatedAt;
+      if (copyTask.date) copyTask.date = new Date(copyTask.date);
       if (projectId) {
         copyTask.projectId = projectId;
-        console.log(copyTask.projectId);
       }
-      console.log(copyTask);
 
-      // const taskIndex = this.tasks.default.findIndex((task) => task.id === id);
-      // const tasksArrStart = this.tasks.default.slice(0, taskIndex + 1);
-      // const tasksArrEnd = this.tasks.default.slice(taskIndex + 1);
+      const taskIndex = this.tasks.default.findIndex((task) => task.id === id);
+      const tasksArrStart = this.tasks.default.slice(0, taskIndex + 1);
+      const tasksArrEnd = this.tasks.default.slice(taskIndex + 1);
 
-      // this.tasks.default = [...tasksArrStart, copyTask, ...tasksArrEnd];
+      this.tasks.default = [...tasksArrStart, copyTask, ...tasksArrEnd];
 
       useNotification(NotificationMessage.TaskDuplicate);
     },
     deleteTask(id: string): void {
-      const taskToDel = findDeepTaskById(this.tasks.default, id);
+      const taskToDel = findItem(id, this.tasks.default);
 
-      if (taskToDel) {
-        this.tasks.deleted.push(taskToDel);
-        this.tasks.default = this.tasks.default.filter((task) => task !== taskToDel);
-      }
-
+      this.tasks.deleted.push(taskToDel);
+      this.tasks.default = this.tasks.default.filter((task) => task !== taskToDel);
       useNotification(NotificationMessage.TaskDelete, id);
     },
     undoDeleteTask(id: string): void {

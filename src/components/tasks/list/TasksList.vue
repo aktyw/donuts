@@ -17,16 +17,23 @@
       </draggable>
     </ul> -->
 
-    <ul>
+    <ul v-if="!isTimeline">
       <TaskCard
-        v-for="task in tasks"
+        v-for="task in allTasks"
         :key="task.id"
         :task="task">
         <TasksList
-          v-if="task.subtasks.length > 0"
-          :tasks="task.subtasks"
+          v-if="task.childId!.length > 0"
+          :tasks="task.childId"
           class="pl-12">
         </TasksList>
+      </TaskCard>
+    </ul>
+    <ul v-else>
+      <TaskCard
+        v-for="task in (tasks as Task[])"
+        :key="task.id"
+        :task="task">
       </TaskCard>
     </ul>
   </section>
@@ -44,10 +51,9 @@ import { SortFilters } from '@/types/models/Sort';
 import type { Task } from '@/types/models/Task';
 
 type Props = {
-  tasks: Task[];
+  tasks: Task[] | string[];
+  isTimeline?: boolean;
 };
-
-onMounted(() => {});
 
 const props = defineProps<Props>();
 
@@ -55,5 +61,15 @@ const drag = ref(true);
 const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
 
 const store = useTasksStore();
-const { getSortType: sortTypeStatus } = storeToRefs(store);
+const { getSortType: sortTypeStatus, getTaskById } = storeToRefs(store);
+
+const allTasks = computed(() => {
+  if (typeof props.tasks[0] === 'string') {
+    return props.tasks.map((id) => {
+      return getTaskById.value(id);
+    });
+  }
+
+  return props.tasks;
+});
 </script>

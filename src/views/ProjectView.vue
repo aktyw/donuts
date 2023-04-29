@@ -10,7 +10,7 @@
       <FiltersList
         v-if="!!store.tasks.default.length && !allowDrag"
         :tasks="projectTasks" />
-      <TasksList :tasks="tasks" />
+      <TasksList :tasks="rootProjectTasks" />
 
       <TaskAddButton
         v-if="!isEditorActive"
@@ -54,6 +54,7 @@ import { useHandleTasks } from '@/composables/useHandleTasks';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import { SortFilters } from '@/types/models/Sort';
+import type { Task } from '@/types/models/Task';
 
 const store = useTasksStore();
 const projectsStore = useProjectsStore();
@@ -64,6 +65,7 @@ const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
 const projectTasks = computed(() => getProjectTasks.value(projectId.value as string));
 const currentProject = computed(() => getProjectById.value((projectId.value as string) ?? 'inbox'));
 const tasks = useHandleTasks(projectTasks);
+const rootProjectTasks = computed(() => tasks.value.filter((task: Task) => !task.parentId));
 const isEditorActive = ref(false);
 
 provide('isEditorActive', isEditorActive);

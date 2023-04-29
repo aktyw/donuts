@@ -88,7 +88,8 @@
             <TaskEditor
               v-if="isSubtaskEdtiorActive"
               :is-sub-task="true"
-              @add-sub-task="handleAddSubtask"
+              :task="task"
+              :current-project="taskProject"
               @close-editor="isSubtaskEdtiorActive = false" />
             <SubtaskAddButton
               v-else
@@ -147,7 +148,7 @@
 import Datepicker from '@vuepic/vue-datepicker';
 import { onClickOutside } from '@vueuse/core';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
-import { computed, onMounted, onUpdated, type Ref, ref } from 'vue';
+import { computed, type ComputedRef, inject, onMounted, onUpdated, type Ref, ref, unref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import IconChevronDown from '@/components/icons/IconChevronDown.vue';
@@ -168,7 +169,7 @@ import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 import ButtonBadgeMedium from '@/components/ui/buttons/ButtonBadgeMedium.vue';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
-import type { Task, TaskAddSubtaskOptions } from '@/types/models/Task';
+import type { Task } from '@/types/models/Task';
 
 import { findIndex } from '../../../helpers/findIndex';
 import { findItem } from '../../../helpers/findItem';
@@ -182,11 +183,12 @@ defineEmits<{
 
 const storeProjects = useProjectsStore();
 const store = useTasksStore();
-const projectId = route.params.id as string;
 const taskId = computed(() => route.params.taskid as string);
 const task = computed(() => store.getTaskById(taskId.value)!);
-const initialTasks = store.getProjectTasks(projectId);
 const taskProject = computed(() => storeProjects.getProjectById(task.value.projectId));
+const initialTasks = unref(inject('tasks') as Task[]);
+// const initialTasks = unref(tasks);
+const initialProject = storeProjects.getProjectById(task.value.projectId);
 const selectedProject = ref(taskProject.value);
 const deleteConfirm = ref(false);
 
@@ -198,17 +200,25 @@ const target = ref();
 const isTaskEditorActive = ref(false);
 const isSubtaskEdtiorActive = ref(false);
 
-onMounted(() => {
-  isSubtaskEdtiorActive.value = !!(route.hash === '#subtask');
-  console.log(taskId.value);
-  console.log(task.value);
-  console.log(taskProject.value);
+const exitRoutePushName = computed(() => {
+  if (route.path.toString().includes('/tasks/project')) {
+    return 'project';
+  } else if (route.path.toString().includes('/tasks/today')) {
+    return 'today';
+  }
+
+  return 'tasks';
 });
 
-onUpdated(() => {
-  // console.log(currentDate.value);
-  // console.log(date.value);
+onMounted(() => {
+  isSubtaskEdtiorActive.value = !!(route.hash === '#subtask');
+
+  console.log(route.path);
+  console.log(initialTasks);
+  console.log(initialTasks);
 });
+
+// onUpdated(() => {});
 
 async function moveToPrevTask(): Promise<void> {
   try {
@@ -217,7 +227,11 @@ async function moveToPrevTask(): Promise<void> {
     if (idx <= 0) return;
     const { id: prevId } = findItem(initialTasks[idx - 1].id, initialTasks);
 
-    await router.push({ name: 'task', params: { taskid: prevId } });
+    if (exitRoutePushName.value === 'today') {
+      await router.push({ name: 'taskToday', params: { taskid: prevId } });
+    } else {
+      await router.push({ name: 'task', params: { taskid: prevId } });
+    }
     selectedProject.value = taskProject.value;
     date.value = currentDate.value;
   } catch (error) {
@@ -233,7 +247,12 @@ async function moveToNextTask(): Promise<void> {
 
     const { id: nextId } = findItem(initialTasks[idx + 1].id, initialTasks);
 
-    await router.push({ name: 'task', params: { taskid: nextId } });
+    if (exitRoutePushName.value === 'today') {
+      await router.push({ name: 'taskToday', params: { taskid: nextId } });
+    } else {
+      await router.push({ name: 'task', params: { taskid: nextId } });
+    }
+
     selectedProject.value = taskProject.value;
     date.value = currentDate.value;
   } catch (error) {
@@ -256,10 +275,6 @@ function handleMoveTask(): void {
   }
 }
 
-function handleAddSubtask(subtask: TaskAddSubtaskOptions): void {
-  store.addSubtask(subtask, task.value.id);
-}
-
 function toggleIsDone(): void {
   store.toggleIsDone(taskId.value);
 }
@@ -278,7 +293,9 @@ function handleDeleteTask(): void {
 }
 
 function closeModal(): void {
-  router.push({ name: 'project', params: { id: projectId } });
+  exitRoutePushName.value === 'project'
+    ? router.push({ name: exitRoutePushName.value, params: { id: initialProject?.id || 'inbox' } })
+    : router.push({ name: exitRoutePushName.value });
 }
 
 function closeEditors(): void {
@@ -306,7 +323,8 @@ function openSubtaskEditor(): void {
 
 onClickOutside(target, () => {
   if (deleteConfirm.value) return;
-  router.push({ name: 'project', params: { id: projectId } });
+
+  closeModal();
 });
 
 useFocusTrap(target, {

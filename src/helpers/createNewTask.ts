@@ -1,8 +1,8 @@
 import { v4 as uuid } from 'uuid';
 
-import type { Task, TaskAddOptions, TaskAddSubtaskOptions } from '@/types/models/Task';
+import type { Task } from '@/types/models/Task';
 
-export function createNewTask(options: TaskAddOptions | TaskAddSubtaskOptions): Task {
+export function createNewTask(options: Task): Task {
   const { title, description, isPriority, date, projectId, parentId } = options;
 
   return {
@@ -13,8 +13,8 @@ export function createNewTask(options: TaskAddOptions | TaskAddSubtaskOptions): 
     isPriority,
     createdAt: new Date(),
     ...(date && { date }),
-    subtasks: [],
-    ...(parentId && { parentId }),
     projectId,
+    ...(parentId && { parentId }),
+    childId: [],
   };
 }

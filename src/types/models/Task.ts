@@ -7,12 +7,12 @@ export interface Task {
   date?: Date;
   createdAt: Date;
   projectId: string;
-  parentId?: string;
-  subtasks: Task[];
+  parentId?: string | null;
+  childId?: string[] | [];
 }
 
-export type TaskAddOptions = Omit<Task, 'id' | 'isDone' | 'createdAt' | 'subtasks'>;
+// export type TaskAddOptions = Omit<Task, 'id' | 'isDone' | 'createdAt' | 'subtasks'>;
 
-export type TaskAddSubtaskOptions = TaskAddOptions & {
-  parentId?: string;
-};
+// export type TaskAddSubtaskOptions = TaskAddOptions & {
+//   parentId?: string;
+// };

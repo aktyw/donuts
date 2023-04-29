@@ -15,6 +15,22 @@
         @toggle="toggleIsDone(task.id)" />
       <div class="flex flex-col w-full cursor-pointer">
         <router-link
+          v-if="$route.name === 'today'"
+          class="flex flex-col"
+          :to="{ name: 'taskToday', params: { taskid: task.id } }">
+          <p
+            class="break-all h-full flex"
+            :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
+            {{ task.title }}
+          </p>
+          <p
+            class="break-all h-full flex text-sm"
+            :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
+            {{ task.description }}
+          </p>
+        </router-link>
+        <router-link
+          v-if="$route.name === 'project'"
           class="flex flex-col"
           :to="{ name: 'task', params: { taskid: task.id } }">
           <p
@@ -112,7 +128,7 @@ import { useElementBounding } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { computed, onMounted, type Ref, ref, watch } from 'vue';
 import { inject } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 import IconCalendar from '@/components/icons/IconCalendar.vue';
 import IconColor from '@/components/icons/IconColor.vue';
@@ -151,10 +167,7 @@ const showBacklight = ref(false);
 const editTask = ref(false);
 const isEditorActive = inject('isEditorActive');
 
-onMounted(() => {
-  console.log(props.task);
-  console.log(deadline.value);
-});
+onMounted(() => {});
 
 watch(activeElement, (el) => {
   el?.closest('.dropdown') ? (isOptionsOpen.value = true) : (isOptionsOpen.value = false);

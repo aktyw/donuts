@@ -1,8 +1,9 @@
+import { storeToRefs } from 'pinia';
 import { computed, type ComputedRef } from 'vue';
+
+import { useTasksStore } from '@/stores/TasksStore';
 import { SortFilters } from '@/types/models/Sort';
 import type { Task } from '@/types/models/Task';
-import { useTasksStore } from '@/stores/TasksStore';
-import { storeToRefs } from 'pinia';
 
 export function useSort(tasks: ComputedRef<Task[]>) {
   const store = useTasksStore();
