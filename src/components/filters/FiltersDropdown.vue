@@ -53,16 +53,10 @@
 
         <FiltersDropdownHeading>Filters</FiltersDropdownHeading>
         <FiltersDropdownButtonItem
-          :is-active="currentFilter === Filters.All"
-          @action="store.setFilter(Filters.All)">
-          <IconListAlt />
-          {{ Filters.All }}
-        </FiltersDropdownButtonItem>
-        <FiltersDropdownButtonItem
-          :is-active="currentFilter === Filters.Priority"
-          @action="store.setFilter(Filters.Priority)">
-          <IconImportantSmall />
-          {{ Filters.Priority }}
+          :is-active="currentFilter === Filters.Active"
+          @action="store.setFilter(Filters.Active)">
+          <IconCircle />
+          {{ Filters.Active }}
         </FiltersDropdownButtonItem>
         <FiltersDropdownButtonItem
           :is-active="currentFilter === Filters.Completed"
@@ -71,10 +65,16 @@
           {{ Filters.Completed }}
         </FiltersDropdownButtonItem>
         <FiltersDropdownButtonItem
-          :is-active="currentFilter === Filters.Active"
-          @action="store.setFilter(Filters.Active)">
-          <IconCircle />
-          {{ Filters.Active }}
+          :is-active="currentFilter === Filters.Priority"
+          @action="store.setFilter(Filters.Priority)">
+          <IconImportantSmall />
+          {{ Filters.Priority }}
+        </FiltersDropdownButtonItem>
+        <FiltersDropdownButtonItem
+          :is-active="currentFilter === Filters.All"
+          @action="store.setFilter(Filters.All)">
+          <IconListAlt />
+          {{ Filters.All }}
         </FiltersDropdownButtonItem>
       </ul>
       <BaseDividerSmall v-if="sortTypeStatus !== SortFilters.Default || currentProject" />
