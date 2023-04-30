@@ -18,7 +18,7 @@
         @close-editor="closeEditor" />
     </div>
 
-    <EmptyMessage v-if="!store.tasks.default.length" />
+    <EmptyMessage v-if="!tasks.length" />
     <Teleport to="body">
       <router-view></router-view>
     </Teleport>
@@ -50,6 +50,7 @@ const isEditorActive = ref(false);
 
 provide('isEditorActive', isEditorActive);
 provide('tasks', readonly(todayTasks));
+provide('currentProject', undefined);
 
 function showEditor(): void {
   isEditorActive.value = true;

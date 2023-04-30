@@ -137,7 +137,7 @@ const {
 } = storeToRefs(store);
 
 const tasks = inject<Task[]>('tasks') ?? [];
-const currentProject = inject<Project>('currentProject');
+const currentProject = inject<Project | undefined>('currentProject');
 
 const emit = defineEmits<{
   (e: 'deleteTasks', currentProject?: Project): void;

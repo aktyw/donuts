@@ -19,7 +19,7 @@
         @close-editor="closeEditor" />
     </div>
 
-    <EmptyMessage v-if="!store.tasks.default.length" />
+    <EmptyMessage v-if="!projectTasks.length" />
     <Teleport to="body">
       <router-view></router-view>
     </Teleport>

@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { Task } from '@/types/models/Task';
 
-export function duplicateTaskWithChildren(task: Task, newParent?: Task): Task {
+export function duplicateNestedTasks(task: Task, newParent?: Task): Task {
   const store = useTasksStore();
 
   const copyTask = JSON.parse(JSON.stringify(task));
@@ -37,7 +37,7 @@ export function duplicateTaskWithChildren(task: Task, newParent?: Task): Task {
     copyTask.childId.forEach((id: string) => {
       const t = store.getTaskById(id);
 
-      duplicateTaskWithChildren(t, copyTask);
+      duplicateNestedTasks(t, copyTask);
     });
   }
 

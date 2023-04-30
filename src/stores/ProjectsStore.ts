@@ -121,7 +121,7 @@ export const useProjectsStore = defineStore('projects', {
       const { getProjectTasks } = storeToRefs(taskStore);
       const tasks = getProjectTasks.value(id);
 
-      tasks.forEach(({ id }) => taskStore.duplicateTask(id, copyProject.id));
+      tasks.forEach(({ id }: { id: string }) => taskStore.duplicateTask(id, copyProject.id));
 
       useNotification(NotificationMessage.DuplicateProject);
     },

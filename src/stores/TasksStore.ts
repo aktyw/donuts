@@ -5,9 +5,10 @@ import { v4 as uuid } from 'uuid';
 import { useNotification } from '@/composables/useNotification';
 import { isToday } from '@/helpers/checkTime';
 import { createNewTask } from '@/helpers/createNewTask';
-import { duplicateTaskWithChildren } from '@/helpers/duplicateTaskWithChildren';
+import { duplicateNestedTasks } from '@/helpers/duplicateNestedTasks';
 import { findIndex } from '@/helpers/findIndex';
 import { findItem } from '@/helpers/findItem';
+import { moveNestedTasks } from '@/helpers/moveNestedTasks';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { Filters } from '@/types/models/Filters';
 import type { Notification } from '@/types/models/Notification';
@@ -212,16 +213,18 @@ export const useTasksStore = defineStore('tasks', {
       useNotification(NotificationMessage.TaskDateUpdate);
     },
     moveTask(id: string, projectId: string) {
-      const task = findItem(id, this.tasks.default);
+      const rootTask = findItem(id, this.tasks.default);
 
-      task.projectId = projectId;
+      moveNestedTasks(rootTask);
+
+      rootTask.projectId = projectId;
 
       useNotification(NotificationMessage.TaskMove);
     },
     duplicateTask(id: string, projectId?: string): void {
       const task = findItem(id, this.tasks.default);
 
-      duplicateTaskWithChildren(task);
+      duplicateNestedTasks(task);
       // const taskIndex = this.tasks.default.findIndex((task: Task) => task.id === id);
       // const tasksArrStart = this.tasks.default.slice(0, taskIndex + 1);
       // const tasksArrEnd = this.tasks.default.slice(taskIndex + 1);

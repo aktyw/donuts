@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { useDateFormat, useNow } from '@vueuse/core';
-import { ref } from 'vue';
+import { type Ref, ref } from 'vue';
 
 import BaseHeading from '@/components/base/BaseHeading.vue';
 import FiltersDropdown from '@/components/filters/FiltersDropdown.vue';
@@ -36,7 +36,7 @@ import { useTasksStore } from '@/stores/TasksStore';
 import type { Project } from '@/types/models/Projects';
 import { TASK_VIEW_TITLE } from '@/types/models/Titles';
 
-const currentProject = ref();
+const currentProject: Ref<Project | undefined> = ref();
 const store = useTasksStore();
 
 defineProps<{
@@ -47,7 +47,6 @@ defineProps<{
 function handleDeleteAndSetProject(project: Project) {
   currentProject.value = project;
   toggleDeleteModal();
-  console.log(currentProject.value.value);
 }
 
 const formattedDate = useDateFormat(useNow(), 'ddd DD MMM', { locales: 'en-US' });
@@ -63,7 +62,7 @@ function cancelDeleteTask(): void {
 }
 
 function handleDeleteAllTasks(): void {
-  store.deleteAllProjectTasks(currentProject.value.value.id);
+  store.deleteAllProjectTasks(currentProject?.value?.value.id);
   toggleDeleteModal();
 }
 </script>
