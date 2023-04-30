@@ -45,27 +45,29 @@
           </p>
         </router-link>
         <div class="flex justify-between pt-1">
-          <TaskSubtaskInfo
-            v-if="subtaskAmount > 0"
-            :amount="subtaskAmount"
-            :completed-amount="subtaskCompletedAmount" />
+          <div class="flex gap-3 items-end">
+            <TaskSubtaskInfo
+              v-if="subtaskAmount > 0"
+              :amount="subtaskAmount"
+              :completed-amount="subtaskCompletedAmount" />
 
-          <TaskTimeDetail
-            :class="markOverdue"
-            class="pt-0.5">
-            <template #icon>
-              <IconCalendar
-                v-if="showDetailTime"
-                class="relative right-0.5 fill-base-content" />
-            </template>
-            <template #time>
-              <span
-                v-if="showDetailTime"
-                class="pt-0.5"
-                >{{ showDetailTime }}</span
-              >
-            </template>
-          </TaskTimeDetail>
+            <TaskTimeDetail
+              :class="markOverdue"
+              class="pt-0.5">
+              <template #icon>
+                <IconCalendar
+                  v-if="showDetailTime"
+                  class="relative right-0.5 fill-base-content" />
+              </template>
+              <template #time>
+                <span
+                  v-if="showDetailTime"
+                  class="pt-0.5 flex items-end"
+                  >{{ showDetailTime }}</span
+                >
+              </template>
+            </TaskTimeDetail>
+          </div>
           <TaskProjectDetail
             v-if="project"
             class="items-center">
