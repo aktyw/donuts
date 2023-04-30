@@ -6,10 +6,12 @@ import { useNotification } from '@/composables/useNotification';
 import { breakConnection, hasParent } from '@/helpers/breakConnection';
 import { isToday } from '@/helpers/checkTime';
 import { createNewTask } from '@/helpers/createNewTask';
+import { deleteNestedTasks } from '@/helpers/deleteNestedTasks';
 import { duplicateNestedTasks } from '@/helpers/duplicateNestedTasks';
 import { findIndex } from '@/helpers/findIndex';
 import { findItem } from '@/helpers/findItem';
 import { moveNestedTasks } from '@/helpers/moveNestedTasks';
+import { recoverNestedTasks } from '@/helpers/recoverNestedTasks';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { Filters } from '@/types/models/Filters';
 import type { Notification } from '@/types/models/Notification';
@@ -90,6 +92,11 @@ export const useTasksStore = defineStore('tasks', {
     getTaskById(state): (id: string) => Task | undefined {
       return (id: string): Task | undefined => {
         return state.tasks.default.find((task) => task.id === id);
+      };
+    },
+    getDeletedTaskById(state): (id: string) => Task | undefined {
+      return (id: string): Task | undefined => {
+        return state.tasks.deleted.find((task) => task.id === id);
       };
     },
     getAllTasksById(): (ids: string[]) => Task[] | undefined {
@@ -236,17 +243,23 @@ export const useTasksStore = defineStore('tasks', {
       useNotification(NotificationMessage.TaskDuplicate);
     },
     deleteTask(id: string): void {
-      const taskToDel = findItem(id, this.tasks.default);
+      const rootTask = findItem(id, this.tasks.default);
 
-      this.tasks.deleted.push(taskToDel);
-      this.tasks.default = this.tasks.default.filter((task) => task !== taskToDel);
+      if (hasParent(rootTask)) {
+        breakConnection(rootTask);
+      }
+
+      deleteNestedTasks(rootTask);
+
       useNotification(NotificationMessage.TaskDelete, id);
     },
     undoDeleteTask(id: string): void {
       const taskToRecover = findItem(id, this.tasks.deleted);
 
-      this.tasks.default.push(taskToRecover);
-      this.tasks.deleted = this.tasks.deleted.filter((task) => task !== taskToRecover);
+      recoverNestedTasks(taskToRecover);
+
+      // this.tasks.default.push(taskToRecover);
+      // this.tasks.deleted = this.tasks.deleted.filter((task) => task !== taskToRecover);
     },
     deleteAllProjectTasks(projectId: string): void {
       const delTasks = [...this.tasks.default.filter((task) => task.projectId === projectId)];
