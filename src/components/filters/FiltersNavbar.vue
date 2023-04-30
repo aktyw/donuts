@@ -11,7 +11,7 @@
         >
       </h2>
     </BaseHeading>
-    <FiltersDropdown @delete-tasks="handleDeleteAndSetProject"></FiltersDropdown>
+    <FiltersDropdown @delete-tasks="handleDeleteTasksAndSetProject"></FiltersDropdown>
     <ModalConfirmDelete
       v-if="deleteConfirm"
       :is-danger="true"
@@ -44,8 +44,9 @@ defineProps<{
   titleDate?: string | Date;
 }>();
 
-function handleDeleteAndSetProject(project: Project) {
+function handleDeleteTasksAndSetProject(project?: Project) {
   currentProject.value = project;
+  console.log(currentProject.value);
   toggleDeleteModal();
 }
 
@@ -62,7 +63,7 @@ function cancelDeleteTask(): void {
 }
 
 function handleDeleteAllTasks(): void {
-  store.deleteAllProjectTasks(currentProject?.value?.value.id);
+  store.deleteAllProjectTasks(currentProject?.value?.id);
   toggleDeleteModal();
 }
 </script>

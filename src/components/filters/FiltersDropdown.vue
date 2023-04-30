@@ -103,7 +103,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { inject } from 'vue';
+import { inject, type Ref } from 'vue';
 
 import BaseDividerSmall from '@/components/base/BaseDividerSmall.vue';
 import FiltersDropdownButtonItem from '@/components/filters/FiltersDropdownButtonItem.vue';
@@ -137,7 +137,7 @@ const {
 } = storeToRefs(store);
 
 const tasks = inject<Task[]>('tasks') ?? [];
-const currentProject = inject<Project | undefined>('currentProject');
+const currentProject = inject<Ref<Project>>('currentProject');
 
 const emit = defineEmits<{
   (e: 'deleteTasks', currentProject?: Project): void;
@@ -145,6 +145,6 @@ const emit = defineEmits<{
 
 function handleDeleteTasks(): void {
   blurElement();
-  emit('deleteTasks', currentProject);
+  emit('deleteTasks', currentProject?.value);
 }
 </script>
