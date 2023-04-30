@@ -66,9 +66,9 @@
         <main class="flex flex-col gap-4 w-full h-full p-4">
           <div
             v-if="hasParent"
-            class="flex items-center justify-between border rounded-md mx-0.5 w-40 h-10">
+            class="flex items-center justify-between border rounded-md mx-0.5 h-10 max-w-[440px]">
             <ParentTaskButton :parent="parentTask" />
-            <ParentSubTaskDropdown :subtasks="subTasks" />
+            <ParentSubtaskDropdown :subtasks-id="parentTask.childId" />
           </div>
           <div class="flex">
             <TaskCheckbox
@@ -95,11 +95,11 @@
           </div>
           <div class="ml-8 relative">
             <TaskEditor
-              v-if="isSubtaskEdtiorActive"
+              v-if="isSubtaskEditorActive"
               :is-sub-task="true"
               :task="currentTask"
               :current-project="currentProject"
-              @close-editor="isSubtaskEdtiorActive = false" />
+              @close-editor="isSubtaskEditorActive = false" />
             <!-- <ul
               v-if="subTasks"
               class="before:absolute before:top-0 before:left-0 before:w-2 before:h-10 before:bg-black before:content-none before:block">
@@ -111,7 +111,7 @@
               </RouterLink>
             </ul> -->
             <SubtaskAddButton
-              v-if="!isSubtaskEdtiorActive"
+              v-if="!isSubtaskEditorActive"
               class="print:hidden"
               @click="openSubtaskEditor" />
           </div>
@@ -179,7 +179,7 @@ import ProjectList from '@/components/projects/ProjectList.vue';
 import TaskCheckbox from '@/components/tasks/card/TaskCheckbox.vue';
 import TaskEditor from '@/components/tasks/editor/TaskEditor.vue';
 import TaskEditorSlim from '@/components/tasks/editor/TaskEditorSlim.vue';
-import ParentSubTaskDropdown from '@/components/tasks/modal/ParentSubTaskDropdown.vue';
+import ParentSubtaskDropdown from '@/components/tasks/modal/ParentSubtaskDropdown.vue';
 import ParentTaskButton from '@/components/tasks/modal/ParentTaskButton.vue';
 import SubtaskAddButton from '@/components/tasks/modal/SubtaskAddButton.vue';
 import TaskModalAction from '@/components/tasks/modal/TaskModalAction.vue';
@@ -217,12 +217,6 @@ const parentTask = computed(() => {
   return store.getTaskById(parentTaskId);
 });
 
-const subTasks = computed(() => {
-  const subTasksId = currentTask.value.childId;
-
-  return subTasksId.map((id: string) => store.getTaskById(id));
-});
-
 const initialTasks = unref(inject('tasks') as Task[]);
 const initialProject = storeProjects.getProjectById(currentTask.value.projectId);
 const selectedProject = ref(currentProject.value);
@@ -231,7 +225,7 @@ const date: Ref<Date | undefined> = ref(currentTask.value.date);
 const datepicker = ref();
 const startTime = ref({ hours: 12, minutes: 0 });
 const isTaskEditorActive = ref(false);
-const isSubtaskEdtiorActive = ref(false);
+const isSubtaskEditorActive = ref(false);
 const deleteConfirm = ref(false);
 const target = ref();
 
@@ -248,7 +242,7 @@ const hasParent = computed(() => !!parentTask.value);
 onUpdated(() => {});
 
 onMounted(() => {
-  isSubtaskEdtiorActive.value = !!(route.hash === '#subtask');
+  isSubtaskEditorActive.value = !!(route.hash === '#subtask');
   console.log(route.path);
   console.log(route.params);
 });
@@ -325,7 +319,7 @@ function closeModal(): void {
 
 function closeEditors(): void {
   isTaskEditorActive.value = false;
-  isSubtaskEdtiorActive.value = false;
+  isSubtaskEditorActive.value = false;
 }
 
 function toggleDeleteModal(): void {
@@ -338,12 +332,12 @@ function cancelDeleteTask(): void {
 
 function openTaskEditor(): void {
   isTaskEditorActive.value = true;
-  isSubtaskEdtiorActive.value = false;
+  isSubtaskEditorActive.value = false;
 }
 
 function openSubtaskEditor(): void {
   isTaskEditorActive.value = false;
-  isSubtaskEdtiorActive.value = true;
+  isSubtaskEditorActive.value = true;
 }
 
 onClickOutside(target, () => {

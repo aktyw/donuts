@@ -53,7 +53,8 @@
 
             <TaskTimeDetail
               :class="markOverdue"
-              class="pt-0.5">
+              class="pt-0.5"
+              @click.stop="handleOpenCalendar">
               <template #icon>
                 <IconCalendar
                   v-if="showDetailTime"
@@ -88,6 +89,7 @@
       v-show="cardIsHover"
       :task-id="task.id"
       :task="task"
+      :trigger-calendar="openCalendar"
       class="absolute right-0"
       :coords="{ cardX, cardY, cardBottom }"
       @toggle-is-priority="toggleIsPriority"
@@ -187,6 +189,14 @@ const subtaskCompletedAmount = computed(() => {
   return amount?.length || 0;
 });
 
+const openCalendar = ref(false);
+
+function handleOpenCalendar(): void {
+  console.log(openCalendar.value);
+  openCalendar.value = true;
+  console.log(openCalendar.value);
+}
+
 watch(activeElement, (el) => {
   el?.closest('.dropdown') ? (isOptionsOpen.value = true) : (isOptionsOpen.value = false);
 });
@@ -245,12 +255,13 @@ function handleDuplicateTask(id: string): void {
 
 function handleUpdateDate(date: Date): void {
   store.updateDate(props.task.id, date);
+  openCalendar.value = false;
 }
 
 function handleAddSubtask(): void {
   route.name === 'today'
-    ? router.push({ name: 'taskToday', params: { taskid: props.task.id } })
-    : router.push({ name: 'task', params: { taskid: props.task.id } });
+    ? router.push({ name: 'taskToday', params: { taskid: props.task.id }, hash: '#subtask' })
+    : router.push({ name: 'task', params: { taskid: props.task.id }, hash: '#subtask' });
 }
 
 function handleUpdateTask(content: Partial<Task>): void {

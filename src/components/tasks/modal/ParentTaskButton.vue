@@ -5,7 +5,7 @@
     <RouterLink
       :to="{ params: { taskid: parent.id } }"
       class="flex gap-1 items-center justify-center w-full h-full hover:bg-base-200">
-      <IconCircle></IconCircle>
+      <IconCircle />
       <span>{{ parent.title }}</span>
     </RouterLink>
   </TheTooltip>
