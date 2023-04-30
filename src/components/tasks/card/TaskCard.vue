@@ -45,6 +45,11 @@
           </p>
         </router-link>
         <div class="flex justify-between pt-1">
+          <TaskSubtaskInfo
+            v-if="subtaskAmount > 0"
+            :amount="subtaskAmount"
+            :completed-amount="subtaskCompletedAmount" />
+
           <TaskTimeDetail
             :class="markOverdue"
             class="pt-0.5">
@@ -126,15 +131,16 @@
 import { useActiveElement } from '@vueuse/core';
 import { useElementBounding } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { computed, onMounted, type Ref, ref, watch } from 'vue';
+import { computed, type Ref, ref, watch } from 'vue';
 import { inject } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 import IconCalendar from '@/components/icons/IconCalendar.vue';
 import IconColor from '@/components/icons/IconColor.vue';
 import ModalConfirmDelete from '@/components/modals/ModalConfirmDelete.vue';
 import TaskCheckbox from '@/components/tasks/card/TaskCheckbox.vue';
 import TaskProjectDetail from '@/components/tasks/card/TaskProjectDetail.vue';
+import TaskSubtaskInfo from '@/components/tasks/card/TaskSubtaskInfo.vue';
 import TaskTimeDetail from '@/components/tasks/card/TaskTimeDetail.vue';
 import TaskEditor from '@/components/tasks/editor/TaskEditor.vue';
 import TaskOptions from '@/components/tasks/TaskOptions.vue';
@@ -166,8 +172,17 @@ const { x: cardX, y: cardY, bottom: cardBottom } = useElementBounding(card);
 const showBacklight = ref(false);
 const editTask = ref(false);
 const isEditorActive = inject('isEditorActive');
+const subtaskAmount = computed(() => props.task.childId?.length || 0);
+const subtaskChilds = computed(() => props.task.childId);
+const subtaskCompletedAmount = computed(() => {
+  const amount = subtaskChilds.value?.filter((subId) => {
+    const subs = store.getTaskById(subId);
 
-onMounted(() => {});
+    return subs.isDone;
+  });
+
+  return amount?.length || 0;
+});
 
 watch(activeElement, (el) => {
   el?.closest('.dropdown') ? (isOptionsOpen.value = true) : (isOptionsOpen.value = false);
