@@ -68,6 +68,7 @@ const isEditorActive = ref(false);
 
 provide('isEditorActive', isEditorActive);
 provide('tasks', readonly(projectTasks));
+provide('currentProject', readonly(currentProject));
 
 function showEditor(): void {
   isEditorActive.value = true;

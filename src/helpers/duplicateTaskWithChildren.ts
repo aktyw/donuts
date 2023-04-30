@@ -3,8 +3,6 @@ import { v4 as uuid } from 'uuid';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { Task } from '@/types/models/Task';
 
-import { findItem } from './findItem';
-
 export function duplicateTaskWithChildren(task: Task, newParent?: Task): Task {
   const store = useTasksStore();
 

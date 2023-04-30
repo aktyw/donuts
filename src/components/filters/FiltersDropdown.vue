@@ -77,14 +77,16 @@
           {{ Filters.Active }}
         </FiltersDropdownButtonItem>
       </ul>
-      <BaseDividerSmall />
+      <BaseDividerSmall v-if="sortTypeStatus !== SortFilters.Default || currentProject" />
 
-      <FiltersDropdownHeading>Actions</FiltersDropdownHeading>
+      <FiltersDropdownHeading v-if="sortTypeStatus !== SortFilters.Default || currentProject"
+        >Actions</FiltersDropdownHeading
+      >
       <FiltersDropdownButtonItem
-        v-if="tasks"
+        v-if="tasks && currentProject"
         :disabled="!tasks.length"
         :is-danger="true"
-        @action="handleDeleteTask()">
+        @action="handleDeleteTasks()">
         <IconRecycleBin />
         Delete all
       </FiltersDropdownButtonItem>
@@ -122,10 +124,12 @@ import IconStart from '@/components/icons/IconStart.vue';
 import blurElement from '@/helpers/blur';
 import { useTasksStore } from '@/stores/TasksStore';
 import { Filters } from '@/types/models/Filters';
+import type { Project } from '@/types/models/Projects';
 import { SortFilters, SortOrder } from '@/types/models/Sort';
 import type { Task } from '@/types/models/Task';
 
 const store = useTasksStore();
+
 const {
   getSortType: sortTypeStatus,
   getSortOrder: sortOrderStatus,
@@ -133,13 +137,14 @@ const {
 } = storeToRefs(store);
 
 const tasks = inject<Task[]>('tasks') ?? [];
+const currentProject = inject<Project>('currentProject');
 
 const emit = defineEmits<{
-  (e: 'deleteTasks'): void;
+  (e: 'deleteTasks', currentProject?: Project): void;
 }>();
 
-function handleDeleteTask(): void {
+function handleDeleteTasks(): void {
   blurElement();
-  emit('deleteTasks');
+  emit('deleteTasks', currentProject);
 }
 </script>

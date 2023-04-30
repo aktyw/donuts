@@ -243,6 +243,15 @@ export const useTasksStore = defineStore('tasks', {
       this.tasks.default.push(taskToRecover);
       this.tasks.deleted = this.tasks.deleted.filter((task) => task !== taskToRecover);
     },
+    deleteAllProjectTasks(projectId: string): void {
+      const delTasks = [...this.tasks.default.filter((task) => task.projectId === projectId)];
+
+      this.tasks.deleted.push(...delTasks);
+      this.tasks.default = this.tasks.default.filter((task) => task.projectId !== projectId);
+      this.tasks.temp.push(...delTasks);
+
+      useNotification(NotificationMessage.TasksAllDelete);
+    },
     deleteAllTasks(): void {
       const delTasks = [...this.tasks.default];
 

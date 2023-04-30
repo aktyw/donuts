@@ -35,6 +35,7 @@ import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
 import { ref } from 'vue';
 
 import BaseButton from '@/components/base/BaseButton.vue';
+import type { Project } from '@/types/models/Projects';
 
 defineProps<{
   isDanger?: boolean;
@@ -42,7 +43,7 @@ defineProps<{
 
 defineEmits<{
   (e: 'cancel'): void;
-  (e: 'action'): void;
+  (e: 'action', currentProject?: Project): void;
 }>();
 
 const target = ref();
