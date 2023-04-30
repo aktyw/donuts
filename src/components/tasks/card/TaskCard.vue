@@ -135,7 +135,7 @@ import { useElementBounding } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { computed, type Ref, ref, watch } from 'vue';
 import { inject } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 import IconCalendar from '@/components/icons/IconCalendar.vue';
 import IconColor from '@/components/icons/IconColor.vue';
@@ -157,6 +157,7 @@ type Props = {
 
 const props = defineProps<Props>();
 const router = useRouter();
+const route = useRoute();
 const store = useTasksStore();
 const storeProjects = useProjectsStore();
 const activeElement = useActiveElement();
@@ -247,7 +248,9 @@ function handleUpdateDate(date: Date): void {
 }
 
 function handleAddSubtask(): void {
-  router.push({ name: 'task', params: { taskid: props.task.id }, hash: '#subtask' });
+  route.name === 'today'
+    ? router.push({ name: 'taskToday', params: { taskid: props.task.id } })
+    : router.push({ name: 'task', params: { taskid: props.task.id } });
 }
 
 function handleUpdateTask(content: Partial<Task>): void {

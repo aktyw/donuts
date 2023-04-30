@@ -10,26 +10,32 @@
         <div>
           <ProjectLink
             class="hover:!bg-base-100 hover:underline"
-            :to="{ name: 'project', params: { id: taskProject?.id || 'inbox' } }"
-            :name="taskProject?.name"
+            :to="{ name: 'project', params: { id: currentProject?.id || 'inbox' } }"
+            :name="currentProject?.name"
             :custom-tooltip="true"
-            :fill="taskProject?.color">
-            <span class="items-center">{{ taskProject?.name }}</span>
+            :fill="currentProject?.color">
+            <span class="items-center">{{ currentProject?.name }}</span>
           </ProjectLink>
         </div>
         <nav class="flex gap-2 items-center">
           <TaskModalAction
             tooltip-data="Previous task"
-            @click="moveToPrevTask">
-            <IconChevronDown class="rotate-180" />
+            :disabled="!isPrevTask"
+            :class="{ 'cursor-not-allowed bg-base-100, color-red-500': !isPrevTask }"
+            @click.stop="moveToPrevTask">
+            <IconChevronDown
+              class="rotate-180"
+              :class="{ 'fill-base-300': !isPrevTask }" />
           </TaskModalAction>
           <TaskModalAction
             tooltip-data="Next task"
-            @click="moveToNextTask">
-            <IconChevronDown />
+            :disabled="!isNextTask"
+            :class="{ 'cursor-not-allowed bg-base-100': !isNextTask }"
+            @click.stop="moveToNextTask">
+            <IconChevronDown :class="{ 'fill-base-300': !isNextTask }" />
           </TaskModalAction>
           <TaskModalNavbarDropdown
-            :task="task"
+            :task="currentTask"
             @delete-task="toggleDeleteModal"
             @print-task="handlePrintTask" />
           <TaskModalAction
@@ -48,51 +54,64 @@
               <template #content>
                 <p>
                   Do you really want to delete
-                  <span class="font-bold break-words">{{ task.title }}</span> ?
+                  <span class="font-bold break-words">{{ currentTask.title }}</span> ?
                 </p>
               </template>
             </ModalConfirmDelete>
           </Teleport>
         </nav>
       </div>
+
       <section class="flex h-full">
         <main class="flex flex-col gap-4 w-full h-full p-4">
+          <div
+            v-if="hasParent"
+            class="flex items-center justify-between border rounded-md mx-0.5 w-40 h-10">
+            <ParentTaskButton :parent="parentTask" />
+            <ParentSubTaskDropdown :subtasks="subTasks" />
+          </div>
           <div class="flex">
             <TaskCheckbox
               class="pt-3 mx-0.5 checkbox-xs"
-              :is-done="task.isDone"
-              :is-priority="task.isPriority"
+              :is-done="currentTask.isDone"
+              :is-priority="currentTask.isPriority"
               @toggle="toggleIsDone" />
             <TaskEditorSlim
               v-if="isTaskEditorActive"
               class="ml-1"
-              :title="task.title"
-              :description="task.description"
+              :title="currentTask.title"
+              :description="currentTask.description"
               @update-task="handleUpdateTask"
               @close-editor="isTaskEditorActive = false" />
             <TaskShowSlim
               v-else
-              :class="{ 'line-through': task.isDone }"
+              :class="{ 'line-through': currentTask.isDone }"
               @click="openTaskEditor">
-              {{ task.title }}
+              {{ currentTask.title }}
               <template #desc>
-                {{ task.description }}
+                {{ currentTask.description }}
               </template>
             </TaskShowSlim>
           </div>
           <div class="ml-8 relative">
-            <span
-              class="before:absolute before:top-0 before:left-0 before:w-2 before:h-10 before:bg-black before:content-none before:block"
-              >span</span
-            >
             <TaskEditor
               v-if="isSubtaskEdtiorActive"
               :is-sub-task="true"
-              :task="task"
-              :current-project="taskProject"
+              :task="currentTask"
+              :current-project="currentProject"
               @close-editor="isSubtaskEdtiorActive = false" />
+            <!-- <ul
+              v-if="subTasks"
+              class="before:absolute before:top-0 before:left-0 before:w-2 before:h-10 before:bg-black before:content-none before:block">
+              <RouterLink
+                v-for="sub in subTasks"
+                :key="sub.id"
+                :title="sub.title">
+                {{ sub.title }}
+              </RouterLink>
+            </ul> -->
             <SubtaskAddButton
-              v-else
+              v-if="!isSubtaskEdtiorActive"
               class="print:hidden"
               @click="openSubtaskEditor" />
           </div>
@@ -104,7 +123,7 @@
               <ProjectList
                 v-model="selectedProject"
                 class="select-sm px-2 bg-base-100 hover:bg-base-100 transition duration-300 border-none w-full max-w-[16rem]"
-                :current-project="taskProject"
+                :current-project="currentProject"
                 @change="handleMoveTask" />
             </TaskModalOption>
             <TaskModalOption title="Due date">
@@ -121,9 +140,9 @@
                 class="!tooltip-top"
                 data="Set priority">
                 <ButtonBadgeMedium
-                  :class="{ '!bg-base-100': task.isPriority }"
+                  :class="{ '!bg-base-100': currentTask.isPriority }"
                   class="hover:!bg-base-100"
-                  :is-toggle="task.isPriority"
+                  :is-toggle="currentTask.isPriority"
                   @click.prevent="togglePriority"
                   ><template #icon>
                     <IconImportantSmall class="-ml-1.5" />
@@ -148,7 +167,7 @@
 import Datepicker from '@vuepic/vue-datepicker';
 import { onClickOutside } from '@vueuse/core';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
-import { computed, type ComputedRef, inject, onMounted, onUpdated, type Ref, ref, unref } from 'vue';
+import { computed, inject, onMounted, onUpdated, type Ref, ref, unref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import IconChevronDown from '@/components/icons/IconChevronDown.vue';
@@ -160,6 +179,8 @@ import ProjectList from '@/components/projects/ProjectList.vue';
 import TaskCheckbox from '@/components/tasks/card/TaskCheckbox.vue';
 import TaskEditor from '@/components/tasks/editor/TaskEditor.vue';
 import TaskEditorSlim from '@/components/tasks/editor/TaskEditorSlim.vue';
+import ParentSubTaskDropdown from '@/components/tasks/modal/ParentSubTaskDropdown.vue';
+import ParentTaskButton from '@/components/tasks/modal/ParentTaskButton.vue';
 import SubtaskAddButton from '@/components/tasks/modal/SubtaskAddButton.vue';
 import TaskModalAction from '@/components/tasks/modal/TaskModalAction.vue';
 import TaskModalNavbarDropdown from '@/components/tasks/modal/TaskModalNavbarDropdown.vue';
@@ -183,50 +204,64 @@ defineEmits<{
 
 const storeProjects = useProjectsStore();
 const store = useTasksStore();
-const taskId = computed(() => route.params.taskid as string);
-const task = computed(() => store.getTaskById(taskId.value)!);
-const taskProject = computed(() => storeProjects.getProjectById(task.value.projectId));
-const initialTasks = unref(inject('tasks') as Task[]);
-// const initialTasks = unref(tasks);
-const initialProject = storeProjects.getProjectById(task.value.projectId);
-const selectedProject = ref(taskProject.value);
-const deleteConfirm = ref(false);
 
-const currentDate = computed(() => store.getTaskDate(task.value.id));
-const date: Ref<Date | undefined> = ref(task.value.date);
+const currentTaskId = computed(() => route.params.taskid as string);
+const currentTask = computed(() => store.getTaskById(currentTaskId.value));
+const currentProject = computed(() => storeProjects.getProjectById(currentTask.value.projectId));
+const currentIndex = computed(() => findIndex(currentTaskId.value, initialTasks));
+const currentDate = computed(() => store.getTaskDate(currentTask.value.id));
+
+const parentTask = computed(() => {
+  const parentTaskId = currentTask.value.parentId;
+
+  return store.getTaskById(parentTaskId);
+});
+
+const subTasks = computed(() => {
+  const subTasksId = currentTask.value.childId;
+
+  return subTasksId.map((id: string) => store.getTaskById(id));
+});
+
+const initialTasks = unref(inject('tasks') as Task[]);
+const initialProject = storeProjects.getProjectById(currentTask.value.projectId);
+const selectedProject = ref(currentProject.value);
+
+const date: Ref<Date | undefined> = ref(currentTask.value.date);
 const datepicker = ref();
 const startTime = ref({ hours: 12, minutes: 0 });
-const target = ref();
 const isTaskEditorActive = ref(false);
 const isSubtaskEdtiorActive = ref(false);
+const deleteConfirm = ref(false);
+const target = ref();
 
-const exitRoutePushName = computed(() => {
-  if (route.path.toString().includes('/tasks/project')) {
-    return 'project';
-  } else if (route.path.toString().includes('/tasks/today')) {
-    return 'today';
-  }
-
-  return 'tasks';
+const isPrevTask = computed(() => {
+  return currentIndex.value > 0;
 });
+
+const isNextTask = computed(() => {
+  return currentIndex.value < initialTasks.length - 1;
+});
+
+const hasParent = computed(() => !!parentTask.value);
+
+onUpdated(() => {});
 
 onMounted(() => {
   isSubtaskEdtiorActive.value = !!(route.hash === '#subtask');
+  console.log(route.path);
+  console.log(route.params);
 });
 
 async function moveToPrevTask(): Promise<void> {
   try {
-    const idx = findIndex(taskId.value, initialTasks);
+    if (!isPrevTask.value) return;
 
-    if (idx <= 0) return;
-    const { id: prevId } = findItem(initialTasks[idx - 1].id, initialTasks);
+    const { id: prevId } = findItem(initialTasks[currentIndex.value - 1].id, initialTasks);
 
-    if (exitRoutePushName.value === 'today') {
-      await router.push({ name: 'taskToday', params: { taskid: prevId } });
-    } else {
-      await router.push({ name: 'task', params: { taskid: prevId } });
-    }
-    selectedProject.value = taskProject.value;
+    await router.push({ params: { taskid: prevId } });
+
+    selectedProject.value = currentProject.value;
     date.value = currentDate.value;
   } catch (error) {
     console.log(error);
@@ -235,19 +270,13 @@ async function moveToPrevTask(): Promise<void> {
 
 async function moveToNextTask(): Promise<void> {
   try {
-    const idx = findIndex(taskId.value, initialTasks);
+    if (!isNextTask.value) return;
 
-    if (idx >= initialTasks.length - 1) return;
+    const { id: nextId } = findItem(initialTasks[currentIndex.value + 1].id, initialTasks);
 
-    const { id: nextId } = findItem(initialTasks[idx + 1].id, initialTasks);
+    await router.push({ params: { taskid: nextId } });
 
-    if (exitRoutePushName.value === 'today') {
-      await router.push({ name: 'taskToday', params: { taskid: nextId } });
-    } else {
-      await router.push({ name: 'task', params: { taskid: nextId } });
-    }
-
-    selectedProject.value = taskProject.value;
+    selectedProject.value = currentProject.value;
     date.value = currentDate.value;
   } catch (error) {
     console.log(error);
@@ -255,26 +284,26 @@ async function moveToNextTask(): Promise<void> {
 }
 
 function handleUpdateTask(content: Partial<Task>): void {
-  store.updateTask(taskId.value, content);
+  store.updateTask(currentTaskId.value, content);
   closeEditors();
 }
 
 function handleUpdateDate(date: Date): void {
-  store.updateDate(taskId.value, date);
+  store.updateDate(currentTaskId.value, date);
 }
 
 function handleMoveTask(): void {
   if (selectedProject.value) {
-    store.moveTask(task.value.id, selectedProject.value.id);
+    store.moveTask(currentTask.value.id, selectedProject.value.id);
   }
 }
 
 function toggleIsDone(): void {
-  store.toggleIsDone(taskId.value);
+  store.toggleIsDone(currentTaskId.value);
 }
 
 function togglePriority(): void {
-  store.toggleIsPriority(task.value.id);
+  store.toggleIsPriority(currentTask.value.id);
 }
 
 function handlePrintTask(): void {
@@ -282,14 +311,16 @@ function handlePrintTask(): void {
 }
 
 function handleDeleteTask(): void {
-  store.deleteTask(task.value.id);
+  store.deleteTask(currentTask.value.id);
   closeModal();
 }
 
 function closeModal(): void {
-  exitRoutePushName.value === 'project'
-    ? router.push({ name: exitRoutePushName.value, params: { id: initialProject?.id || 'inbox' } })
-    : router.push({ name: exitRoutePushName.value });
+  const parentRoute = route.matched[1].name;
+
+  parentRoute === 'project'
+    ? router.push({ name: parentRoute, params: { id: initialProject?.id || 'inbox' } })
+    : router.push({ name: parentRoute });
 }
 
 function closeEditors(): void {

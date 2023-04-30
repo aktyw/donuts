@@ -2,7 +2,9 @@
   <TheTooltip
     class="!tooltip-top hover:bg-base-200 rounded-sm"
     :data="tooltipData">
-    <BaseButton class="flex items-center p-0.5">
+    <BaseButton
+      v-bind="$attrs"
+      class="flex items-center p-0.5">
       <slot />
     </BaseButton>
   </TheTooltip>

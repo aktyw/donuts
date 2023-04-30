@@ -4,6 +4,7 @@
     <label
       tabindex="0"
       class="btn mt-2 w-full justify-start bg-transparent text-base-content hover:bg-transparent text-left normal-case gap-2 focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent">
+      <slot name="icon" />
       <slot name="content"></slot>
     </label>
     <ul
@@ -21,7 +22,7 @@ import BaseLabel from '@/components/base/BaseLabel.vue';
 import IconColor from '@/components/icons/IconColor.vue';
 
 type Props = {
-  labelName: string;
+  labelName?: string;
 };
 
 defineProps<Props>();
