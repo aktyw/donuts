@@ -14,6 +14,20 @@
         :is-priority="task.isPriority"
         @toggle="toggleIsDone(task.id)" />
       <div class="flex flex-col w-full cursor-pointer">
+        <div
+          v-if="isModal"
+          class="pb-1">
+          <p
+            class="break-all h-full flex"
+            :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
+            {{ task.title }}
+          </p>
+          <p
+            class="break-all h-full flex text-sm"
+            :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
+            {{ task.description }}
+          </p>
+        </div>
         <router-link
           v-if="$route.name === 'today'"
           class="flex flex-col"
@@ -47,7 +61,7 @@
         <div class="flex justify-between pt-1">
           <div class="flex gap-3 items-end">
             <TaskSubtaskInfo
-              v-if="subtaskAmount > 0"
+              v-if="subtaskAmount > 0 && !isModal"
               :amount="subtaskAmount"
               :completed-amount="subtaskCompletedAmount" />
 
@@ -70,7 +84,7 @@
             </TaskTimeDetail>
           </div>
           <TaskProjectDetail
-            v-if="project"
+            v-if="project && !isModal"
             class="items-center">
             <template #name>
               {{ project.name }}
@@ -150,11 +164,13 @@ import TaskEditor from '@/components/tasks/editor/TaskEditor.vue';
 import TaskOptions from '@/components/tasks/TaskOptions.vue';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import { useProjectsStore } from '@/stores/ProjectsStore';
+import { useSettingsStore } from '@/stores/SettingsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { Task } from '@/types/models/Task';
 
 type Props = {
   task: Task;
+  isModal?: boolean;
 };
 
 const props = defineProps<Props>();
@@ -162,6 +178,7 @@ const router = useRouter();
 const route = useRoute();
 const store = useTasksStore();
 const storeProjects = useProjectsStore();
+const storeSettings = useSettingsStore();
 const activeElement = useActiveElement();
 const { getProjectById } = storeToRefs(storeProjects);
 const project = computed(() => getProjectById.value(props.task.projectId));
@@ -203,6 +220,10 @@ watch(activeElement, (el) => {
 
 watch(isOptionsOpen, (val) => {
   if (!val) handleHideOptionsBtn();
+});
+
+watch(deleteConfirm, (val) => {
+  storeSettings.setModal({ modal: 'isTaskDeleteConfirmOpen', value: val });
 });
 
 function setCardBacklight() {

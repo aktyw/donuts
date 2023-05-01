@@ -89,22 +89,15 @@
             </TaskShowSlim>
           </div>
           <div class="ml-8 relative">
+            <SubtaskList
+              v-if="subTasks"
+              :subtasks="subTasks" />
             <TaskEditor
               v-if="isSubtaskEditorActive"
               :is-sub-task="true"
               :task="currentTask"
               :current-project="currentProject"
               @close-editor="isSubtaskEditorActive = false" />
-            <!-- <ul
-              v-if="subTasks"
-              class="before:absolute before:top-0 before:left-0 before:w-2 before:h-10 before:bg-black before:content-none before:block">
-              <RouterLink
-                v-for="sub in subTasks"
-                :key="sub.id"
-                :title="sub.title">
-                {{ sub.title }}
-              </RouterLink>
-            </ul> -->
             <SubtaskAddButton
               v-if="!isSubtaskEditorActive"
               class="print:hidden"
@@ -176,6 +169,7 @@ import TaskEditor from '@/components/tasks/editor/TaskEditor.vue';
 import TaskEditorSlim from '@/components/tasks/editor/TaskEditorSlim.vue';
 import SubParentLinks from '@/components/tasks/modal/SubParentLinks.vue';
 import SubtaskAddButton from '@/components/tasks/modal/SubtaskAddButton.vue';
+import SubtaskList from '@/components/tasks/modal/SubtaskList.vue';
 import TaskModalAction from '@/components/tasks/modal/TaskModalAction.vue';
 import TaskModalNavbarDropdown from '@/components/tasks/modal/TaskModalNavbarDropdown.vue';
 import TaskModalOption from '@/components/tasks/modal/TaskModalOption.vue';
@@ -183,6 +177,7 @@ import TaskShowSlim from '@/components/tasks/modal/TaskShowSlim.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 import ButtonBadgeMedium from '@/components/ui/buttons/ButtonBadgeMedium.vue';
 import { useProjectsStore } from '@/stores/ProjectsStore';
+import { useSettingsStore } from '@/stores/SettingsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { Task } from '@/types/models/Task';
 
@@ -197,6 +192,7 @@ defineEmits<{
 }>();
 
 const storeProjects = useProjectsStore();
+const storeSettings = useSettingsStore();
 const store = useTasksStore();
 
 const currentTaskId = computed(() => route.params.taskid as string);
@@ -213,6 +209,12 @@ const parentTask = computed(() => {
 
 provide('parentTask', parentTask);
 
+const subTasks = computed(() => {
+  const subTasksId = currentTask.value.childId;
+
+  return subTasksId.map((id: string) => store.getTaskById(id));
+});
+
 const initialTasks = unref(inject('tasks') as Task[]);
 const initialProject = storeProjects.getProjectById(currentTask.value.projectId);
 const selectedProject = ref(currentProject.value);
@@ -222,6 +224,7 @@ const datepicker = ref();
 const startTime = ref({ hours: 12, minutes: 0 });
 const isTaskEditorActive = ref(false);
 const isSubtaskEditorActive = ref(false);
+const subtaskDeleteConfirm = computed(() => storeSettings.getModalStatus('isTaskDeleteConfirmOpen'));
 const deleteConfirm = ref(false);
 const target = ref();
 
@@ -239,8 +242,6 @@ onUpdated(() => {});
 
 onMounted(() => {
   isSubtaskEditorActive.value = !!(route.hash === '#subtask');
-  console.log(route.path);
-  console.log(route.params);
 });
 
 async function moveToPrevTask(): Promise<void> {
@@ -337,8 +338,7 @@ function openSubtaskEditor(): void {
 }
 
 onClickOutside(target, () => {
-  if (deleteConfirm.value) return;
-
+  if (deleteConfirm.value || subtaskDeleteConfirm.value) return;
   closeModal();
 });
 

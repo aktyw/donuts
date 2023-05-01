@@ -20,6 +20,7 @@ import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { SortFilters, SortOrder } from '@/types/models/Sort';
 import type { State } from '@/types/models/State';
 import type { Task } from '@/types/models/Task';
+
 export const useTasksStore = defineStore('tasks', {
   state: (): State => ({
     tasks: useStorage(

@@ -1,5 +1,6 @@
 <template>
-  <div class="cursor-pointer dropdown dropdown-bottom flex items-center w-full h-full hover:bg-base-200">
+  <div
+    class="cursor-pointer dropdown dropdown-bottom flex items-center w-full h-full hover:bg-base-200 transition duration-300">
     <TheTooltip
       class="!tooltip-top w-full h-full"
       data="Open sub-tasks">

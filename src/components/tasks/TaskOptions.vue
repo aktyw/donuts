@@ -227,7 +227,7 @@ function setCustomPosition() {
 }
 
 onUpdated(() => {
-  console.log(triggerCalendar.value);
+  // console.log(triggerCalendar.value);
 });
 
 onMounted(() => {

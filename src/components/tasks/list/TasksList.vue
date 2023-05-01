@@ -23,7 +23,7 @@
         :key="task.id"
         :task="task">
         <TasksList
-          v-if="task.childId!.length > 0"
+          v-if="task.childId?.length > 0"
           :tasks="task.childId"
           class="pl-12">
         </TasksList>
