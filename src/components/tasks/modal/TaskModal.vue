@@ -64,12 +64,7 @@
 
       <section class="flex h-full">
         <main class="flex flex-col gap-4 w-full h-full p-4">
-          <div
-            v-if="hasParent"
-            class="flex items-center justify-between border rounded-md mx-0.5 h-10 max-w-[440px]">
-            <ParentTaskButton :parent="parentTask" />
-            <ParentSubtaskDropdown :subtasks-id="parentTask.childId" />
-          </div>
+          <SubParentLinks v-if="hasParent" />
           <div class="flex">
             <TaskCheckbox
               class="pt-3 mx-0.5 checkbox-xs"
@@ -167,7 +162,7 @@
 import Datepicker from '@vuepic/vue-datepicker';
 import { onClickOutside } from '@vueuse/core';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
-import { computed, inject, onMounted, onUpdated, type Ref, ref, unref } from 'vue';
+import { computed, inject, onMounted, onUpdated, provide, type Ref, ref, unref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import IconChevronDown from '@/components/icons/IconChevronDown.vue';
@@ -179,8 +174,7 @@ import ProjectList from '@/components/projects/ProjectList.vue';
 import TaskCheckbox from '@/components/tasks/card/TaskCheckbox.vue';
 import TaskEditor from '@/components/tasks/editor/TaskEditor.vue';
 import TaskEditorSlim from '@/components/tasks/editor/TaskEditorSlim.vue';
-import ParentSubtaskDropdown from '@/components/tasks/modal/ParentSubtaskDropdown.vue';
-import ParentTaskButton from '@/components/tasks/modal/ParentTaskButton.vue';
+import SubParentLinks from '@/components/tasks/modal/SubParentLinks.vue';
 import SubtaskAddButton from '@/components/tasks/modal/SubtaskAddButton.vue';
 import TaskModalAction from '@/components/tasks/modal/TaskModalAction.vue';
 import TaskModalNavbarDropdown from '@/components/tasks/modal/TaskModalNavbarDropdown.vue';
@@ -216,6 +210,8 @@ const parentTask = computed(() => {
 
   return store.getTaskById(parentTaskId);
 });
+
+provide('parentTask', parentTask);
 
 const initialTasks = unref(inject('tasks') as Task[]);
 const initialProject = storeProjects.getProjectById(currentTask.value.projectId);

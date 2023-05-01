@@ -66,7 +66,6 @@ import { nanoid } from 'nanoid';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import BaseDivider from '@/components/base/BaseDivider.vue';
 import BaseDropdown from '@/components/base/BaseDropdown.vue';
 import BaseInput from '@/components/base/BaseInput.vue';
 import BaseToggle from '@/components/base/BaseToggle.vue';
