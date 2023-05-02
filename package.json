@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
+    "dev-m": "vite --host",
     "build": "run-p type-check build-only",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
