@@ -68,7 +68,7 @@
             <TaskTimeDetail
               :class="markOverdue"
               class="pt-0.5"
-              @click.stop="handleOpenCalendar">
+              @click.stop="handleOpenCalendar()">
               <template #icon>
                 <IconCalendar
                   v-if="showDetailTime"
@@ -99,17 +99,18 @@
         </div>
       </div>
     </div>
+
     <TaskOptions
       v-show="cardIsHover"
+      ref="options"
       :task-id="task.id"
       :task="task"
-      :trigger-calendar="openCalendar"
       class="absolute right-0"
       :coords="{ cardX, cardY, cardBottom }"
       @toggle-is-priority="toggleIsPriority"
       @toggle-is-done="toggleIsDone"
       @edit-task="toggleEditModal"
-      @delete-task="toggleDeleteModal"
+      @delete-task="openDeleteModal"
       @handle-date="handleUpdateDate"
       @duplicate-task="handleDuplicateTask"
       @picker-open="setCardBacklight"
@@ -206,12 +207,10 @@ const subtaskCompletedAmount = computed(() => {
   return amount?.length || 0;
 });
 
-const openCalendar = ref(false);
+const options = ref();
 
 function handleOpenCalendar(): void {
-  console.log(openCalendar.value);
-  openCalendar.value = true;
-  console.log(openCalendar.value);
+  options.value.handleCalendar();
 }
 
 watch(activeElement, (el) => {
@@ -223,7 +222,7 @@ watch(isOptionsOpen, (val) => {
 });
 
 watch(deleteConfirm, (val) => {
-  storeSettings.setModal({ modal: 'isTaskDeleteConfirmOpen', value: val });
+  storeSettings.setModal({ modal: 'deleteTaskConfirm', value: val });
 });
 
 function setCardBacklight() {
@@ -245,15 +244,20 @@ function handleShowOptionsBtn() {
 }
 
 function handleDeleteTask(id: string): void {
+  closeDeleteModal();
   store.deleteTask(id);
 }
 
 function cancelDeleteTask(): void {
-  toggleDeleteModal();
+  closeDeleteModal();
 }
 
-function toggleDeleteModal(): void {
-  deleteConfirm.value = !deleteConfirm.value;
+function openDeleteModal(): void {
+  deleteConfirm.value = true;
+}
+
+function closeDeleteModal(): void {
+  deleteConfirm.value = false;
 }
 
 function toggleEditModal(): void {
@@ -276,7 +280,6 @@ function handleDuplicateTask(id: string): void {
 
 function handleUpdateDate(date: Date): void {
   store.updateDate(props.task.id, date);
-  openCalendar.value = false;
 }
 
 function handleAddSubtask(): void {

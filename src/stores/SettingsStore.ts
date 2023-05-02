@@ -4,8 +4,8 @@ interface SettingsState {
   settings: {
     isMenuOpen: boolean;
     homeView: string;
-    modals: {
-      [isTaskDeleteConfirmOpen: string]: boolean;
+    isModalOpen: {
+      [deleteTaskConfirm: string]: boolean;
     };
   };
 }
@@ -15,8 +15,9 @@ export const useSettingsStore = defineStore('settings', {
     settings: {
       isMenuOpen: true,
       homeView: 'inbox',
-      modals: {
-        isConfirmDeleteOpen: false,
+      isModalOpen: {
+        deleteTaskConfirm: false,
+        calendar: false,
       },
     },
   }),
@@ -29,16 +30,16 @@ export const useSettingsStore = defineStore('settings', {
     },
     getModalStatus(state): (modal: string) => boolean {
       return (modal: string): boolean => {
-        return state.settings.modals[modal];
+        return state.settings.isModalOpen[modal];
       };
     },
   },
   actions: {
     toggleModal(modal: string): void {
-      this.settings.modals[modal] = !this.settings.modals[modal];
+      this.settings.isModalOpen[modal] = !this.settings.isModalOpen[modal];
     },
     setModal(payload: { modal: string; value: boolean }): void {
-      this.settings.modals[payload.modal] = payload.value;
+      this.settings.isModalOpen[payload.modal] = payload.value;
     },
     toggleMenu(): void {
       this.settings.isMenuOpen = !this.settings.isMenuOpen;

@@ -90,6 +90,8 @@
         :alt-position="setCustomPosition"
         :min-date="new Date()"
         :start-time="startTime"
+        @open="storeSettings.setModal({ modal: 'calendar', value: true })"
+        @close="storeSettings.setModal({ modal: 'calendar', value: false })"
         @update:model-value="handleDate" />
       <OptionListButton
         ref="calendarOption"
@@ -126,7 +128,7 @@ import Datepicker from '@vuepic/vue-datepicker';
 import { useElementBounding, useWindowSize } from '@vueuse/core';
 import { useClipboard } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { computed, onMounted, onUpdated, type Ref, ref, toRefs, watch } from 'vue';
+import { computed, inject, onMounted, onUpdated, type Ref, ref, toRefs, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 import BaseDividerSmall from '@/components/base/BaseDividerSmall.vue';
@@ -147,6 +149,7 @@ import { useNotification } from '@/composables/useNotification';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import blurElement from '@/helpers/blur';
 import { useProjectsStore } from '@/stores/ProjectsStore';
+import { useSettingsStore } from '@/stores/SettingsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import { NotificationMessage } from '@/types/models/NotificationMessage';
 import type { Task } from '@/types/models/Task';
@@ -154,7 +157,6 @@ import type { Task } from '@/types/models/Task';
 type Props = {
   task: Task;
   taskId: string;
-  triggerCalendar?: boolean;
   coords: {
     cardX: number;
     cardY: number;
@@ -177,6 +179,8 @@ const emit = defineEmits<{
 
 const store = useTasksStore();
 const storeProjects = useProjectsStore();
+const storeSettings = useSettingsStore();
+
 const route = useRoute();
 const { task, taskId } = toRefs(props);
 const { getProjectById } = storeToRefs(storeProjects);
@@ -188,7 +192,6 @@ const { showInputDetailTime } = useTimeDetail(currentDate);
 const datepicker = ref();
 const showPicker = ref(false);
 const startTime = ref({ hours: 12, minutes: 0 });
-const triggerCalendar = computed(() => props.triggerCalendar);
 const activeStyle = ['active-state', 'active:bg-base-200', 'font-semibold'];
 const doneStyle = computed(() => (task.value.isDone ? activeStyle : ''));
 const priorityStyle = computed(() => (task.value.isPriority ? activeStyle : ''));
@@ -209,12 +212,7 @@ const isRoomForDropdown = computed(
 const source = ref(route.fullPath);
 const { copy } = useClipboard({ source });
 
-watch(triggerCalendar, (val) => {
-  if (val) handleCalendar();
-});
-
 function handleCopyLinkTask(): void {
-  console.log(import.meta.env.BASE_URL);
   copy(`${source.value}/task/${props.task.id}`);
   useNotification(NotificationMessage.CopyLink);
 }
@@ -238,6 +236,8 @@ function handleCalendar() {
   datepicker.value.openMenu();
   emit('pickerOpen');
 }
+
+defineExpose({ handleCalendar });
 
 function handleDate(modelData: Date): void {
   date.value = modelData;

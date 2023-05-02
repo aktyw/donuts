@@ -224,7 +224,8 @@ const datepicker = ref();
 const startTime = ref({ hours: 12, minutes: 0 });
 const isTaskEditorActive = ref(false);
 const isSubtaskEditorActive = ref(false);
-const subtaskDeleteConfirm = computed(() => storeSettings.getModalStatus('isTaskDeleteConfirmOpen'));
+const subtaskDeleteConfirm = computed(() => storeSettings.getModalStatus('deleteTaskConfirm'));
+const isCalendarOpen = computed(() => storeSettings.getModalStatus('calendar'));
 const deleteConfirm = ref(false);
 const target = ref();
 
@@ -338,7 +339,7 @@ function openSubtaskEditor(): void {
 }
 
 onClickOutside(target, () => {
-  if (deleteConfirm.value || subtaskDeleteConfirm.value) return;
+  if (deleteConfirm.value || subtaskDeleteConfirm.value || isCalendarOpen.value) return;
   closeModal();
 });
 
