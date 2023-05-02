@@ -120,7 +120,9 @@
       teleport="#form"
       position="left"
       :min-date="new Date()"
-      :start-time="startTime" />
+      :start-time="startTime"
+      @open="storeSettings.setModal({ modal: 'calendar', value: true })"
+      @closed="storeSettings.setModal({ modal: 'calendar', value: false })" />
   </form>
 </template>
 
@@ -147,6 +149,7 @@ import ButtonSecondaryAction from '@/components/ui/buttons/ButtonSecondaryAction
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import { vFocus } from '@/directives/vAutoFocus';
 import { useProjectsStore } from '@/stores/ProjectsStore';
+import { useSettingsStore } from '@/stores/SettingsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { Project } from '@/types/models/Projects';
 import type { Task } from '@/types/models/Task';
@@ -171,6 +174,7 @@ const emit = defineEmits<{
 
 const props = defineProps<Props>();
 const projectsStore = useProjectsStore();
+const storeSettings = useSettingsStore();
 const store = useTasksStore();
 const taskTitle = ref(props.title || '');
 const taskDescription = ref(props.description || '');

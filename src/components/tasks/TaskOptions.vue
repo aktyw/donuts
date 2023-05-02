@@ -91,7 +91,7 @@
         :min-date="new Date()"
         :start-time="startTime"
         @open="storeSettings.setModal({ modal: 'calendar', value: true })"
-        @close="storeSettings.setModal({ modal: 'calendar', value: false })"
+        @closed="storeSettings.setModal({ modal: 'calendar', value: false })"
         @update:model-value="handleDate" />
       <OptionListButton
         ref="calendarOption"

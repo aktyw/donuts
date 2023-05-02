@@ -121,6 +121,8 @@
                 position="center"
                 :min-date="new Date()"
                 :start-time="startTime"
+                @open="storeSettings.setModal({ modal: 'calendar', value: true })"
+                @closed="storeSettings.setModal({ modal: 'calendar', value: false })"
                 @update:model-value="handleUpdateDate" />
             </TaskModalOption>
             <TaskModalOption title="Priority">

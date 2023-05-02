@@ -13,21 +13,23 @@
         :is-done="task.isDone"
         :is-priority="task.isPriority"
         @toggle="toggleIsDone(task.id)" />
+
       <div class="flex flex-col w-full cursor-pointer">
-        <div
+        <router-link
           v-if="isModal"
-          class="pb-1">
+          class="flex flex-col"
+          :to="{ params: { taskid: task.id } }">
           <p
-            class="break-all h-full flex"
+            class="break-all flex"
             :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
             {{ task.title }}
           </p>
           <p
-            class="break-all h-full flex text-sm"
+            class="break-all flex text-sm"
             :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
             {{ task.description }}
           </p>
-        </div>
+        </router-link>
         <router-link
           v-if="$route.name === 'today'"
           class="flex flex-col"
@@ -58,6 +60,7 @@
             {{ task.description }}
           </p>
         </router-link>
+
         <div class="flex justify-between pt-1">
           <div class="flex gap-3 items-end">
             <TaskSubtaskInfo
