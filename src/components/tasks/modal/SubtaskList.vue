@@ -3,6 +3,7 @@
     <ul v-if="!isTimeline">
       <li
         v-show="subtasks.length > 0"
+        id="subtasksList"
         class="flex gap-2 py-3">
         <span class="font-semibold">Subtasks</span>
         <span>{{ subtaskCompletedAmount }}/{{ subtasks.length }}</span>

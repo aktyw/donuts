@@ -83,6 +83,20 @@
       <BaseDividerSmall />
 
       <Datepicker
+        v-if="storeSettings.getModalStatus('task')"
+        v-show="showPicker"
+        ref="datepicker"
+        :value="currentDate"
+        teleport="#subtasksList"
+        position="right"
+        :min-date="new Date()"
+        :start-time="startTime"
+        @open="storeSettings.setModal({ modal: 'calendar', value: true })"
+        @closed="storeSettings.setModal({ modal: 'calendar', value: false })"
+        @update:model-value="handleDate" />
+
+      <Datepicker
+        v-else
         v-show="showPicker"
         ref="datepicker"
         :value="currentDate"
@@ -93,6 +107,7 @@
         @open="storeSettings.setModal({ modal: 'calendar', value: true })"
         @closed="storeSettings.setModal({ modal: 'calendar', value: false })"
         @update:model-value="handleDate" />
+
       <OptionListButton
         ref="calendarOption"
         @click="handleCalendar">
@@ -128,7 +143,7 @@ import Datepicker from '@vuepic/vue-datepicker';
 import { useElementBounding, useWindowSize } from '@vueuse/core';
 import { useClipboard } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { computed, inject, onMounted, onUpdated, type Ref, ref, toRefs, watch } from 'vue';
+import { computed, onMounted, onUpdated, type Ref, ref, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
 
 import BaseDividerSmall from '@/components/base/BaseDividerSmall.vue';
@@ -240,6 +255,7 @@ function handleCalendar() {
 defineExpose({ handleCalendar });
 
 function handleDate(modelData: Date): void {
+  console.log('hD');
   date.value = modelData;
   emit('handleDate', date.value);
 }

@@ -157,7 +157,7 @@
 import Datepicker from '@vuepic/vue-datepicker';
 import { onClickOutside } from '@vueuse/core';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
-import { computed, inject, onMounted, onUpdated, provide, type Ref, ref, unref } from 'vue';
+import { computed, inject, onMounted, onUnmounted, onUpdated, provide, type Ref, ref, unref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import IconChevronDown from '@/components/icons/IconChevronDown.vue';
@@ -185,6 +185,14 @@ import type { Task } from '@/types/models/Task';
 
 import { findIndex } from '../../../helpers/findIndex';
 import { findItem } from '../../../helpers/findItem';
+
+onMounted(() => {
+  storeSettings.setModal({ modal: 'task', value: true });
+});
+
+onUnmounted(() => {
+  storeSettings.setModal({ modal: 'task', value: false });
+});
 
 const route = useRoute();
 const router = useRouter();

@@ -5,7 +5,9 @@ interface SettingsState {
     isMenuOpen: boolean;
     homeView: string;
     isModalOpen: {
+      task: boolean;
       [deleteTaskConfirm: string]: boolean;
+      calendar: boolean;
     };
   };
 }
@@ -16,6 +18,7 @@ export const useSettingsStore = defineStore('settings', {
       isMenuOpen: true,
       homeView: 'inbox',
       isModalOpen: {
+        task: false,
         deleteTaskConfirm: false,
         calendar: false,
       },
