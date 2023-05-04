@@ -5,6 +5,7 @@ import TaskModal from '@/components/tasks/modal/TaskModal.vue';
 import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
 import NotesView from '@/views/NotesView.vue';
+import NotFoundView from '@/views/NotFoundView.vue';
 import ProjectsView from '@/views/ProjectsView.vue';
 import ProjectView from '@/views/ProjectView.vue';
 import TasksView from '@/views/TasksView.vue';
@@ -85,6 +86,7 @@ const routes = [
     name: 'login',
     component: LoginView,
   },
+  { path: '/:catchAll(.*)', name: '404', component: NotFoundView },
 ];
 
 export default routes;
