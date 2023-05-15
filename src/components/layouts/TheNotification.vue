@@ -1,27 +1,36 @@
 <template>
   <Teleport to="body">
     <div class="absolute flex flex-col gap-2 bottom-4 left-4 z-[1000]">
-      <BaseNotification
-        v-for="notification in notifications"
-        :key="notification.id"
-        :notification-id="notification.id"
-        @close-alert="closeAlert">
-        <template #content>
-          <span class="text-center ml-4">{{ notification.message }}</span>
-        </template>
-        <template #action>
-          <BaseButton
-            v-if="notification.action"
-            v-focus
-            class="inline-flex items-center btn-ghost btn-sm text-accent hover:bg-base-content capitalize md:btn-sm focus:outline focus:outline-1 rounded"
-            @click="handleAction(notification.id, notification.action!)">
-            {{ notification.actionLabel }}
-            <template #icon>
-              <IconUndo class="fill-accent" />
-            </template>
-          </BaseButton>
-        </template>
-      </BaseNotification>
+      <TransitionGroup
+        name="notification"
+        enter-active-class="duration-300 ease-out"
+        enter-from-class="transform opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="duration-100 ease-in"
+        leave-from-class="opacity-200"
+        leave-to-class="transform opacity-0">
+        <BaseNotification
+          v-for="notification in notifications"
+          :key="notification.id"
+          :notification-id="notification.id"
+          @close-alert="closeAlert">
+          <template #content>
+            <span class="text-center ml-4">{{ notification.message }}</span>
+          </template>
+          <template #action>
+            <BaseButton
+              v-if="notification.action"
+              v-focus
+              class="inline-flex items-center btn-ghost btn-sm text-accent hover:bg-base-content capitalize md:btn-sm focus:outline focus:outline-1 rounded"
+              @click="handleAction(notification.id, notification.action!)">
+              {{ notification.actionLabel }}
+              <template #icon>
+                <IconUndo class="fill-accent" />
+              </template>
+            </BaseButton>
+          </template>
+        </BaseNotification>
+      </TransitionGroup>
     </div>
   </Teleport>
 </template>
