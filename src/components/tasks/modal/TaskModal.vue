@@ -234,6 +234,7 @@ const isTaskEditorActive = ref(false);
 const isSubtaskEditorActive = ref(false);
 const subtaskDeleteConfirm = computed(() => storeSettings.getModalStatus('deleteTaskConfirm'));
 const isCalendarOpen = computed(() => storeSettings.getModalStatus('calendar'));
+const isMoveProjectOpen = computed(() => storeSettings.getModalStatus('moveProject'));
 const deleteConfirm = ref(false);
 const target = ref();
 
@@ -347,9 +348,16 @@ function openSubtaskEditor(): void {
 }
 
 onClickOutside(target, (e) => {
-  const notification = e.target?.closest('#notification');
+  const notification = (e.target as HTMLElement)?.closest('#notification');
 
-  if (deleteConfirm.value || subtaskDeleteConfirm.value || isCalendarOpen.value || notification) return;
+  if (
+    deleteConfirm.value ||
+    subtaskDeleteConfirm.value ||
+    isCalendarOpen.value ||
+    isMoveProjectOpen.value ||
+    notification
+  )
+    return;
   closeModal();
 });
 </script>

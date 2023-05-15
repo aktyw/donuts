@@ -8,6 +8,7 @@ interface SettingsState {
       task: boolean;
       [deleteTaskConfirm: string]: boolean;
       calendar: boolean;
+      moveProject: boolean;
     };
   };
 }
@@ -21,9 +22,11 @@ export const useSettingsStore = defineStore('settings', {
         task: false,
         deleteTaskConfirm: false,
         calendar: false,
+        moveProject: false,
       },
     },
   }),
+
   getters: {
     getHomeView(state): string {
       return state.settings.homeView;
@@ -37,6 +40,7 @@ export const useSettingsStore = defineStore('settings', {
       };
     },
   },
+
   actions: {
     toggleModal(modal: string): void {
       this.settings.isModalOpen[modal] = !this.settings.isModalOpen[modal];

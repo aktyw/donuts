@@ -25,17 +25,24 @@
 
 <script setup lang="ts">
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
-import { ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import BaseModal from '@/components/base/BaseModal.vue';
 import ModalButton from '@/components/modals/ModalButton.vue';
 import ProjectList from '@/components/projects/ProjectList.vue';
+import { useSettingsStore } from '@/stores/SettingsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { Project } from '@/types/models/Projects';
 import type { Task } from '@/types/models/Task';
 
-const router = useRouter();
+onMounted(() => {
+  storeSettings.setModal({ modal: 'moveProject', value: true });
+});
+
+onUnmounted(() => {
+  storeSettings.setModal({ modal: 'moveProject', value: false });
+});
 
 type Props = {
   currentProject?: Project;
@@ -48,7 +55,10 @@ const emit = defineEmits<{
   (event: 'closeEditor'): void;
 }>();
 
+const router = useRouter();
 const store = useTasksStore();
+const storeSettings = useSettingsStore();
+
 const selectedProject = ref(props.currentProject);
 const target = ref();
 
