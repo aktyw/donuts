@@ -1,8 +1,6 @@
 <template>
   <Teleport to="body">
-    <div
-      id="notification"
-      class="absolute flex flex-col gap-2 bottom-4 left-4 z-50">
+    <div class="absolute flex flex-col gap-2 bottom-4 left-4 z-[1000]">
       <BaseNotification
         v-for="notification in notifications"
         :key="notification.id"
@@ -39,7 +37,6 @@ import { useTasksStore } from '@/stores/TasksStore';
 import { NotificationAction } from '@/types/models/NotificationAction';
 
 const store = useTasksStore();
-
 const { notifications } = storeToRefs(store);
 
 function closeAlert(id: string): void {

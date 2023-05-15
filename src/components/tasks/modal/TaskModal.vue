@@ -61,7 +61,6 @@
           </Teleport>
         </nav>
       </div>
-
       <section class="flex h-full">
         <main class="flex flex-col gap-4 w-full h-full p-4">
           <SubParentLinks v-if="hasParent" />
@@ -156,7 +155,6 @@
 <script setup lang="ts">
 import Datepicker from '@vuepic/vue-datepicker';
 import { onClickOutside } from '@vueuse/core';
-import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
 import { computed, inject, onMounted, onUnmounted, onUpdated, provide, type Ref, ref, unref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -348,12 +346,10 @@ function openSubtaskEditor(): void {
   isSubtaskEditorActive.value = true;
 }
 
-onClickOutside(target, () => {
-  if (deleteConfirm.value || subtaskDeleteConfirm.value || isCalendarOpen.value) return;
-  closeModal();
-});
+onClickOutside(target, (e) => {
+  const notification = e.target?.closest('#notification');
 
-useFocusTrap(target, {
-  immediate: true,
+  if (deleteConfirm.value || subtaskDeleteConfirm.value || isCalendarOpen.value || notification) return;
+  closeModal();
 });
 </script>
