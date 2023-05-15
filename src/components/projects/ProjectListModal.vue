@@ -1,26 +1,28 @@
 <template>
-  <BaseModal
-    modal-title="Move project"
-    @close-editor="closeEditor">
-    <ProjectList
-      v-model="selectedProject"
-      :current-project="currentProject"
-      class="w-full max-w-[40rem] !select-md" />
-    <p
-      v-show="!!selectedProject && currentProject?.id !== selectedProject.id"
-      class="bg-base-200 rounded-md p-2 my-4 px-2 [&>span]:font-bold">
-      <span>"{{ task.title.slice(0, 16) }}"</span> move from <span>"{{ currentProject?.name }}"</span><br />
-      to
-      <span>"{{ selectedProject?.name }}"</span>
-    </p>
-    <template #action>
-      <ModalButton
-        :disabled="currentProject?.id === selectedProject?.id"
-        @click.prevent="handleMoveTask">
-        Accept
-      </ModalButton>
-    </template>
-  </BaseModal>
+  <FadeTransitionMedium>
+    <BaseModal
+      modal-title="Move project"
+      @close-editor="closeEditor">
+      <ProjectList
+        v-model="selectedProject"
+        :current-project="currentProject"
+        class="w-full max-w-[40rem] !select-md" />
+      <p
+        v-show="!!selectedProject && currentProject?.id !== selectedProject.id"
+        class="bg-base-200 rounded-md p-2 my-4 px-2 [&>span]:font-bold">
+        <span>"{{ task.title.slice(0, 16) }}"</span> move from <span>"{{ currentProject?.name }}"</span><br />
+        to
+        <span>"{{ selectedProject?.name }}"</span>
+      </p>
+      <template #action>
+        <ModalButton
+          :disabled="currentProject?.id === selectedProject?.id"
+          @click.prevent="handleMoveTask">
+          Accept
+        </ModalButton>
+      </template>
+    </BaseModal>
+  </FadeTransitionMedium>
 </template>
 
 <script setup lang="ts">
@@ -31,6 +33,7 @@ import { useRouter } from 'vue-router';
 import BaseModal from '@/components/base/BaseModal.vue';
 import ModalButton from '@/components/modals/ModalButton.vue';
 import ProjectList from '@/components/projects/ProjectList.vue';
+import FadeTransitionMedium from '@/components/ui/transitions/FadeTransitionMedium.vue';
 import { useSettingsStore } from '@/stores/SettingsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { Project } from '@/types/models/Projects';

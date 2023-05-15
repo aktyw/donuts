@@ -51,8 +51,8 @@ const props = defineProps<Props>();
 
 const calcName = computed(() => {
   if (!props.name) return '';
-  if (props.name.length >= 26) {
-    return props.name?.slice(0, 26).concat('...');
+  if (props.name.length >= 22) {
+    return props.name?.slice(0, 20).concat('...');
   }
 
   return props.name;

@@ -1,7 +1,12 @@
 <template>
-  <RouterView
-    :class="{ 'ml-80': isMenuOpen }"
-    class="overflow-y-auto transition-all duration-300 flex flex-col justify-start items-center pb-80 py-8" />
+  <router-view v-slot="{ Component }">
+    <keep-alive max="10">
+      <component
+        :is="Component"
+        :class="{ 'ml-80': isMenuOpen }"
+        class="overflow-y-auto transition-all duration-300 flex flex-col justify-start items-center pb-80 py-8" />
+    </keep-alive>
+  </router-view>
 </template>
 
 <script setup lang="ts">

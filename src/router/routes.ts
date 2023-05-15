@@ -40,6 +40,7 @@ const routes = [
         path: 'project/:id',
         name: 'project',
         component: ProjectView,
+        meta: { transition: 'FadeTransitionLong' },
         children: [
           {
             path: 'task/:taskid',

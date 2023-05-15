@@ -1,63 +1,65 @@
 <template>
-  <div
-    class="modal modal-bottom sm:modal-middle modal-open"
-    role="dialog">
+  <FadeTransitionMedium>
     <div
-      ref="target"
-      class="modal-box overflow-visible p-0">
-      <div class="border-b mb-4">
-        <h2 class="font-bold text-2xl p-4">{{ modalTitle }}</h2>
-      </div>
-      <form
-        action=""
-        class="p-4">
-        <div class="flex flex-col">
-          <BaseInput
-            v-model.trim="projectName"
-            label="Name"
-            input-name="name"
-            name="name"
-            maxlength="64"
-            type="text"
-            :placeholder="projectName || 'Project name'" />
-          <BaseDropdown label-name="Color">
-            <template #content>
-              <IconColor :fill="colorHex" />
-              <span class="text-base font-normal">{{ colorName }}</span>
-            </template>
-            <template #list>
-              <li
-                v-for="({ name, hex }, idx) in COLORS"
-                :key="idx"
-                class="flex flex-row items-center justify-between gap-2 [&]:hover:transition-none transition hover:transition duration-300 hover:duration-300 hover:bg-base-200"
-                @click.prevent="handleSetColor(name, hex)">
-                <div>
-                  <span>
-                    <IconColor :fill="hex" />
+      class="modal modal-bottom sm:modal-middle modal-open"
+      role="dialog">
+      <div
+        ref="target"
+        class="modal-box overflow-visible p-0">
+        <div class="border-b mb-4">
+          <h2 class="font-bold text-2xl p-4">{{ modalTitle }}</h2>
+        </div>
+        <form
+          action=""
+          class="p-4">
+          <div class="flex flex-col">
+            <BaseInput
+              v-model.trim="projectName"
+              label="Name"
+              input-name="name"
+              name="name"
+              maxlength="64"
+              type="text"
+              :placeholder="projectName || 'Project name'" />
+            <BaseDropdown label-name="Color">
+              <template #content>
+                <IconColor :fill="colorHex" />
+                <span class="text-base font-normal">{{ colorName }}</span>
+              </template>
+              <template #list>
+                <li
+                  v-for="({ name, hex }, idx) in COLORS"
+                  :key="idx"
+                  class="flex flex-row items-center justify-between gap-2 [&]:hover:transition-none transition hover:transition duration-300 hover:duration-300 hover:bg-base-200"
+                  @click.prevent="handleSetColor(name, hex)">
+                  <div>
+                    <span>
+                      <IconColor :fill="hex" />
+                    </span>
+                    <span class="p-0">{{ name }}</span>
+                  </div>
+                  <span v-if="hex === colorHex">
+                    <IconDone :fill="colorHex" />
                   </span>
-                  <span class="p-0">{{ name }}</span>
-                </div>
-                <span v-if="hex === colorHex">
-                  <IconDone :fill="colorHex" />
-                </span>
-              </li>
-            </template>
-          </BaseDropdown>
-          <BaseToggle v-model="favorite"> Add to favorite </BaseToggle>
-        </div>
-        <div class="flex justify-end gap-4 text-lg mt-8">
-          <ModalButton @click.prevent="closeEditor"> Cancel </ModalButton>
-          <ModalButton
-            class="bg-primary !text-primary-content hover:bg-primary-focus"
-            :class="{ '!bg-base-300  ': !projectName.length }"
-            :disabled="!projectName.length"
-            @click.prevent="handleAction">
-            {{ actionTitle }}
-          </ModalButton>
-        </div>
-      </form>
+                </li>
+              </template>
+            </BaseDropdown>
+            <BaseToggle v-model="favorite"> Add to favorite </BaseToggle>
+          </div>
+          <div class="flex justify-end gap-4 text-lg mt-8">
+            <ModalButton @click.prevent="closeEditor"> Cancel </ModalButton>
+            <ModalButton
+              class="bg-primary !text-primary-content hover:bg-primary-focus"
+              :class="{ '!bg-base-300  ': !projectName.length }"
+              :disabled="!projectName.length"
+              @click.prevent="handleAction">
+              {{ actionTitle }}
+            </ModalButton>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
+  </FadeTransitionMedium>
 </template>
 
 <script setup lang="ts">
@@ -72,6 +74,7 @@ import BaseToggle from '@/components/base/BaseToggle.vue';
 import IconColor from '@/components/icons/IconColor.vue';
 import IconDone from '@/components/icons/IconDone.vue';
 import ModalButton from '@/components/modals/ModalButton.vue';
+import FadeTransitionMedium from '@/components/ui/transitions/FadeTransitionMedium.vue';
 import { COLORS } from '@/types/models/Colors';
 import type { Project } from '@/types/models/Projects';
 

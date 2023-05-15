@@ -1,14 +1,7 @@
 <template>
   <Teleport to="body">
     <div class="absolute flex flex-col gap-2 bottom-4 left-4 z-[1000]">
-      <TransitionGroup
-        name="notification"
-        enter-active-class="duration-300 ease-out"
-        enter-from-class="transform opacity-0"
-        enter-to-class="opacity-100"
-        leave-active-class="duration-100 ease-in"
-        leave-from-class="opacity-200"
-        leave-to-class="transform opacity-0">
+      <FadeTransitionGroup>
         <BaseNotification
           v-for="notification in notifications"
           :key="notification.id"
@@ -30,7 +23,7 @@
             </BaseButton>
           </template>
         </BaseNotification>
-      </TransitionGroup>
+      </FadeTransitionGroup>
     </div>
   </Teleport>
 </template>
@@ -41,6 +34,7 @@ import { storeToRefs } from 'pinia';
 import BaseButton from '@/components/base/BaseButton.vue';
 import BaseNotification from '@/components/base/BaseNotification.vue';
 import IconUndo from '@/components/icons/IconUndo.vue';
+import FadeTransitionGroup from '@/components/ui/transitions/FadeTransitionGroup.vue';
 import { vFocus } from '@/directives/vAutoFocus.js';
 import { useTasksStore } from '@/stores/TasksStore';
 import { NotificationAction } from '@/types/models/NotificationAction';

@@ -9,7 +9,6 @@
         v-if="!!store.tasks.default.length && !allowDrag"
         :tasks="projectTasks" />
       <TasksList :tasks="rootProjectTasks" />
-
       <TaskAddButton
         v-if="!isEditorActive"
         @click="showEditor" />

@@ -10,6 +10,9 @@ interface SettingsState {
       calendar: boolean;
       moveProject: boolean;
     };
+    isTransitionActive: {
+      [projectRecord: string]: boolean;
+    };
   };
 }
 
@@ -23,6 +26,9 @@ export const useSettingsStore = defineStore('settings', {
         deleteTaskConfirm: false,
         calendar: false,
         moveProject: false,
+      },
+      isTransitionActive: {
+        projectRecord: true,
       },
     },
   }),
@@ -39,6 +45,11 @@ export const useSettingsStore = defineStore('settings', {
         return state.settings.isModalOpen[modal];
       };
     },
+    getTransitionStatus(state): (transition: string) => boolean {
+      return (transition: string): boolean => {
+        return state.settings.isTransitionActive[transition];
+      };
+    },
   },
 
   actions: {
@@ -47,6 +58,9 @@ export const useSettingsStore = defineStore('settings', {
     },
     setModal(payload: { modal: string; value: boolean }): void {
       this.settings.isModalOpen[payload.modal] = payload.value;
+    },
+    setTransitionStatus(payload: { transition: string; value: boolean }): void {
+      this.settings.isTransitionActive[payload.transition] = payload.value;
     },
     toggleMenu(): void {
       this.settings.isMenuOpen = !this.settings.isMenuOpen;

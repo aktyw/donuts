@@ -121,6 +121,7 @@ import ProjectModal from '@/components/projects/ProjectModal.vue';
 import OptionListButton from '@/components/tasks/list/OptionListButton.vue';
 import blurElement from '@/helpers/blur';
 import { useProjectsStore } from '@/stores/ProjectsStore';
+import { useSettingsStore } from '@/stores/SettingsStore';
 import type { Project } from '@/types/models/Projects';
 
 type Props = {
@@ -129,6 +130,7 @@ type Props = {
   isArchived?: boolean;
 };
 
+const settingsStore = useSettingsStore();
 const router = useRouter();
 const props = defineProps<Props>();
 const deleteConfirm = ref(false);
@@ -161,10 +163,12 @@ function handleAddToFav(): void {
 
 function handleDuplicateProject(): void {
   projectsStore.duplicateProject(props.id);
+  settingsStore.setTransitionStatus({ transition: 'projectRecord', value: true });
   blurElement();
 }
 
 function handleDeleteProject(): void {
+  settingsStore.setTransitionStatus({ transition: 'projectRecord', value: true });
   try {
     if (projectId.value === project.value.id) {
       router.replace({ name: 'tasks' });
@@ -185,6 +189,7 @@ function toggleDeleteModal(): void {
 
 function handleArchiveProject(): void {
   try {
+    settingsStore.setTransitionStatus({ transition: 'projectRecord', value: true });
     if (projectId.value === project.value.id) {
       router.replace({ name: 'tasks' });
     }
@@ -195,6 +200,7 @@ function handleArchiveProject(): void {
 }
 
 function handleUnarchiveProject(): void {
+  settingsStore.setTransitionStatus({ transition: 'projectRecord', value: true });
   projectsStore.activateProject(props.id);
 }
 

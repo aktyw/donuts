@@ -1,21 +1,24 @@
 <template>
-  <span class="grid place-items-center pt-20 md:text-lg pointer-events-none">
-    <slot>
-      <img
-        class="max-w-[260px] w-full pointer-events-none"
-        :src="path"
-        alt="Illustration of happy donut" />
-    </slot>
-    <slot name="content">
-      <h4 class="font-bold pb-2 w-64 md:w-96 text-center">{{ currentMessage }}</h4>
-      <span class="font-light text-base w-60 md:w-72 text-center">{{ currentTip }}</span>
-    </slot>
-  </span>
+  <FadeTransitionMedium>
+    <span class="grid place-items-center pt-20 md:text-lg pointer-events-none">
+      <slot>
+        <img
+          class="max-w-[260px] w-full pointer-events-none"
+          :src="path"
+          alt="Illustration of happy donut" />
+      </slot>
+      <slot name="content">
+        <h4 class="font-bold pb-2 w-64 md:w-96 text-center">{{ currentMessage }}</h4>
+        <span class="font-light text-base w-60 md:w-72 text-center">{{ currentTip }}</span>
+      </slot>
+    </span>
+  </FadeTransitionMedium>
 </template>
 
 <script setup lang="ts">
 import { computed, onUpdated, ref } from 'vue';
 
+import FadeTransitionMedium from '@/components/ui/transitions/FadeTransitionMedium.vue';
 import { getRandomItem } from '@/helpers/getRandomItem';
 
 const illustrations = [

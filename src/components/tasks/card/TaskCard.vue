@@ -135,7 +135,6 @@
       </ModalConfirmDelete>
     </Teleport>
   </li>
-
   <TaskEditor
     v-if="editTask"
     :is-edit="true"
@@ -165,7 +164,7 @@ import TaskProjectDetail from '@/components/tasks/card/TaskProjectDetail.vue';
 import TaskSubtaskInfo from '@/components/tasks/card/TaskSubtaskInfo.vue';
 import TaskTimeDetail from '@/components/tasks/card/TaskTimeDetail.vue';
 import TaskEditor from '@/components/tasks/editor/TaskEditor.vue';
-import TaskOptions from '@/components/tasks/TaskOptions.vue';
+import TaskOptions from '@/components/tasks/options/TaskOptions.vue';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useSettingsStore } from '@/stores/SettingsStore';

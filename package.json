@@ -22,6 +22,7 @@
     "@vueuse/router": "^10.1.0",
     "daisyui": "^2.51.5",
     "focus-trap": "^7.4.0",
+    "gsap": "^3.11.5",
     "nanoid": "^4.0.2",
     "pinia": "^2.0.35",
     "uuid": "^9.0.0",

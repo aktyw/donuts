@@ -1,155 +1,157 @@
 <template>
-  <div
-    class="modal sm:modal-middle modal-open"
-    role="dialog">
+  <FadeTransitionMedium>
     <div
-      id="task-modal"
-      ref="target"
-      class="fixed flex flex-col modal-box top-12 !rounded-xl !max-h-screen overflow-visible p-0 md:min-w-[720px] min-h-[460px] h-[calc(100vh_-_6rem)]">
-      <div class="flex justify-between items-center border-b px-4 py-2">
-        <div>
-          <ProjectLink
-            class="hover:!bg-base-100 hover:underline"
-            :to="{ name: 'project', params: { id: currentProject?.id || 'inbox' } }"
-            :name="currentProject?.name"
-            :custom-tooltip="true"
-            :fill="currentProject?.color">
-            <span class="items-center">{{ currentProject?.name }}</span>
-          </ProjectLink>
-        </div>
-        <nav class="flex gap-2 items-center">
-          <TaskModalAction
-            tooltip-data="Previous task"
-            :disabled="!isPrevTask"
-            :class="{ 'cursor-not-allowed bg-base-100, color-red-500': !isPrevTask }"
-            @click.stop="moveToPrevTask">
-            <IconChevronDown
-              class="rotate-180"
-              :class="{ 'fill-base-300': !isPrevTask }" />
-          </TaskModalAction>
-          <TaskModalAction
-            tooltip-data="Next task"
-            :disabled="!isNextTask"
-            :class="{ 'cursor-not-allowed bg-base-100': !isNextTask }"
-            @click.stop="moveToNextTask">
-            <IconChevronDown :class="{ 'fill-base-300': !isNextTask }" />
-          </TaskModalAction>
-          <TaskModalNavbarDropdown
-            :task="currentTask"
-            @delete-task="toggleDeleteModal"
-            @print-task="handlePrintTask" />
-          <TaskModalAction
-            tooltip-data="Close modal"
-            @click.prevent="closeModal">
-            <IconClose />
-          </TaskModalAction>
-
-          <Teleport to="body">
-            <ModalConfirmDelete
-              v-if="deleteConfirm"
-              :is-danger="true"
-              @cancel="cancelDeleteTask"
-              @action="handleDeleteTask"
-              >Delete task
-              <template #content>
-                <p>
-                  Do you really want to delete
-                  <span class="font-bold break-words">{{ currentTask.title }}</span> ?
-                </p>
-              </template>
-            </ModalConfirmDelete>
-          </Teleport>
-        </nav>
-      </div>
-      <section class="flex h-full">
-        <main class="flex flex-col gap-4 w-full h-full p-4">
-          <SubParentLinks v-if="hasParent" />
-          <div class="flex">
-            <TaskCheckbox
-              class="pt-3 mx-0.5 checkbox-xs"
-              :is-done="currentTask.isDone"
-              :is-priority="currentTask.isPriority"
-              @toggle="toggleIsDone" />
-            <TaskEditorSlim
-              v-if="isTaskEditorActive"
-              class="ml-1"
-              :title="currentTask.title"
-              :description="currentTask.description"
-              @update-task="handleUpdateTask"
-              @close-editor="isTaskEditorActive = false" />
-            <TaskShowSlim
-              v-else
-              :class="{ 'line-through': currentTask.isDone }"
-              @click="openTaskEditor">
-              {{ currentTask.title }}
-              <template #desc>
-                {{ currentTask.description }}
-              </template>
-            </TaskShowSlim>
+      class="modal sm:modal-middle modal-open"
+      role="dialog">
+      <div
+        id="task-modal"
+        ref="target"
+        class="fixed flex flex-col modal-box top-12 !rounded-xl !max-h-screen overflow-visible p-0 md:min-w-[720px] min-h-[460px] h-[calc(100vh_-_6rem)]">
+        <div class="flex justify-between items-center border-b px-4 py-2">
+          <div>
+            <ProjectLink
+              class="hover:!bg-base-100 hover:underline"
+              :to="{ name: 'project', params: { id: currentProject?.id || 'inbox' } }"
+              :name="currentProject?.name"
+              :custom-tooltip="true"
+              :fill="currentProject?.color">
+              <span class="items-center">{{ currentProject?.name }}</span>
+            </ProjectLink>
           </div>
-          <div class="ml-8 relative">
-            <SubtaskList
-              v-if="subTasks"
-              :subtasks="subTasks" />
-            <TaskEditor
-              v-if="isSubtaskEditorActive"
-              :is-sub-task="true"
+          <nav class="flex gap-2 items-center">
+            <TaskModalAction
+              tooltip-data="Previous task"
+              :disabled="!isPrevTask"
+              :class="{ 'cursor-not-allowed bg-base-100, color-red-500': !isPrevTask }"
+              @click.stop="moveToPrevTask">
+              <IconChevronDown
+                class="rotate-180"
+                :class="{ 'fill-base-300': !isPrevTask }" />
+            </TaskModalAction>
+            <TaskModalAction
+              tooltip-data="Next task"
+              :disabled="!isNextTask"
+              :class="{ 'cursor-not-allowed bg-base-100': !isNextTask }"
+              @click.stop="moveToNextTask">
+              <IconChevronDown :class="{ 'fill-base-300': !isNextTask }" />
+            </TaskModalAction>
+            <TaskModalNavbarDropdown
               :task="currentTask"
-              :current-project="currentProject"
-              @close-editor="isSubtaskEditorActive = false" />
-            <SubtaskAddButton
-              v-if="!isSubtaskEditorActive"
-              class="print:hidden"
-              @click="openSubtaskEditor" />
-          </div>
-        </main>
+              @delete-task="toggleDeleteModal"
+              @print-task="handlePrintTask" />
+            <TaskModalAction
+              tooltip-data="Close modal"
+              @click.prevent="closeModal">
+              <IconClose />
+            </TaskModalAction>
 
-        <aside class="bg-base-200 rounded-br-xl w-96 p-4">
-          <div class="flex flex-col">
-            <TaskModalOption title="Project">
-              <ProjectList
-                v-model="selectedProject"
-                class="select-sm px-2 bg-base-100 hover:bg-base-100 transition duration-300 border-none w-full max-w-[16rem]"
-                :current-project="currentProject"
-                @change="handleMoveTask" />
-            </TaskModalOption>
-            <TaskModalOption title="Due date">
-              <Datepicker
-                ref="datepicker"
-                v-model="date"
-                position="center"
-                :min-date="new Date()"
-                :start-time="startTime"
-                @open="storeSettings.setModal({ modal: 'calendar', value: true })"
-                @closed="storeSettings.setModal({ modal: 'calendar', value: false })"
-                @update:model-value="handleUpdateDate" />
-            </TaskModalOption>
-            <TaskModalOption title="Priority">
-              <TheTooltip
-                class="!tooltip-top"
-                data="Set priority">
-                <ButtonBadgeMedium
-                  :class="{ '!bg-base-100': currentTask.isPriority }"
-                  class="hover:!bg-base-100"
-                  :is-toggle="currentTask.isPriority"
-                  @click.prevent="togglePriority"
-                  ><template #icon>
-                    <IconImportantSmall class="-ml-1.5" />
-                  </template>
-                  Is priority
-                </ButtonBadgeMedium>
-              </TheTooltip>
-            </TaskModalOption>
-
-            <div>
-              <h3>Labels +btn</h3>
-              <p>List labels badges</p>
+            <Teleport to="body">
+              <ModalConfirmDelete
+                v-if="deleteConfirm"
+                :is-danger="true"
+                @cancel="cancelDeleteTask"
+                @action="handleDeleteTask"
+                >Delete task
+                <template #content>
+                  <p>
+                    Do you really want to delete
+                    <span class="font-bold break-words">{{ currentTask.title }}</span> ?
+                  </p>
+                </template>
+              </ModalConfirmDelete>
+            </Teleport>
+          </nav>
+        </div>
+        <section class="flex h-full">
+          <main class="flex flex-col gap-4 w-full h-full p-4">
+            <SubParentLinks v-if="hasParent" />
+            <div class="flex">
+              <TaskCheckbox
+                class="pt-3 mx-0.5 checkbox-xs"
+                :is-done="currentTask.isDone"
+                :is-priority="currentTask.isPriority"
+                @toggle="toggleIsDone" />
+              <TaskEditorSlim
+                v-if="isTaskEditorActive"
+                class="ml-1"
+                :title="currentTask.title"
+                :description="currentTask.description"
+                @update-task="handleUpdateTask"
+                @close-editor="isTaskEditorActive = false" />
+              <TaskShowSlim
+                v-else
+                :class="{ 'line-through': currentTask.isDone }"
+                @click="openTaskEditor">
+                {{ currentTask.title }}
+                <template #desc>
+                  {{ currentTask.description }}
+                </template>
+              </TaskShowSlim>
             </div>
-          </div>
-        </aside>
-      </section>
+            <div class="ml-8 relative">
+              <SubtaskList
+                v-if="subTasks"
+                :subtasks="subTasks" />
+              <TaskEditor
+                v-if="isSubtaskEditorActive"
+                :is-sub-task="true"
+                :task="currentTask"
+                :current-project="currentProject"
+                @close-editor="isSubtaskEditorActive = false" />
+              <SubtaskAddButton
+                v-if="!isSubtaskEditorActive"
+                class="print:hidden"
+                @click="openSubtaskEditor" />
+            </div>
+          </main>
+
+          <aside class="bg-base-200 rounded-br-xl w-96 p-4">
+            <div class="flex flex-col">
+              <TaskModalOption title="Project">
+                <ProjectList
+                  v-model="selectedProject"
+                  class="select-sm px-2 bg-base-100 hover:bg-base-100 transition duration-300 border-none w-full max-w-[16rem]"
+                  :current-project="currentProject"
+                  @change="handleMoveTask" />
+              </TaskModalOption>
+              <TaskModalOption title="Due date">
+                <Datepicker
+                  ref="datepicker"
+                  v-model="date"
+                  position="center"
+                  :min-date="new Date()"
+                  :start-time="startTime"
+                  @open="storeSettings.setModal({ modal: 'calendar', value: true })"
+                  @closed="storeSettings.setModal({ modal: 'calendar', value: false })"
+                  @update:model-value="handleUpdateDate" />
+              </TaskModalOption>
+              <TaskModalOption title="Priority">
+                <TheTooltip
+                  class="!tooltip-top"
+                  data="Set priority">
+                  <ButtonBadgeMedium
+                    :class="{ '!bg-base-100': currentTask.isPriority }"
+                    class="hover:!bg-base-100"
+                    :is-toggle="currentTask.isPriority"
+                    @click.prevent="togglePriority"
+                    ><template #icon>
+                      <IconImportantSmall class="-ml-1.5" />
+                    </template>
+                    Is priority
+                  </ButtonBadgeMedium>
+                </TheTooltip>
+              </TaskModalOption>
+
+              <div>
+                <h3>Labels +btn</h3>
+                <p>List labels badges</p>
+              </div>
+            </div>
+          </aside>
+        </section>
+      </div>
     </div>
-  </div>
+  </FadeTransitionMedium>
 </template>
 
 <script setup lang="ts">
@@ -176,6 +178,7 @@ import TaskModalOption from '@/components/tasks/modal/TaskModalOption.vue';
 import TaskShowSlim from '@/components/tasks/modal/TaskShowSlim.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 import ButtonBadgeMedium from '@/components/ui/buttons/ButtonBadgeMedium.vue';
+import FadeTransitionMedium from '@/components/ui/transitions/FadeTransitionMedium.vue';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useSettingsStore } from '@/stores/SettingsStore';
 import { useTasksStore } from '@/stores/TasksStore';

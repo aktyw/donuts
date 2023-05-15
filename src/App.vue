@@ -4,6 +4,7 @@
     <TheHeader />
     <div class="flex pt-12 h-[calc(100vh-48px)]">
       <RouterView name="sidebar" />
+
       <RouterView class="w-full h-[calc(100vh-48px)] pt-10" />
     </div>
     <TheNotification v-if="!!store.notifications.length" />
