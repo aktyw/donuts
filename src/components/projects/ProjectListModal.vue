@@ -2,6 +2,7 @@
   <FadeTransitionMedium>
     <BaseModal
       modal-title="Move project"
+      close-title="Cancel"
       @close-editor="closeEditor">
       <ProjectList
         v-model="selectedProject"

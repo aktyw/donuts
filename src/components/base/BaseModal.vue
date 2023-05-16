@@ -12,7 +12,7 @@
       </h2>
       <slot />
       <div class="flex justify-end gap-4 text-lg mt-8">
-        <ModalButton @click.prevent="closeEditor"> Cancel </ModalButton>
+        <ModalButton @click.prevent="closeEditor"> {{ closeTitle }} </ModalButton>
         <slot name="action" />
       </div>
     </div>
@@ -27,8 +27,10 @@ import ModalButton from '@/components/modals/ModalButton.vue';
 
 type Props = {
   modalTitle?: string;
+  closeTitle: string;
 };
-const props = defineProps<Props>();
+
+defineProps<Props>();
 
 const emit = defineEmits<{
   (event: 'update:modelValue', payload: string): void;

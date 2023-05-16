@@ -1,7 +1,7 @@
 <template>
   <header class="fixed top-0 p-0 px-6 navbar bg-base-300 z-50 min-h-12">
     <div class="navbar-start flex flex-row-reverse justify-between w-full lg:w-1/2">
-      <div
+      <nav
         ref="item"
         class="dropdown dropdown-left [&>.dropdown-content]:right-0 dropdown-bottom gap-2">
         <label
@@ -18,7 +18,7 @@
           <HeaderLink to="/"> About </HeaderLink>
           <HeaderLink to="/login"> Login </HeaderLink>
         </ul>
-      </div>
+      </nav>
 
       <div class="flex gap-2">
         <TheTooltip :data="menuTooltip">
@@ -50,14 +50,14 @@
       </div>
     </div>
 
-    <div class="navbar-center hidden lg:flex">
+    <nav class="navbar-center hidden lg:flex">
       <ul class="menu-horizontal gap-4">
         <HeaderLink to="/tasks"> Tasks </HeaderLink>
         <HeaderLink to="/notes"> Notes </HeaderLink>
       </ul>
-    </div>
+    </nav>
 
-    <div class="navbar-end hidden lg:flex">
+    <nav class="navbar-end hidden lg:flex">
       <ul class="flex flex-row gap-4">
         <QuickTaskButton @click="isQuickTaskActive = true">
           <template #icon>
@@ -68,7 +68,7 @@
         <HeaderLink to="/auth/login"> Login </HeaderLink>
         <HeaderLink to="/auth/signup"> Signup </HeaderLink>
       </ul>
-    </div>
+    </nav>
     <Teleport to="body">
       <TaskQuickAdd
         v-if="isQuickTaskActive"

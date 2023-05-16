@@ -62,21 +62,44 @@
       class="link text-primary pt-4">
       Already have an account? Log in!
     </router-link>
+
+    <BaseModal
+      v-if="!!errorMsg"
+      modal-title="Something goes wrong. Error!"
+      close-title="Close"
+      @close-editor="handleError">
+      <span class="text-red-500">{{ errorMsg }}</span>
+    </BaseModal>
+    <BaseModal
+      v-if="isLoading"
+      modal-title="Authenticating..."
+      close-title="Close"
+      @close-editor="closeModal">
+      <BaseLoader />
+    </BaseModal>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
 import { email, maxLength, minLength, required } from '@vuelidate/validators';
-import { computed, reactive } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
+
+import BaseLoader from '@/components/base/BaseLoader.vue';
+import BaseModal from '@/components/base/BaseModal.vue';
+import { useAuthStore } from '@/stores/AuthStore';
+import type { AuthFormData } from '@/types/models/Auth';
 
 const route = useRoute();
 
+const authStore = useAuthStore();
 const isLogin = computed(() => route.name === 'login');
 const isSignup = computed(() => route.name === 'signup');
+const isLoading = ref(false);
+const errorMsg = ref(null);
 
-const formData = reactive({
+const formData: AuthFormData = reactive({
   email: '',
   password: '',
 });
@@ -90,11 +113,45 @@ const rules = computed(() => {
 
 const v$ = useVuelidate(rules, formData, { $lazy: true });
 
+async function handleLogin() {
+  try {
+    await authStore.login(formData);
+  } catch (error) {
+    errorMsg.value = error || 'Failed to log in. Try again later';
+  }
+}
+
+async function handleSignup() {
+  try {
+    await authStore.signup(formData);
+  } catch (error) {
+    errorMsg.value = error || 'Failed to sign up. Check your data or try again later';
+  }
+}
+
 async function submitForm() {
   try {
     const result = await v$.value.$validate();
+
+    if (!result) return;
+
+    isLoading.value = true;
+    if (isLogin.value) {
+      await handleLogin();
+    } else {
+      await handleSignup();
+    }
   } catch (error) {
-    console.log(error);
+    errorMsg.value = error || 'Failed to authenticate. Try again later';
   }
+  isLoading.value = false;
+}
+
+function closeModal() {
+  isLoading.value = false;
+}
+
+function handleError() {
+  errorMsg.value = null;
 }
 </script>
