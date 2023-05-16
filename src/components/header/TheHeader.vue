@@ -65,7 +65,8 @@
           </template>
         </QuickTaskButton>
         <HeaderLink to="/"> About </HeaderLink>
-        <HeaderLink to="/login"> Login </HeaderLink>
+        <HeaderLink to="/auth/login"> Login </HeaderLink>
+        <HeaderLink to="/auth/signup"> Signup </HeaderLink>
       </ul>
     </div>
     <Teleport to="body">

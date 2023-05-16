@@ -143,7 +143,7 @@ import Datepicker from '@vuepic/vue-datepicker';
 import { useElementBounding, useWindowSize } from '@vueuse/core';
 import { useClipboard } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { computed, onMounted, onUpdated, type Ref, ref, toRefs } from 'vue';
+import { computed, onMounted, type Ref, ref, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
 
 import BaseDividerSmall from '@/components/base/BaseDividerSmall.vue';
@@ -239,10 +239,6 @@ function setCustomPosition() {
   };
 }
 
-onUpdated(() => {
-  // console.log(triggerCalendar.value);
-});
-
 onMounted(() => {
   body.value = document.body;
 });
@@ -255,7 +251,6 @@ function handleCalendar() {
 defineExpose({ handleCalendar });
 
 function handleDate(modelData: Date): void {
-  console.log('hD');
   date.value = modelData;
   emit('handleDate', date.value);
 }

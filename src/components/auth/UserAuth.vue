@@ -31,7 +31,9 @@
             class="label-text text-red-500"
             >{{ v$.password.$errors[0].$message }}</span
           >
-          <label class="label">
+          <label
+            v-if="isLogin"
+            class="label">
             <a
               href="#"
               class="label-text-alt link link-hover"
@@ -43,16 +45,23 @@
           <button
             class="btn btn-primary w-full"
             @click.prevent="submitForm">
-            Login
+            {{ isLogin ? 'Log in' : 'Sign up' }}
           </button>
         </div>
       </div>
     </div>
-    <a
-      class="link text-primary"
-      @click="switchAuthMode">
-      Don't have an account? Signup!
-    </a>
+    <router-link
+      v-if="isLogin"
+      to="signup"
+      class="link text-primary pt-4">
+      Don't have an account? Sign up!
+    </router-link>
+    <router-link
+      v-if="isSignup"
+      to="login"
+      class="link text-primary pt-4">
+      Already have an account? Log in!
+    </router-link>
   </div>
 </template>
 
@@ -60,6 +69,12 @@
 import { useVuelidate } from '@vuelidate/core';
 import { email, maxLength, minLength, required } from '@vuelidate/validators';
 import { computed, reactive } from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+
+const isLogin = computed(() => route.name === 'login');
+const isSignup = computed(() => route.name === 'signup');
 
 const formData = reactive({
   email: '',
@@ -69,19 +84,17 @@ const formData = reactive({
 const rules = computed(() => {
   return {
     email: { required, email },
-    password: { required, minLength: minLength(8), maxLength: maxLength(64) },
+    password: { required, minLength: minLength(6), maxLength: maxLength(64) },
   };
 });
 
 const v$ = useVuelidate(rules, formData, { $lazy: true });
 
-async function submitForm(params: type) {
+async function submitForm() {
   try {
     const result = await v$.value.$validate();
   } catch (error) {
     console.log(error);
   }
 }
-
-function switchAuthMode(params: type) {}
 </script>

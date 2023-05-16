@@ -74,10 +74,16 @@ const routes = [
     ],
   },
   {
-    path: '/login',
+    path: '/auth/login',
     name: 'login',
     component: lazyLoad('LoginView'),
   },
+  {
+    path: '/auth/signup',
+    name: 'signup',
+    component: lazyLoad('SignupView'),
+  },
+
   { path: '/:catchAll(.*)', name: '404', component: lazyLoad('NotFoundView') },
 ];
 

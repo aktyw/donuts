@@ -20,3 +20,9 @@ import { useSettingsStore } from '@/stores/SettingsStore';
 const settingsStore = useSettingsStore();
 const { getMenuStatus: isMenuOpen } = storeToRefs(settingsStore);
 </script>
+
+<style scoped>
+body {
+  overflow: hidden;
+}
+</style>

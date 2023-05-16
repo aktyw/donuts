@@ -1,8 +1,8 @@
 <template>
+  <BaseSkipLink />
   <div>
-    <BaseSkipLink />
     <TheHeader />
-    <div class="flex pt-12 h-[calc(100vh-48px)]">
+    <div class="flex pt-12 h-screen">
       <RouterView name="sidebar" />
 
       <RouterView
@@ -28,10 +28,6 @@ const store = useTasksStore();
 </script>
 
 <style>
-body {
-  overflow: hidden;
-}
-
 /*  Vue Datapicker Themes */
 
 .dp__theme_light {
