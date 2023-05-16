@@ -1,38 +1,28 @@
-import NotesList from '@/components/notes/NotesList.vue';
-import NotesSidebar from '@/components/notes/NotesSidebar.vue';
-import TasksSidebar from '@/components/sidebars/TasksSidebar.vue';
-import TaskModal from '@/components/tasks/modal/TaskModal.vue';
-import FadeTransitionMedium from '@/components/ui/transitions/FadeTransitionMedium.vue';
-import HomeView from '@/views/HomeView.vue';
-import LoginView from '@/views/LoginView.vue';
-import NotesView from '@/views/NotesView.vue';
-import NotFoundView from '@/views/NotFoundView.vue';
-import ProjectsView from '@/views/ProjectsView.vue';
-import ProjectView from '@/views/ProjectView.vue';
-import TasksView from '@/views/TasksView.vue';
-import TodayView from '@/views/TodayView.vue';
+function lazyLoad(view: string) {
+  return () => import(`@/views/${view}.vue`);
+}
 
 const routes = [
   {
     path: '/',
     name: 'about',
-    component: HomeView,
+    component: lazyLoad('HomeView'),
   },
   {
     path: '/tasks',
     redirect: { path: '/tasks/project/inbox' },
     name: 'tasks',
-    components: { default: TasksView, sidebar: TasksSidebar },
+    components: { default: lazyLoad('TasksView'), sidebar: () => import(`@/components/sidebars/TasksSidebar.vue`) },
     children: [
       {
         path: 'today',
         name: 'today',
-        component: TodayView,
+        component: lazyLoad('TodayView'),
         children: [
           {
             path: 'task/:taskid',
             name: 'taskToday',
-            component: TaskModal,
+            component: () => import(`@/components/tasks/modal/TaskModal.vue`),
             props: true,
           },
         ],
@@ -40,12 +30,12 @@ const routes = [
       {
         path: 'project/:id',
         name: 'project',
-        component: ProjectView,
+        component: lazyLoad('ProjectView'),
         children: [
           {
             path: 'task/:taskid',
             name: 'task',
-            component: TaskModal,
+            component: () => import(`@/components/tasks/modal/TaskModal.vue`),
             props: true,
           },
         ],
@@ -56,17 +46,17 @@ const routes = [
     path: '/projects',
     redirect: { path: '/projects/active' },
     name: 'projects',
-    components: { default: ProjectsView, sidebar: TasksSidebar },
+    components: { default: lazyLoad('ProjectsView'), sidebar: () => import(`@/components/sidebars/TasksSidebar.vue`) },
     children: [
       {
         path: 'active',
         name: 'active',
-        component: ProjectsView,
+        component: lazyLoad('ProjectsView'),
       },
       {
         path: 'archived',
         name: 'archived',
-        component: ProjectsView,
+        component: lazyLoad('ProjectsView'),
       },
     ],
   },
@@ -74,21 +64,21 @@ const routes = [
     path: '/notes',
     name: 'notes',
     redirect: { path: '/notes/list' },
-    components: { default: NotesView, sidebar: NotesSidebar },
+    components: { default: lazyLoad('NotesView'), sidebar: () => import(`@/components/sidebars/NotesSidebar.vue`) },
     children: [
       {
         path: 'list',
         name: 'noteList',
-        component: NotesList,
+        component: () => import(`@/components/notes/NotesList.vue`),
       },
     ],
   },
   {
     path: '/login',
     name: 'login',
-    component: LoginView,
+    component: lazyLoad('LoginView'),
   },
-  { path: '/:catchAll(.*)', name: '404', component: NotFoundView },
+  { path: '/:catchAll(.*)', name: '404', component: lazyLoad('NotFoundView') },
 ];
 
 export default routes;
