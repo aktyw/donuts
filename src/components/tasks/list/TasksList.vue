@@ -17,7 +17,9 @@
       </draggable>
     </ul> -->
 
-    <ul v-if="!isTimeline">
+    <FadeTasksList
+      v-if="!isTimeline"
+      tag="ul">
       <TaskCard
         v-for="task in allTasks"
         :key="task.id"
@@ -28,14 +30,16 @@
           class="pl-12">
         </TasksList>
       </TaskCard>
-    </ul>
-    <ul v-else>
+    </FadeTasksList>
+    <FadeTasksList
+      v-else
+      tag="ul">
       <TaskCard
         v-for="task in (tasks as Task[])"
         :key="task.id"
         :task="task">
       </TaskCard>
-    </ul>
+    </FadeTasksList>
   </section>
 </template>
 
@@ -46,6 +50,7 @@ import draggable from 'vuedraggable';
 
 import TaskCard from '@/components/tasks/card/TaskCard.vue';
 import TasksList from '@/components/tasks/list/TasksList.vue';
+import FadeTasksList from '@/components/ui/transitions/FadeTasksList.vue';
 import { useTasksStore } from '@/stores/TasksStore';
 import { SortFilters } from '@/types/models/Sort';
 import type { Task } from '@/types/models/Task';

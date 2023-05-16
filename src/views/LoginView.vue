@@ -1,5 +1,5 @@
 <template>
-  <FadeTransitionLong>
+  <FadeTransitionMedium>
     <div class="hero full-h min-h-screen bg-base-200">
       <div class="hero-content flex-col lg:flex-row-reverse gap-12">
         <div class="text-center lg:text-left">
@@ -43,9 +43,9 @@
         </div>
       </div>
     </div>
-  </FadeTransitionLong>
+  </FadeTransitionMedium>
 </template>
 
 <script setup lang="ts">
-import FadeTransitionLong from '@/components/ui/transitions/FadeTransitionLong.vue';
+import FadeTransitionMedium from '@/components/ui/transitions/FadeTransitionMedium.vue';
 </script>
