@@ -4,7 +4,7 @@
       <slot>
         <img
           class="max-w-[260px] w-full pointer-events-none"
-          :src="path"
+          :src="pathToRandomIllustration || '/src/assets/illustrations/donut-bench.svg'"
           alt="Illustration of happy donut" />
       </slot>
       <slot name="content">
@@ -16,19 +16,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onUpdated, ref } from 'vue';
+import { onUpdated, ref } from 'vue';
 
 import FadeTransitionMedium from '@/components/ui/transitions/FadeTransitionMedium.vue';
+import { useIllustration } from '@/composables/useIllustration';
 import { getRandomItem } from '@/helpers/getRandomItem';
-
-const illustrations = [
-  'donut-bench.svg',
-  'donut-briefcase.svg',
-  'donut-calendar.svg',
-  'donut-coffee.svg',
-  'donut-happy.svg',
-  'donut-notes.svg',
-];
 
 const messages = [
   'Have a marvelous day off!',
@@ -48,19 +40,13 @@ const tips = [
   'You can unarchive your project by selecting it on the Projects page.',
 ];
 
-const currentIllustration = ref(getRandomItem(illustrations));
 const currentMessage = ref(getRandomItem(messages));
 const currentTip = ref(getRandomItem(tips));
 
 onUpdated(() => {
-  currentIllustration.value = getRandomItem(illustrations);
   currentMessage.value = getRandomItem(messages);
   currentTip.value = getRandomItem(tips);
 });
 
-const path = computed(() => {
-  const illustration = currentIllustration.value;
-
-  return `/src/assets/illustrations/${illustration}`;
-});
+const pathToRandomIllustration = useIllustration();
 </script>

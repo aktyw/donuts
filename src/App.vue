@@ -5,7 +5,13 @@
     <div class="flex pt-12 h-[calc(100vh-48px)]">
       <RouterView name="sidebar" />
 
-      <RouterView class="w-full h-[calc(100vh-48px)] pt-10" />
+      <RouterView
+        v-slot="{ Component }"
+        class="w-full h-[calc(100vh-48px)] pt-10">
+        <FadeTransitionShort mode="out-in">
+          <component :is="Component" />
+        </FadeTransitionShort>
+      </RouterView>
     </div>
     <TheNotification v-if="!!store.notifications.length" />
   </div>
@@ -15,6 +21,7 @@
 import BaseSkipLink from '@/components/base/BaseSkipLink.vue';
 import TheHeader from '@/components/header/TheHeader.vue';
 import TheNotification from '@/components/layouts/TheNotification.vue';
+import FadeTransitionShort from '@/components/ui/transitions/FadeTransitionShort.vue';
 import { useTasksStore } from '@/stores/TasksStore';
 
 const store = useTasksStore();

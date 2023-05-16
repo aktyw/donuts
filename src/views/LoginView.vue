@@ -1,69 +1,42 @@
 <template>
-  <FadeTransitionLong>
+  <FadeTransitionMedium>
     <div class="hero full-h min-h-screen bg-base-200">
-      <div class="hero-content flex-col lg:flex-row-reverse gap-12">
-        <div class="text-center lg:text-left">
-          <h1 class="text-5xl font-bold">Login to Donuts!</h1>
-          <p class="py-6 max-w-prose">
-            Donuts is a simple and intuitive application that allows users to easily manage their tasks and notes. With
-            multiple features, Donuts helps users stay on top of their schedule and get things done more efficiently.
-          </p>
-        </div>
-        <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-          <div class="card-body">
-            <div class="form-control">
-              <label class="label">
-                <span class="label-text">Email</span>
-              </label>
-              <input
-                v-model.trim="email"
-                type="text"
-                placeholder="email"
-                class="input input-bordered" />
-            </div>
-            <div class="form-control">
-              <label class="label">
-                <span class="label-text">Password</span>
-              </label>
-              <input
-                v-model.trim="password"
-                type="text"
-                placeholder="password"
-                class="input input-bordered" />
-              <label class="label">
-                <a
-                  href="#"
-                  class="label-text-alt link link-hover"
-                  >Forgot password?</a
-                >
-              </label>
-            </div>
-            <div class="flex flex-row justify-between flex-1 form-control mt-6">
-              <button class="btn btn-primary">Login</button>
-              <button
-                class="btn btn-accent"
-                @click="switchAuthMode">
-                Signup
-              </button>
-            </div>
-          </div>
+      <div class="hero-content flex-col md:gap-12">
+        <h1 class="text-5xl md:text-6xl font-bold text-center md:pb-6">
+          Login to <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Donuts!</span>
+        </h1>
+        <div class="flex flex-col md:flex-row-reverse gap-4 md:gap-12">
+          <InfoCardLogin>
+            <template #content>
+              <span
+                v-show="largerThanSm"
+                class="font-light text-base w-60 md:w-72 text-center"
+                >{{ currentMessage }}</span
+              >
+            </template>
+          </InfoCardLogin>
+          <UserAuthLogin></UserAuthLogin>
         </div>
       </div>
     </div>
-  </FadeTransitionLong>
+  </FadeTransitionMedium>
 </template>
 
 <script setup lang="ts">
-import { useVuelidate } from '@vuelidate/core';
-import { email, required } from '@vuelidate/validators';
-import { ref } from 'vue';
+import InfoCardLogin from '@/components/auth/InfoCardLogin.vue';
+import UserAuthLogin from '@/components/auth/UserAuthLogin.vue';
+import FadeTransitionMedium from '@/components/ui/transitions/FadeTransitionMedium.vue';
+import { getBreakpoints } from '@/composables/useBreakpoints';
+import { useMessage } from '@/composables/useMessage';
 
-import FadeTransitionLong from '@/components/ui/transitions/FadeTransitionLong.vue';
+const { largerThanSm } = getBreakpoints();
 
-// const email = ref();
-const password = ref();
+const messages = [
+  'Welcome to Donuts! Start organizing your tasks and boosting your productivity today.',
+  "Hello there! Welcome to Donuts, your go-to task management app. Let's conquer your to-do list together!",
+  'Welcome aboard Donuts! Get ready to streamline your tasks and stay on top of your goals.',
+  "Welcome to Donuts, where productivity meets simplicity. Let's get started on your tasks right away!",
+];
 
-function submitForm(params: type) {}
-
-function switchAuthMode(params: type) {}
+const currentMessage = useMessage(messages);
 </script>

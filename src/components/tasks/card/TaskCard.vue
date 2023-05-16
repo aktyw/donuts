@@ -1,151 +1,154 @@
 <template>
-  <li
-    v-if="!editTask"
-    ref="card"
-    v-bind="$attrs"
-    class="relative border-b border-base-200 py-3 flex justify-between transition-colors duration-1000"
-    :class="{ 'bg-base-300  duration-1000 ': showBacklight, 'last:border-b-0': isEditorActive }"
-    @click="handleShowOptionsBtn"
-    @mouseover="handleShowOptionsBtn"
-    @mouseleave="handleHideOptionsBtn">
-    <div class="flex gap-4 w-full">
-      <TaskCheckbox
-        :is-done="task.isDone"
-        :is-priority="task.isPriority"
-        @toggle="toggleIsDone(task.id)" />
+  <div>
+    <li
+      v-if="!editTask"
+      ref="card"
+      v-bind="$attrs"
+      class="relative border-b border-base-200 py-3 flex justify-between transition-colors duration-1000"
+      :class="{ 'bg-base-300  duration-1000 ': showBacklight, 'last:border-b-0': isEditorActive }"
+      @click="handleShowOptionsBtn"
+      @mouseover="handleShowOptionsBtn"
+      @mouseleave="handleHideOptionsBtn">
+      <div class="flex gap-4 w-full">
+        <TaskCheckbox
+          :is-done="task.isDone"
+          :is-priority="task.isPriority"
+          @toggle="toggleIsDone(task.id)" />
 
-      <div class="flex flex-col w-full cursor-pointer">
-        <router-link
-          v-if="isModal"
-          class="flex flex-col"
-          :to="{ params: { taskid: task.id } }">
-          <p
-            class="break-all flex"
-            :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
-            {{ task.title }}
-          </p>
-          <p
-            class="break-all flex text-sm"
-            :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
-            {{ task.description }}
-          </p>
-        </router-link>
-        <router-link
-          v-if="$route.name === 'today'"
-          class="flex flex-col"
-          :to="{ name: 'taskToday', params: { taskid: task.id } }">
-          <p
-            class="break-all h-full flex"
-            :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
-            {{ task.title }}
-          </p>
-          <p
-            class="break-all h-full flex text-sm"
-            :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
-            {{ task.description }}
-          </p>
-        </router-link>
-        <router-link
-          v-if="$route.name === 'project'"
-          class="flex flex-col"
-          :to="{ name: 'task', params: { taskid: task.id } }">
-          <p
-            class="break-all h-full flex"
-            :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
-            {{ task.title }}
-          </p>
-          <p
-            class="break-all h-full flex text-sm"
-            :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
-            {{ task.description }}
-          </p>
-        </router-link>
+        <div class="flex flex-col w-full cursor-pointer">
+          <router-link
+            v-if="isModal"
+            class="flex flex-col"
+            :to="{ params: { taskid: task.id } }">
+            <p
+              class="break-all flex"
+              :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
+              {{ task.title }}
+            </p>
+            <p
+              class="break-all flex text-sm"
+              :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
+              {{ task.description }}
+            </p>
+          </router-link>
+          <router-link
+            v-if="$route.name === 'today'"
+            class="flex flex-col"
+            :to="{ name: 'taskToday', params: { taskid: task.id } }">
+            <p
+              class="break-all h-full flex"
+              :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
+              {{ task.title }}
+            </p>
+            <p
+              class="break-all h-full flex text-sm"
+              :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
+              {{ task.description }}
+            </p>
+          </router-link>
+          <router-link
+            v-if="$route.name === 'project'"
+            class="flex flex-col"
+            :to="{ name: 'task', params: { taskid: task.id } }">
+            <p
+              class="break-all h-full flex"
+              :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
+              {{ task.title }}
+            </p>
+            <p
+              class="break-all h-full flex text-sm"
+              :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
+              {{ task.description }}
+            </p>
+          </router-link>
 
-        <div class="flex justify-between pt-1">
-          <div class="flex gap-3 items-end">
-            <TaskSubtaskInfo
-              v-if="subtaskAmount > 0 && !isModal"
-              :amount="subtaskAmount"
-              :completed-amount="subtaskCompletedAmount" />
+          <div class="flex justify-between pt-1">
+            <div class="flex gap-3 items-end">
+              <TaskSubtaskInfo
+                v-if="subtaskAmount > 0 && !isModal"
+                :amount="subtaskAmount"
+                :completed-amount="subtaskCompletedAmount" />
 
-            <TaskTimeDetail
-              :class="markOverdue"
-              class="pt-0.5"
-              @click.stop="handleOpenCalendar()">
-              <template #icon>
-                <IconCalendar
-                  v-if="showDetailTime"
-                  class="relative right-0.5 fill-base-content" />
+              <TaskTimeDetail
+                :class="markOverdue"
+                class="pt-0.5"
+                @click.stop="handleOpenCalendar()">
+                <template #icon>
+                  <IconCalendar
+                    v-if="showDetailTime"
+                    class="relative right-0.5 fill-base-content" />
+                </template>
+                <template #time>
+                  <span
+                    v-if="showDetailTime"
+                    class="pt-0.5 flex items-end"
+                    >{{ showDetailTime }}</span
+                  >
+                </template>
+              </TaskTimeDetail>
+            </div>
+            <TaskProjectDetail
+              v-if="project && !isModal"
+              class="items-center">
+              <template #name>
+                {{ project.name }}
               </template>
-              <template #time>
-                <span
-                  v-if="showDetailTime"
-                  class="pt-0.5 flex items-end"
-                  >{{ showDetailTime }}</span
-                >
+              <template #color>
+                <IconColor
+                  :fill="project.color"
+                  height="16"
+                  width="16" />
               </template>
-            </TaskTimeDetail>
+            </TaskProjectDetail>
           </div>
-          <TaskProjectDetail
-            v-if="project && !isModal"
-            class="items-center">
-            <template #name>
-              {{ project.name }}
-            </template>
-            <template #color>
-              <IconColor
-                :fill="project.color"
-                height="16"
-                width="16" />
-            </template>
-          </TaskProjectDetail>
         </div>
       </div>
-    </div>
 
-    <TaskOptions
-      v-show="cardIsHover"
-      ref="options"
-      :task-id="task.id"
-      :task="task"
-      class="absolute right-0"
-      :coords="{ cardX, cardY, cardBottom }"
-      @toggle-is-priority="toggleIsPriority"
-      @toggle-is-done="toggleIsDone"
-      @edit-task="toggleEditModal"
-      @delete-task="openDeleteModal"
-      @handle-date="handleUpdateDate"
-      @duplicate-task="handleDuplicateTask"
-      @picker-open="setCardBacklight"
-      @add-subtask="handleAddSubtask" />
+      <TaskOptions
+        v-show="cardIsHover"
+        ref="options"
+        :task-id="task.id"
+        :task="task"
+        class="absolute right-0"
+        :coords="{ cardX, cardY, cardBottom }"
+        @toggle-is-priority="toggleIsPriority"
+        @toggle-is-done="toggleIsDone"
+        @edit-task="toggleEditModal"
+        @delete-task="openDeleteModal"
+        @handle-date="handleUpdateDate"
+        @duplicate-task="handleDuplicateTask"
+        @picker-open="setCardBacklight"
+        @add-subtask="handleAddSubtask" />
 
-    <Teleport to="body">
-      <ModalConfirmDelete
-        v-if="deleteConfirm"
-        :is-danger="true"
-        @cancel="cancelDeleteTask"
-        @action="handleDeleteTask(task.id)"
-        >Delete task
-        <template #content>
-          <p>
-            Do you really want to delete
-            <span class="font-bold break-words">{{ task.title }}</span> ?
-          </p>
-        </template>
-      </ModalConfirmDelete>
-    </Teleport>
-  </li>
-  <TaskEditor
-    v-if="editTask"
-    :is-edit="true"
-    :title="task.title"
-    :description="task.description"
-    :current-project="project"
-    :is-priority="isPriority"
-    :date="deadline"
-    @close-editor="toggleEditModal"
-    @update-task="handleUpdateTask" />
-  <slot />
+      <Teleport to="body">
+        <ModalConfirmDelete
+          v-if="deleteConfirm"
+          :is-danger="true"
+          @cancel="cancelDeleteTask"
+          @action="handleDeleteTask(task.id)"
+          >Delete task
+          <template #content>
+            <p>
+              Do you really want to delete
+              <span class="font-bold break-words">{{ task.title }}</span> ?
+            </p>
+          </template>
+        </ModalConfirmDelete>
+      </Teleport>
+    </li>
+
+    <TaskEditor
+      v-if="editTask"
+      :is-edit="true"
+      :title="task.title"
+      :description="task.description"
+      :current-project="project"
+      :is-priority="isPriority"
+      :date="deadline"
+      @close-editor="toggleEditModal"
+      @update-task="handleUpdateTask" />
+    <slot />
+  </div>
 </template>
 
 <script setup lang="ts">

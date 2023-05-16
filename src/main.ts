@@ -11,4 +11,11 @@ const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 
-app.mount('#app');
+(async () => {
+  try {
+    await router.isReady();
+    app.mount('#app');
+  } catch (error) {
+    console.log(error);
+  }
+})();
