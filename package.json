@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "@types/uuid": "^9.0.1",
+    "@vuelidate/core": "^2.0.2",
+    "@vuelidate/validators": "^2.0.2",
     "@vuepic/vue-datepicker": "^4.5.0",
     "@vueuse/core": "^10.1.0",
     "@vueuse/integrations": "^10.1.0",

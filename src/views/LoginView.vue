@@ -16,6 +16,7 @@
                 <span class="label-text">Email</span>
               </label>
               <input
+                v-model.trim="email"
                 type="text"
                 placeholder="email"
                 class="input input-bordered" />
@@ -25,6 +26,7 @@
                 <span class="label-text">Password</span>
               </label>
               <input
+                v-model.trim="password"
                 type="text"
                 placeholder="password"
                 class="input input-bordered" />
@@ -36,8 +38,13 @@
                 >
               </label>
             </div>
-            <div class="form-control mt-6">
+            <div class="flex flex-row justify-between flex-1 form-control mt-6">
               <button class="btn btn-primary">Login</button>
+              <button
+                class="btn btn-accent"
+                @click="switchAuthMode">
+                Signup
+              </button>
             </div>
           </div>
         </div>
@@ -47,5 +54,16 @@
 </template>
 
 <script setup lang="ts">
+import { useVuelidate } from '@vuelidate/core';
+import { email, required } from '@vuelidate/validators';
+import { ref } from 'vue';
+
 import FadeTransitionLong from '@/components/ui/transitions/FadeTransitionLong.vue';
+
+// const email = ref();
+const password = ref();
+
+function submitForm(params: type) {}
+
+function switchAuthMode(params: type) {}
 </script>
