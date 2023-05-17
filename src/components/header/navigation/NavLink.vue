@@ -1,6 +1,7 @@
 <template>
   <li>
     <RouterLink
+      v-bind="$attrs"
       class="btn btn-md lg:btn-sm bg-base-300 border-0 normal-case text-base font-normal text-base-content hover:bg-base-200 rounded focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
       :active-class="isMobile"
       :to="to">

@@ -1,7 +1,8 @@
 <template>
   <BaseSkipLink />
   <div>
-    <TheHeader />
+    <!-- <HeaderApp /> -->
+    <HeaderStart />
     <div class="flex pt-12 h-screen">
       <RouterView name="sidebar" />
 
@@ -19,7 +20,8 @@
 
 <script setup lang="ts">
 import BaseSkipLink from '@/components/base/BaseSkipLink.vue';
-import TheHeader from '@/components/header/TheHeader.vue';
+import HeaderApp from '@/components/header/HeaderApp.vue';
+import HeaderStart from '@/components/header/HeaderStart.vue';
 import TheNotification from '@/components/layouts/TheNotification.vue';
 import FadeTransitionShort from '@/components/ui/transitions/FadeTransitionShort.vue';
 import { useTasksStore } from '@/stores/TasksStore';
