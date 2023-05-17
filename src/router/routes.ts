@@ -7,12 +7,14 @@ const routes = [
     path: '/',
     name: 'about',
     component: lazyLoad('HomeView'),
+    meta: { requiresNotAuth: true },
   },
   {
     path: '/tasks',
     redirect: { path: '/tasks/project/inbox' },
     name: 'tasks',
     components: { default: lazyLoad('TasksView'), sidebar: () => import(`@/components/sidebars/TasksSidebar.vue`) },
+    meta: { requiresAuth: true },
     children: [
       {
         path: 'today',
@@ -47,6 +49,7 @@ const routes = [
     redirect: { path: '/projects/active' },
     name: 'projects',
     components: { default: lazyLoad('ProjectsView'), sidebar: () => import(`@/components/sidebars/TasksSidebar.vue`) },
+    meta: { requiresAuth: true },
     children: [
       {
         path: 'active',
@@ -65,6 +68,7 @@ const routes = [
     name: 'notes',
     redirect: { path: '/notes/list' },
     components: { default: lazyLoad('NotesView'), sidebar: () => import(`@/components/sidebars/NotesSidebar.vue`) },
+    meta: { requiresAuth: true },
     children: [
       {
         path: 'list',
@@ -77,11 +81,13 @@ const routes = [
     path: '/auth/login',
     name: 'login',
     component: lazyLoad('LoginView'),
+    meta: { requiresNotAuth: true },
   },
   {
     path: '/auth/signup',
     name: 'signup',
     component: lazyLoad('SignupView'),
+    meta: { requiresNotAuth: true },
   },
 
   { path: '/:catchAll(.*)', name: '404', component: lazyLoad('NotFoundView') },

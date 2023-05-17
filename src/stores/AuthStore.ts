@@ -1,3 +1,4 @@
+import { email } from '@vuelidate/validators';
 import { defineStore } from 'pinia';
 
 import type { AuthFormData } from '@/types/models/Auth';
@@ -8,7 +9,9 @@ interface AuthState {
     token: string | null;
     tokenExpiration: number | null;
   };
-  user: {};
+  user: {
+    email: string | null;
+  };
 }
 
 export const useAuthStore = defineStore('auth', {
@@ -18,7 +21,9 @@ export const useAuthStore = defineStore('auth', {
       token: null,
       tokenExpiration: null,
     },
-    user: {},
+    user: {
+      email: null,
+    },
   }),
 
   getters: {
@@ -42,12 +47,16 @@ export const useAuthStore = defineStore('auth', {
           returnSecureToken: true,
         }),
       });
-
       const responseData = await response.json();
 
       if (!response.ok) {
         throw new Error(responseData.message || `Failed to authenticate. Check your data. HTTP ${response.status}`);
       }
+
+      this.auth.token = responseData.idToken;
+      this.auth.userId = responseData.localId;
+      this.auth.tokenExpiration = responseData.expiresIn;
+      this.user.email = responseData.email;
     },
     async signup(payload: AuthFormData) {
       const url =
@@ -63,6 +72,8 @@ export const useAuthStore = defineStore('auth', {
 
       const responseData = await response.json();
 
+      console.log(responseData);
+
       if (!response.ok) {
         throw new Error(responseData.message || `Failed to authenticate. Check your data. HTTP ${response.status}`);
       }
@@ -72,6 +83,11 @@ export const useAuthStore = defineStore('auth', {
       this.auth.tokenExpiration = responseData.expiresIn;
 
       console.log(responseData);
+    },
+    logout() {
+      this.auth.token = null;
+      this.auth.userId = null;
+      this.auth.tokenExpiration = null;
     },
   },
 });

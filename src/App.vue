@@ -1,8 +1,10 @@
 <template>
-  <BaseSkipLink />
+  <BaseSkipLink v-if="!isAuthenticated" />
   <div>
+    <HeaderApp v-if="isAuthenticated" />
+    <HeaderStart v-else />
     <!-- <HeaderApp /> -->
-    <HeaderStart />
+    <!-- <HeaderStart  /> -->
     <div class="flex pt-12 h-screen">
       <RouterView name="sidebar" />
 
@@ -19,14 +21,22 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import BaseSkipLink from '@/components/base/BaseSkipLink.vue';
 import HeaderApp from '@/components/header/HeaderApp.vue';
 import HeaderStart from '@/components/header/HeaderStart.vue';
 import TheNotification from '@/components/layouts/TheNotification.vue';
 import FadeTransitionShort from '@/components/ui/transitions/FadeTransitionShort.vue';
+import { useAuthStore } from '@/stores/AuthStore';
 import { useTasksStore } from '@/stores/TasksStore';
 
 const store = useTasksStore();
+const authStore = useAuthStore();
+
+const isAuthenticated = computed(() => {
+  return authStore.isAuthenticated;
+});
 </script>
 
 <style>

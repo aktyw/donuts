@@ -84,7 +84,7 @@
 import { useVuelidate } from '@vuelidate/core';
 import { email, maxLength, minLength, required } from '@vuelidate/validators';
 import { computed, reactive, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseModal from '@/components/base/BaseModal.vue';
@@ -92,6 +92,7 @@ import { useAuthStore } from '@/stores/AuthStore';
 import type { AuthFormData } from '@/types/models/Auth';
 
 const route = useRoute();
+const router = useRouter();
 
 const authStore = useAuthStore();
 const isLogin = computed(() => route.name === 'login');
@@ -116,6 +117,7 @@ const v$ = useVuelidate(rules, formData, { $lazy: true });
 async function handleLogin() {
   try {
     await authStore.login(formData);
+    router.push('/tasks');
   } catch (error) {
     errorMsg.value = error || 'Failed to log in. Try again later';
   }
@@ -124,6 +126,7 @@ async function handleLogin() {
 async function handleSignup() {
   try {
     await authStore.signup(formData);
+    router.push('/tasks');
   } catch (error) {
     errorMsg.value = error || 'Failed to sign up. Check your data or try again later';
   }
