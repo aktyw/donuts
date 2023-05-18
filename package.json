@@ -41,6 +41,7 @@
     "@vue/test-utils": "^2.3.2",
     "@vue/tsconfig": "^0.3.2",
     "autoprefixer": "^10.4.14",
+    "browserslist-to-esbuild": "^1.2.0",
     "eslint": "^8.39.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-vue": "^9.11.0",
