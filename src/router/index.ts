@@ -1,3 +1,4 @@
+import { storeToRefs } from 'pinia';
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 
 import routes from '@/router/routes';
@@ -8,12 +9,13 @@ const router = createRouter({
   routes: routes as RouteRecordRaw[],
 });
 
-router.beforeEach((to, _, next) => {
+router.beforeEach(async (to, _, next) => {
   const authStore = useAuthStore();
+  const { isAuthenticated } = storeToRefs(authStore);
 
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+  if (to.meta.requiresAuth && !isAuthenticated.value) {
     next('/auth/login');
-  } else if (to.meta.requiresNotAuth && authStore.isAuthenticated) {
+  } else if (to.meta.requiresNotAuth && isAuthenticated.value) {
     next('/tasks');
   } else {
     next();

@@ -15,7 +15,7 @@
             Simple and intuitive app that allows users to easily manage their tasks and notes.
           </p>
           <router-link
-            to="/login"
+            to="/auth/signup"
             class="btn btn-primary">
             Try now!
           </router-link>

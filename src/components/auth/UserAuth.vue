@@ -32,7 +32,7 @@
             >{{ v$.password.$errors[0].$message }}</span
           >
           <label
-            v-if="isLogin"
+            v-if="hasLoginAction"
             class="label">
             <a
               href="#"
@@ -40,24 +40,25 @@
               >Forgot password?</a
             >
           </label>
+          <pre>dwadwa@wp.pl</pre>
         </div>
         <div class="flex flex-row justify-between flex-1 form-control mt-6">
           <button
             class="btn btn-primary w-full"
             @click.prevent="submitForm">
-            {{ isLogin ? 'Log in' : 'Sign up' }}
+            {{ hasLoginAction ? 'Log in' : 'Sign up' }}
           </button>
         </div>
       </div>
     </div>
     <router-link
-      v-if="isLogin"
+      v-if="hasLoginAction"
       to="signup"
       class="link text-primary pt-4">
       Don't have an account? Sign up!
     </router-link>
     <router-link
-      v-if="isSignup"
+      v-if="hasSignupAction"
       to="login"
       class="link text-primary pt-4">
       Already have an account? Log in!
@@ -83,7 +84,7 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
 import { email, maxLength, minLength, required } from '@vuelidate/validators';
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, type Ref, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import BaseLoader from '@/components/base/BaseLoader.vue';
@@ -95,10 +96,11 @@ const route = useRoute();
 const router = useRouter();
 
 const authStore = useAuthStore();
-const isLogin = computed(() => route.name === 'login');
-const isSignup = computed(() => route.name === 'signup');
+const hasLoginAction = computed(() => route.name === 'login');
+const hasSignupAction = computed(() => route.name === 'signup');
+const currentAction = computed(() => route.name?.toString() || 'signup');
 const isLoading = ref(false);
-const errorMsg = ref(null);
+const errorMsg: Ref<string | null> = ref(null);
 
 const formData: AuthFormData = reactive({
   email: '',
@@ -114,21 +116,12 @@ const rules = computed(() => {
 
 const v$ = useVuelidate(rules, formData, { $lazy: true });
 
-async function handleLogin() {
+async function handleAuth() {
   try {
-    await authStore.login(formData);
+    await authStore.handleAuth({ ...formData, ...{ action: currentAction.value } });
     router.push('/tasks');
   } catch (error) {
-    errorMsg.value = error || 'Failed to log in. Try again later';
-  }
-}
-
-async function handleSignup() {
-  try {
-    await authStore.signup(formData);
-    router.push('/tasks');
-  } catch (error) {
-    errorMsg.value = error || 'Failed to sign up. Check your data or try again later';
+    errorMsg.value = typeof error === 'string' ? error : 'Failed to authenticate. Try again later';
   }
 }
 
@@ -139,13 +132,9 @@ async function submitForm() {
     if (!result) return;
 
     isLoading.value = true;
-    if (isLogin.value) {
-      await handleLogin();
-    } else {
-      await handleSignup();
-    }
+    await handleAuth();
   } catch (error) {
-    errorMsg.value = error || 'Failed to authenticate. Try again later';
+    errorMsg.value = typeof error === 'string' ? error : 'Failed to authenticate. Try again later';
   }
   isLoading.value = false;
 }

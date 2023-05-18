@@ -34,6 +34,7 @@ import { useTasksStore } from '@/stores/TasksStore';
 const store = useTasksStore();
 const authStore = useAuthStore();
 
+authStore.autoLogin();
 const isAuthenticated = computed(() => {
   return authStore.isAuthenticated;
 });
