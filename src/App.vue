@@ -3,8 +3,6 @@
   <div>
     <HeaderApp v-if="isAuthenticated" />
     <HeaderStart v-else />
-    <!-- <HeaderApp /> -->
-    <!-- <HeaderStart  /> -->
     <div class="flex pt-12 h-screen">
       <RouterView name="sidebar" />
 

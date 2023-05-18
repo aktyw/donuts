@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import type { Router } from 'vue-router';
 
+import { FIREBASE_LOGIN_URL, FIREBASE_SIGNUP_URL } from '@/config/config';
 import type { AuthCredentials, AuthFormDataAction } from '@/types/models/Auth';
 
 declare module 'pinia' {
@@ -42,14 +43,10 @@ export const useAuthStore = defineStore('auth', {
 
   actions: {
     async handleAuth({ email, password, action }: AuthFormDataAction): Promise<void> {
-      let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDY-YmO16QD2UM7D3l1s7QeBa7o0Sl571w';
+      const url = action === 'login' ? FIREBASE_LOGIN_URL : FIREBASE_SIGNUP_URL;
+      const key = import.meta.env.VITE_FIREBASE_API_KEY;
 
-      if (action === 'login') {
-        url =
-          'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDY-YmO16QD2UM7D3l1s7QeBa7o0Sl571w';
-      }
-
-      const response = await fetch(url, {
+      const response = await fetch(`${url}${key}`, {
         method: 'POST',
         body: JSON.stringify({
           email: email,
@@ -64,8 +61,7 @@ export const useAuthStore = defineStore('auth', {
         throw new Error(responseData.message || `Failed to authenticate. Check your data. HTTP ${response.status}`);
       }
 
-      const expiresIn = 5000;
-      // const expiresIn = +responseData.expiresIn * 1000;
+      const expiresIn = +responseData.expiresIn * 1000;
       const expirationDate = new Date().getTime() + expiresIn;
 
       localStorage.setItem('token', responseData.idToken);
