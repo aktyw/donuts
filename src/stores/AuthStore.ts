@@ -5,7 +5,7 @@ import type { AuthCredentials, AuthFormDataAction } from '@/types/models/Auth';
 
 declare module 'pinia' {
   export interface PiniaCustomProperties {
-    readonly router: Router;
+    router: Router;
   }
 }
 
@@ -38,11 +38,6 @@ export const useAuthStore = defineStore('auth', {
     isAuthenticated(state) {
       return !!state.auth.token;
     },
-    isAuthenticatedPromise(state) {
-      return new Promise((res) => {
-        res(!!state.auth.token);
-      });
-    },
   },
 
   actions: {
@@ -65,21 +60,17 @@ export const useAuthStore = defineStore('auth', {
 
       const responseData = await response.json();
 
-      console.log('responsedata', responseData);
       if (!response.ok) {
         throw new Error(responseData.message || `Failed to authenticate. Check your data. HTTP ${response.status}`);
       }
 
-      const expiresIn = +responseData.expiresIn * 1000;
+      const expiresIn = 5000;
+      // const expiresIn = +responseData.expiresIn * 1000;
       const expirationDate = new Date().getTime() + expiresIn;
 
       localStorage.setItem('token', responseData.idToken);
       localStorage.setItem('userId', responseData.localId);
       localStorage.setItem('tokenExpiration', expirationDate.toString());
-
-      if (expiresIn < 0) {
-        return;
-      }
 
       this.auth.timer = setTimeout(() => {
         this.logout();
@@ -92,6 +83,17 @@ export const useAuthStore = defineStore('auth', {
     autoLogin() {
       const token = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
+      const tokenExpiration = localStorage.getItem('tokenExpiration') || 0;
+
+      const expiresIn = +tokenExpiration - new Date().getTime();
+
+      if (expiresIn < 0) {
+        return;
+      }
+
+      this.auth.timer = setTimeout(() => {
+        this.logout();
+      }, expiresIn);
 
       if (token && userId) {
         this.setUser({ token: token, userId: userId });

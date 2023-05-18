@@ -10,9 +10,11 @@
       class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
       <li>Theme</li>
       <li>Print</li>
-      <li @click="logout">Get User Info</li>
+      <li>Get User Info</li>
       <!-- exlude dropdown from print -->
       <li @click.prevent="logout">Logout</li>
+      <!-- base divider -->
+      <li>You are online/offline</li>
     </ul>
   </div>
 </template>
