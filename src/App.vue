@@ -1,11 +1,10 @@
 <template>
-  <BaseSkipLink v-if="!isAuthenticated" />
+  <BaseSkipLink v-if="isAuthenticated" />
   <div>
     <HeaderApp v-if="isAuthenticated" />
     <HeaderStart v-else />
     <div class="flex pt-12 h-screen">
       <RouterView name="sidebar" />
-
       <RouterView
         v-slot="{ Component }"
         class="w-full h-[calc(100vh-48px)] pt-10">

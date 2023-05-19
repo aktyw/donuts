@@ -84,6 +84,7 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
 import { email, maxLength, minLength, required } from '@vuelidate/validators';
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { computed, reactive, type Ref, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 

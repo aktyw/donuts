@@ -46,6 +46,7 @@ export const useAuthStore = defineStore('auth', {
       const url = action === 'login' ? FIREBASE_LOGIN_URL : FIREBASE_SIGNUP_URL;
       const key = import.meta.env.VITE_FIREBASE_API_KEY;
 
+      console.log(url, key);
       const response = await fetch(`${url}${key}`, {
         method: 'POST',
         body: JSON.stringify({

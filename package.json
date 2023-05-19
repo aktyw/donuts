@@ -23,6 +23,7 @@
     "@vueuse/integrations": "^10.1.0",
     "@vueuse/router": "^10.1.0",
     "daisyui": "^2.51.5",
+    "firebase": "^9.22.0",
     "focus-trap": "^7.4.0",
     "gsap": "^3.11.5",
     "nanoid": "^4.0.2",
@@ -30,7 +31,8 @@
     "uuid": "^9.0.0",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
-    "vuedraggable": "^4.1.0"
+    "vuedraggable": "^4.1.0",
+    "vuefire": "^3.1.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",

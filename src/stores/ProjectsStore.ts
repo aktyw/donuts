@@ -1,8 +1,11 @@
 import { useStorage } from '@vueuse/core';
+import { addDoc, collection, deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { nanoid } from 'nanoid';
 import { defineStore, storeToRefs } from 'pinia';
+import { useCollection } from 'vuefire';
 
 import { useNotification } from '@/composables/useNotification';
+import { db } from '@/firebase/config';
 import { findIndex } from '@/helpers/findIndex';
 import { findItem } from '@/helpers/findItem';
 import { useTasksStore } from '@/stores/TasksStore';
@@ -49,22 +52,26 @@ export const useProjectsStore = defineStore('projects', {
     },
   },
   actions: {
-    addProject({ name, color, id, favorite }: PartialProject) {
+    async addProject({ name, color, id, favorite }: PartialProject) {
       const project = {
         name,
-        id,
         color,
+        id,
         active: true,
         favorite,
       };
+
+      await setDoc(doc(db, 'projects', id), project);
 
       this.projects.push(project);
 
       useNotification(NotificationMessage.AddProject);
     },
-    deleteProject(id: string) {
+    async deleteProject(id: string) {
       const project = findItem(id, this.projects);
+      const docRef = doc(db, 'projects', id);
 
+      await deleteDoc(docRef);
       this.projects = this.projects.filter((p) => p !== project);
 
       useNotification(NotificationMessage.DeleteProject);
