@@ -12,7 +12,11 @@
       <li>Print</li>
       <li>Get User Info</li>
       <!-- exlude dropdown from print -->
-      <li @click.prevent="logout">Logout</li>
+      <li
+        class="cursor-pointer"
+        @click.prevent="logout">
+        Logout
+      </li>
       <!-- base divider -->
       <li>You are online/offline</li>
     </ul>
@@ -34,6 +38,5 @@ import UserInfo from './dropdown/UserInfo.vue';
 
 function logout() {
   authStore.logout();
-  router.push('/');
 }
 </script>

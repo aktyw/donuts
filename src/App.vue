@@ -1,4 +1,5 @@
 <template>
+  <!-- <div v-if="isLoading"></div> -->
   <BaseSkipLink v-if="isAuthenticated" />
   <div>
     <HeaderApp v-if="isAuthenticated" />
@@ -18,7 +19,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { onMounted } from 'vue';
 
 import BaseSkipLink from '@/components/base/BaseSkipLink.vue';
 import HeaderApp from '@/components/header/HeaderApp.vue';
@@ -28,12 +30,18 @@ import FadeTransitionShort from '@/components/ui/transitions/FadeTransitionShort
 import { useAuthStore } from '@/stores/AuthStore';
 import { useTasksStore } from '@/stores/TasksStore';
 
+import { useSettingsStore } from './stores/SettingsStore';
+
 const store = useTasksStore();
 const authStore = useAuthStore();
 
-authStore.autoLogin();
-const isAuthenticated = computed(() => {
-  return authStore.isAuthenticated;
+const settingsStore = useSettingsStore();
+
+authStore.setUser();
+const { isAuthenticated } = storeToRefs(authStore);
+
+onMounted(() => {
+  console.log('onMounted');
 });
 </script>
 

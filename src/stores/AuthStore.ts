@@ -1,8 +1,16 @@
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+} from 'firebase/auth';
 import { defineStore } from 'pinia';
 import type { Router } from 'vue-router';
 
-import { FIREBASE_LOGIN_URL, FIREBASE_SIGNUP_URL } from '@/config/config';
-import type { AuthCredentials, AuthFormDataAction } from '@/types/models/Auth';
+import type { AuthFormData } from '@/types/models/Auth';
 
 declare module 'pinia' {
   export interface PiniaCustomProperties {
@@ -11,109 +19,78 @@ declare module 'pinia' {
 }
 
 interface AuthState {
-  auth: {
-    userId: string | null;
-    token: string | null;
-    timer: ReturnType<typeof setTimeout> | number | null;
-  };
+  auth: {};
   user: {
-    email: string | null;
+    isAuthenticated: boolean;
+    email: string | null | undefined;
   };
 }
 
 export const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({
-    auth: {
-      userId: null,
-      token: null,
-      timer: null,
-    },
+    auth: {},
     user: {
+      isAuthenticated: false,
       email: null,
     },
   }),
   getters: {
-    getToken(state) {
-      return state.auth.token;
-    },
     isAuthenticated(state) {
-      return !!state.auth.token;
+      return state.user.isAuthenticated;
     },
   },
-
   actions: {
-    async handleAuth({ email, password, action }: AuthFormDataAction): Promise<void> {
-      const url = action === 'login' ? FIREBASE_LOGIN_URL : FIREBASE_SIGNUP_URL;
-      const key = import.meta.env.VITE_FIREBASE_API_KEY;
+    async handleSignUp({ email, password }: AuthFormData): Promise<void> {
+      try {
+        const auth = getAuth();
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-      console.log(url, key);
-      const response = await fetch(`${url}${key}`, {
-        method: 'POST',
-        body: JSON.stringify({
-          email: email,
-          password: password,
-          returnSecureToken: true,
-        }),
+        this.user.email = userCredential.user?.email;
+      } catch (error) {
+        console.log(error.code);
+        throw new Error(typeof error === 'string' ? error : 'Failed to Sign Up');
+      }
+    },
+    async handleLogin({ email, password }: AuthFormData): Promise<void> {
+      try {
+        const auth = getAuth();
+
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+        this.user.email = userCredential.user?.email;
+      } catch (error) {
+        console.log(error.code);
+        throw new Error(typeof error === 'string' ? error : 'Failed to Log in');
+      }
+    },
+    async handleGoogleAuth(): Promise<void> {
+      try {
+        const provider = new GoogleAuthProvider();
+
+        const credentials = await signInWithPopup(getAuth(), provider);
+
+        this.router.push('/tasks');
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    setUser(): void {
+      const auth = getAuth();
+
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          console.log('Signed In', user.email);
+          this.user.isAuthenticated = true;
+        } else {
+          console.log('LOGOFF', user);
+          this.user.isAuthenticated = false;
+        }
       });
-
-      const responseData = await response.json();
-
-      if (!response.ok) {
-        throw new Error(responseData.message || `Failed to authenticate. Check your data. HTTP ${response.status}`);
-      }
-
-      const expiresIn = +responseData.expiresIn * 1000;
-      const expirationDate = new Date().getTime() + expiresIn;
-
-      localStorage.setItem('token', responseData.idToken);
-      localStorage.setItem('userId', responseData.localId);
-      localStorage.setItem('tokenExpiration', expirationDate.toString());
-
-      this.auth.timer = setTimeout(() => {
-        this.logout();
-      }, expiresIn);
-
-      this.auth.token = responseData.idToken;
-      this.auth.userId = responseData.localId;
-      this.user.email = responseData.email;
     },
-    autoLogin() {
-      const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId');
-      const tokenExpiration = localStorage.getItem('tokenExpiration') || 0;
+    async logout() {
+      const auth = getAuth();
 
-      const expiresIn = +tokenExpiration - new Date().getTime();
-
-      if (expiresIn < 0) {
-        return;
-      }
-
-      this.auth.timer = setTimeout(() => {
-        this.logout();
-      }, expiresIn);
-
-      if (token && userId) {
-        this.setUser({ token: token, userId: userId });
-      }
-    },
-    setUser({ token, userId }: AuthCredentials) {
-      this.auth.token = token;
-      this.auth.userId = userId;
-    },
-    clearTimer() {
-      if (this.auth.timer) {
-        clearTimeout(this.auth.timer);
-        this.auth.timer = null;
-      }
-    },
-    logout() {
-      localStorage.removeItem('token');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('tokenExpiration');
-
-      this.clearTimer();
-      this.auth.token = null;
-      this.auth.userId = null;
+      await signOut(auth);
 
       this.router.push({ path: '/auth/login', replace: true });
     },

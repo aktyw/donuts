@@ -3,9 +3,6 @@ export type AuthFormData = {
   password: string;
 };
 
-export type AuthAction = {
-  action: string;
-};
 
 export type AuthCredentials = {
   userId: string | null;
@@ -13,4 +10,3 @@ export type AuthCredentials = {
   tokenExpiration?: number | null;
 };
 
-export type AuthFormDataAction = AuthFormData & AuthAction;

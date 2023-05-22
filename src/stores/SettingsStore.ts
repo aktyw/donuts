@@ -13,6 +13,7 @@ interface SettingsState {
     isTransitionActive: {
       [projectRecord: string]: boolean;
     };
+    isLoading: boolean;
   };
 }
 
@@ -30,6 +31,7 @@ export const useSettingsStore = defineStore('settings', {
       isTransitionActive: {
         projectRecord: true,
       },
+      isLoading: false,
     },
   }),
 

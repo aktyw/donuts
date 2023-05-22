@@ -32,7 +32,7 @@
             >{{ v$.password.$errors[0].$message }}</span
           >
           <label
-            v-if="hasLoginAction"
+            v-if="requestLogin"
             class="label">
             <a
               href="#"
@@ -43,22 +43,29 @@
           <pre>dwadwa@wp.pl</pre>
         </div>
         <div class="flex flex-row justify-between flex-1 form-control mt-6">
-          <button
-            class="btn btn-primary w-full"
-            @click.prevent="submitForm">
-            {{ hasLoginAction ? 'Log in' : 'Sign up' }}
-          </button>
+          <div class="flex flex-col gap-6">
+            <button
+              class="btn btn-primary w-full"
+              @click.prevent="submitForm">
+              {{ requestLogin ? 'Log in' : 'Sign up' }}
+            </button>
+            <button
+              class="btn btn-primary w-full"
+              @click.prevent="signInWithGoogle">
+              {{ requestLogin ? 'Log in with Google' : 'Sign up with Google' }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
     <router-link
-      v-if="hasLoginAction"
+      v-if="requestLogin"
       to="signup"
       class="link text-primary pt-4">
       Don't have an account? Sign up!
     </router-link>
     <router-link
-      v-if="hasSignupAction"
+      v-if="requestSignup"
       to="login"
       class="link text-primary pt-4">
       Already have an account? Log in!
@@ -84,7 +91,7 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
 import { email, maxLength, minLength, required } from '@vuelidate/validators';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 import { computed, reactive, type Ref, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -97,9 +104,8 @@ const route = useRoute();
 const router = useRouter();
 
 const authStore = useAuthStore();
-const hasLoginAction = computed(() => route.name === 'login');
-const hasSignupAction = computed(() => route.name === 'signup');
-const currentAction = computed(() => route.name?.toString() || 'signup');
+const requestLogin = computed(() => route.name === 'login');
+const requestSignup = computed(() => route.name === 'signup');
 const isLoading = ref(false);
 const errorMsg: Ref<string | null> = ref(null);
 
@@ -117,27 +123,54 @@ const rules = computed(() => {
 
 const v$ = useVuelidate(rules, formData, { $lazy: true });
 
-async function handleAuth() {
+async function validateForm() {
   try {
-    await authStore.handleAuth({ ...formData, ...{ action: currentAction.value } });
-    router.push('/tasks');
+    await v$.value.$validate();
   } catch (error) {
-    errorMsg.value = typeof error === 'string' ? error : 'Failed to authenticate. Try again later';
+    console.log(error);
   }
 }
 
 async function submitForm() {
   try {
-    const result = await v$.value.$validate();
-
-    if (!result) return;
+    await validateForm();
 
     isLoading.value = true;
-    await handleAuth();
+    if (requestSignup.value) await handleSignUp();
+    if (requestLogin.value) await handleLogin();
   } catch (error) {
     errorMsg.value = typeof error === 'string' ? error : 'Failed to authenticate. Try again later';
+  } finally {
+    isLoading.value = false;
   }
-  isLoading.value = false;
+}
+
+async function handleSignUp() {
+  try {
+    await authStore.handleSignUp(formData);
+    router.push('/tasks');
+  } catch (error) {
+
+    errorMsg.value = typeof error === 'string' ? error : 'Failed to authenticate. Try again later';
+  }
+}
+
+async function handleLogin() {
+  try {
+    await authStore.handleLogin(formData);
+    router.push('/tasks');
+  } catch (error) {
+    console.log(error);
+    errorMsg.value = typeof error === 'string' ? error : 'Failed to authenticate. Try again later';
+  }
+}
+
+async function signInWithGoogle() {
+  try {
+    await authStore.handleGoogleAuth();
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 function closeModal() {
