@@ -10,6 +10,7 @@ import {
 import { defineStore } from 'pinia';
 import type { Router } from 'vue-router';
 
+import { useSettingsStore } from '@/stores/SettingsStore';
 import type { AuthFormData } from '@/types/models/Auth';
 
 declare module 'pinia' {
@@ -75,16 +76,17 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     setUser(): void {
+      const store = useSettingsStore();
       const auth = getAuth();
 
-      onAuthStateChanged(auth, (user) => {
+      onAuthStateChanged(auth, async (user) => {
         if (user) {
-          console.log('Signed In', user.email);
           this.user.isAuthenticated = true;
         } else {
-          console.log('LOGOFF', user);
           this.user.isAuthenticated = false;
         }
+
+        store.setLoadingStatus(false);
       });
     },
     async logout() {

@@ -1,48 +1,49 @@
 <template>
-  <!-- <div v-if="isLoading"></div> -->
-  <BaseSkipLink v-if="isAuthenticated" />
-  <div>
-    <HeaderApp v-if="isAuthenticated" />
-    <HeaderStart v-else />
-    <div class="flex pt-12 h-screen">
-      <RouterView name="sidebar" />
-      <RouterView
-        v-slot="{ Component }"
-        class="w-full h-[calc(100vh-48px)] pt-10">
-        <FadeTransitionShort mode="out-in">
-          <component :is="Component" />
-        </FadeTransitionShort>
-      </RouterView>
+  <FadeTransitionMedium v-if="isLoading">
+    <TheSplash />
+  </FadeTransitionMedium>
+  <FadeTransitionMedium v-else>
+    <div>
+      <BaseSkipLink v-if="!isAuthenticated" />
+      <HeaderApp v-if="isAuthenticated" />
+      <HeaderStart v-else />
+      <div class="flex pt-12 h-screen">
+        <RouterView name="sidebar" />
+        <RouterView
+          v-slot="{ Component }"
+          class="w-full h-[calc(100vh-48px)] pt-10">
+          <FadeTransitionShort mode="out-in">
+            <component :is="Component" />
+          </FadeTransitionShort>
+        </RouterView>
+      </div>
+      <TheNotification v-if="!!store.notifications.length" />
     </div>
-    <TheNotification v-if="!!store.notifications.length" />
-  </div>
+  </FadeTransitionMedium>
 </template>
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { onMounted } from 'vue';
 
 import BaseSkipLink from '@/components/base/BaseSkipLink.vue';
 import HeaderApp from '@/components/header/HeaderApp.vue';
 import HeaderStart from '@/components/header/HeaderStart.vue';
 import TheNotification from '@/components/layouts/TheNotification.vue';
+import TheSplash from '@/components/ui/splash-screen/TheSplash.vue';
+import FadeTransitionMedium from '@/components/ui/transitions/FadeTransitionMedium.vue';
 import FadeTransitionShort from '@/components/ui/transitions/FadeTransitionShort.vue';
 import { useAuthStore } from '@/stores/AuthStore';
+import { useSettingsStore } from '@/stores/SettingsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 
-import { useSettingsStore } from './stores/SettingsStore';
-
 const store = useTasksStore();
+const settingsStore = useSettingsStore();
 const authStore = useAuthStore();
 
-const settingsStore = useSettingsStore();
-
 authStore.setUser();
-const { isAuthenticated } = storeToRefs(authStore);
 
-onMounted(() => {
-  console.log('onMounted');
-});
+const { getLoadingStatus: isLoading } = storeToRefs(settingsStore);
+const { isAuthenticated } = storeToRefs(authStore);
 </script>
 
 <style>

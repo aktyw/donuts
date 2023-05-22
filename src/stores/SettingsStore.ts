@@ -31,7 +31,7 @@ export const useSettingsStore = defineStore('settings', {
       isTransitionActive: {
         projectRecord: true,
       },
-      isLoading: false,
+      isLoading: true,
     },
   }),
 
@@ -52,6 +52,9 @@ export const useSettingsStore = defineStore('settings', {
         return state.settings.isTransitionActive[transition];
       };
     },
+    getLoadingStatus(state): boolean {
+      return state.settings.isLoading;
+    },
   },
 
   actions: {
@@ -69,6 +72,9 @@ export const useSettingsStore = defineStore('settings', {
     },
     setHomeView(id: string): void {
       this.settings.homeView = id;
+    },
+    setLoadingStatus(value: boolean) {
+      this.settings.isLoading = value;
     },
   },
 });
