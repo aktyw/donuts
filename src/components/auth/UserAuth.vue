@@ -43,17 +43,20 @@
           <pre>dwadwa@wp.pl</pre>
         </div>
         <div class="flex flex-row justify-between flex-1 form-control mt-6">
-          <div class="flex flex-col gap-6">
-            <button
+          <div class="flex flex-col gap-6 w-full">
+            <BaseButton
               class="btn btn-primary w-full"
               @click.prevent="submitForm">
               {{ requestLogin ? 'Log in' : 'Sign up' }}
-            </button>
-            <button
-              class="btn btn-primary w-full"
+            </BaseButton>
+            <BaseButton
+              class="btn btn-ghost flex gap-2 border-primary text-base-content w-full"
               @click.prevent="signInWithGoogle">
-              {{ requestLogin ? 'Log in with Google' : 'Sign up with Google' }}
-            </button>
+              <template #icon>
+                <IconGoogle />
+              </template>
+              {{ requestLogin ? 'Continue with Google' : 'Sign up with Google' }}
+            </BaseButton>
           </div>
         </div>
       </div>
@@ -94,8 +97,10 @@ import { email, maxLength, minLength, required } from '@vuelidate/validators';
 import { computed, reactive, type Ref, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
+import BaseButton from '@/components/base/BaseButton.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseModal from '@/components/base/BaseModal.vue';
+import IconGoogle from '@/components/icons/IconGoogle.vue';
 import { useAuthStore } from '@/stores/AuthStore';
 import type { AuthFormData } from '@/types/models/Auth';
 
