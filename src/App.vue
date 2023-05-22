@@ -1,5 +1,6 @@
 <template>
   <BaseSkipLink v-if="!isAuthenticated" />
+  <TheSplash v-if="isLoading" />
   <div>
     <HeaderApp v-if="isAuthenticated" />
     <HeaderStart v-else />
@@ -21,15 +22,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 import BaseSkipLink from '@/components/base/BaseSkipLink.vue';
 import HeaderApp from '@/components/header/HeaderApp.vue';
 import HeaderStart from '@/components/header/HeaderStart.vue';
 import TheNotification from '@/components/layouts/TheNotification.vue';
+import TheSplash from '@/components/ui/splash-screen/TheSplash.vue';
 import FadeTransitionShort from '@/components/ui/transitions/FadeTransitionShort.vue';
 import { useAuthStore } from '@/stores/AuthStore';
 import { useTasksStore } from '@/stores/TasksStore';
+
+const isLoading = ref(true);
 
 const store = useTasksStore();
 const authStore = useAuthStore();
@@ -37,6 +41,10 @@ const authStore = useAuthStore();
 authStore.autoLogin();
 const isAuthenticated = computed(() => {
   return authStore.isAuthenticated;
+});
+
+onMounted(() => {
+  isLoading.value = false;
 });
 </script>
 
