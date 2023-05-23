@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar-start flex flex-row justify-between lg:w-1/2">
+  <div class="navbar-start flex flex-row justify-between lg:w-1/2 print:hidden">
     <div class="flex gap-2">
       <TheTooltip :data="menuTooltip">
         <BaseButton

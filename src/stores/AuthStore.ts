@@ -1,3 +1,4 @@
+import { email } from '@vuelidate/validators';
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -52,9 +53,11 @@ export const useAuthStore = defineStore('auth', {
     async handleSignUp({ email, password }: AuthFormData): Promise<void> {
       try {
         const auth = getAuth();
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const {
+          user: { email: userEmail, displayName: userDisplayName },
+        } = await createUserWithEmailAndPassword(auth, email, password);
 
-        this.user.email = userCredential.user?.email;
+        this.setCredentials(userEmail, userDisplayName);
       } catch (error) {
         console.log(error.code);
         throw new Error(typeof error === 'string' ? error : 'Failed to Sign Up');
@@ -64,12 +67,11 @@ export const useAuthStore = defineStore('auth', {
       try {
         const auth = getAuth();
 
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const {
+          user: { email: userEmail, displayName: userDisplayName },
+        } = await signInWithEmailAndPassword(auth, email, password);
 
-        console.log(this.user.email);
-
-        this.user.email = userCredential.user?.email;
-        this.user.name = userCredential.user?.displayName || this.user.email?.slice(5);
+        this.setCredentials(userEmail, userDisplayName);
       } catch (error) {
         console.log(error.code);
         throw new Error(typeof error === 'string' ? error : 'Failed to Log in');
@@ -79,13 +81,18 @@ export const useAuthStore = defineStore('auth', {
       try {
         const provider = new GoogleAuthProvider();
 
-        const userCredential = await signInWithPopup(getAuth(), provider);
+        const {
+          user: { email: userEmail, displayName: userDisplayName },
+        } = await signInWithPopup(getAuth(), provider);
 
-        this.user.email = userCredential.user?.email;
-        this.user.name = userCredential.user?.displayName || this.user.email?.slice(5);
+        this.setCredentials(userEmail, userDisplayName);
       } catch (error) {
         console.log(error);
       }
+    },
+    setCredentials(email: string | null, displayName: string | null): void {
+      this.user.email = email;
+      this.user.name = displayName || email?.slice(0, email.indexOf('@'));
     },
     setUser(): void {
       const store = useSettingsStore();
@@ -95,8 +102,7 @@ export const useAuthStore = defineStore('auth', {
         if (user) {
           this.user.isAuthenticated = true;
 
-          this.user.email = user?.email;
-          this.user.name = user?.displayName || this.user.email?.slice(5);
+          this.setCredentials(user.email, user.displayName);
         } else {
           this.user.isAuthenticated = false;
         }

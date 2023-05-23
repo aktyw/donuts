@@ -23,7 +23,7 @@ import { ref } from 'vue';
 import IconAdd from '@/components/icons/IconAdd.vue';
 import TaskQuickAdd from '@/components/tasks/quick-task/QuickTaskAdd.vue';
 import QuickTaskButton from '@/components/tasks/quick-task/QuickTaskButton.vue';
-import UserDropdown from '@/components/user/UserDropdown.vue';
+import UserDropdown from '@/components/user/dropdown/UserDropdown.vue';
 
 const isQuickTaskActive = ref(false);
 

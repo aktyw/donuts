@@ -78,6 +78,18 @@ const routes = [
     ],
   },
   {
+    path: '/settings',
+    name: 'settings',
+    component: () => import('@/components/user/settings/modal/UserModal.vue'),
+    children: [
+      {
+        path: ':id',
+        name: 'SettingsContent',
+        component: () => import(`@/components/user/settings/content/SettingsContent.vue`),
+      },
+    ],
+  },
+  {
     path: '/auth/login',
     name: 'login',
     component: lazyLoad('LoginView'),
