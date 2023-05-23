@@ -6,15 +6,13 @@
       <div
         id="user-modal"
         ref="target"
-        class="fixed flex flex-col modal-box top-12 !rounded-xl !max-h-screen overflow-visible p-0 md:min-w-[720px] min-h-[460px] h-[calc(100vh_-_6rem)]">
-        <aside class="flex justify-between items-center border-b px-4 py-2">
+        class="fixed flex modal-box top-12 !rounded-xl !max-h-screen overflow-visible p-0 md:min-w-[720px] min-h-[460px] h-[calc(100vh_-_6rem)]">
+        <aside class="flex justify-between items-center border-b">
           <SettingsSidebar />
         </aside>
-        <section class="flex h-full">
-          <main class="flex flex-col gap-4 w-full h-full p-4">
-            <SettingsContent />
-          </main>
-        </section>
+        <main class="flex flex-col gap-4 w-full h-full bg-primary-content">
+          <SettingsContent />
+        </main>
       </div>
     </div>
   </FadeTransitionMedium>

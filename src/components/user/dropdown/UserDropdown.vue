@@ -12,12 +12,16 @@
 
       <BaseDividerSmall />
 
-      <OptionListButton>
-        <template #icon>
-          <IconTheme />
-        </template>
-        Theme
-      </OptionListButton>
+      <router-link
+        :to="{ name: 'theme' }"
+        @click="blurDropdown">
+        <OptionListButton>
+          <template #icon>
+            <IconTheme />
+          </template>
+          Theme
+        </OptionListButton>
+      </router-link>
 
       <OptionListButton @click="handlePrint">
         <template #icon>
@@ -70,6 +74,7 @@ import IconTheme from '@/components/icons/IconTheme.vue';
 import OptionListButton from '@/components/tasks/list/OptionListButton.vue';
 import UserDropdownButton from '@/components/user/dropdown/UserDropdownButton.vue';
 import UserInfo from '@/components/user/dropdown/UserInfo.vue';
+import blurElement from '@/helpers/blur';
 import { useAuthStore } from '@/stores/AuthStore';
 
 const isModalOpen = ref(false);
@@ -80,6 +85,10 @@ const online = useOnline();
 
 function handlePrint() {
   print();
+}
+
+function blurDropdown() {
+  blurElement();
 }
 
 function logout() {

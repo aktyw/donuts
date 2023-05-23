@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: 'settings', params: { id: 'account' } }">
+  <router-link :to="{ name: 'account' }">
     <li
       class="text-base-content hover:bg-base-200"
       @click="openSettingsModal">

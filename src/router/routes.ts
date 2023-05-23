@@ -83,9 +83,19 @@ const routes = [
     component: () => import('@/components/user/settings/modal/UserModal.vue'),
     children: [
       {
-        path: ':id',
-        name: 'SettingsContent',
-        component: () => import(`@/components/user/settings/content/SettingsContent.vue`),
+        path: 'account',
+        name: 'account',
+        component: () => import('@/components/user/settings/content/TheAccount.vue'),
+      },
+      {
+        path: 'productivity',
+        name: 'productivity',
+        component: () => import('@/components/user/settings/content/TheProductivity.vue'),
+      },
+      {
+        path: 'theme',
+        name: 'theme',
+        component: () => import('@/components/user/settings/content/TheTheme.vue'),
       },
     ],
   },
