@@ -171,6 +171,7 @@ async function handleLogin() {
 async function signInWithGoogle() {
   try {
     await authStore.handleGoogleAuth();
+    router.push('/tasks');
   } catch (error) {
     console.error(error);
   }

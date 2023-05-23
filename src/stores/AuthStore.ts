@@ -24,6 +24,7 @@ interface AuthState {
   user: {
     isAuthenticated: boolean;
     email: string | null | undefined;
+    name: string | null | undefined;
   };
 }
 
@@ -33,11 +34,18 @@ export const useAuthStore = defineStore('auth', {
     user: {
       isAuthenticated: false,
       email: null,
+      name: null,
     },
   }),
   getters: {
     isAuthenticated(state) {
       return state.user.isAuthenticated;
+    },
+    getEmail(state) {
+      return state.user.email;
+    },
+    getName(state) {
+      return state.user.name;
     },
   },
   actions: {
@@ -58,7 +66,10 @@ export const useAuthStore = defineStore('auth', {
 
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
 
+        console.log(this.user.email);
+
         this.user.email = userCredential.user?.email;
+        this.user.name = userCredential.user?.displayName || this.user.email?.slice(5);
       } catch (error) {
         console.log(error.code);
         throw new Error(typeof error === 'string' ? error : 'Failed to Log in');
@@ -68,9 +79,10 @@ export const useAuthStore = defineStore('auth', {
       try {
         const provider = new GoogleAuthProvider();
 
-        const credentials = await signInWithPopup(getAuth(), provider);
+        const userCredential = await signInWithPopup(getAuth(), provider);
 
-        this.router.push('/tasks');
+        this.user.email = userCredential.user?.email;
+        this.user.name = userCredential.user?.displayName || this.user.email?.slice(5);
       } catch (error) {
         console.log(error);
       }
@@ -82,10 +94,12 @@ export const useAuthStore = defineStore('auth', {
       onAuthStateChanged(auth, async (user) => {
         if (user) {
           this.user.isAuthenticated = true;
+
+          this.user.email = user?.email;
+          this.user.name = user?.displayName || this.user.email?.slice(5);
         } else {
           this.user.isAuthenticated = false;
         }
-
         store.setLoadingStatus(false);
       });
     },
