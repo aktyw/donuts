@@ -2,7 +2,7 @@
   <li class="w-60">
     <RouterLink
       active-class="bg-base-200"
-      class="flex items-center py-2 focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent rounded-md p-2"
+      class="flex items-center rounded-md p-2 py-2 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
       :to="to"
       v-bind="$attrs">
       <TheTooltip

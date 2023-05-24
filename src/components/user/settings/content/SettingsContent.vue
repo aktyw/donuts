@@ -1,5 +1,13 @@
 <template>
-  <div class="flex h-full w-full flex-col p-4 gap-4">
+  <div class="flex h-full w-full flex-col gap-4 p-4">
+    <BaseButton
+      v-if="route.name === 'email' || route.name === 'password'"
+      @click="handleGoToPreviousRoute">
+      Go Back
+      <template #icon>
+        <IconArrowLeft class="fill-base-content" />
+      </template>
+    </BaseButton>
     <SettingsHeader
       class="flex justify-between font-semibold"
       :name="title">
@@ -11,6 +19,7 @@
         </BaseButton>
       </template>
     </SettingsHeader>
+
     <router-view />
   </div>
 </template>
@@ -20,6 +29,7 @@ import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import BaseButton from '@/components/base/BaseButton.vue';
+import IconArrowLeft from '@/components/icons/IconArrowLeft.vue';
 import IconClose from '@/components/icons/IconClose.vue';
 import SettingsHeader from '@/components/user/settings/content/SettingsHeader.vue';
 import { useSettingsStore } from '@/stores/SettingsStore';
@@ -33,5 +43,9 @@ const title = computed(
 
 function handleCloseModal(): void {
   router.push(settingsStore.getParentModalRoute);
+}
+
+function handleGoToPreviousRoute(): void {
+  router.go(-1);
 }
 </script>

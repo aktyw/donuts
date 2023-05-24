@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown dropdown-bottom dropdown-end">
+  <div class="dropdown-bottom dropdown-end dropdown">
     <UserDropdownButton>
       <template #icon>
         <IconAccount class="fill-base-content" />
@@ -7,7 +7,7 @@
     </UserDropdownButton>
     <ul
       tabindex="1"
-      class="text-sm dropdown-content menu p-2 shadow bg-base-100 rounded-md w-72 [&>*:hover]:bg-transparent [&>*:active]:text-base-content [&>*:active]:bg-base-200 print:hidden">
+      class="dropdown-content menu w-72 rounded-md bg-base-100 p-2 text-sm shadow print:hidden [&>*:active]:bg-base-200 [&>*:active]:text-base-content [&>*:hover]:bg-transparent">
       <UserInfo />
 
       <BaseDividerSmall />
@@ -49,13 +49,13 @@
 
       <OptionListButton
         tabindex="1"
-        class="flex gap-5 ml-1 cursor-default hover:bg-transparent">
+        class="ml-1 flex cursor-default gap-5 hover:bg-transparent">
         <span
           v-if="online"
-          class="w-2 h-2 bg-success rounded-full"></span>
+          class="h-2 w-2 rounded-full bg-success"></span>
         <span
           v-else
-          class="w-2 h-2 bg-error rounded-full">
+          class="h-2 w-2 rounded-full bg-error">
         </span>
         {{ online ? 'Online' : 'Offline' }}
       </OptionListButton>
@@ -65,8 +65,6 @@
 
 <script setup lang="ts">
 import { useOnline } from '@vueuse/core';
-import { settings } from 'firebase/analytics';
-import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 import BaseDividerSmall from '@/components/base/BaseDividerSmall.vue';

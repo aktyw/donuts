@@ -1,4 +1,3 @@
-import { email } from '@vuelidate/validators';
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -21,7 +20,6 @@ declare module 'pinia' {
 }
 
 interface AuthState {
-  auth: {};
   user: {
     isAuthenticated: boolean;
     email: string | null | undefined;
@@ -31,7 +29,6 @@ interface AuthState {
 
 export const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({
-    auth: {},
     user: {
       isAuthenticated: false,
       email: null,

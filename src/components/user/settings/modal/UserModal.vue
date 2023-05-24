@@ -1,16 +1,16 @@
 <template>
   <FadeTransitionMedium>
     <div
-      class="modal sm:modal-middle modal-open"
+      class="modal modal-open sm:modal-middle"
       role="dialog">
       <div
         id="user-modal"
         ref="target"
-        class="fixed flex modal-box top-12 !rounded-xl !max-h-screen overflow-visible p-0 md:min-w-[720px] min-h-[460px] h-[calc(100vh_-_6rem)]">
-        <aside class="flex justify-between items-center border-b">
+        class="modal-box fixed top-12 flex h-[calc(100vh_-_6rem)] !max-h-screen min-h-[460px] overflow-visible !rounded-xl p-0 md:min-w-[720px]">
+        <aside class="flex items-center justify-between border-b">
           <SettingsSidebar />
         </aside>
-        <main class="flex flex-col gap-4 w-full h-full bg-base-200">
+        <main class="flex h-full w-full flex-col gap-4 bg-base-200">
           <SettingsContent />
         </main>
       </div>

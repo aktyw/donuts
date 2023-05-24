@@ -1,6 +1,8 @@
 <template>
   <header v-bind="$attrs">
-    <slot>{{ name }}</slot>
+    <slot
+      ><h2>{{ name }}</h2>
+    </slot>
     <slot name="content" />
   </header>
 </template>
