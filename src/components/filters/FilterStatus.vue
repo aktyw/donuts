@@ -4,7 +4,7 @@
       class="!tooltip-top"
       data="Reverse order">
       <button
-        class="btn-xs hover:bg-base-200 rounded p-0 focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
+        class="btn-xs hover:bg-base-200 rounded p-0 outline-custom"
         aria-label="Reverse order"
         @click="toggleSortOrder()">
         <IconSouthSmall
@@ -20,7 +20,7 @@
       class="!tooltip-top"
       data="Reset sorting options">
       <button
-        class="btn-xs hover:bg-base-200 rounded p-0 focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
+        class="btn-xs hover:bg-base-200 rounded p-0 outline-custom"
         aria-label="Reset sorting options"
         @click="reset">
         <IconCloseSmall aria-label="Reset sorting options" />

@@ -1,7 +1,7 @@
 <template>
   <router-link
     :to="{ name: 'account' }"
-    class="focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
+    class="outline-custom"
     @click="handleSaveRoute">
     <li
       class="text-base-content hover:bg-base-200"

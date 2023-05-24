@@ -20,6 +20,7 @@
 
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core';
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -36,5 +37,9 @@ const target = ref();
 
 onClickOutside(target, () => {
   router.push(settingsStore.getParentModalRoute);
+});
+
+useFocusTrap(target, {
+  immediate: true,
 });
 </script>

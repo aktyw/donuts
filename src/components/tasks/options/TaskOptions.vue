@@ -6,7 +6,7 @@
     <button
       tabindex="0"
       aria-label="Show task options"
-      class="btn btn-square rounded-md btn-xs bg-base-100 hover:bg-base-200 border-0 focus:bg-base-200 focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent">
+      class="btn btn-square rounded-md btn-xs bg-base-100 hover:bg-base-200 border-0 focus:bg-base-200 focus-visible:-outline-offset-2 outline-custom">
       <IconVerticalDots class="fill-base-content" />
     </button>
 

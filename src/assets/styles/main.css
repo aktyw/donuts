@@ -1,9 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .outline-custom {
+    @apply focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent;
+  }
+}
+
 ::selection {
-  background-color: hsl(var(--n));
-  color: hsl(var(--nc));
+  background-color: hsl(var(--p));
+  color: hsl(var(--pc));
 }
 
 .full-h {

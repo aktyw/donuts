@@ -3,7 +3,7 @@
     ref="dropdown"
     class="dropdown dropdown-left dropdown-bottom h-0">
     <button
-      class="btn btn-square rounded-md btn-xs bg-transparent hover:bg-transparent border-0 focus:bg-base-200 focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
+      class="btn btn-square rounded-md btn-xs bg-transparent hover:bg-transparent border-0 focus:bg-base-200 outline-custom"
       aria-label="show task options">
       <IconHorizontalDots class="fill-base-content hover:fill-neutral" />
     </button>

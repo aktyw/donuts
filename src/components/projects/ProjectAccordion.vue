@@ -44,10 +44,7 @@ import { computed, ref } from 'vue';
 import ProjectAddButton from '@/components/projects/ProjectAddButton.vue';
 import ProjectsToggleButton from '@/components/projects/toggle/ProjectsToggleButton.vue';
 
-const style = computed(
-  () =>
-    'block px-4 py-1 text-left text-base font-normal w-full h-full focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent'
-);
+const style = computed(() => 'block px-4 py-1 text-left text-base font-normal w-full h-full outline-custom');
 const isOpenProjectList = ref(false);
 
 defineProps<{

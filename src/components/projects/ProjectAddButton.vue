@@ -5,7 +5,7 @@
     <BaseButton
       aria-label="Add project"
       v-bind="$attrs"
-      class="btn-ghost btn-xs p-0 border border-base-300 rounded-md hover:delay-150 focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent">
+      class="btn-ghost btn-xs p-0 border border-base-300 rounded-md hover:delay-150 outline-customt">
       <template #icon>
         <IconAdd class="fill-base-content" />
         <slot />

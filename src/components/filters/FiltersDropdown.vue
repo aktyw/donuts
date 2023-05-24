@@ -2,10 +2,10 @@
   <div class="dropdown dropdown-bottom dropdown-end">
     <label
       tabindex="0"
-      class="focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent">
+      class="outline-custom">
       <button
         tabindex="1"
-        class="w-full hover:bg-base-200 focus:bg-base-200 btn btn-square rounded-md btn-xs bg-base-100 border-0 text-slate-900 font-normal normal-case focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent">
+        class="w-full hover:bg-base-200 focus:bg-base-200 btn btn-square rounded-md btn-xs bg-base-100 border-0 text-slate-900 font-normal normal-case outline-custom">
         <span class="flex flex-row gap-1">
           <IconSettings />
           <span class="inline-flex items-center text-base-content">View</span>
