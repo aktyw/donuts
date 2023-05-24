@@ -2,7 +2,7 @@
   <li class="w-60">
     <TheTooltip
       :data="name"
-      class="w-full">
+      class="w-full !tooltip-left">
       <RouterLink
         tabindex="1"
         active-class="bg-base-200"
@@ -13,8 +13,8 @@
           tabindex="-1"
           class="flex gap-2 [&>svg]:fill-base-content w-full">
           <slot name="icon"></slot>
-          <slot
-            ><span>{{ name }}</span>
+          <slot>
+            <span>{{ name }}</span>
           </slot>
         </BaseButton>
       </RouterLink>

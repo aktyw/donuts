@@ -2,7 +2,7 @@
   <li>
     <BaseButton
       v-bind="$attrs"
-      class="btn-md md:btn-sm focus-visible:-outline-offset-2 outline-custom"
+      class="btn-md md:btn-sm focus-visible:-outline-offset-2 outline-custom fill-base-content"
       :class="{
         'hover:text-error hover:fill-error focus:text-error focus:fill-error fill-base-content [&>svg]:hover:fill-error active:fill-error active:text-error':
           isDanger,

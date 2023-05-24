@@ -8,5 +8,6 @@
   "endOfLine": "auto",
   "singleAttributePerLine": true,
   "bracketSpacing": true,
-  "bracketSameLine": true
+  "bracketSameLine": true,
+  "htmlWhitespaceSensitivity": "ignore"
 }
