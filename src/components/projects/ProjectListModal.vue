@@ -8,16 +8,17 @@
         v-model="selectedProject"
         :current-project="currentProject"
         class="w-full max-w-[40rem] !select-md" />
-      <p
-        v-show="!!selectedProject && currentProject?.id !== selectedProject.id"
-        class="bg-base-200 rounded-md p-2 my-4 px-2 [&>span]:font-bold">
-        <span>"{{ task.title.slice(0, 16) }}"</span>
-        move from
-        <span>"{{ currentProject?.name }}"</span>
-        <br />
-        to
-        <span>"{{ selectedProject?.name }}"</span>
-      </p>
+      <InfoContainer
+        v-if="!!selectedProject && currentProject?.id !== selectedProject.id"
+        class="bg-base-200 my-4 px-2 [&>span]:font-bold">
+        <p>
+          <strong>"{{ task.title.slice(0, 16) }}"</strong>
+          move from
+          <strong>"{{ currentProject?.name }}"</strong>
+          to
+          <strong>"{{ selectedProject?.name }}"</strong>
+        </p>
+      </InfoContainer>
       <template #action>
         <ModalButton
           :disabled="currentProject?.id === selectedProject?.id"

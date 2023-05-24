@@ -33,7 +33,6 @@
       <router-view />
     </div>
     <DividerSlim />
-
   </div>
 </template>
 
