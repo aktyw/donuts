@@ -1,45 +1,45 @@
 <template>
-  <div>
-    <p>
-      Update the email you use for your Donuts account. Your email is currently <strong>{{ currentEmail }}</strong>
-    </p>
+  <main>
+    <InfoContainer class="mb-6">
+      <h3>
+        Update the email you use for your account.
+        <br />
+        Your email is currently
+        <strong>{{ currentEmail }}</strong>
+      </h3>
+    </InfoContainer>
+
+    <div class="flex flex-col pb-4">
+      <SettingsLabel title="New email" />
+      <SettingsInput
+        v-model.trim="formData.email"
+        type="text" />
+      <SettingsInputError
+        v-if="v$.email.$error"
+        :message="v$.email.$errors[0].$message" />
+    </div>
 
     <div class="flex flex-col">
-      <label class="label">
-        <span class="label-text">New email</span>
-      </label>
-      <input
-        v-model.trim="formData.email"
-        type="text"
-        class="input input-bordered" />
-      <span
-        v-if="v$.email.$error"
-        class="label-text text-red-500"
-        >{{ v$.email.$errors[0].$message }}
-      </span>
-    </div>
-    <div class="flex flex-col">
-      <label class="label">
-        <span class="label-text">Confirm new email</span>
-      </label>
-      <input
+      <SettingsLabel title="Confirm new email" />
+      <SettingsInput
         v-model.trim="formData.confirmEmail"
-        type="text"
-        class="input input-bordered" />
-      <span
+        type="text" />
+      <SettingsInputError
         v-if="v$.email.$error"
-        class="label-text text-red-500"
-        >{{ v$.email.$errors[0].$message }}
-      </span>
+        :message="v$.email.$errors[0].$message" />
     </div>
-  </div>
+  </main>
 </template>
 
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
-import { email, required } from '@vuelidate/validators';
+import { email, required, sameAs } from '@vuelidate/validators';
 import { computed, reactive } from 'vue';
 
+import InfoContainer from '@/components/ui/containers/InfoContainer.vue';
+import SettingsInput from '@/components/user/settings/content/ui/SettingsInput.vue';
+import SettingsInputError from '@/components/user/settings/content/ui/SettingsInputError.vue';
+import SettingsLabel from '@/components/user/settings/content/ui/SettingsLabel.vue';
 import { useAuthStore } from '@/stores/AuthStore';
 import type { AuthNewMail } from '@/types/models/Auth';
 
@@ -55,6 +55,7 @@ const formData: AuthNewMail = reactive({
 const rules = computed(() => {
   return {
     email: { required, email },
+    confirmEmail: { required, sameAsEmail: sameAs('email') },
   };
 });
 

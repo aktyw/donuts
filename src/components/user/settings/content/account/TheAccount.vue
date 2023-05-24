@@ -2,34 +2,29 @@
   <div>
     <section class="flex flex-col gap-4">
       <div class="flex flex-col gap-2">
-        <label
-          class="font-semibold"
-          for="name">
-          Name
-        </label>
-        <input
+        <SettingsLabel
+          for="name"
+          title="Name" />
+        <SettingsInput
           type="text"
-          class="input input-bordered h-9 text-base bg-base-200 border-1 border-base-300 text-base-content"
           :placeholder="displayName || ''" />
       </div>
 
       <div class="flex flex-col gap-2">
-        <label class="font-semibold">Email</label>
-        <span>{{ email }}</span>
-        <RouterLink
+        <SettingsLabel title="Email" />
+
+        <span class="text-sm pb-2">{{ email }}</span>
+        <SettingsButtonLink
           :to="{ name: 'email' }"
-          class="btn btn-sm bg-base-300 text-base-content normal-case font-medium w-48 border-hidden h-9">
-          Change email
-        </RouterLink>
+          title="Change email"></SettingsButtonLink>
       </div>
 
       <div class="flex flex-col gap-2">
-        <label>Password</label>
-        <RouterLink
+        <SettingsLabel title="Password" />
+
+        <SettingsButtonLink
           :to="{ name: 'password' }"
-          class="btn btn-sm w-48">
-          Change password
-        </RouterLink>
+          title="Change password"></SettingsButtonLink>
       </div>
     </section>
   </div>
@@ -43,6 +38,9 @@ const auth = getAuth();
 import { computed } from 'vue';
 
 import BaseButton from '@/components/base/BaseButton.vue';
+import SettingsButtonLink from '@/components/user/settings/content/ui/SettingsButtonLink.vue';
+import SettingsInput from '@/components/user/settings/content/ui/SettingsInput.vue';
+import SettingsLabel from '@/components/user/settings/content/ui/SettingsLabel.vue';
 import { useAuthStore } from '@/stores/AuthStore';
 import { useSettingsStore } from '@/stores/SettingsStore';
 

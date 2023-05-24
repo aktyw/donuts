@@ -1,36 +1,29 @@
 <template>
-  <div>
-    <div class="flex flex-col">
-      <label class="label">
-        <span class="label-text">New password</span>
-      </label>
-      <input
+  <main>
+    <div class="flex flex-col pb-4">
+      <SettingsLabel title="New password" />
+      <SettingsInput
         v-model.trim="formData.password"
-        type="text"
-        class="input input-bordered" />
-      <span
-        v-if="v$.email.$error"
-        class="label-text text-red-500"
-        >{{ v$.password.$errors[0].$message }}
-      </span>
-    </div>
-    <div class="flex flex-col">
-      <label class="label">
-        <span class="label-text">Confirm new password</span>
-      </label>
-      <input
-        v-model.trim="formData.confirmPassword"
-        type="text"
-        class="input input-bordered" />
-      <span
-        v-if="v$.email.$error"
-        class="label-text text-red-500"
-        >{{ v$.email.$errors[0].$message }}
-      </span>
+        type="text" />
+      <SettingsInputError
+        v-if="v$.password.$error"
+        :message="v$.password.$errors[0].$message" />
     </div>
 
-    <p>Your password must be at least 8 characters long. Avoid common words or patterns.</p>
-  </div>
+    <div class="flex flex-col">
+      <SettingsLabel title="Confirm new password" />
+      <SettingsInput
+        v-model.trim="formData.confirmPassword"
+        type="text" />
+      <SettingsInputError
+        v-if="v$.password.$error"
+        :message="v$.password.$errors[0].$message" />
+    </div>
+
+    <InfoContainer class="mt-8">
+      <h3>Your password must be at least {{ MIN_PASS_LENGTH }} characters long. Avoid common words or patterns.</h3>
+    </InfoContainer>
+  </main>
 </template>
 
 <script setup lang="ts">
@@ -38,6 +31,10 @@ import { useVuelidate } from '@vuelidate/core';
 import { maxLength, minLength, required, sameAs } from '@vuelidate/validators';
 import { computed, reactive } from 'vue';
 
+import InfoContainer from '@/components/ui/containers/InfoContainer.vue';
+import SettingsInput from '@/components/user/settings/content/ui/SettingsInput.vue';
+import SettingsInputError from '@/components/user/settings/content/ui/SettingsInputError.vue';
+import SettingsLabel from '@/components/user/settings/content/ui/SettingsLabel.vue';
 import { MAX_PASS_LENGTH, MIN_PASS_LENGTH } from '@/config/index';
 import { useAuthStore } from '@/stores/AuthStore';
 import type { AuthNewPassword } from '@/types/models/Auth';

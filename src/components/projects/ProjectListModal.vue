@@ -11,7 +11,10 @@
       <p
         v-show="!!selectedProject && currentProject?.id !== selectedProject.id"
         class="bg-base-200 rounded-md p-2 my-4 px-2 [&>span]:font-bold">
-        <span>"{{ task.title.slice(0, 16) }}"</span> move from <span>"{{ currentProject?.name }}"</span><br />
+        <span>"{{ task.title.slice(0, 16) }}"</span>
+        move from
+        <span>"{{ currentProject?.name }}"</span>
+        <br />
         to
         <span>"{{ selectedProject?.name }}"</span>
       </p>
@@ -34,6 +37,7 @@ import { useRouter } from 'vue-router';
 import BaseModal from '@/components/base/BaseModal.vue';
 import ModalButton from '@/components/modals/ModalButton.vue';
 import ProjectList from '@/components/projects/ProjectList.vue';
+import InfoContainer from '@/components/ui/containers/InfoContainer.vue';
 import FadeTransitionMedium from '@/components/ui/transitions/FadeTransitionMedium.vue';
 import { useSettingsStore } from '@/stores/SettingsStore';
 import { useTasksStore } from '@/stores/TasksStore';

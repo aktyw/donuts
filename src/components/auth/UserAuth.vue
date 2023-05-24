@@ -13,9 +13,9 @@
             class="input input-bordered" />
           <span
             v-if="v$.email.$error"
-            class="label-text text-red-500"
-            >{{ v$.email.$errors[0].$message }}</span
-          >
+            class="label-text text-red-500">
+            {{ v$.email.$errors[0].$message }}
+          </span>
         </div>
         <div class="form-control">
           <label class="label">
@@ -28,17 +28,17 @@
             class="input input-bordered" />
           <span
             v-if="v$.password.$error"
-            class="label-text text-red-500"
-            >{{ v$.password.$errors[0].$message }}</span
-          >
+            class="label-text text-red-500">
+            {{ v$.password.$errors[0].$message }}
+          </span>
           <label
             v-if="requestLogin"
             class="label">
             <a
               href="#"
-              class="label-text-alt link link-hover"
-              >Forgot password?</a
-            >
+              class="label-text-alt link link-hover">
+              Forgot password?
+            </a>
           </label>
           <pre>dwadwa@wp.pl</pre>
         </div>
@@ -101,6 +101,7 @@ import BaseButton from '@/components/base/BaseButton.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseModal from '@/components/base/BaseModal.vue';
 import IconGoogle from '@/components/icons/IconGoogle.vue';
+import { MAX_PASS_LENGTH, MIN_PASS_LENGTH } from '@/config/index';
 import { useAuthStore } from '@/stores/AuthStore';
 import type { AuthFormData } from '@/types/models/Auth';
 
@@ -121,7 +122,7 @@ const formData: AuthFormData = reactive({
 const rules = computed(() => {
   return {
     email: { required, email },
-    password: { required, minLength: minLength(6), maxLength: maxLength(64) },
+    password: { required, minLength: minLength(MIN_PASS_LENGTH), maxLength: maxLength(MAX_PASS_LENGTH) },
   };
 });
 
