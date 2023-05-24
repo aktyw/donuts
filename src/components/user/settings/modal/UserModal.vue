@@ -10,7 +10,7 @@
         <aside class="flex justify-between items-center border-b">
           <SettingsSidebar />
         </aside>
-        <main class="flex flex-col gap-4 w-full h-full bg-primary-content">
+        <main class="flex flex-col gap-4 w-full h-full bg-base-200">
           <SettingsContent />
         </main>
       </div>

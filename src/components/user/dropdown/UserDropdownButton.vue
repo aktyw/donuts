@@ -1,5 +1,7 @@
 <template>
-  <TheTooltip data="Open profile menu">
+  <TheTooltip
+    class="z-[100]"
+    data="Open  menu">
     <BaseButton
       class="btn btn-sm border-transparent hover:border-transparent bg-base-300 hover:bg-base-200 text-neutral-focus normal-case text-lg p-1">
       <slot />

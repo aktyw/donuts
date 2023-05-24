@@ -6,7 +6,7 @@
       </template>
     </UserDropdownButton>
     <ul
-      tabindex="0"
+      tabindex="1"
       class="text-sm dropdown-content menu p-2 shadow bg-base-100 rounded-md w-72 [&>*:hover]:bg-transparent [&>*:active]:text-base-content [&>*:active]:bg-base-200 print:hidden">
       <UserInfo />
 
@@ -14,6 +14,7 @@
 
       <router-link
         :to="{ name: 'theme' }"
+        tabindex="1"
         @click="blurDropdown">
         <OptionListButton>
           <template #icon>
@@ -46,7 +47,9 @@
         Logout
       </OptionListButton>
 
-      <OptionListButton class="flex gap-5 ml-1 cursor-default hover:bg-transparent">
+      <OptionListButton
+        tabindex="1"
+        class="flex gap-5 ml-1 cursor-default hover:bg-transparent">
         <span
           v-if="online"
           class="w-2 h-2 bg-success rounded-full"></span>

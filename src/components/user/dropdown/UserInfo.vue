@@ -1,5 +1,7 @@
 <template>
-  <router-link :to="{ name: 'account' }">
+  <router-link
+    :to="{ name: 'account' }"
+    class="focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent">
     <li
       class="text-base-content hover:bg-base-200"
       @click="openSettingsModal">
@@ -15,7 +17,7 @@
           </div>
         </div>
         <span class="flex items-center py-0 gap-3">
-          <IconSettingsAlt class="" />
+          <IconSettingsAlt class="fill-base-content" />
           Settings
         </span>
       </div>

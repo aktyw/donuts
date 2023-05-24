@@ -1,7 +1,10 @@
 <template>
   <div class="dropdown dropdown-bottom dropdown-end">
-    <label tabindex="0">
+    <label
+      tabindex="0"
+      class="focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent">
       <button
+        tabindex="1"
         class="w-full hover:bg-base-200 focus:bg-base-200 btn btn-square rounded-md btn-xs bg-base-100 border-0 text-slate-900 font-normal normal-case focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent">
         <span class="flex flex-row gap-1">
           <IconSettings />
@@ -10,7 +13,7 @@
       </button>
     </label>
     <ul
-      tabindex="0"
+      tabindex="1"
       role="menu"
       aria-label="Show all tasks menu"
       class="dropdown-content menu py-0.5 shadow rounded-md w-52 bg-base-100 border border-base-300 text-base-content fill-base-content">

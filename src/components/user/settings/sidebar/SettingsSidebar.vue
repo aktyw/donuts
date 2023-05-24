@@ -1,6 +1,8 @@
 <template>
-  <div class="flex flex-col h-full bg-base-300 p-4 gap-4">
-    <header class="font-bold pl-2">Settings</header>
+  <div class="flex flex-col h-full bg-base-100 p-4 gap-4">
+    <SettingsHeader
+      name="Settings"
+      class="font-bold pl-2" />
     <nav>
       <ul>
         <SettingsSidebarButton
@@ -33,5 +35,6 @@
 import IconAccount from '@/components/icons/IconAccount.vue';
 import IconSettingsAlt from '@/components/icons/IconSettingsAlt.vue';
 import IconTheme from '@/components/icons/IconTheme.vue';
+import SettingsHeader from '@/components/user/settings/content/SettingsHeader.vue';
 import SettingsSidebarButton from '@/components/user/settings/sidebar/SettingsSidebarButton.vue';
 </script>
