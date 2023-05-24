@@ -3,10 +3,10 @@
     class="!tooltip-top"
     data="Toggle list of projects">
     <BaseButton
-      class="flex h-full items-center justify-center p-1 focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent">
+      class="flex h-full items-center justify-center p-1 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent">
       <template #icon>
         <IconChevronDown
-          class="transition fill-base-content"
+          class="fill-base-content transition"
           :class="{ 'rotate-90': !isOpen }" />
       </template>
     </BaseButton>

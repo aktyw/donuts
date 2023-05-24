@@ -1,5 +1,5 @@
 <template>
-  <BaseButton class="btn btn-sm btn-primary border-transparent">
+  <BaseButton class="btn-primary btn-sm btn border-transparent">
     <slot name="icon" />
     <slot />
   </BaseButton>

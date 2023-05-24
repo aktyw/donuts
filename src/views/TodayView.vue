@@ -1,6 +1,6 @@
 <template>
   <main id="main">
-    <div class="flex flex-col items-start w-2/3 max-w-[800px]">
+    <div class="flex w-2/3 max-w-[800px] flex-col items-start">
       <FiltersNavbar :title="TASK_VIEW_TITLE.TODAY" />
       <FilterStatus v-if="!allowDrag" />
       <FiltersList

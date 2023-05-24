@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-between border rounded-md mx-0.5 h-10 max-w-[440px]">
+  <div class="mx-0.5 flex h-10 max-w-[440px] items-center justify-between rounded-md border">
     <ParentTaskButton />
     <ParentSubtaskDropdown />
   </div>

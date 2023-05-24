@@ -1,12 +1,12 @@
 <template>
   <div
-    class="w-full flex justify-between gap-2 pb-2 relative fill-base-content [&>button:hover]:fill-base-content [&>button:hover]:bg-base-300 [&>button]:p-0.5 [&>button]:rounded">
+    class="relative flex w-full justify-between gap-2 fill-base-content pb-2 [&>button:hover]:bg-base-300 [&>button:hover]:fill-base-content [&>button]:rounded [&>button]:p-0.5">
     <BaseHeading>
-      <h2 class="font-bold text-xl">
+      <h2 class="text-xl font-bold">
         {{ title }}
         <span
           v-if="title === TASK_VIEW_TITLE.TODAY"
-          class="font-normal text-sm"
+          class="text-sm font-normal"
           >{{ formattedDate }}</span
         >
       </h2>

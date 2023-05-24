@@ -1,15 +1,15 @@
 <template>
   <FadeTransitionMedium>
-    <span class="grid place-items-center pt-20 md:text-lg pointer-events-none">
+    <span class="pointer-events-none grid place-items-center pt-20 md:text-lg">
       <slot>
         <img
-          class="max-w-[260px] w-full pointer-events-none"
+          class="pointer-events-none w-full max-w-[260px]"
           :src="pathToRandomIllustration || '/src/assets/illustrations/donut-bench.svg'"
           alt="Illustration of happy donut" />
       </slot>
       <slot name="content">
-        <h4 class="font-bold pb-2 w-64 md:w-96 text-center">{{ currentMessage }}</h4>
-        <span class="font-light text-base w-60 md:w-72 text-center">{{ currentTip }}</span>
+        <h4 class="w-64 pb-2 text-center font-bold md:w-96">{{ currentMessage }}</h4>
+        <span class="w-60 text-center text-base font-light md:w-72">{{ currentTip }}</span>
       </slot>
     </span>
   </FadeTransitionMedium>

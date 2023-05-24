@@ -5,7 +5,7 @@
       <InfoCard>
         <span
           v-show="largerThanSm"
-          class="font-light text-base w-60 md:w-72 text-inherit"
+          class="w-60 text-base font-light text-inherit md:w-72"
           >{{ currentMessage }}</span
         >
       </InfoCard>

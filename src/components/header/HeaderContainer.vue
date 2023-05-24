@@ -1,5 +1,5 @@
 <template>
-  <header class="fixed top-0 p-0 px-6 navbar bg-base-300 z-50 min-h-12 text-base">
+  <header class="navbar min-h-12 fixed top-0 z-50 bg-base-300 p-0 px-6 text-base">
     <nav class="w-full justify-between">
       <slot />
     </nav>

@@ -1,5 +1,5 @@
 <template>
-  <li class="px-4 py-1.5 font-semibold text-sm">
+  <li class="px-4 py-1.5 text-sm font-semibold">
     <slot />
   </li>
 </template>

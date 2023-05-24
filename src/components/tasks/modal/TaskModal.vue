@@ -1,13 +1,13 @@
 <template>
   <FadeTransitionMedium>
     <div
-      class="modal sm:modal-middle modal-open"
+      class="modal modal-open sm:modal-middle"
       role="dialog">
       <div
         id="task-modal"
         ref="target"
-        class="fixed flex flex-col modal-box top-12 !rounded-xl !max-h-screen overflow-visible p-0 md:min-w-[720px] min-h-[460px] h-[calc(100vh_-_6rem)]">
-        <div class="flex justify-between items-center border-b px-4 py-2">
+        class="modal-box fixed top-12 flex h-[calc(100vh_-_6rem)] !max-h-screen min-h-[460px] flex-col overflow-visible !rounded-xl p-0 md:min-w-[720px]">
+        <div class="flex items-center justify-between border-b px-4 py-2">
           <div>
             <ProjectLink
               class="hover:!bg-base-100 hover:underline"
@@ -18,11 +18,11 @@
               <span class="items-center">{{ currentProject?.name }}</span>
             </ProjectLink>
           </div>
-          <nav class="flex gap-2 items-center">
+          <nav class="flex items-center gap-2">
             <TaskModalAction
               tooltip-data="Previous task"
               :disabled="!isPrevTask"
-              :class="{ 'cursor-not-allowed bg-base-100, color-red-500': !isPrevTask }"
+              :class="{ 'bg-base-100, color-red-500 cursor-not-allowed': !isPrevTask }"
               @click.stop="moveToPrevTask">
               <IconChevronDown
                 class="rotate-180"
@@ -55,7 +55,7 @@
                 <template #content>
                   <p>
                     Do you really want to delete
-                    <span class="font-bold break-words">{{ currentTask.title }}</span> ?
+                    <span class="break-words font-bold">{{ currentTask.title }}</span> ?
                   </p>
                 </template>
               </ModalConfirmDelete>
@@ -63,11 +63,11 @@
           </nav>
         </div>
         <section class="flex h-full">
-          <main class="flex flex-col gap-4 w-full h-full p-4">
+          <main class="flex h-full w-full flex-col gap-4 p-4">
             <SubParentLinks v-if="hasParent" />
             <div class="flex">
               <TaskCheckbox
-                class="pt-3 mx-0.5 checkbox-xs"
+                class="checkbox-xs mx-0.5 pt-3"
                 :is-done="currentTask.isDone"
                 :is-priority="currentTask.isPriority"
                 @toggle="toggleIsDone" />
@@ -88,7 +88,7 @@
                 </template>
               </TaskShowSlim>
             </div>
-            <div class="ml-8 relative">
+            <div class="relative ml-8">
               <SubtaskList
                 v-if="subTasks"
                 :subtasks="subTasks" />
@@ -105,12 +105,12 @@
             </div>
           </main>
 
-          <aside class="bg-base-200 rounded-br-xl w-96 p-4">
+          <aside class="w-96 rounded-br-xl bg-base-200 p-4">
             <div class="flex flex-col">
               <TaskModalOption title="Project">
                 <ProjectList
                   v-model="selectedProject"
-                  class="select-sm px-2 bg-base-100 hover:bg-base-100 transition duration-300 border-none w-full max-w-[16rem]"
+                  class="select-sm w-full max-w-[16rem] border-none bg-base-100 px-2 transition duration-300 hover:bg-base-100"
                   :current-project="currentProject"
                   @change="handleMoveTask" />
               </TaskModalOption>

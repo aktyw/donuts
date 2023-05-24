@@ -1,9 +1,9 @@
 <template>
   <li>
     <BaseButton
-      class="btn-md md:btn-sm focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent active:fill-error active:text-error"
+      class="btn-md md:btn-sm focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent active:fill-error active:text-error"
       :class="{
-        'hover:text-error hover:fill-error focus:text-error focus:fill-error fill-base-content [&>svg]:hover:fill-error active:fill-error active:text-error':
+        'fill-base-content hover:fill-error hover:text-error focus:fill-error focus:text-error active:fill-error active:text-error [&>svg]:hover:fill-error':
           isDanger,
       }">
       <template #icon>

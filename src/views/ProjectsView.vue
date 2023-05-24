@@ -1,11 +1,11 @@
 <template>
   <FadeTransitionMedium>
     <main
-      class="overflow-y-auto transition-all duration-300 flex flex-col justify-start items-center pb-20 py-8"
+      class="flex flex-col items-center justify-start overflow-y-auto py-8 pb-20 transition-all duration-300"
       :class="{ 'ml-80': isMenuOpen }">
-      <div class="w-2/3 max-w-[800px] flex flex-col items-start">
-        <div class="flex flex-col w-full border-b gap-4 pb-4">
-          <h1 class="font-bold text-2xl">Projects</h1>
+      <div class="flex w-2/3 max-w-[800px] flex-col items-start">
+        <div class="flex w-full flex-col gap-4 border-b pb-4">
+          <h1 class="text-2xl font-bold">Projects</h1>
           <ProjectsNavbar @open-project-editor="handleOpenEditor" />
         </div>
         <ProjectsRecords :projects="activeProjects" />

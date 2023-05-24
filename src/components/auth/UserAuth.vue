@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col w-full lg:w-1/2 gap-4 text-center">
-    <div class="card flex-shrink-0 w-full max-w-md shadow-2xl bg-base-100">
+  <div class="flex w-full flex-col gap-4 text-center lg:w-1/2">
+    <div class="card w-full max-w-md flex-shrink-0 bg-base-100 shadow-2xl">
       <div class="card-body">
         <div class="form-control">
           <label class="label">
@@ -10,7 +10,7 @@
             v-model.trim="formData.email"
             type="text"
             placeholder="email"
-            class="input input-bordered" />
+            class="input-bordered input" />
           <span
             v-if="v$.email.$error"
             class="label-text text-red-500"
@@ -25,7 +25,7 @@
             v-model.trim="formData.password"
             type="text"
             placeholder="password"
-            class="input input-bordered" />
+            class="input-bordered input" />
           <span
             v-if="v$.password.$error"
             class="label-text text-red-500"
@@ -36,15 +36,15 @@
             class="label">
             <a
               href="#"
-              class="label-text-alt link link-hover"
+              class="link-hover label-text-alt link"
               >Forgot password?</a
             >
           </label>
           <pre>dwadwa@wp.pl</pre>
         </div>
-        <div class="flex flex-row justify-between flex-1 form-control mt-6">
+        <div class="form-control mt-6 flex flex-1 flex-row justify-between">
           <button
-            class="btn btn-primary w-full"
+            class="btn-primary btn w-full"
             @click.prevent="submitForm">
             {{ hasLoginAction ? 'Log in' : 'Sign up' }}
           </button>
@@ -54,13 +54,13 @@
     <router-link
       v-if="hasLoginAction"
       to="signup"
-      class="link text-primary pt-4">
+      class="link pt-4 text-primary">
       Don't have an account? Sign up!
     </router-link>
     <router-link
       v-if="hasSignupAction"
       to="login"
-      class="link text-primary pt-4">
+      class="link pt-4 text-primary">
       Already have an account? Log in!
     </router-link>
 

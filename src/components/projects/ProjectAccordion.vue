@@ -2,7 +2,7 @@
   <div
     class="collapse overflow-visible"
     :class="{ 'collapse-open overflow-visible': isOpenProjectList }">
-    <div class="collapse-title flex justify-between items-center hover:bg-base-300 rounded-lg p-0.5 min-h-0">
+    <div class="collapse-title flex min-h-0 items-center justify-between rounded-lg p-0.5 hover:bg-base-300">
       <h2 class="w-full">
         <RouterLink
           v-if="routeName"
@@ -20,7 +20,7 @@
       <div class="flex">
         <ProjectAddButton
           v-if="routeName"
-          class="hover:bg-base-300 h-full p-1 border-none"
+          class="h-full border-none p-1 hover:bg-base-300"
           @click.prevent="handleProjectEditor">
         </ProjectAddButton>
         <ProjectsToggleButton
@@ -31,7 +31,7 @@
     </div>
 
     <ul
-      class="collapse-content p-0 overflow-hidden [&>li>.router-link-exact-active]:bg-base-300"
+      class="collapse-content overflow-hidden p-0 [&>li>.router-link-exact-active]:bg-base-300"
       :class="{ 'overflow-visible': isOpenProjectList }">
       <slot name="project-links"></slot>
     </ul>

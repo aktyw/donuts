@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col rounded-md p-2 cursor-pointer gap-2 w-full ml-1">
+  <div class="ml-1 flex w-full cursor-pointer flex-col gap-2 rounded-md p-2">
     <span class="font-bold">
       <slot />
     </span>

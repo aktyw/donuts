@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown dropdown-bottom dropdown-end">
+  <div class="dropdown-bottom dropdown dropdown-end">
     <label
       tabindex="0"
       class="btn m-1"
@@ -7,7 +7,7 @@
     >
     <ul
       tabindex="0"
-      class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+      class="dropdown-content menu rounded-box w-52 bg-base-100 p-2 shadow">
       <li>Theme</li>
       <li>Print</li>
       <li>Get User Info</li>

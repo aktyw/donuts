@@ -1,9 +1,9 @@
 <template>
   <div
     ref="dropdown"
-    class="dropdown dropdown-left dropdown-bottom h-0">
+    class="dropdown-bottom dropdown dropdown-left h-0">
     <button
-      class="btn btn-square rounded-md btn-xs bg-transparent hover:bg-transparent border-0 focus:bg-base-200 focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
+      class="btn-square btn-xs btn rounded-md border-0 bg-transparent hover:bg-transparent focus:bg-base-200 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
       aria-label="show task options">
       <IconHorizontalDots class="fill-base-content hover:fill-neutral" />
     </button>
@@ -12,7 +12,7 @@
       ref="dropList"
       role="menu"
       tabindex="0"
-      class="dropdown-content menu py-0.5 shadow rounded-md w-56 bg-base-100 border border-base-300 text-base-content fill-base-content [& svg:not(.active-state)]:fill-base-content [&>li:hover>button:not(.active-state)]:bg-base-200 [& button:active]:text-base-content [&>button:active]:bg-base-200">
+      class="[& svg:not(.active-state)]:fill-base-content [& button:active]:text-base-content dropdown-content menu w-56 rounded-md border border-base-300 bg-base-100 fill-base-content py-0.5 text-base-content shadow [&>button:active]:bg-base-200 [&>li:hover>button:not(.active-state)]:bg-base-200">
       <teleport to="body">
         <ProjectModal
           v-if="isProjectModalOpen"
@@ -93,7 +93,7 @@
         <template #content>
           <p>
             Do you really want to delete project
-            <span class="font-bold break-words">{{ project.name }}</span> ?
+            <span class="break-words font-bold">{{ project.name }}</span> ?
           </p>
         </template>
       </ModalConfirmDelete>

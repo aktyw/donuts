@@ -7,10 +7,10 @@
       <ProjectList
         v-model="selectedProject"
         :current-project="currentProject"
-        class="w-full max-w-[40rem] !select-md" />
+        class="!select-md w-full max-w-[40rem]" />
       <p
         v-show="!!selectedProject && currentProject?.id !== selectedProject.id"
-        class="bg-base-200 rounded-md p-2 my-4 px-2 [&>span]:font-bold">
+        class="my-4 rounded-md bg-base-200 p-2 px-2 [&>span]:font-bold">
         <span>"{{ task.title.slice(0, 16) }}"</span> move from <span>"{{ currentProject?.name }}"</span><br />
         to
         <span>"{{ selectedProject?.name }}"</span>

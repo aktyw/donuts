@@ -3,10 +3,10 @@
     :class="{
       '-translate-x-full ': !isMenuOpen,
     }"
-    class="z-20 transition duration-300 h-screen fixed">
+    class="fixed z-20 h-screen transition duration-300">
     <nav class="overflow-y-auto">
       <ul
-        class="flex flex-nowrap w-80 menu p-4 bg-base-200 text-base-content [&>li>a]:justify-between [&>li>.router-link-exact-active]:bg-base-300 pb-40 overflow-x-hidden h-[calc(100vh-48px)]">
+        class="menu flex h-[calc(100vh-48px)] w-80 flex-nowrap overflow-x-hidden bg-base-200 p-4 pb-40 text-base-content [&>li>.router-link-exact-active]:bg-base-300 [&>li>a]:justify-between">
         <slot name="links"></slot>
       </ul>
     </nav>

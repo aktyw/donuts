@@ -4,7 +4,7 @@
       class="!tooltip-top"
       data="Reverse order">
       <button
-        class="btn-xs hover:bg-base-200 rounded p-0 focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
+        class="btn-xs rounded p-0 hover:bg-base-200 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
         aria-label="Reverse order"
         @click="toggleSortOrder()">
         <IconSouthSmall
@@ -15,12 +15,12 @@
           aria-label="Change to ascending order" />
       </button>
     </TheTooltip>
-    <span class="text-xs font-semibold inline-flex items-center">Sorted {{ sortTypeStatus }}</span>
+    <span class="inline-flex items-center text-xs font-semibold">Sorted {{ sortTypeStatus }}</span>
     <TheTooltip
       class="!tooltip-top"
       data="Reset sorting options">
       <button
-        class="btn-xs hover:bg-base-200 rounded p-0 focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
+        class="btn-xs rounded p-0 hover:bg-base-200 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
         aria-label="Reset sorting options"
         @click="reset">
         <IconCloseSmall aria-label="Reset sorting options" />

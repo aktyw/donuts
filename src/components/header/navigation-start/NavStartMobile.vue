@@ -1,16 +1,16 @@
 <template>
-  <div class="navbar-start flex flex-row-reverse justify-between w-full lg:w-1/2">
+  <div class="navbar-start flex w-full flex-row-reverse justify-between lg:w-1/2">
     <div
       ref="item"
-      class="dropdown dropdown-left [&>.dropdown-content]:right-0 dropdown-bottom gap-2">
+      class="dropdown-bottom dropdown dropdown-left gap-2 [&>.dropdown-content]:right-0">
       <label
         tabindex="0"
-        class="btn btn-sm btn-ghost lg:hidden px-1">
+        class="btn-ghost btn-sm btn px-1 lg:hidden">
         <IconList />
       </label>
       <ul
         tabindex="0"
-        class="menu menu-compact dropdown-content dropdown-left mt-2 shadow bg-base-200 w-48 gap-2 p-2 rounded-xl"
+        class="dropdown-left dropdown-content menu menu-compact mt-2 w-48 gap-2 rounded-xl bg-base-200 p-2 shadow"
         @click="blurDropdown">
         <NavLink to="/login"> Login </NavLink>
         <NavLink

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex text-sm gap-1">
+  <div class="flex gap-1 text-sm">
     <slot name="name"></slot>
     <slot name="color"></slot>
   </div>

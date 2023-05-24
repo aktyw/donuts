@@ -5,7 +5,7 @@
         <component
           :is="Component"
           :class="{ 'ml-80': isMenuOpen }"
-          class="overflow-y-auto transition-all duration-300 flex flex-col justify-start items-center pb-80 py-8" />
+          class="flex flex-col items-center justify-start overflow-y-auto py-8 pb-80 transition-all duration-300" />
       </FadeTransitionShort>
     </keep-alive>
   </router-view>

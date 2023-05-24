@@ -1,5 +1,5 @@
 <template>
-  <BaseButton class="btn btn-sm border-none mr-2 bg-base-200 hover:bg-base-300 text-base-content">
+  <BaseButton class="btn-sm btn mr-2 border-none bg-base-200 text-base-content hover:bg-base-300">
     <slot name="icon" />
     <slot />
   </BaseButton>

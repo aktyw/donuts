@@ -1,5 +1,5 @@
 <template>
-  <span class="loader border-primary border-4"></span>
+  <span class="loader border-4 border-primary"></span>
 </template>
 
 <style>

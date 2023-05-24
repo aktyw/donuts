@@ -1,10 +1,10 @@
 <template>
   <FadeTransitionMedium>
     <div
-      class="modal modal-bottom sm:modal-middle modal-open"
+      class="modal modal-open modal-bottom sm:modal-middle"
       role="dialog">
       <div class="modal-box">
-        <h3 class="font-semibold text-lg text-center pb-6 pt-2">
+        <h3 class="pb-6 pt-2 text-center text-lg font-semibold">
           <slot />
         </h3>
         <slot name="content" />
@@ -13,14 +13,14 @@
           ref="target"
           class="modal-action gap-1">
           <BaseButton
-            class="btn bg-base-200 text-base-content hover:bg-base-300 border-0 btn-sm rounded-md capitalize font-semibold focus:outline focus:outline-1"
+            class="btn-sm btn rounded-md border-0 bg-base-200 font-semibold capitalize text-base-content hover:bg-base-300 focus:outline focus:outline-1"
             @click="$emit('cancel')">
             Cancel
           </BaseButton>
           <BaseButton
-            class="btn btn-sm rounded-md capitalize font-semibold"
+            class="btn-sm btn rounded-md font-semibold capitalize"
             :class="{
-              'hover:text-error hover:fill-error focus:text-error focus:fill-error fill-base-content active:fill-error active:text-error':
+              'fill-base-content hover:fill-error hover:text-error focus:fill-error focus:text-error active:fill-error active:text-error':
                 isDanger,
             }"
             @click="$emit('action')">

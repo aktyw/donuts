@@ -1,12 +1,12 @@
 <template>
   <FadeTransitionMedium>
-    <div class="flex justify-between items-center w-full border border-base-300 rounded-md bg-base-200 py-2 px-3">
+    <div class="flex w-full items-center justify-between rounded-md border border-base-300 bg-base-200 px-3 py-2">
       <div class="flex gap-2">
         <IconArchive />
         <p>This project is archived</p>
       </div>
       <BaseButton
-        class="bg-accent hover:bg-accent-focus focus:bg-accent-focus transition-colors duration-300 font-semibold text-sm py-1.5 px-2.5 rounded-lg text-base-100"
+        class="rounded-lg bg-accent px-2.5 py-1.5 text-sm font-semibold text-base-100 transition-colors duration-300 hover:bg-accent-focus focus:bg-accent-focus"
         @click="handleUnarchiveProject">
         Unarchive project
       </BaseButton>

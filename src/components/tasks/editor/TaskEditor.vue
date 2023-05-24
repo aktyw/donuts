@@ -1,7 +1,7 @@
 <template>
   <form
     id="form"
-    class="relative border w-full rounded-lg focus-within:border-accent-content my-1.5 px-4">
+    class="relative my-1.5 w-full rounded-lg border px-4 focus-within:border-accent-content">
     <div class="py-3">
       <TaskEditorInput
         ref="taskTitleInput"
@@ -45,7 +45,7 @@
           <BaseButton
             v-if="date"
             aria-label="Clear date"
-            class="btn-ghost btn-xs p-0 border border-base-300 hover:bg-base-200 rounded"
+            class="btn-ghost btn-xs rounded border border-base-300 p-0 hover:bg-base-200"
             @click.prevent="clearDate">
             <template #icon>
               <IconClose />
@@ -57,7 +57,7 @@
           class="!tooltip-top flex"
           data="Set priority">
           <ButtonBadgeMedium
-            class="pl-0.5 ml-3"
+            class="ml-3 pl-0.5"
             :is-toggle="taskIsPriority"
             @click.prevent="togglePriority"
             ><template #icon>

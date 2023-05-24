@@ -5,7 +5,7 @@
     </template>
     <template #content> {{ subtasks?.length }}</template>
     <li
-      class="font-semibold p-3 hover:!bg-base-100 cursor-default"
+      class="cursor-default p-3 font-semibold hover:!bg-base-100"
       tabindex="-1">
       Sub tasks
     </li>
@@ -15,7 +15,7 @@
       :to="{ params: { taskid: sub.id } }"
       class="p-3 hover:bg-base-200"
       :class="{ 'text-semibold ': $route.params.taskid === sub.id }">
-      <span class="flex justify-between gap-1 w-full">
+      <span class="flex w-full justify-between gap-1">
         {{ sub.title }}
         <IconDone v-if="$route.params.taskid === sub.id" />
       </span>

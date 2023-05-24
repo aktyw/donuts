@@ -1,7 +1,7 @@
 <template>
   <component
     :is="is"
-    class="tooltip tooltip-bottom after:hidden hover:before:delay-500 before:duration-200 after:duration-100 break-words"
+    class="tooltip tooltip-bottom break-words before:duration-200 after:hidden after:duration-100 hover:before:delay-500"
     :class="{ 'tooltip-open': focused }"
     :data-tip="data"
     @focusin="focused = true"

@@ -1,8 +1,8 @@
 <template>
-  <div class="flex items-center justify-between w-full">
+  <div class="flex w-full items-center justify-between">
     <ProjectsToggle />
     <ProjectAddButton
-      class="hover:bg-base-200 rounded-md mx-2 py-1 flex items-center text-sm font-semibold border-none gap-2"
+      class="mx-2 flex items-center gap-2 rounded-md border-none py-1 text-sm font-semibold hover:bg-base-200"
       @click="handleProjectEditor">
       Add project
     </ProjectAddButton>

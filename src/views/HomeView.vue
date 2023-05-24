@@ -1,22 +1,22 @@
 <template>
   <FadeTransitionMedium>
-    <div class="hero bg-base-200 h-full">
+    <div class="hero h-full bg-base-200">
       <div class="hero-content flex-col lg:flex-row-reverse lg:gap-8">
         <img
           src="@/assets/images/donut.png"
           class="rounded-lg lg:max-w-xl" />
 
         <div>
-          <h1 class="text-5xl lg:text-7xl font-bold">
+          <h1 class="text-5xl font-bold lg:text-7xl">
             Improve productivity with
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Donuts!</span>
+            <span class="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Donuts!</span>
           </h1>
-          <p class="py-6 max-w-prose">
+          <p class="max-w-prose py-6">
             Simple and intuitive app that allows users to easily manage their tasks and notes.
           </p>
           <router-link
             to="/auth/signup"
-            class="btn btn-primary">
+            class="btn-primary btn">
             Try now!
           </router-link>
         </div>

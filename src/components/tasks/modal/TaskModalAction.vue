@@ -1,6 +1,6 @@
 <template>
   <TheTooltip
-    class="!tooltip-top hover:bg-base-200 rounded-sm"
+    class="!tooltip-top rounded-sm hover:bg-base-200"
     :data="tooltipData">
     <BaseButton
       v-bind="$attrs"

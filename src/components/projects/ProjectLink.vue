@@ -1,6 +1,6 @@
 <template>
   <RouterLink
-    class="flex items-center py-2 hover:bg-base-300 focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
+    class="flex items-center py-2 hover:bg-base-300 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
     :to="to"
     v-bind="$attrs">
     <TheTooltip

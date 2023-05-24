@@ -6,7 +6,7 @@
     <button
       tabindex="0"
       aria-label="Show task options"
-      class="btn btn-square rounded-md btn-xs bg-base-100 hover:bg-base-200 border-0 focus:bg-base-200 focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent">
+      class="btn-xs btn-square btn rounded-md border-0 bg-base-100 hover:bg-base-200 focus:bg-base-200 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent">
       <IconVerticalDots class="fill-base-content" />
     </button>
 
@@ -14,7 +14,7 @@
       ref="dropList"
       role="menu"
       tabindex="0"
-      class="dropdown-content menu py-0.5 shadow rounded-md w-60 bg-base-100 border border-base-300 text-base-content fill-base-content [& svg:not(.active-state)]:fill-base-content [&>li:hover>button:not(.active-state)]:bg-base-200 [& button:active]:text-base-content [&>button:active]:bg-base-200">
+      class="[& svg:not(.active-state)]:fill-base-content [& button:active]:text-base-content dropdown-content menu w-60 rounded-md border border-base-300 bg-base-100 fill-base-content py-0.5 text-base-content shadow [&>button:active]:bg-base-200 [&>li:hover>button:not(.active-state)]:bg-base-200">
       <OptionListButton @click="handleEditTask(taskId)">
         <template #icon>
           <IconPen />
@@ -127,7 +127,7 @@
       <BaseDividerSmall />
 
       <OptionListButton
-        class="hover:text-error hover:fill-error focus:text-error focus:fill-error fill-base-content"
+        class="fill-base-content hover:fill-error hover:text-error focus:fill-error focus:text-error"
         @click="handleDeleteTask(taskId)">
         <template #icon>
           <IconRecycleBin />

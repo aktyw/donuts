@@ -1,7 +1,7 @@
 <template>
   <TheTooltip data="Add task">
     <BaseButton
-      class="btn btn-sm border-transparent hover:border-transparent bg-base-300 hover:bg-base-200 text-neutral-focus normal-case text-lg p-1">
+      class="btn-sm btn border-transparent bg-base-300 p-1 text-lg normal-case text-neutral-focus hover:border-transparent hover:bg-base-200">
       <slot />
       <slot name="icon" />
     </BaseButton>

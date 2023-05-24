@@ -1,5 +1,5 @@
 <template>
   <li
-    class="border m-1 text-center -mx-[1px] rounded-xl"
+    class="m-1 -mx-[1px] rounded-xl border text-center"
     aria-hidden />
 </template>

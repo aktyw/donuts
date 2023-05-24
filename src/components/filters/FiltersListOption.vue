@@ -3,7 +3,7 @@ import TheBadge from '@/components/layouts/TheBadge.vue';
   <li>
     <TheBadge
       :class="{ 'btn-active': getCurrentFilter === filterType }"
-      class="focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
+      class="focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
       @click="handleFilterType(filterType)">
       <template #title> {{ filterType }} </template>
       <template #amount>

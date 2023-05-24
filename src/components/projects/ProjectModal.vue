@@ -1,13 +1,13 @@
 <template>
   <FadeTransitionMedium>
     <div
-      class="modal modal-bottom sm:modal-middle modal-open"
+      class="modal modal-open modal-bottom sm:modal-middle"
       role="dialog">
       <div
         ref="target"
         class="modal-box overflow-visible p-0">
-        <div class="border-b mb-4">
-          <h2 class="font-bold text-2xl p-4">{{ modalTitle }}</h2>
+        <div class="mb-4 border-b">
+          <h2 class="p-4 text-2xl font-bold">{{ modalTitle }}</h2>
         </div>
         <form
           action=""
@@ -30,7 +30,7 @@
                 <li
                   v-for="({ name, hex }, idx) in COLORS"
                   :key="idx"
-                  class="flex flex-row items-center justify-between gap-2 [&]:hover:transition-none transition hover:transition duration-300 hover:duration-300 hover:bg-base-200"
+                  class="flex flex-row items-center justify-between gap-2 transition duration-300 hover:bg-base-200 hover:transition hover:duration-300 [&]:hover:transition-none"
                   @click.prevent="handleSetColor(name, hex)">
                   <div>
                     <span>
@@ -46,7 +46,7 @@
             </BaseDropdown>
             <BaseToggle v-model="favorite"> Add to favorite </BaseToggle>
           </div>
-          <div class="flex justify-end gap-4 text-lg mt-8">
+          <div class="mt-8 flex justify-end gap-4 text-lg">
             <ModalButton @click.prevent="closeEditor"> Cancel </ModalButton>
             <ModalButton
               class="bg-primary !text-primary-content hover:bg-primary-focus"

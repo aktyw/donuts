@@ -59,7 +59,7 @@
                 :fill="color">
                 {{ name }}
                 <template #options>
-                  <span class="absolute right-0 -top-1 bg-transparent">
+                  <span class="absolute -top-1 right-0 bg-transparent">
                     <ProjectOptions
                       v-show="showId === id"
                       :id="id"
@@ -90,7 +90,7 @@
                 :name="name"
                 :fill="color">
                 <template #options>
-                  <span class="absolute right-0 -top-1 bg-transparent">
+                  <span class="absolute -top-1 right-0 bg-transparent">
                     <ProjectOptions
                       v-show="showId === id"
                       :id="id" />

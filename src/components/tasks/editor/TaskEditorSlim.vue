@@ -1,7 +1,7 @@
 <template>
   <form
     id="form"
-    class="relative border w-full rounded-lg focus-within:border-accent-content my-1.5 px-4">
+    class="relative my-1.5 w-full rounded-lg border px-4 focus-within:border-accent-content">
     <div class="py-3">
       <TaskEditorInput
         ref="taskTitleInput"

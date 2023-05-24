@@ -1,7 +1,7 @@
 <template>
   <BaseButton
     v-if="largerThanSm"
-    class="btn btn-sm btn-block btn-ghost p-0 text-left normal-case justify-start fill-base-content hover:bg-transparent [&:hover>svg]:fill-neutral-content [&:hover>svg]:bg-primary [&:hover]:text-primary font-normal py-2 no-animation"
+    class="btn-ghost no-animation btn-block btn-sm btn justify-start fill-base-content p-0 py-2 text-left font-normal normal-case hover:bg-transparent [&:hover>svg]:bg-primary [&:hover>svg]:fill-neutral-content [&:hover]:text-primary"
     @click.prevent="showAddTaskEditor">
     <template #icon>
       <IconAdd class="mr-2 rounded-xl transition-all duration-150" />
@@ -11,7 +11,7 @@
 
   <BaseButton
     v-else-if="smAndSmaller"
-    class="btn btn-accent btn-circle btn-lg fixed no-animation bottom-8 right-8 fill-white z-50"
+    class="btn-accent no-animation btn-circle btn-lg btn fixed bottom-8 right-8 z-50 fill-white"
     @click.prevent="showAddTaskEditor">
     <template #icon>
       <IconAddBig />

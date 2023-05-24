@@ -1,7 +1,7 @@
 <template>
   <FadeTransitionMedium>
-    <div class="hero full-h bg-base-200 w-full">
-      <div class="hero-content flex-col md:gap-12 md:w-[800px]">
+    <div class="full-h hero w-full bg-base-200">
+      <div class="hero-content flex-col md:w-[800px] md:gap-12">
         <slot />
       </div>
     </div>

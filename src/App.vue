@@ -5,12 +5,12 @@
     <HeaderStart v-else />
     <!-- <HeaderApp /> -->
     <!-- <HeaderStart  /> -->
-    <div class="flex pt-12 h-screen">
+    <div class="flex h-screen pt-12">
       <RouterView name="sidebar" />
 
       <RouterView
         v-slot="{ Component }"
-        class="w-full h-[calc(100vh-48px)] pt-10">
+        class="h-[calc(100vh-48px)] w-full pt-10">
         <FadeTransitionShort mode="out-in">
           <component :is="Component" />
         </FadeTransitionShort>

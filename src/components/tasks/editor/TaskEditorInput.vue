@@ -3,7 +3,7 @@
     ref="input"
     :value="modelValue"
     type="text"
-    class="input input-ghost input-sm rounded px-1 md:w-full border-b-1 !outline-1 !outline-offset-0 border-t-0 border-l-0 border-r-0 focus:border-b-1 focus:border-b-content-focus"
+    class="border-b-1 focus:border-b-1 focus:border-b-content-focus input-ghost input input-sm rounded border-l-0 border-r-0 border-t-0 px-1 !outline-1 !outline-offset-0 md:w-full"
     @input="updateModelValue" />
 </template>
 

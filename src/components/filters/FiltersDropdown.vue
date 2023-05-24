@@ -1,8 +1,8 @@
 <template>
-  <div class="dropdown dropdown-bottom dropdown-end">
+  <div class="dropdown-bottom dropdown dropdown-end">
     <label tabindex="0">
       <button
-        class="w-full hover:bg-base-200 focus:bg-base-200 btn btn-square rounded-md btn-xs bg-base-100 border-0 text-slate-900 font-normal normal-case focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent">
+        class="btn-square btn-xs btn w-full rounded-md border-0 bg-base-100 font-normal normal-case text-slate-900 hover:bg-base-200 focus:bg-base-200 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent">
         <span class="flex flex-row gap-1">
           <IconSettings />
           <span class="inline-flex items-center text-base-content">View</span>
@@ -13,7 +13,7 @@
       tabindex="0"
       role="menu"
       aria-label="Show all tasks menu"
-      class="dropdown-content menu py-0.5 shadow rounded-md w-52 bg-base-100 border border-base-300 text-base-content fill-base-content">
+      class="dropdown-content menu w-52 rounded-md border border-base-300 bg-base-100 fill-base-content py-0.5 text-base-content shadow">
       <FiltersDropdownHeading :is-first="true">Sort</FiltersDropdownHeading>
       <FiltersDropdownButtonItem
         :is-active="sortTypeStatus === SortFilters.Default"

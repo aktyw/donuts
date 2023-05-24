@@ -1,7 +1,3 @@
 {
-  "recommendations": [
-    "vue.volar",
-    "vue.vscode-typescript-vue-plugin",
-    "gruntfuggly.todo-tree"
-  ]
+  "recommendations": ["vue.volar", "vue.vscode-typescript-vue-plugin", "gruntfuggly.todo-tree"]
 }

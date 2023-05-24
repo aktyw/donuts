@@ -1,15 +1,15 @@
 <template>
-  <div class="dropdown dropdown-bottom">
+  <div class="dropdown-bottom dropdown">
     <BaseLabel>{{ labelName }}</BaseLabel>
     <label
       tabindex="0"
-      class="btn mt-2 w-full justify-start bg-transparent text-base-content hover:bg-transparent text-left normal-case gap-2 focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent">
+      class="btn mt-2 w-full justify-start gap-2 bg-transparent text-left normal-case text-base-content hover:bg-transparent focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent">
       <slot name="icon" />
       <slot name="content"></slot>
     </label>
     <ul
       tabindex="0"
-      class="dropdown-content menu flex flex-col flex-nowrap cursor-pointer [&>li:hover]:bg-base-200 [&>li:hover>*]:bg-base-200 [&>li>*]:transition [&>li>*]:hover:transition shadow bg-base-100 rounded-box overflow-y-auto max-h-80 w-full">
+      class="dropdown-content menu rounded-box flex max-h-80 w-full cursor-pointer flex-col flex-nowrap overflow-y-auto bg-base-100 shadow [&>li:hover>*]:bg-base-200 [&>li:hover]:bg-base-200 [&>li>*]:transition [&>li>*]:hover:transition">
       <slot name="list">
         <IconColor />
       </slot>

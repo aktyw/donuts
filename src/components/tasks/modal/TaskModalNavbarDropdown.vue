@@ -1,9 +1,9 @@
 <template>
   <div
     ref="dropdown"
-    class="dropdown dropdown-left dropdown-bottom overflow-visible">
+    class="dropdown-bottom dropdown dropdown-left overflow-visible">
     <TheTooltip
-      class="!tooltip-top hover:bg-base-200 rounded-sm flex items-center"
+      class="!tooltip-top flex items-center rounded-sm hover:bg-base-200"
       data="More actions">
       <BaseButton
         tabindex="0"
@@ -17,7 +17,7 @@
       ref="dropList"
       role="menu"
       tabindex="0"
-      class="dropdown-content menu py-1 shadow rounded-md w-56 bg-base-100 border border-base-300 text-base-content fill-base-content [& svg:not(.active-state)]:fill-base-content [&>li:hover>button:not(.active-state)]:bg-base-200 [& button:active]:text-base-content [&>button:active]:bg-base-200">
+      class="[& svg:not(.active-state)]:fill-base-content [& button:active]:text-base-content dropdown-content menu w-56 rounded-md border border-base-300 bg-base-100 fill-base-content py-1 text-base-content shadow [&>button:active]:bg-base-200 [&>li:hover>button:not(.active-state)]:bg-base-200">
       <OptionListInfo> Added on {{ formattedCreatedAt.value }} </OptionListInfo>
 
       <BaseDividerSmall />

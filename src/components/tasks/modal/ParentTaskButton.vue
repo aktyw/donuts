@@ -1,10 +1,10 @@
 <template>
   <TheTooltip
-    class="!tooltip-top w-full h-full border-r"
+    class="!tooltip-top h-full w-full border-r"
     data="Open parent task">
     <RouterLink
       :to="{ params: { taskid: parent?.id } }"
-      class="flex gap-1 items-center justify-center w-full h-full hover:bg-base-200 transition duration-300">
+      class="flex h-full w-full items-center justify-center gap-1 transition duration-300 hover:bg-base-200">
       <IconCircle />
       <span>{{ parent?.title }}</span>
     </RouterLink>

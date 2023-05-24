@@ -3,7 +3,7 @@
     <AuthTitle title="Sign up" />
     <InfoCardContainer>
       <InfoCard>
-        <p class="py-6 max-w-prose text-inherit leading-7">
+        <p class="max-w-prose py-6 leading-7 text-inherit">
           Donuts is a simple and intuitive application that allows users to easily manage their tasks and notes. With
           multiple features, Donuts helps users stay on top of their schedule and get things done efficiently.
         </p>

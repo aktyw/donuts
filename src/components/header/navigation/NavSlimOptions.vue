@@ -3,7 +3,7 @@
     <div class="flex gap-2">
       <TheTooltip :data="menuTooltip">
         <BaseButton
-          class="btn btn-sm btn-square btn-ghost"
+          class="btn-ghost btn-square btn-sm btn"
           aria-label="Toggle menu"
           @click="settingsStore.toggleMenu()">
           <template #icon>
@@ -16,7 +16,7 @@
       </TheTooltip>
       <TheTooltip data="Go to home">
         <BaseButton
-          class="btn btn-sm btn-square btn-ghost"
+          class="btn-ghost btn-square btn-sm btn"
           aria-label="Go to home"
           @click="router.push({ name: 'project', params: { id: home } })">
           <template #icon>

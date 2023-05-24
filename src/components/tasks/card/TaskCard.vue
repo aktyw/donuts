@@ -4,29 +4,29 @@
       v-if="!editTask"
       ref="card"
       v-bind="$attrs"
-      class="relative border-b border-base-200 py-3 flex justify-between transition-colors duration-1000"
+      class="relative flex justify-between border-b border-base-200 py-3 transition-colors duration-1000"
       :class="{ 'bg-base-300  duration-1000 ': showBacklight, 'last:border-b-0': isEditorActive }"
       @click="handleShowOptionsBtn"
       @mouseover="handleShowOptionsBtn"
       @mouseleave="handleHideOptionsBtn">
-      <div class="flex gap-4 w-full">
+      <div class="flex w-full gap-4">
         <TaskCheckbox
           :is-done="task.isDone"
           :is-priority="task.isPriority"
           @toggle="toggleIsDone(task.id)" />
 
-        <div class="flex flex-col w-full cursor-pointer">
+        <div class="flex w-full cursor-pointer flex-col">
           <router-link
             v-if="isModal"
             class="flex flex-col"
             :to="{ params: { taskid: task.id } }">
             <p
-              class="break-all flex"
+              class="flex break-all"
               :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
               {{ task.title }}
             </p>
             <p
-              class="break-all flex text-sm"
+              class="flex break-all text-sm"
               :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
               {{ task.description }}
             </p>
@@ -36,12 +36,12 @@
             class="flex flex-col"
             :to="{ name: 'taskToday', params: { taskid: task.id } }">
             <p
-              class="break-all h-full flex"
+              class="flex h-full break-all"
               :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
               {{ task.title }}
             </p>
             <p
-              class="break-all h-full flex text-sm"
+              class="flex h-full break-all text-sm"
               :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
               {{ task.description }}
             </p>
@@ -51,19 +51,19 @@
             class="flex flex-col"
             :to="{ name: 'task', params: { taskid: task.id } }">
             <p
-              class="break-all h-full flex"
+              class="flex h-full break-all"
               :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
               {{ task.title }}
             </p>
             <p
-              class="break-all h-full flex text-sm"
+              class="flex h-full break-all text-sm"
               :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
               {{ task.description }}
             </p>
           </router-link>
 
           <div class="flex justify-between pt-1">
-            <div class="flex gap-3 items-end">
+            <div class="flex items-end gap-3">
               <TaskSubtaskInfo
                 v-if="subtaskAmount > 0 && !isModal"
                 :amount="subtaskAmount"
@@ -81,7 +81,7 @@
                 <template #time>
                   <span
                     v-if="showDetailTime"
-                    class="pt-0.5 flex items-end"
+                    class="flex items-end pt-0.5"
                     >{{ showDetailTime }}</span
                   >
                 </template>
@@ -130,7 +130,7 @@
           <template #content>
             <p>
               Do you really want to delete
-              <span class="font-bold break-words">{{ task.title }}</span> ?
+              <span class="break-words font-bold">{{ task.title }}</span> ?
             </p>
           </template>
         </ModalConfirmDelete>

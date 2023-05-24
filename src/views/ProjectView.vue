@@ -2,7 +2,7 @@
   <main
     v-if="currentProject?.active"
     id="main">
-    <div class="flex flex-col items-start w-2/3 max-w-[800px]">
+    <div class="flex w-2/3 max-w-[800px] flex-col items-start">
       <FiltersNavbar :title="currentProject?.name ?? 'Inbox'" />
       <FilterStatus v-if="!allowDrag" />
       <FiltersList
@@ -27,8 +27,8 @@
   <main
     v-else
     id="main">
-    <div class="flex flex-col items-start w-2/3 max-w-[800px]">
-      <h2 class="font-bold text-xl pb-2.5">{{ currentProject?.name ?? 'Inbox' }}</h2>
+    <div class="flex w-2/3 max-w-[800px] flex-col items-start">
+      <h2 class="pb-2.5 text-xl font-bold">{{ currentProject?.name ?? 'Inbox' }}</h2>
       <ProjectArchived :id="projectId" />
     </div>
   </main>

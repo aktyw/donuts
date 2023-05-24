@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col md:flex-row-reverse gap-4 md:gap-12 w-full justify-between">
+  <div class="flex w-full flex-col justify-between gap-4 md:flex-row-reverse md:gap-12">
     <slot />
   </div>
 </template>

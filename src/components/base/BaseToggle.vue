@@ -4,7 +4,7 @@ import { onUpdated } from 'vue';
     <input
       :checked="modelValue"
       type="checkbox"
-      class="toggle toggle-success"
+      class="toggle-success toggle"
       @input="$emit('update:modelValue', ($event.target as HTMLInputElement).checked)" />
     <label class="label cursor-pointer">
       <span class="label-text">
