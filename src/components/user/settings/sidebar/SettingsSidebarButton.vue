@@ -1,5 +1,5 @@
 <template>
-  <li class="[&.router-link-exact-active]:bg-base-200 w-60">
+  <li class="w-60">
     <RouterLink
       active-class="bg-base-200"
       class="flex items-center py-2 focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent rounded-md p-2"

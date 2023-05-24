@@ -11,7 +11,7 @@
     <ul
       ref="dropList"
       role="menu"
-      tabindex="0"
+      tabindex="1"
       class="dropdown-content menu py-0.5 shadow rounded-md w-56 bg-base-100 border border-base-300 text-base-content fill-base-content [& svg:not(.active-state)]:fill-base-content [&>li:hover>button:not(.active-state)]:bg-base-200 [& button:active]:text-base-content [&>button:active]:bg-base-200">
       <teleport to="body">
         <ProjectModal

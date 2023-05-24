@@ -19,44 +19,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onMounted, onUnmounted, onUpdated, provide, type Ref, ref, unref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { onClickOutside } from '@vueuse/core';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 import FadeTransitionMedium from '@/components/ui/transitions/FadeTransitionMedium.vue';
 import SettingsContent from '@/components/user/settings/content/SettingsContent.vue';
 import SettingsSidebar from '@/components/user/settings/sidebar/SettingsSidebar.vue';
-import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useSettingsStore } from '@/stores/SettingsStore';
-import { useTasksStore } from '@/stores/TasksStore';
-import type { Task } from '@/types/models/Task';
-// onMounted(() => {
-//   storeSettings.setModal({ modal: 'task', value: true });
-// });
 
-// onUnmounted(() => {
-//   storeSettings.setModal({ modal: 'task', value: false });
-// });
-
-const route = useRoute();
 const router = useRouter();
 
-const storeProjects = useProjectsStore();
-const storeSettings = useSettingsStore();
-const store = useTasksStore();
+const settingsStore = useSettingsStore();
 
 const target = ref();
 
-// onClickOutside(target, (e) => {
-//   const notification = (e.target as HTMLElement)?.closest('#notification');
-
-//   if (
-//     deleteConfirm.value ||
-//     subtaskDeleteConfirm.value ||
-//     isCalendarOpen.value ||
-//     isMoveProjectOpen.value ||
-//     notification
-//   )
-//     return;
-//   closeModal();
-// });
+onClickOutside(target, () => {
+  router.push(settingsStore.getParentModalRoute);
+});
 </script>

@@ -1,7 +1,8 @@
 <template>
   <router-link
     :to="{ name: 'account' }"
-    class="focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent">
+    class="focus-visible:-outline-offset-2 focus-visible:outline-2 focus-visible:outline-accent"
+    @click="handleSaveRoute">
     <li
       class="text-base-content hover:bg-base-200"
       @click="openSettingsModal">
@@ -28,12 +29,16 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import Avatar from 'vue-boring-avatars';
+import { useRoute } from 'vue-router';
 
 import IconSettingsAlt from '@/components/icons/IconSettingsAlt.vue';
 import blurElement from '@/helpers/blur';
 import { useAuthStore } from '@/stores/AuthStore';
+import { useSettingsStore } from '@/stores/SettingsStore';
 
 const authStore = useAuthStore();
+const settingsStore = useSettingsStore();
+const route = useRoute();
 
 const { getEmail: email, getName: name } = storeToRefs(authStore);
 
@@ -41,7 +46,11 @@ const emit = defineEmits<{
   (event: 'openSettingsModal'): void;
 }>();
 
-function openSettingsModal() {
+function handleSaveRoute(): void {
+  settingsStore.setModalRoute(route.path);
+}
+
+function openSettingsModal(): void {
   blurElement();
   emit('openSettingsModal');
 }

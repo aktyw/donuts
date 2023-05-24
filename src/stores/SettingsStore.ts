@@ -10,6 +10,7 @@ interface SettingsState {
       calendar: boolean;
       moveProject: boolean;
     };
+    parentModalRoute: string;
     isTransitionActive: {
       [projectRecord: string]: boolean;
     };
@@ -28,6 +29,7 @@ export const useSettingsStore = defineStore('settings', {
         calendar: false,
         moveProject: false,
       },
+      parentModalRoute: '/',
       isTransitionActive: {
         projectRecord: true,
       },
@@ -55,6 +57,9 @@ export const useSettingsStore = defineStore('settings', {
     getLoadingStatus(state): boolean {
       return state.settings.isLoading;
     },
+    getParentModalRoute(state): string {
+      return state.settings.parentModalRoute;
+    },
   },
 
   actions: {
@@ -75,6 +80,9 @@ export const useSettingsStore = defineStore('settings', {
     },
     setLoadingStatus(value: boolean) {
       this.settings.isLoading = value;
+    },
+    setModalRoute(route: string) {
+      this.settings.parentModalRoute = route;
     },
   },
 });

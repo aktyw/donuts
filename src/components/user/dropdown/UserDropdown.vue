@@ -15,7 +15,7 @@
       <router-link
         :to="{ name: 'theme' }"
         tabindex="1"
-        @click="blurDropdown">
+        @click="handleSettings">
         <OptionListButton>
           <template #icon>
             <IconTheme />
@@ -65,8 +65,9 @@
 
 <script setup lang="ts">
 import { useOnline } from '@vueuse/core';
+import { settings } from 'firebase/analytics';
 import { ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 
 import BaseDividerSmall from '@/components/base/BaseDividerSmall.vue';
 import IconAccount from '@/components/icons/IconAccount.vue';
@@ -79,19 +80,20 @@ import UserDropdownButton from '@/components/user/dropdown/UserDropdownButton.vu
 import UserInfo from '@/components/user/dropdown/UserInfo.vue';
 import blurElement from '@/helpers/blur';
 import { useAuthStore } from '@/stores/AuthStore';
+import { useSettingsStore } from '@/stores/SettingsStore';
 
-const isModalOpen = ref(false);
 const authStore = useAuthStore();
+const settingsStore = useSettingsStore();
 const route = useRoute();
-const router = useRouter();
 const online = useOnline();
 
 function handlePrint() {
   print();
 }
 
-function blurDropdown() {
+function handleSettings() {
   blurElement();
+  settingsStore.setModalRoute(route.path);
 }
 
 function logout() {
