@@ -1,6 +1,6 @@
 <template>
   <header v-bind="$attrs">
-    <div class="flex gap-4 items-center">
+    <div class="flex items-center">
       <slot name="action"></slot>
       <slot>
         <h2>{{ name }}</h2>

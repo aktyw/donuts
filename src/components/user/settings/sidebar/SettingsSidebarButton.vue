@@ -4,7 +4,6 @@
       :data="name"
       class="w-full !tooltip-left">
       <RouterLink
-        tabindex="1"
         active-class="bg-base-200"
         class="flex items-center rounded-md p-2 py-2 outline-custom"
         :to="to"
