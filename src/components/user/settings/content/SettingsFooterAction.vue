@@ -7,8 +7,9 @@
     </ButtonSecondaryAction>
     <ButtonMainAction
       :disabled="!isSaveBtnActive"
+      class="text-sm"
       @click="save">
-      Save
+      {{ saveTitle ? saveTitle : 'Save' }}
     </ButtonMainAction>
   </div>
 </template>
@@ -19,6 +20,7 @@ import ButtonSecondaryAction from '@/components/ui/buttons/ButtonSecondaryAction
 
 type Props = {
   isSaveBtnActive: boolean;
+  saveTitle?: string;
 };
 
 defineProps<Props>();

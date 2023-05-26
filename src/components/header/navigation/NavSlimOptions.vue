@@ -18,7 +18,7 @@
         <BaseButton
           class="btn btn-sm btn-square btn-ghost"
           aria-label="Go to home"
-          @click="router.push({ name: 'project', params: { id: home } })">
+          @click="router.push(homeRoute as RouteLocationRaw)">
           <template #icon>
             <IconHome
               class="fill-base-content"
@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { type RouteLocationRaw, useRouter } from 'vue-router';
 
 import BaseButton from '@/components/base/BaseButton.vue';
 import IconHome from '@/components/icons/IconHome.vue';
@@ -45,6 +45,14 @@ import { useSettingsStore } from '@/stores/SettingsStore';
 const settingsStore = useSettingsStore();
 const { getHomeView: home, getMenuStatus: menuStatus } = storeToRefs(settingsStore);
 const menuTooltip = computed(() => (menuStatus.value ? 'Close menu' : 'Open menu'));
+
+const homeRoute = computed(() => {
+  if (home.value === 'today') {
+    return { name: 'today' };
+  } else {
+    return { name: 'project', params: { id: home.value } };
+  }
+});
 
 const router = useRouter();
 </script>
