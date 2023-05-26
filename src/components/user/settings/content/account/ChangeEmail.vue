@@ -114,7 +114,7 @@ const formData: AuthNewMail = reactive({
 const rules = computed(() => {
   return {
     email: { required, email },
-    confirmEmail: { required, email, sameAs: sameAs(computed(() => formData.email)) },
+    confirmEmail: { required, email, sameAsEmail: sameAs(computed(() => formData.email)) },
   };
 });
 
@@ -124,11 +124,11 @@ async function validateForm() {
   try {
     return await v$.value.$validate();
   } catch (error) {
-    errorMsg.value = typeof error === 'string' ? error : 'Failed to update. Check your data';
+    errorMsg.value = typeof error === 'string' ? error : 'Failed to update email. Check your data';
   }
 }
 
-async function handleClearForm() {
+function handleClearForm() {
   formData.email = '';
   formData.confirmEmail = '';
   form.value.reset();
@@ -139,10 +139,14 @@ async function handleSaveAction() {
     const result = await validateForm();
 
     if (!result) return;
+
     isLoading.value = true;
     await authStore.setNewEmail(formData.email);
+
     isSuccess.value = true;
+    settingsStore.setModal({ modal: 'userSettings', value: true });
     handleClearForm();
+    v$.value.$reset();
   } catch (error) {
     const { newErrorMessage } = useFirebaseError(error as FirebaseError);
 
@@ -155,6 +159,8 @@ async function handleSaveAction() {
 function closeModal() {
   isLoading.value = false;
   isSuccess.value = false;
+  settingsStore.setModal({ modal: 'userSettings', value: false });
+  v$.value.$reset();
 }
 
 function handleError() {

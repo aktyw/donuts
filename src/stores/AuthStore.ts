@@ -1,6 +1,7 @@
 import { FirebaseError } from '@firebase/util';
 import {
   createUserWithEmailAndPassword,
+  deleteUser,
   getAuth,
   GoogleAuthProvider,
   onAuthStateChanged,
@@ -9,6 +10,7 @@ import {
   signOut,
   updateEmail,
   updatePassword,
+  updateProfile,
 } from 'firebase/auth';
 import { defineStore } from 'pinia';
 import type { Router } from 'vue-router';
@@ -120,11 +122,24 @@ export const useAuthStore = defineStore('auth', {
 
       if (!auth.currentUser) return;
 
-      console.log(password);
-
       try {
         await updatePassword(auth.currentUser, password);
         this.setUser();
+      } catch (error) {
+        if (error instanceof FirebaseError) {
+          console.log(error);
+          throw new Error(error.code);
+        }
+        console.error(error);
+      }
+    },
+    async deleteUser(): Promise<void> {
+      try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        await deleteUser(user);
+        this.router.push({ path: '/auth/login', replace: true });
       } catch (error) {
         if (error instanceof FirebaseError) {
           throw new Error(error.code);
@@ -132,6 +147,23 @@ export const useAuthStore = defineStore('auth', {
         console.error(error);
       }
     },
+    async updateProfile(displayName: string) {
+      try {
+        const auth = getAuth();
+
+        await updateProfile(auth.currentUser, {
+          displayName: displayName,
+        });
+        this.setUser();
+      } catch (error) {
+        if (error instanceof FirebaseError) {
+          console.log(error);
+          throw new Error(error.code);
+        }
+        console.error(error);
+      }
+    },
+
     setUser(): void {
       const store = useSettingsStore();
       const auth = getAuth();

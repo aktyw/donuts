@@ -38,7 +38,7 @@ const settingsStore = useSettingsStore();
 const target = ref();
 
 onClickOutside(target, () => {
-  if (isModalOpen.value) return;
+  if (isModalOpen.value || settingsStore.getModalStatus('deleteAccount')) return;
 
   router.push(settingsStore.getParentModalRoute);
 });

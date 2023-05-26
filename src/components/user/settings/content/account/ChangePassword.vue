@@ -6,7 +6,8 @@
         <SettingsInput
           ref="passwordEl"
           v-model.trim="formData.password"
-          type="text" />
+          type="password"
+          autocomplete="off" />
         <SettingsInputError
           v-if="v$.password.$error"
           :message="v$.password.$errors[0].$message" />
@@ -17,10 +18,11 @@
         <SettingsInput
           ref="passwordConfirmEl"
           v-model.trim="formData.confirmPassword"
-          type="text" />
+          type="password"
+          autocomplete="off" />
         <SettingsInputError
-          v-if="v$.password.$error"
-          :message="v$.password.$errors[0].$message" />
+          v-if="v$.confirmPassword.$error"
+          :message="v$.confirmPassword.$errors[0].$message" />
       </div>
 
       <InfoContainer class="mt-8">
@@ -50,8 +52,15 @@
       modal-title="Updating..."
       close-title="Close"
       @close-editor="closeModal">
-      <BaseLoader />
+      <BaseLoader class="flex justify-center" />
     </BaseModal>
+  </teleport>
+  <teleport to="body">
+    <BaseModal
+      v-if="isSuccess"
+      modal-title="Password updated..."
+      close-title="Close"
+      @close-editor="closeModal" />
   </teleport>
 </template>
 
@@ -81,7 +90,9 @@ const passwordEl = ref();
 const passwordConfirmEl = ref();
 
 const errorMsg: Ref<string | null> = ref(null);
+const isSuccess = ref(false);
 const isLoading = ref(false);
+
 const formData: AuthNewPassword = reactive({
   password: '',
   confirmPassword: '',
@@ -98,26 +109,24 @@ watch(errorMsg, (val) => {
 const rules = computed(() => {
   return {
     password: { required, minLength: minLength(MIN_PASS_LENGTH), maxLength: maxLength(MAX_PASS_LENGTH) },
-    confirmPassword: { required, sameAs: sameAs(computed(() => formData.password)) },
+    confirmPassword: { required, sameAsPassword: sameAs(computed(() => formData.password)) },
   };
 });
 
-const v$ = useVuelidate(rules, formData, { $lazy: true });
-
-async function handleClearForm() {
-  formData.password = '';
-  formData.confirmPassword = '';
-  form.value.reset();
-}
+const v$ = useVuelidate(rules, formData);
 
 async function validateForm() {
   try {
     return await v$.value.$validate();
   } catch (error) {
-    const { newErrorMessage } = useFirebaseError(error as FirebaseError);
-
-    errorMsg.value = newErrorMessage.value;
+    errorMsg.value = typeof error === 'string' ? error : 'Failed to update password. Check your data';
   }
+}
+
+function handleClearForm() {
+  formData.password = '';
+  formData.confirmPassword = '';
+  form.value.reset();
 }
 
 async function handleSaveAction() {
@@ -125,11 +134,15 @@ async function handleSaveAction() {
     const result = await validateForm();
 
     console.log(result);
-
     if (!result) return;
-    isLoading.value = true;
 
+    isLoading.value = true;
     await authStore.setNewPassword(formData.password);
+
+    isSuccess.value = true;
+    settingsStore.setModal({ modal: 'userSettings', value: true });
+    handleClearForm();
+    v$.value.$reset();
   } catch (error) {
     const { newErrorMessage } = useFirebaseError(error as FirebaseError);
 
@@ -141,6 +154,9 @@ async function handleSaveAction() {
 
 function closeModal() {
   isLoading.value = false;
+  isSuccess.value = false;
+  settingsStore.setModal({ modal: 'userSettings', value: false });
+  v$.value.$reset();
 }
 
 function handleError() {

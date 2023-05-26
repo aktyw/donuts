@@ -11,6 +11,7 @@ interface SettingsState {
       calendar: boolean;
       moveProject: boolean;
       userSettings: boolean;
+      deleteAccount: boolean;
     };
     parentModalRoute: string;
     isTransitionActive: {
@@ -32,6 +33,7 @@ export const useSettingsStore = defineStore('settings', {
         calendar: false,
         moveProject: false,
         userSettings: false,
+        deleteAccount: false,
       },
       parentModalRoute: '/',
       isTransitionActive: {
