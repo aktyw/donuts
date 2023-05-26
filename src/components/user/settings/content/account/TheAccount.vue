@@ -28,7 +28,7 @@
         <SettingsLabel title="Delete account" />
         <InfoContainer>
           <p class="text-sm">
-            This will immediately delete all of your data including tasks, projects,and more. This can’t be undone.
+            This will immediately delete all of your data including tasks, projects, and more. This can’t be undone.
           </p>
         </InfoContainer>
         <SettingsButtonDangerAction
@@ -51,7 +51,7 @@
       @close-editor="cancelDeleteAccount">
       <template #action>
         <ButtonMainAction
-          class="!btn !bg-red-600 text-white"
+          class="!bg-red-600 hover:!bg-red-800 text-white"
           @click="deleteAccount">
           Delete
         </ButtonMainAction>
@@ -67,11 +67,18 @@
       <span class="text-red-500 flex justify-center items-center">{{ errorMsg }}</span>
     </BaseModal>
   </teleport>
+  <teleport to="body">
+    <BaseModal
+      v-if="isSuccess"
+      modal-title="Display name updated"
+      close-title="Close"
+      @close-editor="closeModal" />
+  </teleport>
 </template>
 
 <script setup lang="ts">
 import { FirebaseError } from '@firebase/util';
-import { computed, type Ref, ref } from 'vue';
+import { computed, type Ref, ref, watch } from 'vue';
 
 import BaseModal from '@/components/base/BaseModal.vue';
 import ButtonMainAction from '@/components/ui/buttons/ButtonMainAction.vue';
@@ -93,6 +100,9 @@ const nameEl = ref(null);
 const name = ref('');
 const displayName = computed(() => authStore.getName);
 const email = computed(() => authStore.getEmail);
+const isSuccess = ref(false);
+
+const isModalOpen = computed(() => settingsStore.getModalStatus('userSettings'));
 
 function handleClearInput() {
   if (nameEl.value && name) {
@@ -100,9 +110,25 @@ function handleClearInput() {
   }
 }
 
-async function handleUpdateProfile(name: string): Promise<void> {
-  authStore.updateProfile(name);
+async function handleUpdateProfile(): Promise<void> {
+  try {
+    await authStore.updateProfile(name.value);
+    settingsStore.setModal({ modal: 'userSettings', value: true });
+    isSuccess.value = true;
+  } catch (error) {
+    const { newErrorMessage } = useFirebaseError(error as FirebaseError);
+
+    errorMsg.value = newErrorMessage.value;
+  }
 }
+
+watch(errorMsg, (val) => {
+  if (val && !isModalOpen.value) {
+    settingsStore.setModal({ modal: 'userSettings', value: true });
+  } else if (!val && isModalOpen.value) {
+    settingsStore.setModal({ modal: 'userSettings', value: false });
+  }
+});
 
 function handleModalDeleteAccount(): void {
   settingsStore.setModal({ modal: 'deleteAccount', value: true });
@@ -118,14 +144,18 @@ async function deleteAccount(): Promise<void> {
 
     await authStore.deleteUser();
   } catch (error) {
-    console.log(error);
     const { newErrorMessage } = useFirebaseError(error as FirebaseError);
 
     errorMsg.value = newErrorMessage.value;
-    console.log(errorMsg.value);
 
     cancelDeleteAccount();
   }
+}
+
+function closeModal() {
+  isSuccess.value = false;
+  settingsStore.setModal({ modal: 'userSettings', value: false });
+  handleClearInput();
 }
 
 function handleError() {
