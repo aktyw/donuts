@@ -42,8 +42,7 @@
           modal-title="Move to project"
           :current-project="currentProject"
           :task="props.task"
-          @close-editor="closeProjectList">
-        </ProjectListModal>
+          @close-editor="closeProjectList" />
       </Teleport>
 
       <OptionListButton @click="handleDuplicateTask(taskId)">

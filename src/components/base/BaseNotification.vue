@@ -2,17 +2,17 @@
   <div
     id="notification"
     v-focus
-    class="alert flex bg-neutral-focus text-neutral-content lg:w-fit shadow-lg p-2"
+    class="alert flex bg-neutral text-neutral-content lg:w-fit shadow-lg p-2"
     role="dialog">
     <div>
       <slot name="content" />
       <div class="flex gap-0">
         <slot name="action" />
         <BaseButton
-          class="btn-sm hover:bg-neutral [&>svg]:hover:!fill-base-300 rounded-md"
+          class="btn-sm flex justify-center items-center w-12 hover:bg-neutral-focus rounded-md outline-none !outline-custom"
           @click="handleCloseAlert(notificationId)">
           <template #icon>
-            <IconClose class="mx-2 fill-neutral-content" />
+            <IconClose class="fill-neutral-content" />
           </template>
         </BaseButton>
       </div>

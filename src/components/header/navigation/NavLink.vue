@@ -6,7 +6,7 @@
       :active-class="isMobile"
       :to="to">
       <div class="flex gap-2">
-        <slot name="icon"> </slot>
+        <slot name="icon"></slot>
         <slot>{{ name }}</slot>
       </div>
     </RouterLink>
@@ -21,7 +21,7 @@ import { getBreakpoints } from '@/composables/useBreakpoints';
 
 const isMobile = computed(() => {
   return smAndSmaller
-    ? 'bg-neutral text-neutral-content hover:text-neutral focus:bg-neutral'
+    ? 'bg-base-100 text-base-content '
     : 'bg-base-300 text-base-content hover:text-base-300 focus:bg-base-300';
 });
 

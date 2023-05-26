@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col w-full lg:w-1/2 gap-4 text-center">
+  <div class="flex flex-col w-full gap-4 text-center">
     <div class="card flex-shrink-0 w-full max-w-md shadow-2xl bg-base-100">
       <div class="card-body">
         <form action="">
@@ -136,7 +136,7 @@ async function validateForm() {
   try {
     await v$.value.$validate();
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 

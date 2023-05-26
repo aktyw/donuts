@@ -1,9 +1,9 @@
 <template>
   <div class="navbar-end hidden lg:flex">
     <ul class="flex flex-row items-center gap-4">
-      <NavLink to="/auth/login"> Log in </NavLink>
+      <NavLink to="/auth/login">Log in</NavLink>
       <NavLink
-        class="bg-primary text-primary-content font-semibold hover:bg-primary-focus hover:text-white rounded-md"
+        class="bg-primary text-primary-content font-semibold hover:bg-primary-focus hover:text-primary-content rounded-md"
         to="/auth/signup">
         Try for free
       </NavLink>

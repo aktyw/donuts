@@ -12,10 +12,10 @@
         tabindex="0"
         class="menu menu-compact dropdown-content dropdown-left mt-2 shadow bg-base-200 w-48 gap-2 p-2 rounded-xl"
         @click="blurDropdown">
-        <NavLink to="/login"> Login </NavLink>
+        <NavLink to="/auth/login">Login</NavLink>
         <NavLink
           class="bg-primary text-primary-content"
-          to="/signup">
+          to="/auth/signup">
           Try for free
         </NavLink>
       </ul>

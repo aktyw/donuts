@@ -35,6 +35,9 @@ export function useFirebaseError(error: FirebaseError) {
     case 'auth/email-already-exists':
       newErrorMessage.value = 'Email already in use. Try different email.';
       break;
+    case 'auth/email-already-in-use':
+      newErrorMessage.value = 'Email already in use. Try different email.';
+      break;
     case 'auth/user-not-found':
       newErrorMessage.value = 'User not found. Check your login data.';
       break;

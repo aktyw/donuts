@@ -1,10 +1,27 @@
+import { useDark } from '@vueuse/core';
 import { defineStore } from 'pinia';
+
+import type { Mode, ThemesId } from '@/types/models/Themes';
 
 interface SettingsState {
   settings: {
     isMenuOpen: boolean;
     homeView: string;
-    isFooterActionActive: boolean;
+    theme: {
+      isAutoDarkMode: boolean;
+      current: {
+        id: ThemesId;
+        mode: Mode;
+      };
+      default: {
+        light: {
+          id: ThemesId;
+        };
+        dark: {
+          id: ThemesId;
+        };
+      };
+    };
     isModalOpen: {
       task: boolean;
       [deleteTaskConfirm: string]: boolean;
@@ -14,6 +31,7 @@ interface SettingsState {
       deleteAccount: boolean;
     };
     parentModalRoute: string;
+    isFooterActionActive: boolean;
     isTransitionActive: {
       [projectRecord: string]: boolean;
     };
@@ -26,7 +44,21 @@ export const useSettingsStore = defineStore('settings', {
     settings: {
       isMenuOpen: true,
       homeView: 'inbox',
-      isFooterActionActive: false,
+      theme: {
+        isAutoDarkMode: true,
+        current: {
+          id: 'crystal',
+          mode: 'light',
+        },
+        default: {
+          light: {
+            id: 'crystal',
+          },
+          dark: {
+            id: 'midnight',
+          },
+        },
+      },
       isModalOpen: {
         task: false,
         deleteTaskConfirm: false,
@@ -36,6 +68,7 @@ export const useSettingsStore = defineStore('settings', {
         deleteAccount: false,
       },
       parentModalRoute: '/',
+      isFooterActionActive: false,
       isTransitionActive: {
         projectRecord: true,
       },
@@ -69,6 +102,15 @@ export const useSettingsStore = defineStore('settings', {
     getFooterActionState(state): boolean {
       return state.settings.isFooterActionActive;
     },
+    getAutoDarkModeState(state): boolean {
+      return state.settings.theme.isAutoDarkMode;
+    },
+    getCurrentTheme(state): { id: ThemesId; mode: Mode } {
+      return state.settings.theme.current;
+    },
+    getDefaultTheme(state): (mode: Mode) => ThemesId {
+      return (mode: Mode) => state.settings.theme.default[mode].id;
+    },
   },
 
   actions: {
@@ -95,6 +137,24 @@ export const useSettingsStore = defineStore('settings', {
     },
     setFooterActionState(value: boolean) {
       this.settings.isFooterActionActive = value;
+    },
+    setAutoDarkMode(value: boolean): void {
+      this.settings.theme.isAutoDarkMode = value;
+    },
+    setTheme(id: ThemesId, mode: Mode): void {
+      const isDark = useDark();
+      const isAutoDark = this.getAutoDarkModeState;
+
+      mode === 'light' ? (this.settings.theme.default.light.id = id) : (this.settings.theme.default.dark.id = id);
+
+      const isThemeMatched = () => (isDark.value && mode === 'dark') || (!isDark.value && mode === 'light');
+
+      if (isThemeMatched() || !isAutoDark) {
+        this.setCurrentTheme(id, mode);
+      }
+    },
+    setCurrentTheme(id: ThemesId, mode: Mode): void {
+      this.settings.theme.current = { id, mode };
     },
   },
 });

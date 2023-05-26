@@ -4,21 +4,23 @@
       modal-title="Move project"
       close-title="Cancel"
       @close-editor="closeEditor">
-      <ProjectList
-        v-model="selectedProject"
-        :current-project="currentProject"
-        class="w-full max-w-[40rem] !select-md" />
-      <InfoContainer
-        v-if="!!selectedProject && currentProject?.id !== selectedProject.id"
-        class="bg-base-200 my-4 px-2 [&>span]:font-bold">
-        <p>
-          <strong>"{{ task.title.slice(0, 16) }}"</strong>
-          move from
-          <strong>"{{ currentProject?.name }}"</strong>
-          to
-          <strong>"{{ selectedProject?.name }}"</strong>
-        </p>
-      </InfoContainer>
+      <div class="w-full">
+        <ProjectList
+          v-model="selectedProject"
+          :current-project="currentProject"
+          class="w-full max-w-[28rem] md:max-w-[48rem] lg:max-w-[60rem] !select-md" />
+        <InfoContainer
+          v-if="!!selectedProject && currentProject?.id !== selectedProject.id"
+          class="bg-base-200 my-4 px-2 [&>span]:font-bold">
+          <p>
+            <strong>"{{ task.title.slice(0, 16) }}"</strong>
+            move from
+            <strong>"{{ currentProject?.name }}"</strong>
+            to
+            <strong>"{{ selectedProject?.name }}"</strong>
+          </p>
+        </InfoContainer>
+      </div>
       <template #action>
         <ModalButton
           :disabled="currentProject?.id === selectedProject?.id"

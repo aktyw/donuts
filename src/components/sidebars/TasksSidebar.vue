@@ -27,7 +27,7 @@
         data="Go to Today">
         <ProjectLink
           :custom-tooltip="true"
-          class="fill-accent"
+          class="fill-primary"
           :to="{ name: 'today' }">
           <template #icon>
             <IconCalendarToday />

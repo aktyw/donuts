@@ -1,5 +1,5 @@
 <template>
-  <button class="normal-case outline-custom focus:bg-base-200">
+  <button class="normal-case outline-custom">
     <slot name="icon" />
     <slot />
   </button>

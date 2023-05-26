@@ -1,8 +1,8 @@
 <template>
   <div class="relative flex text-sm gap-1 justify-center items-end">
-    <IconSubTask />
+    <IconSubTask class="fill-base-content" />
     <slot name="amount">
-      <span class=""> {{ completedAmount }}/{{ amount }} </span>
+      <span class="">{{ completedAmount }}/{{ amount }}</span>
     </slot>
   </div>
 </template>
