@@ -2,46 +2,48 @@
   <div class="flex flex-col w-full lg:w-1/2 gap-4 text-center">
     <div class="card flex-shrink-0 w-full max-w-md shadow-2xl bg-base-100">
       <div class="card-body">
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Email</span>
-          </label>
-          <input
-            v-model.trim="formData.email"
-            type="text"
-            placeholder="email"
-            class="input input-bordered" />
-          <span
-            v-if="v$.email.$error"
-            class="label-text text-red-500">
-            {{ v$.email.$errors[0].$message }}
-          </span>
-        </div>
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Password</span>
-          </label>
-          <input
-            v-model.trim="formData.password"
-            type="text"
-            placeholder="password"
-            class="input input-bordered" />
-          <span
-            v-if="v$.password.$error"
-            class="label-text text-red-500">
-            {{ v$.password.$errors[0].$message }}
-          </span>
-          <label
-            v-if="requestLogin"
-            class="label">
-            <a
-              href="#"
-              class="label-text-alt link link-hover">
-              Forgot password?
-            </a>
-          </label>
-          <pre>dwadwa@wp.pl</pre>
-        </div>
+        <form action="">
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Email</span>
+            </label>
+            <input
+              v-model.trim="formData.email"
+              type="email"
+              placeholder="email"
+              class="input input-bordered" />
+            <span
+              v-if="v$.email.$error"
+              class="label-text text-red-500">
+              {{ v$.email.$errors[0].$message }}
+            </span>
+          </div>
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Password</span>
+            </label>
+            <input
+              v-model.trim="formData.password"
+              type="password"
+              placeholder="password"
+              class="input input-bordered" />
+            <span
+              v-if="v$.password.$error"
+              class="label-text text-red-500">
+              {{ v$.password.$errors[0].$message }}
+            </span>
+            <label
+              v-if="requestLogin"
+              class="label">
+              <a
+                href="#"
+                class="label-text-alt link link-hover">
+                Forgot password?
+              </a>
+            </label>
+            <pre>dwadwa@wp.pl</pre>
+          </div>
+        </form>
         <div class="flex flex-row justify-between flex-1 form-control mt-6">
           <div class="flex flex-col gap-6 w-full">
             <BaseButton
@@ -92,6 +94,7 @@
 </template>
 
 <script setup lang="ts">
+import { FirebaseError } from '@firebase/util';
 import { useVuelidate } from '@vuelidate/core';
 import { email, maxLength, minLength, required } from '@vuelidate/validators';
 import { computed, reactive, type Ref, ref } from 'vue';
@@ -101,6 +104,7 @@ import BaseButton from '@/components/base/BaseButton.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseModal from '@/components/base/BaseModal.vue';
 import IconGoogle from '@/components/icons/IconGoogle.vue';
+import { useFirebaseError } from '@/composables/useFirebaseError';
 import { MAX_PASS_LENGTH, MIN_PASS_LENGTH } from '@/config/index';
 import { useAuthStore } from '@/stores/AuthStore';
 import type { AuthFormData } from '@/types/models/Auth';
@@ -144,7 +148,9 @@ async function submitForm() {
     if (requestSignup.value) await handleSignUp();
     if (requestLogin.value) await handleLogin();
   } catch (error) {
-    errorMsg.value = typeof error === 'string' ? error : 'Failed to authenticate. Try again later';
+    const { newErrorMessage } = useFirebaseError(error as FirebaseError);
+
+    errorMsg.value = newErrorMessage.value;
   } finally {
     isLoading.value = false;
   }
@@ -155,7 +161,9 @@ async function handleSignUp() {
     await authStore.handleSignUp(formData);
     router.push('/tasks');
   } catch (error) {
-    errorMsg.value = typeof error === 'string' ? error : 'Failed to authenticate. Try again later';
+    const { newErrorMessage } = useFirebaseError(error as FirebaseError);
+
+    errorMsg.value = newErrorMessage.value;
   }
 }
 
@@ -164,8 +172,9 @@ async function handleLogin() {
     await authStore.handleLogin(formData);
     router.push('/tasks');
   } catch (error) {
-    console.log(error);
-    errorMsg.value = typeof error === 'string' ? error : 'Failed to authenticate. Try again later';
+    const { newErrorMessage } = useFirebaseError(error as FirebaseError);
+
+    errorMsg.value = newErrorMessage.value;
   }
 }
 
@@ -174,7 +183,9 @@ async function signInWithGoogle() {
     await authStore.handleGoogleAuth();
     router.push('/tasks');
   } catch (error) {
-    console.error(error);
+    const { newErrorMessage } = useFirebaseError(error as FirebaseError);
+
+    errorMsg.value = newErrorMessage.value;
   }
 }
 

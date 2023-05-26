@@ -1,16 +1,16 @@
 <template>
   <FadeTransitionMedium>
     <div
-      ref="target"
-      class="modal modal-open sm:modal-middle"
+      class="modal modal-open sm:modal-middle h-full"
       role="dialog">
       <div
         id="user-modal"
-        class="modal-box fixed top-12 flex h-[calc(100vh_-_6rem)] !max-h-screen min-h-[460px] overflow-visible !rounded-xl p-0 md:min-w-[720px]">
-        <aside class="flex items-center justify-between border-b">
+        ref="target"
+        class="modal-box p-0 flex h-full min-h-[320px] overflow-hidden md:min-w-[720px]">
+        <aside class="flex items-center justify-between">
           <SettingsSidebar />
         </aside>
-        <div class="flex h-full w-full flex-col bg-base-200">
+        <div class="flex w-full flex-col bg-base-200">
           <SettingsContent />
         </div>
       </div>
@@ -21,13 +21,15 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import FadeTransitionMedium from '@/components/ui/transitions/FadeTransitionMedium.vue';
 import SettingsContent from '@/components/user/settings/content/SettingsContent.vue';
 import SettingsSidebar from '@/components/user/settings/sidebar/SettingsSidebar.vue';
 import { useSettingsStore } from '@/stores/SettingsStore';
+
+const isModalOpen = computed(() => settingsStore.getModalStatus('userSettings'));
 
 const router = useRouter();
 
@@ -36,6 +38,8 @@ const settingsStore = useSettingsStore();
 const target = ref();
 
 onClickOutside(target, () => {
+  if (isModalOpen.value) return;
+
   router.push(settingsStore.getParentModalRoute);
 });
 

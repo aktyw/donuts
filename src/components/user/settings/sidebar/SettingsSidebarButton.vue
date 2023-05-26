@@ -2,7 +2,7 @@
   <li class="w-60">
     <TheTooltip
       :data="name"
-      class="w-full !tooltip-left">
+      class="w-full !tooltip-right">
       <RouterLink
         active-class="bg-base-200"
         class="flex items-center rounded-md p-2 py-2 outline-custom"

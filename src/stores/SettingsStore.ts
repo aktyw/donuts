@@ -4,11 +4,13 @@ interface SettingsState {
   settings: {
     isMenuOpen: boolean;
     homeView: string;
+    isFooterActionActive: boolean;
     isModalOpen: {
       task: boolean;
       [deleteTaskConfirm: string]: boolean;
       calendar: boolean;
       moveProject: boolean;
+      userSettings: boolean;
     };
     parentModalRoute: string;
     isTransitionActive: {
@@ -23,11 +25,13 @@ export const useSettingsStore = defineStore('settings', {
     settings: {
       isMenuOpen: true,
       homeView: 'inbox',
+      isFooterActionActive: false,
       isModalOpen: {
         task: false,
         deleteTaskConfirm: false,
         calendar: false,
         moveProject: false,
+        userSettings: false,
       },
       parentModalRoute: '/',
       isTransitionActive: {
@@ -60,6 +64,9 @@ export const useSettingsStore = defineStore('settings', {
     getParentModalRoute(state): string {
       return state.settings.parentModalRoute;
     },
+    getFooterActionState(state): boolean {
+      return state.settings.isFooterActionActive;
+    },
   },
 
   actions: {
@@ -83,6 +90,9 @@ export const useSettingsStore = defineStore('settings', {
     },
     setModalRoute(route: string) {
       this.settings.parentModalRoute = route;
+    },
+    setFooterActionState(value: boolean) {
+      this.settings.isFooterActionActive = value;
     },
   },
 });

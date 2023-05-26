@@ -82,9 +82,9 @@
       </ul>
       <BaseDividerSmall v-if="sortTypeStatus !== SortFilters.Default || currentProject" />
 
-      <FiltersDropdownHeading v-if="sortTypeStatus !== SortFilters.Default || currentProject"
-        >Actions</FiltersDropdownHeading
-      >
+      <FiltersDropdownHeading v-if="sortTypeStatus !== SortFilters.Default || currentProject">
+        Actions
+      </FiltersDropdownHeading>
       <FiltersDropdownButtonItem
         v-if="tasks && currentProject"
         :disabled="!tasks.length"

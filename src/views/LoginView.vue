@@ -5,9 +5,9 @@
       <InfoCard>
         <span
           v-show="largerThanSm"
-          class="font-light text-base w-60 md:w-72 text-inherit"
-          >{{ currentMessage }}</span
-        >
+          class="font-light text-base w-60 md:w-72 text-inherit">
+          {{ currentMessage }}
+        </span>
       </InfoCard>
       <UserAuth />
     </InfoCardContainer>

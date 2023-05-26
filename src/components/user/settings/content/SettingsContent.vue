@@ -10,7 +10,7 @@
           class="relative">
           <TheTooltip
             data="Go back"
-            class="fixed w-full !tooltip-left flex items-center pr-2">
+            class="fixed !tooltip-left flex items-center pr-2">
             <BaseButton @click="handleGoToPreviousRoute">
               <template #icon>
                 <IconArrowLeft class="fill-base-content" />
@@ -24,7 +24,7 @@
         <span class="relative right-6">
           <TheTooltip
             data="Close"
-            class="!tooltip-right flex items-center fixed">
+            class="!tooltip-left flex items-center fixed">
             <BaseButton @click="handleCloseModal">
               <template #icon>
                 <IconClose />
@@ -35,33 +35,28 @@
       </template>
     </SettingsHeader>
 
-    <main class="p-4 overflow-auto">
+    <main class="p-4 overflow-auto h-screen relative">
       <router-view />
     </main>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onUpdated, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import BaseButton from '@/components/base/BaseButton.vue';
 import IconArrowLeft from '@/components/icons/IconArrowLeft.vue';
 import IconClose from '@/components/icons/IconClose.vue';
+import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 import SettingsHeader from '@/components/user/settings/content/SettingsHeader.vue';
 import { useSettingsStore } from '@/stores/SettingsStore';
 
 const settingsStore = useSettingsStore();
 const actionOverflowContainer = ref(null);
 
-import TheTooltip from '@/components/tooltips/TheTooltip.vue';
-
 const route = useRoute();
 const router = useRouter();
-
-onUpdated(() => {
-  console.log(actionOverflowContainer.value);
-});
 
 const title = computed(
   () => (route.name as string)[0]?.toString().toUpperCase() + route?.name?.toString().slice(1) || ''

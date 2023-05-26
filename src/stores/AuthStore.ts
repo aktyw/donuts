@@ -1,3 +1,4 @@
+import { FirebaseError } from '@firebase/util';
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -6,6 +7,8 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateEmail,
+  updatePassword,
 } from 'firebase/auth';
 import { defineStore } from 'pinia';
 import type { Router } from 'vue-router';
@@ -56,8 +59,10 @@ export const useAuthStore = defineStore('auth', {
 
         this.setCredentials(userEmail, userDisplayName);
       } catch (error) {
-        console.log(error.code);
-        throw new Error(typeof error === 'string' ? error : 'Failed to Sign Up');
+        if (error instanceof FirebaseError) {
+          throw new Error(error.code);
+        }
+        console.error(error);
       }
     },
     async handleLogin({ email, password }: AuthFormData): Promise<void> {
@@ -70,8 +75,10 @@ export const useAuthStore = defineStore('auth', {
 
         this.setCredentials(userEmail, userDisplayName);
       } catch (error) {
-        console.log(error.code);
-        throw new Error(typeof error === 'string' ? error : 'Failed to Log in');
+        if (error instanceof FirebaseError) {
+          throw new Error(error.code);
+        }
+        console.error(error);
       }
     },
     async handleGoogleAuth(): Promise<void> {
@@ -84,12 +91,46 @@ export const useAuthStore = defineStore('auth', {
 
         this.setCredentials(userEmail, userDisplayName);
       } catch (error) {
-        console.log(error);
+        if (error instanceof FirebaseError) {
+          throw new Error(error.code);
+        }
+        console.error(error);
       }
     },
     setCredentials(email: string | null, displayName: string | null): void {
       this.user.email = email;
       this.user.name = displayName || email?.slice(0, email.indexOf('@'));
+    },
+    async setNewEmail(email: string): Promise<void> {
+      const auth = getAuth();
+
+      if (!auth.currentUser) return;
+      try {
+        await updateEmail(auth.currentUser, email);
+        this.setUser();
+      } catch (error) {
+        if (error instanceof FirebaseError) {
+          throw new Error(error.code);
+        }
+        console.error(error);
+      }
+    },
+    async setNewPassword(password: string): Promise<void> {
+      const auth = getAuth();
+
+      if (!auth.currentUser) return;
+
+      console.log(password);
+
+      try {
+        await updatePassword(auth.currentUser, password);
+        this.setUser();
+      } catch (error) {
+        if (error instanceof FirebaseError) {
+          throw new Error(error.code);
+        }
+        console.error(error);
+      }
     },
     setUser(): void {
       const store = useSettingsStore();
