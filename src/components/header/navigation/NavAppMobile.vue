@@ -15,6 +15,7 @@
         <NavLink to="/tasks">Tasks</NavLink>
         <NavLink to="/notes">Notes</NavLink>
         <NavLink to="/settings">Settings</NavLink>
+        <BaseButton class="btn btn-md lg:btn-sm bg-base-300 border-0 normal-case text-base font-normal text-base-content hover:bg-base-200 rounded outline-custom" @click.prevent="logout">Logout</BaseButton>
       </ul>
     </div>
   </div>
@@ -24,8 +25,16 @@
 import NavLink from '@/components/header/navigation/NavLink.vue';
 import IconList from '@/components/icons/IconList.vue';
 import blurElement from '@/helpers/blur';
+import BaseButton from '@/components/base/BaseButton.vue';
+import { useAuthStore } from '@/stores/AuthStore';
+
+const authStore = useAuthStore();
 
 function blurDropdown() {
   blurElement();
+}
+
+function logout() {
+  authStore.logout();
 }
 </script>

@@ -6,7 +6,7 @@
           <IconAdd class="fill-base-content" />
         </template>
       </QuickTaskButton>
-      <UserDropdown></UserDropdown>
+      <UserDropdown />
     </ul>
   </div>
 

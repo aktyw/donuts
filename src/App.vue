@@ -4,14 +4,14 @@
   </FadeTransitionMedium>
   <FadeTransitionMedium v-else>
     <div>
-      <BaseSkipLink v-if="!isAuthenticated" />
+      <BaseSkipLink v-if="isAuthenticated" />
       <HeaderApp v-if="isAuthenticated" />
       <HeaderStart v-else />
-      <div class="flex pt-12 h-screen">
+      <div class="flex pt-12">
         <RouterView name="sidebar" />
         <RouterView
           v-slot="{ Component, route  }"
-          class="w-full h-[calc(100vh-48px)] pt-10">
+          class="w-full" :class="{' h-[calc(100vh-48px)]': isAuthenticated}">
           <FadeTransitionShort mode="out-in">
             <component :is="Component" :key="route.path"/>
           </FadeTransitionShort>
@@ -87,6 +87,7 @@ function handleSetCurrentTheme() {
 
 <style>
 /*  Vue Datapicker Themes */
+
 
 .dp__theme_light {
   --dp-background-color: hsl(var(--b1));
