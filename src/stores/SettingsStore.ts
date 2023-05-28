@@ -30,12 +30,16 @@ interface SettingsState {
       userSettings: boolean;
       deleteAccount: boolean;
     };
-    parentModalRoute: string;
+    isProjectListOpen: {
+      favorites: boolean;
+      projects: boolean;
+    };
     isFooterActionActive: boolean;
     isTransitionActive: {
       [projectRecord: string]: boolean;
     };
     isLoading: boolean;
+    parentModalRoute: string;
   };
 }
 
@@ -67,12 +71,16 @@ export const useSettingsStore = defineStore('settings', {
         userSettings: false,
         deleteAccount: false,
       },
-      parentModalRoute: '/',
+      isProjectListOpen: {
+        favorites: true,
+        projects: true,
+      },
       isFooterActionActive: false,
       isTransitionActive: {
         projectRecord: true,
       },
       isLoading: true,
+      parentModalRoute: '/',
     },
   }),
 
@@ -111,6 +119,9 @@ export const useSettingsStore = defineStore('settings', {
     getDefaultTheme(state): (mode: Mode) => ThemesId {
       return (mode: Mode) => state.settings.theme.default[mode].id;
     },
+    getProjectListState(state): { favorites: boolean; projects: boolean } {
+      return state.settings.isProjectListOpen;
+    },
   },
 
   actions: {
@@ -134,6 +145,9 @@ export const useSettingsStore = defineStore('settings', {
     },
     setModalRoute(route: string) {
       this.settings.parentModalRoute = route;
+    },
+    setProjectListState(payload: { id: 'favorites' | 'projects'; value: boolean }): void {
+      this.settings.isProjectListOpen[payload.id] = payload.value;
     },
     setFooterActionState(value: boolean) {
       this.settings.isFooterActionActive = value;

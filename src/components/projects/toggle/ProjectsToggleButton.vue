@@ -1,8 +1,11 @@
 <template>
   <TheTooltip
-    class="!tooltip-top"
+    tabindex="1"
+    class="!tooltip-top !tooltip-left"
     data="Toggle list of projects">
-    <BaseButton class="flex h-full items-center justify-center p-1 outline-custom">
+    <BaseButton
+      tabindex="0"
+      class="flex h-full items-center justify-center p-1 outline-custom">
       <template #icon>
         <IconChevronDown
           class="fill-base-content transition"

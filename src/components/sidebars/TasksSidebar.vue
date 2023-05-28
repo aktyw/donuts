@@ -1,29 +1,26 @@
 <template>
   <TheSidebar ref="sidebar">
     <template #links>
-      <span class="relative h-10">
-        <TheTooltip
-          :is="'li'"
-          class="fixed tooltip-right"
-          data="Go to Inbox">
-          <ProjectLink
-            :custom-tooltip="true"
-            class="fill-primary"
-            :to="{ name: 'project', params: { id: 'inbox' } }">
-            <template #icon>
-              <IconInbox />
-            </template>
-            <template #name>Inbox</template>
-            <template #amount>
-              <span>{{ store.getProjectTasks('inbox').length }}</span>
-            </template>
-          </ProjectLink>
-        </TheTooltip>
-      </span>
+      <TheTooltip
+        :is="'li'"
+        data="Go to Inbox">
+        <ProjectLink
+          :custom-tooltip="true"
+          class="fill-primary"
+          :to="{ name: 'project', params: { id: 'inbox' } }">
+          <template #icon>
+            <IconInbox />
+          </template>
+          <template #name>Inbox</template>
+          <template #amount>
+            <span>{{ store.getProjectTasks('inbox').length }}</span>
+          </template>
+        </ProjectLink>
+      </TheTooltip>
 
       <TheTooltip
         :is="'li'"
-        class="tooltip-right"
+        class="!tooltip-center"
         data="Go to Today">
         <ProjectLink
           :custom-tooltip="true"
@@ -45,16 +42,15 @@
         v-if="!!favActiveProjects.length"
         class="pb-4">
         <ProjectAccordion
-          :title="'Favorites'"
+          id="favorites"
+          title="Favorites"
+          :is-project-open="isProjectListOpen.favorites"
           :class="{ 'collapse-open': isProjectFocus }"
-          @open-project-editor="handleOpenEditor">
+          @set-project-list-toggle="setProjectList">
           <template #project-links>
             <li
               v-for="{ id, name, color } in favActiveProjects"
-              :key="id"
-              @focusin="handleShowOptions(id)"
-              @mouseover="handleShowOptions(id)"
-              @mouseleave="handleHideOptions">
+              :key="id">
               <ProjectLink
                 :to="{ name: 'project', params: { id: id } }"
                 :name="name"
@@ -63,7 +59,6 @@
                 <template #options>
                   <span class="absolute -top-1 right-0 bg-transparent">
                     <ProjectOptions
-                      v-show="showId === id"
                       :id="id"
                       :is-favorites="true" />
                   </span>
@@ -76,26 +71,24 @@
 
       <div>
         <ProjectAccordion
+          id="projects"
           route-name="projects"
           title="Projects"
+          :is-project-open="isProjectListOpen.projects"
           :class="{ 'collapse-open': isProjectFocus }"
+          @set-project-list-toggle="setProjectList"
           @open-project-editor="handleOpenEditor">
           <template #project-links>
             <li
               v-for="{ id, name, color } in activeProjects"
-              :key="id"
-              @focusin="handleShowOptions(id)"
-              @mouseover="handleShowOptions(id)"
-              @mouseleave="handleHideOptions">
+              :key="id">
               <ProjectLink
                 :to="{ name: 'project', params: { id: id } }"
                 :name="name"
                 :fill="color">
                 <template #options>
                   <span class="absolute -top-1 right-0 bg-transparent">
-                    <ProjectOptions
-                      v-show="showId === id"
-                      :id="id" />
+                    <ProjectOptions :id="id" />
                   </span>
                 </template>
               </ProjectLink>
@@ -130,18 +123,22 @@ import ProjectOptions from '@/components/projects/ProjectOptions.vue';
 import TheSidebar from '@/components/sidebars/TheSidebar.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 import { useProjectsStore } from '@/stores/ProjectsStore';
+import { useSettingsStore } from '@/stores/SettingsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { Project } from '@/types/models/Projects';
 
-const activeElement = useActiveElement();
 const store = useTasksStore();
+const settingsStore = useSettingsStore();
 const projectsStore = useProjectsStore();
+const activeElement = useActiveElement();
 const isProjectModalOpen = ref(false);
 const isProjectFocus = ref(false);
 const isOpen = ref(false);
 const sidebar = ref();
 const showId = ref();
 const { getActiveProjects: activeProjects, getActiveFavoriteProjects: favActiveProjects } = storeToRefs(projectsStore);
+
+const { getProjectListState: isProjectListOpen } = storeToRefs(settingsStore);
 
 function handleOpenEditor(): void {
   if (activeElement.value) {
@@ -168,5 +165,9 @@ function handleHideOptions(): void {
 function addProject(project: Project): void {
   projectsStore.addProject(project);
   handleCloseEditor();
+}
+
+function setProjectList(payload: { id: 'favorites' | 'projects'; currentValue: boolean }): void {
+  settingsStore.setProjectListState({ id: payload.id, value: !payload.currentValue });
 }
 </script>

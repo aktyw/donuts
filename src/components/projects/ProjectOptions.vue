@@ -20,8 +20,7 @@
           modal-title="Edit project"
           action-title="Save"
           @action="updateProject"
-          @close-editor="handleCloseEditor">
-        </ProjectModal>
+          @close-editor="handleCloseEditor" />
       </teleport>
       <OptionListButton
         v-if="!isArchived"
@@ -88,12 +87,13 @@
         v-if="deleteConfirm"
         :is-danger="true"
         @cancel="cancelDeleteProject"
-        @action="handleDeleteProject"
-        >Delete project
+        @action="handleDeleteProject">
+        Delete project
         <template #content>
           <p>
             Do you really want to delete project
-            <span class="break-words font-bold">{{ project.name }}</span> ?
+            <span class="break-words font-bold">{{ project.name }}</span>
+            ?
           </p>
         </template>
       </ModalConfirmDelete>
