@@ -2,14 +2,14 @@
   <AuthContainer>
     <AuthTitle title="Login" />
     <InfoCardContainer>
-      <InfoCard>
-        <span
-          v-show="largerThanSm"
-          class="w-60 text-base font-light text-inherit md:w-72"
-          >{{ currentMessage }}</span
-        >
-      </InfoCard>
       <UserAuth />
+      <InfoCard>
+        <p
+          v-show="largerThanSm"
+          class="py-6 max-w-prose text-inherit leading-7">
+          {{ currentMessage }}
+        </p>
+      </InfoCard>
     </InfoCardContainer>
   </AuthContainer>
 </template>

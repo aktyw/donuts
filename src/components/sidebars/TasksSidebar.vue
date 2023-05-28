@@ -1,23 +1,25 @@
 <template>
   <TheSidebar ref="sidebar">
     <template #links>
-      <TheTooltip
-        :is="'li'"
-        class="tooltip-right"
-        data="Go to Inbox">
-        <ProjectLink
-          :custom-tooltip="true"
-          class="fill-primary"
-          :to="{ name: 'project', params: { id: 'inbox' } }">
-          <template #icon>
-            <IconInbox />
-          </template>
-          <template #name> Inbox </template>
-          <template #amount>
-            <span>{{ store.getProjectTasks('inbox').length }}</span>
-          </template>
-        </ProjectLink>
-      </TheTooltip>
+      <span class="relative h-10">
+        <TheTooltip
+          :is="'li'"
+          class="fixed tooltip-right"
+          data="Go to Inbox">
+          <ProjectLink
+            :custom-tooltip="true"
+            class="fill-primary"
+            :to="{ name: 'project', params: { id: 'inbox' } }">
+            <template #icon>
+              <IconInbox />
+            </template>
+            <template #name>Inbox</template>
+            <template #amount>
+              <span>{{ store.getProjectTasks('inbox').length }}</span>
+            </template>
+          </ProjectLink>
+        </TheTooltip>
+      </span>
 
       <TheTooltip
         :is="'li'"
@@ -25,12 +27,12 @@
         data="Go to Today">
         <ProjectLink
           :custom-tooltip="true"
-          class="fill-accent"
+          class="fill-primary"
           :to="{ name: 'today' }">
           <template #icon>
             <IconCalendarToday />
           </template>
-          <template #name> Today </template>
+          <template #name>Today</template>
           <template #amount>
             <span>{{ store.getTodayTasks.length }}</span>
           </template>
@@ -107,8 +109,7 @@
           modal-title="Add project"
           action-title="Add"
           @action="addProject"
-          @close-editor="handleCloseEditor">
-        </ProjectModal>
+          @close-editor="handleCloseEditor"></ProjectModal>
       </teleport>
     </template>
   </TheSidebar>

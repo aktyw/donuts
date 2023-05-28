@@ -2,33 +2,35 @@
   <FadeTransitionMedium>
     <span class="pointer-events-none grid place-items-center pt-20 md:text-lg">
       <slot>
-        <img
-          class="pointer-events-none w-full max-w-[260px]"
-          :src="pathToRandomIllustration || '/src/assets/illustrations/donut-bench.svg'"
-          alt="Illustration of happy donut" />
+        <TheIllustration />
       </slot>
       <slot name="content">
-        <h4 class="w-64 pb-2 text-center font-bold md:w-96">{{ currentMessage }}</h4>
-        <span class="w-60 text-center text-base font-light md:w-72">{{ currentTip }}</span>
+        <h4 class="font-bold text-base-content pb-2 w-64 md:w-96 text-center">{{ currentMessage }}</h4>
+        <span class="font-light text-base-content text-base w-60 md:w-72 text-center">{{ currentTip }}</span>
       </slot>
     </span>
   </FadeTransitionMedium>
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import { onUpdated, ref } from 'vue';
 
+import TheIllustration from '@/components/illustrations/TheIllustration.vue';
 import FadeTransitionMedium from '@/components/ui/transitions/FadeTransitionMedium.vue';
-import { useIllustration } from '@/composables/useIllustration';
 import { getRandomItem } from '@/helpers/getRandomItem';
+import { useAuthStore } from '@/stores/AuthStore';
+
+const authStore = useAuthStore();
+const { getName: userName } = storeToRefs(authStore);
 
 const messages = [
-  'Have a marvelous day off!',
-  'Investing in your own happiness is always worth it.',
-  'Have a wonderful and productive day!',
-  'Congratulations! You have completed all your tasks.',
-  'Every small step counts towards your success. Keep going!',
-  "You're doing great! Take a break and enjoy a cup of coffee with a donut.",
+  `Have a marvelous day off ${userName.value}!`,
+  `Hey ${userName.value}, investing in your own happiness is always worth it.`,
+  `Have a wonderful and productive day ${userName.value}!`,
+  `Congratulations ${userName.value}! You have completed all your tasks.`,
+  `Every small step counts towards your success. Keep going ${userName.value}!`,
+  `You're doing great ${userName.value}! Take a break and enjoy a cup of coffee with a donut.`,
 ];
 
 const tips = [
@@ -47,6 +49,4 @@ onUpdated(() => {
   currentMessage.value = getRandomItem(messages);
   currentTip.value = getRandomItem(tips);
 });
-
-const pathToRandomIllustration = useIllustration();
 </script>

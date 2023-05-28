@@ -1,6 +1,6 @@
 <template>
   <label
-    class="mb-2 text-xl font-bold focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent">
+    class="text-xl font-bold mb-2 outline-custom">
     <slot />
   </label>
 </template>

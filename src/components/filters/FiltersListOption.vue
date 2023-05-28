@@ -3,9 +3,9 @@ import TheBadge from '@/components/layouts/TheBadge.vue';
   <li>
     <TheBadge
       :class="{ 'btn-active': getCurrentFilter === filterType }"
-      class="focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
+      class="outline-custom"
       @click="handleFilterType(filterType)">
-      <template #title> {{ filterType }} </template>
+      <template #title>{{ filterType }}</template>
       <template #amount>
         {{ tasks.length }}
       </template>

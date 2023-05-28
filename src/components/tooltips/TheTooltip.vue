@@ -7,7 +7,7 @@
     @focusin="focused = true"
     @focusout="focused = false"
     @click="focused = false">
-    <slot></slot>
+    <slot />
   </component>
 </template>
 

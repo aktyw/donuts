@@ -1,43 +1,88 @@
 <template>
-  <BaseSkipLink v-if="!isAuthenticated" />
-  <div>
-    <HeaderApp v-if="isAuthenticated" />
-    <HeaderStart v-else />
-    <!-- <HeaderApp /> -->
-    <!-- <HeaderStart  /> -->
-    <div class="flex h-screen pt-12">
-      <RouterView name="sidebar" />
-
-      <RouterView
-        v-slot="{ Component }"
-        class="h-[calc(100vh-48px)] w-full pt-10">
-        <FadeTransitionShort mode="out-in">
-          <component :is="Component" />
-        </FadeTransitionShort>
-      </RouterView>
+  <FadeTransitionMedium v-if="isLoading">
+    <TheSplash />
+  </FadeTransitionMedium>
+  <FadeTransitionMedium v-else>
+    <div>
+      <BaseSkipLink v-if="!isAuthenticated" />
+      <HeaderApp v-if="isAuthenticated" />
+      <HeaderStart v-else />
+      <div class="flex pt-12 h-screen">
+        <RouterView name="sidebar" />
+        <RouterView
+          v-slot="{ Component }"
+          class="w-full h-[calc(100vh-48px)] pt-10">
+          <FadeTransitionShort mode="out-in">
+            <component :is="Component" />
+          </FadeTransitionShort>
+        </RouterView>
+      </div>
+      <TheNotification v-if="!!store.notifications.length" />
     </div>
-    <TheNotification v-if="!!store.notifications.length" />
-  </div>
+  </FadeTransitionMedium>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { useDark } from '@vueuse/core';
+import { storeToRefs } from 'pinia';
+import { computed, onMounted, watch } from 'vue';
 
 import BaseSkipLink from '@/components/base/BaseSkipLink.vue';
 import HeaderApp from '@/components/header/HeaderApp.vue';
 import HeaderStart from '@/components/header/HeaderStart.vue';
 import TheNotification from '@/components/layouts/TheNotification.vue';
+import TheSplash from '@/components/ui/splash-screen/TheSplash.vue';
+import FadeTransitionMedium from '@/components/ui/transitions/FadeTransitionMedium.vue';
 import FadeTransitionShort from '@/components/ui/transitions/FadeTransitionShort.vue';
 import { useAuthStore } from '@/stores/AuthStore';
+import { useSettingsStore } from '@/stores/SettingsStore';
 import { useTasksStore } from '@/stores/TasksStore';
+import type { ThemesId } from '@/types/models/Themes';
 
 const store = useTasksStore();
+const settingsStore = useSettingsStore();
 const authStore = useAuthStore();
 
-authStore.autoLogin();
-const isAuthenticated = computed(() => {
-  return authStore.isAuthenticated;
+const { getLoadingStatus: isLoading, getAutoDarkModeState: isAutoDark } = storeToRefs(settingsStore);
+const { isAuthenticated } = storeToRefs(authStore);
+
+authStore.setUser();
+
+const isDark = useDark();
+const currentTheme = computed(() => settingsStore.getCurrentTheme);
+const lightTheme = computed(() => settingsStore.getDefaultTheme('light'));
+const darkTheme = computed(() => settingsStore.getDefaultTheme('dark'));
+
+onMounted(() => {
+  setTheme();
 });
+
+watch(isAutoDark, (val) => {
+  if (!val) setThemeOnStart();
+  else handleSetCurrentTheme();
+});
+
+watch(isDark, (val) => {
+  handleSetCurrentTheme();
+});
+
+watch(currentTheme, (val) => {
+  document.body.setAttribute('data-theme', val.id);
+});
+
+function setThemeOnStart(value?: ThemesId) {
+  document.body.setAttribute('data-theme', value || currentTheme.value.id);
+}
+
+function setTheme() {
+  isAutoDark.value ? handleSetCurrentTheme() : setThemeOnStart();
+}
+
+function handleSetCurrentTheme() {
+  isDark.value
+    ? settingsStore.setCurrentTheme(darkTheme.value, 'dark')
+    : settingsStore.setCurrentTheme(lightTheme.value, 'light');
+}
 </script>
 
 <style>
@@ -45,22 +90,22 @@ const isAuthenticated = computed(() => {
 
 .dp__theme_light {
   --dp-background-color: hsl(var(--b1));
-  --dp-text-color: hsl(var(--af));
-  --dp-hover-color: hsl(var(--a));
-  --dp-hover-text-color: hsl(var(--b1));
+  --dp-text-color: hsl(var(--p));
+  --dp-hover-color: hsl(var(--p));
+  --dp-hover-text-color: hsl(var(--pc));
   --dp-hover-icon-color: hsl(var(--b1));
-  --dp-primary-color: hsl(var(--af));
-  --dp-primary-text-color: #f8f5f5;
-  --dp-secondary-color: #c0c4cc;
+  --dp-primary-color: hsl(var(--p));
+  --dp-primary-text-color: hsl(var(--pc));
+  --dp-secondary-color: #898989;
   --dp-border-color: hsl(var(--b3));
   --dp-menu-border-color: hsl(var(--b3));
   --dp-border-color-hover: #aaaeb7;
-  --dp-disabled-color: #f6f6f6;
+  --dp-disabled-color: #b8b8b8;
   --dp-icon-color: hsl(var(--nc));
   --dp-danger-color: hsl(var(--er));
   --dp-success-color: hsl(var(--pf));
   --dp-success-color-disabled: hsl(var(--p));
-  --dp-icon-color: hsl(var(--af));
+  --dp-icon-color: hsl(var(--p));
   --dp-danger-color: hsl(var(--er));
   --dp-highlight-color: rgba(255, 255, 255, 0.1);
 }

@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <div class="absolute bottom-4 left-4 z-[1000] flex flex-col gap-2">
+    <div class="absolute flex flex-col gap-2 bottom-4 left-4 z-[5000]">
       <FadeTransitionGroup>
         <BaseNotification
           v-for="notification in notifications"
@@ -14,11 +14,11 @@
             <BaseButton
               v-if="notification.action"
               v-focus
-              class="btn-ghost btn-sm inline-flex items-center rounded capitalize text-accent md:btn-sm hover:bg-base-content focus:outline focus:outline-1"
+              class="inline-flex items-center btn-ghost btn-sm text-secondary hover:bg-neutral-focus capitalize md:btn-sm !outline-custom focus:outline-1 rounded"
               @click="handleAction(notification.id, notification.action!)">
               {{ notification.actionLabel }}
               <template #icon>
-                <IconUndo class="fill-accent" />
+                <IconUndo class="fill-secondary mb-0.5" />
               </template>
             </BaseButton>
           </template>

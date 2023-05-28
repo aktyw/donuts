@@ -1,8 +1,11 @@
 <template>
-  <div class="dropdown-bottom dropdown dropdown-end">
-    <label tabindex="0">
+  <div class="dropdown dropdown-bottom dropdown-end">
+    <label
+      tabindex="0"
+      class="outline-custom">
       <button
-        class="btn-square btn-xs btn w-full rounded-md border-0 bg-base-100 font-normal normal-case text-slate-900 hover:bg-base-200 focus:bg-base-200 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent">
+        tabindex="1"
+        class="w-full hover:bg-base-200 focus:bg-base-200 btn btn-square rounded-md btn-xs bg-base-100 border-0 text-slate-900 font-normal normal-case outline-custom">
         <span class="flex flex-row gap-1">
           <IconSettings />
           <span class="inline-flex items-center text-base-content">View</span>
@@ -10,7 +13,7 @@
       </button>
     </label>
     <ul
-      tabindex="0"
+      tabindex="1"
       role="menu"
       aria-label="Show all tasks menu"
       class="dropdown-content menu w-52 rounded-md border border-base-300 bg-base-100 fill-base-content py-0.5 text-base-content shadow">
@@ -79,9 +82,9 @@
       </ul>
       <BaseDividerSmall v-if="sortTypeStatus !== SortFilters.Default || currentProject" />
 
-      <FiltersDropdownHeading v-if="sortTypeStatus !== SortFilters.Default || currentProject"
-        >Actions</FiltersDropdownHeading
-      >
+      <FiltersDropdownHeading v-if="sortTypeStatus !== SortFilters.Default || currentProject">
+        Actions
+      </FiltersDropdownHeading>
       <FiltersDropdownButtonItem
         v-if="tasks && currentProject"
         :disabled="!tasks.length"

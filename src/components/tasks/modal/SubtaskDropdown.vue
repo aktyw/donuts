@@ -7,7 +7,7 @@
       <label
         v-bind="$attrs"
         tabindex="0"
-        class="flex h-full w-full cursor-pointer items-center justify-center gap-1 bg-transparent text-left normal-case text-base-content hover:bg-transparent focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent">
+        class="flex w-full h-full justify-center items-center bg-transparent text-base-content hover:bg-transparent text-left normal-case gap-1 outline-custom cursor-pointer">
         <slot name="icon" />
         <slot name="content"></slot>
       </label>

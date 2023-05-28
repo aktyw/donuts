@@ -1,6 +1,5 @@
 <template>
-  <button
-    class="normal-case focus:bg-base-200 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent">
+  <button class="normal-case outline-custom">
     <slot name="icon" />
     <slot />
   </button>

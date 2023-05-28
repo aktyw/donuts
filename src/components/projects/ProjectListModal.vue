@@ -4,17 +4,23 @@
       modal-title="Move project"
       close-title="Cancel"
       @close-editor="closeEditor">
-      <ProjectList
-        v-model="selectedProject"
-        :current-project="currentProject"
-        class="!select-md w-full max-w-[40rem]" />
-      <p
-        v-show="!!selectedProject && currentProject?.id !== selectedProject.id"
-        class="my-4 rounded-md bg-base-200 p-2 px-2 [&>span]:font-bold">
-        <span>"{{ task.title.slice(0, 16) }}"</span> move from <span>"{{ currentProject?.name }}"</span><br />
-        to
-        <span>"{{ selectedProject?.name }}"</span>
-      </p>
+      <div class="w-full">
+        <ProjectList
+          v-model="selectedProject"
+          :current-project="currentProject"
+          class="w-full max-w-[28rem] md:max-w-[48rem] lg:max-w-[60rem] !select-md" />
+        <InfoContainer
+          v-if="!!selectedProject && currentProject?.id !== selectedProject.id"
+          class="bg-base-200 my-4 px-2 [&>span]:font-bold">
+          <p>
+            <strong>"{{ task.title.slice(0, 16) }}"</strong>
+            move from
+            <strong>"{{ currentProject?.name }}"</strong>
+            to
+            <strong>"{{ selectedProject?.name }}"</strong>
+          </p>
+        </InfoContainer>
+      </div>
       <template #action>
         <ModalButton
           :disabled="currentProject?.id === selectedProject?.id"
@@ -34,6 +40,7 @@ import { useRouter } from 'vue-router';
 import BaseModal from '@/components/base/BaseModal.vue';
 import ModalButton from '@/components/modals/ModalButton.vue';
 import ProjectList from '@/components/projects/ProjectList.vue';
+import InfoContainer from '@/components/ui/containers/InfoContainer.vue';
 import FadeTransitionMedium from '@/components/ui/transitions/FadeTransitionMedium.vue';
 import { useSettingsStore } from '@/stores/SettingsStore';
 import { useTasksStore } from '@/stores/TasksStore';

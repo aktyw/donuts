@@ -1,64 +1,76 @@
 <template>
-  <div class="flex w-full flex-col gap-4 text-center lg:w-1/2">
-    <div class="card w-full max-w-md flex-shrink-0 bg-base-100 shadow-2xl">
+  <div class="flex flex-col w-full gap-4 text-center">
+    <div class="card flex-shrink-0 w-full max-w-md shadow-2xl bg-base-100">
       <div class="card-body">
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Email</span>
-          </label>
-          <input
-            v-model.trim="formData.email"
-            type="text"
-            placeholder="email"
-            class="input-bordered input" />
-          <span
-            v-if="v$.email.$error"
-            class="label-text text-red-500"
-            >{{ v$.email.$errors[0].$message }}</span
-          >
-        </div>
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Password</span>
-          </label>
-          <input
-            v-model.trim="formData.password"
-            type="text"
-            placeholder="password"
-            class="input-bordered input" />
-          <span
-            v-if="v$.password.$error"
-            class="label-text text-red-500"
-            >{{ v$.password.$errors[0].$message }}</span
-          >
-          <label
-            v-if="hasLoginAction"
-            class="label">
-            <a
-              href="#"
-              class="link-hover label-text-alt link"
-              >Forgot password?</a
-            >
-          </label>
-          <pre>dwadwa@wp.pl</pre>
-        </div>
-        <div class="form-control mt-6 flex flex-1 flex-row justify-between">
-          <button
-            class="btn-primary btn w-full"
-            @click.prevent="submitForm">
-            {{ hasLoginAction ? 'Log in' : 'Sign up' }}
-          </button>
+        <form action="">
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Email</span>
+            </label>
+            <input
+              v-model.trim="formData.email"
+              type="email"
+              placeholder="email"
+              class="input input-bordered" />
+            <span
+              v-if="v$.email.$error"
+              class="label-text text-red-500">
+              {{ v$.email.$errors[0].$message }}
+            </span>
+          </div>
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Password</span>
+            </label>
+            <input
+              v-model.trim="formData.password"
+              type="password"
+              placeholder="password"
+              class="input input-bordered" />
+            <span
+              v-if="v$.password.$error"
+              class="label-text text-red-500">
+              {{ v$.password.$errors[0].$message }}
+            </span>
+            <label
+              v-if="requestLogin"
+              class="label">
+              <a
+                href="#"
+                class="label-text-alt link link-hover">
+                Forgot password?
+              </a>
+            </label>
+            <pre>dwadwa@wp.pl</pre>
+          </div>
+        </form>
+        <div class="flex flex-row justify-between flex-1 form-control mt-6">
+          <div class="flex flex-col gap-6 w-full">
+            <BaseButton
+              class="btn btn-primary w-full"
+              @click.prevent="submitForm">
+              {{ requestLogin ? 'Log in' : 'Sign up' }}
+            </BaseButton>
+            <BaseButton
+              class="btn btn-ghost flex gap-2 border-primary text-base-content w-full"
+              @click.prevent="signInWithGoogle">
+              <template #icon>
+                <IconGoogle />
+              </template>
+              {{ requestLogin ? 'Continue with Google' : 'Sign up with Google' }}
+            </BaseButton>
+          </div>
         </div>
       </div>
     </div>
     <router-link
-      v-if="hasLoginAction"
+      v-if="requestLogin"
       to="signup"
       class="link pt-4 text-primary">
       Don't have an account? Sign up!
     </router-link>
     <router-link
-      v-if="hasSignupAction"
+      v-if="requestSignup"
       to="login"
       class="link pt-4 text-primary">
       Already have an account? Log in!
@@ -82,13 +94,18 @@
 </template>
 
 <script setup lang="ts">
+import { FirebaseError } from '@firebase/util';
 import { useVuelidate } from '@vuelidate/core';
 import { email, maxLength, minLength, required } from '@vuelidate/validators';
 import { computed, reactive, type Ref, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
+import BaseButton from '@/components/base/BaseButton.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseModal from '@/components/base/BaseModal.vue';
+import IconGoogle from '@/components/icons/IconGoogle.vue';
+import { useFirebaseError } from '@/composables/useFirebaseError';
+import { MAX_PASS_LENGTH, MIN_PASS_LENGTH } from '@/config/index';
 import { useAuthStore } from '@/stores/AuthStore';
 import type { AuthFormData } from '@/types/models/Auth';
 
@@ -96,9 +113,8 @@ const route = useRoute();
 const router = useRouter();
 
 const authStore = useAuthStore();
-const hasLoginAction = computed(() => route.name === 'login');
-const hasSignupAction = computed(() => route.name === 'signup');
-const currentAction = computed(() => route.name?.toString() || 'signup');
+const requestLogin = computed(() => route.name === 'login');
+const requestSignup = computed(() => route.name === 'signup');
 const isLoading = ref(false);
 const errorMsg: Ref<string | null> = ref(null);
 
@@ -110,33 +126,67 @@ const formData: AuthFormData = reactive({
 const rules = computed(() => {
   return {
     email: { required, email },
-    password: { required, minLength: minLength(6), maxLength: maxLength(64) },
+    password: { required, minLength: minLength(MIN_PASS_LENGTH), maxLength: maxLength(MAX_PASS_LENGTH) },
   };
 });
 
 const v$ = useVuelidate(rules, formData, { $lazy: true });
 
-async function handleAuth() {
+async function validateForm() {
   try {
-    await authStore.handleAuth({ ...formData, ...{ action: currentAction.value } });
-    router.push('/tasks');
+    await v$.value.$validate();
   } catch (error) {
-    errorMsg.value = typeof error === 'string' ? error : 'Failed to authenticate. Try again later';
+    console.error(error);
   }
 }
 
 async function submitForm() {
   try {
-    const result = await v$.value.$validate();
-
-    if (!result) return;
+    await validateForm();
 
     isLoading.value = true;
-    await handleAuth();
+    if (requestSignup.value) await handleSignUp();
+    if (requestLogin.value) await handleLogin();
   } catch (error) {
-    errorMsg.value = typeof error === 'string' ? error : 'Failed to authenticate. Try again later';
+    const { newErrorMessage } = useFirebaseError(error as FirebaseError);
+
+    errorMsg.value = newErrorMessage.value;
+  } finally {
+    isLoading.value = false;
   }
-  isLoading.value = false;
+}
+
+async function handleSignUp() {
+  try {
+    await authStore.handleSignUp(formData);
+    router.push('/tasks');
+  } catch (error) {
+    const { newErrorMessage } = useFirebaseError(error as FirebaseError);
+
+    errorMsg.value = newErrorMessage.value;
+  }
+}
+
+async function handleLogin() {
+  try {
+    await authStore.handleLogin(formData);
+    router.push('/tasks');
+  } catch (error) {
+    const { newErrorMessage } = useFirebaseError(error as FirebaseError);
+
+    errorMsg.value = newErrorMessage.value;
+  }
+}
+
+async function signInWithGoogle() {
+  try {
+    await authStore.handleGoogleAuth();
+    router.push('/tasks');
+  } catch (error) {
+    const { newErrorMessage } = useFirebaseError(error as FirebaseError);
+
+    errorMsg.value = newErrorMessage.value;
+  }
 }
 
 function closeModal() {

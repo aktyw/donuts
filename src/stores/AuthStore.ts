@@ -1,7 +1,22 @@
+import { FirebaseError } from '@firebase/util';
+import {
+  createUserWithEmailAndPassword,
+  deleteUser,
+  getAuth,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  updateEmail,
+  updatePassword,
+  updateProfile,
+} from 'firebase/auth';
 import { defineStore } from 'pinia';
 import type { Router } from 'vue-router';
 
-import type { AuthCredentials, AuthFormDataAction } from '@/types/models/Auth';
+import { useSettingsStore } from '@/stores/SettingsStore';
+import type { AuthFormData } from '@/types/models/Auth';
 
 declare module 'pinia' {
   export interface PiniaCustomProperties {
@@ -10,113 +25,164 @@ declare module 'pinia' {
 }
 
 interface AuthState {
-  auth: {
-    userId: string | null;
-    token: string | null;
-    timer: ReturnType<typeof setTimeout> | number | null;
-  };
   user: {
-    email: string | null;
+    isAuthenticated: boolean;
+    email: string | null | undefined;
+    name: string | null | undefined;
   };
 }
 
 export const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({
-    auth: {
-      userId: null,
-      token: null,
-      timer: null,
-    },
     user: {
+      isAuthenticated: false,
       email: null,
+      name: null,
     },
   }),
   getters: {
-    getToken(state) {
-      return state.auth.token;
-    },
     isAuthenticated(state) {
-      return !!state.auth.token;
+      return state.user.isAuthenticated;
+    },
+    getEmail(state) {
+      return state.user.email;
+    },
+    getName(state) {
+      return state.user.name;
     },
   },
-
   actions: {
-    async handleAuth({ email, password, action }: AuthFormDataAction): Promise<void> {
-      let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDY-YmO16QD2UM7D3l1s7QeBa7o0Sl571w';
+    async handleSignUp({ email, password }: AuthFormData): Promise<void> {
+      try {
+        const auth = getAuth();
+        const {
+          user: { email: userEmail, displayName: userDisplayName },
+        } = await createUserWithEmailAndPassword(auth, email, password);
 
-      if (action === 'login') {
-        url =
-          'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDY-YmO16QD2UM7D3l1s7QeBa7o0Sl571w';
+        this.setCredentials(userEmail, userDisplayName);
+      } catch (error) {
+        if (error instanceof FirebaseError) {
+          throw new Error(error.code);
+        }
+        console.error(error);
       }
+    },
+    async handleLogin({ email, password }: AuthFormData): Promise<void> {
+      try {
+        const auth = getAuth();
 
-      const response = await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify({
-          email: email,
-          password: password,
-          returnSecureToken: true,
-        }),
+        const {
+          user: { email: userEmail, displayName: userDisplayName },
+        } = await signInWithEmailAndPassword(auth, email, password);
+
+        this.setCredentials(userEmail, userDisplayName);
+      } catch (error) {
+        if (error instanceof FirebaseError) {
+          throw new Error(error.code);
+        }
+        console.error(error);
+      }
+    },
+    async handleGoogleAuth(): Promise<void> {
+      try {
+        const provider = new GoogleAuthProvider();
+
+        const {
+          user: { email: userEmail, displayName: userDisplayName },
+        } = await signInWithPopup(getAuth(), provider);
+
+        this.setCredentials(userEmail, userDisplayName);
+      } catch (error) {
+        if (error instanceof FirebaseError) {
+          throw new Error(error.code);
+        }
+        console.error(error);
+      }
+    },
+    setCredentials(email: string | null, displayName: string | null): void {
+      this.user.email = email;
+      this.user.name = displayName || email?.slice(0, email.indexOf('@'));
+    },
+    async setNewEmail(email: string): Promise<void> {
+      const auth = getAuth();
+
+      if (!auth.currentUser) return;
+      try {
+        await updateEmail(auth.currentUser, email);
+        this.setUser();
+      } catch (error) {
+        if (error instanceof FirebaseError) {
+          throw new Error(error.code);
+        }
+        console.error(error);
+      }
+    },
+    async setNewPassword(password: string): Promise<void> {
+      const auth = getAuth();
+
+      if (!auth.currentUser) return;
+
+      try {
+        await updatePassword(auth.currentUser, password);
+        this.setUser();
+      } catch (error) {
+        if (error instanceof FirebaseError) {
+          console.log(error);
+          throw new Error(error.code);
+        }
+        console.error(error);
+      }
+    },
+    async deleteUser(): Promise<void> {
+      try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        await deleteUser(user);
+        this.router.push({ path: '/auth/login', replace: true });
+      } catch (error) {
+        if (error instanceof FirebaseError) {
+          throw new Error(error.code);
+        }
+        console.error(error);
+      }
+    },
+    async updateProfile(displayName: string) {
+      try {
+        const auth = getAuth();
+
+        await updateProfile(auth.currentUser, {
+          displayName: displayName,
+        });
+        this.setUser();
+      } catch (error) {
+        if (error instanceof FirebaseError) {
+          console.log(error);
+          throw new Error(error.code);
+        }
+        console.error(error);
+      }
+    },
+
+    setUser(): void {
+      const store = useSettingsStore();
+      const auth = getAuth();
+
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          this.user.isAuthenticated = true;
+
+          this.setCredentials(user.email, user.displayName);
+        } else {
+          this.user.isAuthenticated = false;
+        }
+        store.setLoadingStatus(false);
       });
-
-      const responseData = await response.json();
-
-      if (!response.ok) {
-        throw new Error(responseData.message || `Failed to authenticate. Check your data. HTTP ${response.status}`);
-      }
-
-      const expiresIn = 5000;
-      // const expiresIn = +responseData.expiresIn * 1000;
-      const expirationDate = new Date().getTime() + expiresIn;
-
-      localStorage.setItem('token', responseData.idToken);
-      localStorage.setItem('userId', responseData.localId);
-      localStorage.setItem('tokenExpiration', expirationDate.toString());
-
-      this.auth.timer = setTimeout(() => {
-        this.logout();
-      }, expiresIn);
-
-      this.auth.token = responseData.idToken;
-      this.auth.userId = responseData.localId;
-      this.user.email = responseData.email;
     },
-    autoLogin() {
-      const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId');
-      const tokenExpiration = localStorage.getItem('tokenExpiration') || 0;
+    async logout() {
+      const auth = getAuth();
 
-      const expiresIn = +tokenExpiration - new Date().getTime();
-
-      if (expiresIn < 0) {
-        return;
-      }
-
-      this.auth.timer = setTimeout(() => {
-        this.logout();
-      }, expiresIn);
-
-      if (token && userId) {
-        this.setUser({ token: token, userId: userId });
-      }
-    },
-    setUser({ token, userId }: AuthCredentials) {
-      this.auth.token = token;
-      this.auth.userId = userId;
-    },
-    clearTimer() {
-      if (this.auth.timer) {
-        clearTimeout(this.auth.timer);
-        this.auth.timer = null;
-      }
-    },
-    logout() {
-      localStorage.removeItem('token');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('tokenExpiration');
-
-      this.clearTimer();
-      this.auth.token = null;
-      this.auth.userId = null;
+      await signOut(auth);
 
       this.router.push({ path: '/auth/login', replace: true });
     },

@@ -1,8 +1,7 @@
-import { storeToRefs } from 'pinia';
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 
+import { getCurrentUser } from '@/firebase/config';
 import routes from '@/router/routes';
-import { useAuthStore } from '@/stores/AuthStore';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,12 +9,11 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, _, next) => {
-  const authStore = useAuthStore();
-  const { isAuthenticated } = storeToRefs(authStore);
+  const isAuthenticated = await getCurrentUser();
 
-  if (to.meta.requiresAuth && !isAuthenticated.value) {
+  if (to.meta.requiresAuth && !isAuthenticated) {
     next('/auth/login');
-  } else if (to.meta.requiresNotAuth && isAuthenticated.value) {
+  } else if (to.meta.requiresNotAuth && isAuthenticated) {
     next('/tasks');
   } else {
     next();

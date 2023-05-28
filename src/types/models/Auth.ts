@@ -3,8 +3,14 @@ export type AuthFormData = {
   password: string;
 };
 
-export type AuthAction = {
-  action: string;
+export type AuthNewMail = {
+  email: string;
+  confirmEmail: string;
+};
+
+export type AuthNewPassword = {
+  password: string;
+  confirmPassword: string;
 };
 
 export type AuthCredentials = {
@@ -12,5 +18,3 @@ export type AuthCredentials = {
   token: string | null;
   tokenExpiration?: number | null;
 };
-
-export type AuthFormDataAction = AuthFormData & AuthAction;

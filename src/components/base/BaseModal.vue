@@ -7,12 +7,14 @@
       class="modal-box overflow-visible">
       <h2
         v-if="modalTitle"
-        class="pb-8 pt-2 text-2xl font-bold">
+        class="flex justify-center font-bold text-2xl pt-2 pb-8">
         {{ modalTitle }}
       </h2>
-      <slot />
-      <div class="mt-8 flex justify-end gap-4 text-lg">
-        <ModalButton @click.prevent="closeEditor"> {{ closeTitle }} </ModalButton>
+      <div class="flex justify-center">
+        <slot />
+      </div>
+      <div class="flex justify-end gap-4 text-lg mt-8">
+        <ModalButton @click.prevent="closeEditor">{{ closeTitle }}</ModalButton>
         <slot name="action" />
       </div>
     </div>

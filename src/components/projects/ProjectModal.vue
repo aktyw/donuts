@@ -44,10 +44,10 @@
                 </li>
               </template>
             </BaseDropdown>
-            <BaseToggle v-model="favorite"> Add to favorite </BaseToggle>
+            <BaseToggle v-model="favorite">Add to favorite</BaseToggle>
           </div>
-          <div class="mt-8 flex justify-end gap-4 text-lg">
-            <ModalButton @click.prevent="closeEditor"> Cancel </ModalButton>
+          <div class="flex justify-end gap-4 text-lg mt-8">
+            <ModalButton @click.prevent="closeEditor">Cancel</ModalButton>
             <ModalButton
               class="bg-primary !text-primary-content hover:bg-primary-focus"
               :class="{ '!bg-base-300  ': !projectName.length }"

@@ -2,8 +2,7 @@
   <TheTooltip
     class="!tooltip-top"
     data="Toggle list of projects">
-    <BaseButton
-      class="flex h-full items-center justify-center p-1 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent">
+    <BaseButton class="flex h-full items-center justify-center p-1 outline-custom">
       <template #icon>
         <IconChevronDown
           class="fill-base-content transition"
@@ -14,9 +13,9 @@
 </template>
 
 <script setup lang="ts">
+import BaseButton from '@/components/base/BaseButton.vue';
 import IconChevronDown from '@/components/icons/IconChevronDown.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
-import BaseButton from '@/components/base/BaseButton.vue';
 
 type Props = {
   isOpen: boolean;
