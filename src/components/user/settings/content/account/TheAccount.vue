@@ -13,7 +13,7 @@
       </div>
       <div class="flex flex-col gap-2">
         <SettingsLabel title="Email" />
-        <span class="text-sm pb-2">{{ email }}</span>
+        <span class="pb-2 text-sm">{{ email }}</span>
         <SettingsButtonLink
           :to="{ name: 'email' }"
           title="Change email" />
@@ -39,7 +39,6 @@
   </div>
   <SettingsFooterAction
     :is-save-btn-active="!!name"
-    class="absolute w-full right-0 bottom-0"
     @cancel="handleClearInput"
     @save="handleUpdateProfile" />
 
@@ -51,7 +50,7 @@
       @close-editor="cancelDeleteAccount">
       <template #action>
         <ButtonMainAction
-          class="!bg-red-600 hover:!bg-red-800 text-white"
+          class="!bg-red-600 text-white hover:!bg-red-800"
           @click="deleteAccount">
           Delete
         </ButtonMainAction>
@@ -64,7 +63,7 @@
       modal-title="Something goes wrong. Error!"
       close-title="Close"
       @close-editor="handleError">
-      <span class="text-red-500 flex justify-center items-center">{{ errorMsg }}</span>
+      <span class="flex items-center justify-center text-red-500">{{ errorMsg }}</span>
     </BaseModal>
   </teleport>
   <teleport to="body">

@@ -34,7 +34,6 @@
 
     <SettingsFooterAction
       :is-save-btn-active="!!(formData.email || formData.confirmEmail)"
-      class="absolute w-full right-0 bottom-0"
       @cancel="handleClearForm"
       @save="handleSaveAction" />
 
@@ -44,7 +43,7 @@
         modal-title="Something goes wrong. Error!"
         close-title="Close"
         @close-editor="handleError">
-        <span class="text-red-500 flex justify-center items-center">{{ errorMsg }}</span>
+        <span class="flex items-center justify-center text-red-500">{{ errorMsg }}</span>
       </BaseModal>
     </teleport>
     <teleport to="body">

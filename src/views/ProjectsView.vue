@@ -2,8 +2,8 @@
   <FadeTransitionMedium>
     <main
       class="flex flex-col items-center justify-start overflow-y-auto py-8 pb-20 transition-all duration-300"
-      :class="{ 'ml-80': isMenuOpen }">
-      <div class="flex w-2/3 max-w-[800px] flex-col items-start">
+      :class="{ 'ml-80': isMenuOpen && lgAndLarger }">
+      <div class="flex w-4/5 max-w-[800px] flex-col items-start">
         <div class="flex w-full flex-col gap-4 border-b pb-4">
           <h1 class="text-2xl font-bold">Projects</h1>
           <ProjectsNavbar @open-project-editor="handleOpenEditor" />
@@ -32,10 +32,12 @@ import ProjectModal from '@/components/projects/ProjectModal.vue';
 import ProjectsNavbar from '@/components/projects/ProjectsNavbar.vue';
 import ProjectsRecords from '@/components/projects/ProjectsRecords.vue';
 import FadeTransitionMedium from '@/components/ui/transitions/FadeTransitionMedium.vue';
+import { getBreakpoints } from '@/composables/useBreakpoints';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useSettingsStore } from '@/stores/SettingsStore';
 import type { Project } from '@/types/models/Projects';
 
+const { lgAndLarger } = getBreakpoints();
 const route = useRoute();
 const projectsStore = useProjectsStore();
 const settingsStore = useSettingsStore();

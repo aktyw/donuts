@@ -11,7 +11,7 @@
 
   <BaseButton
     v-else-if="smAndSmaller"
-    class="btn-accent no-animation btn-circle btn-lg btn fixed bottom-8 right-8 z-50 fill-white"
+    class="btn-accent no-animation btn-circle btn-lg btn fixed bottom-8 right-8 z-30 fill-white"
     @click.prevent="showAddTaskEditor">
     <template #icon>
       <IconAddBig />

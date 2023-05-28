@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col overflow-hidden">
     <SettingsHeader
-      class="flex justify-between font-semibold p-4 sticky top-0 z-50 bg-base-200 border-b-2 border-b-base-300"
+      class="sticky top-0 z-50 flex w-full justify-between border-b-2 border-b-base-300 bg-base-200 p-4 font-semibold"
       :name="title">
       <template #action>
         <span
@@ -10,7 +10,7 @@
           class="relative">
           <TheTooltip
             data="Go back"
-            class="fixed !tooltip-left flex items-center pr-2">
+            class="!tooltip-left fixed flex items-center pr-2">
             <BaseButton @click="handleGoToPreviousRoute">
               <template #icon>
                 <IconArrowLeft class="fill-base-content" />
@@ -21,10 +21,12 @@
       </template>
       <h2 :class="{ 'px-9 ': actionOverflowContainer }">{{ title }}</h2>
       <template #actionAlt>
-        <span class="relative right-6">
+        <span
+          v-if="!mdAndSmaller"
+          class="relative right-6">
           <TheTooltip
             data="Close"
-            class="!tooltip-left flex items-center fixed">
+            class="!tooltip-left fixed flex items-center">
             <BaseButton @click="handleCloseModal">
               <template #icon>
                 <IconClose />
@@ -35,7 +37,7 @@
       </template>
     </SettingsHeader>
 
-    <main class="p-4 overflow-auto h-screen relative">
+    <main class="relative h-screen overflow-scroll p-4 pb-96 md:pb-8">
       <router-view />
     </main>
   </div>
@@ -50,8 +52,10 @@ import IconArrowLeft from '@/components/icons/IconArrowLeft.vue';
 import IconClose from '@/components/icons/IconClose.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 import SettingsHeader from '@/components/user/settings/content/SettingsHeader.vue';
+import { getBreakpoints } from '@/composables/useBreakpoints';
 import { useSettingsStore } from '@/stores/SettingsStore';
 
+const { mdAndSmaller } = getBreakpoints();
 const settingsStore = useSettingsStore();
 const actionOverflowContainer = ref(null);
 

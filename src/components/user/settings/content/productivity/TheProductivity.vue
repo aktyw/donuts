@@ -8,7 +8,6 @@
   <SettingsFooterAction
     :is-save-btn-active="!!selectedHome"
     save-title="Update"
-    class="absolute w-full right-0 bottom-0"
     @cancel="handleClearSelect"
     @save="handleChangeHomeView" />
 

@@ -9,7 +9,5 @@
   "singleAttributePerLine": true,
   "bracketSpacing": true,
   "bracketSameLine": true,
-  "htmlWhitespaceSensitivity": "ignore",
-  "plugins": ["prettier-plugin-tailwindcss"],
-  "pluginSearchDirs": false
+  "htmlWhitespaceSensitivity": "ignore"
 }

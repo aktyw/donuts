@@ -1,7 +1,7 @@
 <template>
   <div
     ref="dropdown"
-    class="dropdown-bottom dropdown dropdown-left overflow-visible">
+    class="dropdown-bottom dropdown-left dropdown overflow-visible">
     <TheTooltip
       class="!tooltip-top flex items-center rounded-sm hover:bg-base-200"
       data="More actions">
@@ -18,32 +18,32 @@
       role="menu"
       tabindex="0"
       class="[& svg:not(.active-state)]:fill-base-content [& button:active]:text-base-content dropdown-content menu w-56 rounded-md border border-base-300 bg-base-100 fill-base-content py-1 text-base-content shadow [&>button:active]:bg-base-200 [&>li:hover>button:not(.active-state)]:bg-base-200">
-      <OptionListInfo> Added on {{ formattedCreatedAt.value }} </OptionListInfo>
+      <OptionListInfo>Added on {{ formattedCreatedAt.value }}</OptionListInfo>
 
       <BaseDividerSmall />
 
-      <OptionListButton @click="handleCopyLinkTask">
+      <OptionListButton @click.stop="handleCopyLinkTask">
         <template #icon>
           <IconLink />
         </template>
         Copy link to task
       </OptionListButton>
 
-      <OptionListButton @click="handleDuplicateTask">
+      <OptionListButton @click.stop="handleDuplicateTask">
         <template #icon>
           <IconDuplicate />
         </template>
         Duplicate Task
       </OptionListButton>
 
-      <OptionListButton @click="handleViewActivityTask">
+      <OptionListButton @click.stop="handleViewActivityTask">
         <template #icon>
           <IconActivity />
         </template>
         View task activity
       </OptionListButton>
 
-      <OptionListButton @click="handlePrintTask">
+      <OptionListButton @click.stop="handlePrintTask">
         <template #icon>
           <IconPrint />
         </template>

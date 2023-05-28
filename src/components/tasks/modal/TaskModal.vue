@@ -50,19 +50,21 @@
                 v-if="deleteConfirm"
                 :is-danger="true"
                 @cancel="cancelDeleteTask"
-                @action="handleDeleteTask"
-                >Delete task
+                @action="handleDeleteTask">
+                Delete task
                 <template #content>
                   <p>
                     Do you really want to delete
-                    <span class="break-words font-bold">{{ currentTask.title }}</span> ?
+                    <span class="break-words font-bold">{{ currentTask.title }}</span>
+                    ?
                   </p>
                 </template>
               </ModalConfirmDelete>
             </Teleport>
           </nav>
         </div>
-        <section class="flex h-full">
+
+        <section class="flex h-full flex-col overflow-y-auto md:flex-row">
           <main class="flex h-full w-full flex-col gap-4 p-4">
             <SubParentLinks v-if="hasParent" />
             <div class="flex">
@@ -105,7 +107,7 @@
             </div>
           </main>
 
-          <aside class="w-96 rounded-br-xl bg-base-200 p-4">
+          <aside class="rounded-b-xl bg-base-200 p-4 md:w-96 md:rounded-none md:rounded-br-xl">
             <div class="flex flex-col">
               <TaskModalOption title="Project">
                 <ProjectList
@@ -118,11 +120,11 @@
                 <Datepicker
                   ref="datepicker"
                   v-model="date"
-                  position="center"
+                  teleport-center
                   :min-date="new Date()"
                   :start-time="startTime"
-                  @open="storeSettings.setModal({ modal: 'calendar', value: true })"
-                  @closed="storeSettings.setModal({ modal: 'calendar', value: false })"
+                  @open="settingsStore.setModal({ modal: 'calendar', value: true })"
+                  @closed="settingsStore.setModal({ modal: 'calendar', value: false })"
                   @update:model-value="handleUpdateDate" />
               </TaskModalOption>
               <TaskModalOption title="Priority">
@@ -133,8 +135,8 @@
                     :class="{ '!bg-base-100': currentTask.isPriority }"
                     class="hover:!bg-base-100"
                     :is-toggle="currentTask.isPriority"
-                    @click.prevent="togglePriority"
-                    ><template #icon>
+                    @click.prevent="togglePriority">
+                    <template #icon>
                       <IconImportantSmall class="-ml-1.5" />
                     </template>
                     Is priority
@@ -188,11 +190,11 @@ import { findIndex } from '../../../helpers/findIndex';
 import { findItem } from '../../../helpers/findItem';
 
 onMounted(() => {
-  storeSettings.setModal({ modal: 'task', value: true });
+  settingsStore.setModal({ modal: 'task', value: true });
 });
 
 onUnmounted(() => {
-  storeSettings.setModal({ modal: 'task', value: false });
+  settingsStore.setModal({ modal: 'task', value: false });
 });
 
 const route = useRoute();
@@ -202,13 +204,13 @@ defineEmits<{
   (event: 'update:modelValue', payload: string): void;
 }>();
 
-const storeProjects = useProjectsStore();
-const storeSettings = useSettingsStore();
+const projectsStore = useProjectsStore();
+const settingsStore = useSettingsStore();
 const store = useTasksStore();
 
 const currentTaskId = computed(() => route.params.taskid as string);
 const currentTask = computed(() => store.getTaskById(currentTaskId.value));
-const currentProject = computed(() => storeProjects.getProjectById(currentTask.value.projectId));
+const currentProject = computed(() => projectsStore.getProjectById(currentTask.value.projectId));
 const currentIndex = computed(() => findIndex(currentTaskId.value, initialTasks));
 const currentDate = computed(() => store.getTaskDate(currentTask.value.id));
 
@@ -227,7 +229,7 @@ const subTasks = computed(() => {
 });
 
 const initialTasks = unref(inject('tasks') as Task[]);
-const initialProject = storeProjects.getProjectById(currentTask.value.projectId);
+const initialProject = projectsStore.getProjectById(currentTask.value.projectId);
 const selectedProject = ref(currentProject.value);
 
 const date: Ref<Date | undefined> = ref(currentTask.value.date);
@@ -235,9 +237,9 @@ const datepicker = ref();
 const startTime = ref({ hours: 12, minutes: 0 });
 const isTaskEditorActive = ref(false);
 const isSubtaskEditorActive = ref(false);
-const subtaskDeleteConfirm = computed(() => storeSettings.getModalStatus('deleteTaskConfirm'));
-const isCalendarOpen = computed(() => storeSettings.getModalStatus('calendar'));
-const isMoveProjectOpen = computed(() => storeSettings.getModalStatus('moveProject'));
+const subtaskDeleteConfirm = computed(() => settingsStore.getModalStatus('deleteTaskConfirm'));
+const isCalendarOpen = computed(() => settingsStore.getModalStatus('calendar'));
+const isMoveProjectOpen = computed(() => settingsStore.getModalStatus('moveProject'));
 const deleteConfirm = ref(false);
 const target = ref();
 

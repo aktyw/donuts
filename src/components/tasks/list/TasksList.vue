@@ -27,8 +27,7 @@
         <TasksList
           v-if="task.childId?.length > 0"
           :tasks="task.childId"
-          class="pl-12">
-        </TasksList>
+          class="pl-12" />
       </TaskCard>
     </FadeTasksList>
     <FadeTasksList
@@ -37,8 +36,7 @@
       <TaskCard
         v-for="task in (tasks as Task[])"
         :key="task.id"
-        :task="task">
-      </TaskCard>
+        :task="task" />
     </FadeTasksList>
   </section>
 </template>

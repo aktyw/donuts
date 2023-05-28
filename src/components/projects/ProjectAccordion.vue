@@ -2,7 +2,7 @@
   <div
     class="collapse overflow-visible"
     :class="{ 'collapse-open overflow-visible': isProjectOpen }">
-    <div class="flex min-h-0 h-10 items-center justify-between rounded-lg p-0.5 hover:bg-base-300 collapse-title">
+    <div class="collapse-title flex h-10 min-h-0 items-center justify-between rounded-lg p-0.5 hover:bg-base-300">
       <h2>
         <RouterLink
           v-if="routeName"
@@ -23,7 +23,7 @@
       <div class="flex">
         <ProjectAddButton
           v-if="routeName"
-          class="h-full border-none p-1 hover:bg-base-300"
+          class="m-1 h-full border-none hover:bg-base-300"
           @click.prevent="handleProjectEditor" />
         <ProjectsToggleButton
           :is-open="isProjectOpen"

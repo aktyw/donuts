@@ -81,9 +81,9 @@
                 <template #time>
                   <span
                     v-if="showDetailTime"
-                    class="flex items-end pt-0.5"
-                    >{{ showDetailTime }}</span
-                  >
+                    class="flex items-end pt-0.5">
+                    {{ showDetailTime }}
+                  </span>
                 </template>
               </TaskTimeDetail>
             </div>
@@ -125,12 +125,13 @@
           v-if="deleteConfirm"
           :is-danger="true"
           @cancel="cancelDeleteTask"
-          @action="handleDeleteTask(task.id)"
-          >Delete task
+          @action="handleDeleteTask(task.id)">
+          Delete task
           <template #content>
             <p>
               Do you really want to delete
-              <span class="break-words font-bold">{{ task.title }}</span> ?
+              <span class="break-words font-bold">{{ task.title }}</span>
+              ?
             </p>
           </template>
         </ModalConfirmDelete>
@@ -168,6 +169,7 @@ import TaskSubtaskInfo from '@/components/tasks/card/TaskSubtaskInfo.vue';
 import TaskTimeDetail from '@/components/tasks/card/TaskTimeDetail.vue';
 import TaskEditor from '@/components/tasks/editor/TaskEditor.vue';
 import TaskOptions from '@/components/tasks/options/TaskOptions.vue';
+import { getBreakpoints } from '@/composables/useBreakpoints';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useSettingsStore } from '@/stores/SettingsStore';
@@ -183,17 +185,18 @@ const props = defineProps<Props>();
 const router = useRouter();
 const route = useRoute();
 const store = useTasksStore();
-const storeProjects = useProjectsStore();
-const storeSettings = useSettingsStore();
+const projectsStore = useProjectsStore();
+const settingsStore = useSettingsStore();
 const activeElement = useActiveElement();
-const { getProjectById } = storeToRefs(storeProjects);
+const { mdAndSmaller } = getBreakpoints();
+const { getProjectById } = storeToRefs(projectsStore);
 const project = computed(() => getProjectById.value(props.task.projectId));
 const isDone = ref(props.task.isDone);
 const isPriority = ref(props.task.isPriority);
 const deleteConfirm = ref(false);
 const deadline = computed(() => store.getTaskDate(props.task.id));
 const { showDetailTime, markOverdue } = useTimeDetail(deadline);
-const cardIsHover = ref(false);
+const cardIsHover = ref(mdAndSmaller);
 const isOptionsOpen = ref(false);
 const card: Ref<HTMLElement | undefined> = ref();
 const { x: cardX, y: cardY, bottom: cardBottom } = useElementBounding(card);
@@ -227,7 +230,7 @@ watch(isOptionsOpen, (val) => {
 });
 
 watch(deleteConfirm, (val) => {
-  storeSettings.setModal({ modal: 'deleteTaskConfirm', value: val });
+  settingsStore.setModal({ modal: 'deleteTaskConfirm', value: val });
 });
 
 function setCardBacklight() {
@@ -238,7 +241,7 @@ function setCardBacklight() {
 }
 
 function handleHideOptionsBtn() {
-  if (isOptionsOpen.value) return;
+  if (isOptionsOpen.value || mdAndSmaller) return;
   cardIsHover.value = false;
 }
 

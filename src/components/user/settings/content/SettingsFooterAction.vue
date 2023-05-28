@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-base-200 border-t-2 border-base-300 p-4 flex justify-end">
+  <div class="fixed bottom-0 right-0 flex w-full justify-end border-t-2 border-base-300 bg-base-200 p-4">
     <ButtonSecondaryAction
       class="!bg-base-300"
       @click="cancel">

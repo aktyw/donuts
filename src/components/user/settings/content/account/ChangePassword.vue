@@ -33,7 +33,6 @@
 
   <SettingsFooterAction
     :is-save-btn-active="!!(formData.password || formData.confirmPassword)"
-    class="absolute w-full right-0 bottom-0"
     @cancel="handleClearForm"
     @save="handleSaveAction" />
 

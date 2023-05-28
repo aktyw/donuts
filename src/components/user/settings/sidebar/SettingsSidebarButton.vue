@@ -1,16 +1,16 @@
 <template>
-  <li class="w-60">
+  <li class="w-full md:w-60">
     <TheTooltip
       :data="name"
-      class="w-full !tooltip-right">
+      class="!tooltip-right w-full">
       <RouterLink
         active-class="bg-base-200"
-        class="flex items-center rounded-md p-2 py-2 outline-custom"
+        class="outline-custom flex items-center rounded-md p-2 py-2"
         :to="to"
         v-bind="$attrs">
         <BaseButton
           tabindex="-1"
-          class="flex gap-2 [&>svg]:fill-base-content w-full">
+          class="flex w-full gap-2 [&>svg]:fill-base-content">
           <slot name="icon"></slot>
           <slot>
             <span>{{ name }}</span>

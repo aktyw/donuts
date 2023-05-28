@@ -1,9 +1,9 @@
 <template>
   <SubtaskDropdown>
     <template #icon>
-      <IconSubTask />
+      <IconSubTask class="fill-base-content" />
     </template>
-    <template #content> {{ subtasks?.length }}</template>
+    <template #content>{{ subtasks?.length }}</template>
     <li
       class="cursor-default p-3 font-semibold hover:!bg-base-100"
       tabindex="-1">
@@ -17,7 +17,9 @@
       :class="{ 'text-semibold ': $route.params.taskid === sub.id }">
       <span class="flex w-full justify-between gap-1">
         {{ sub.title }}
-        <IconDone v-if="$route.params.taskid === sub.id" />
+        <IconDone
+          v-if="$route.params.taskid === sub.id"
+          class="fill-base-content" />
       </span>
     </Router-Link>
   </SubtaskDropdown>

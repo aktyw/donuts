@@ -2,7 +2,7 @@
   <div class="navbar-start flex w-full flex-row-reverse justify-between lg:w-1/2">
     <div
       ref="item"
-      class="dropdown-bottom dropdown dropdown-left gap-2 [&>.dropdown-content]:right-0">
+      class="dropdown-bottom dropdown-left dropdown gap-2 [&>.dropdown-content]:right-0">
       <label
         tabindex="0"
         class="btn-ghost btn-sm btn px-1 lg:hidden">

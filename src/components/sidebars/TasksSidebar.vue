@@ -1,5 +1,5 @@
 <template>
-  <TheSidebar ref="sidebar">
+  <TheSidebar ref="sidebar ">
     <template #links>
       <TheTooltip
         :is="'li'"

@@ -48,11 +48,11 @@ import type { Project } from '@/types/models/Projects';
 import type { Task } from '@/types/models/Task';
 
 onMounted(() => {
-  storeSettings.setModal({ modal: 'moveProject', value: true });
+  settingsStore.setModal({ modal: 'moveProject', value: true });
 });
 
 onUnmounted(() => {
-  storeSettings.setModal({ modal: 'moveProject', value: false });
+  settingsStore.setModal({ modal: 'moveProject', value: false });
 });
 
 type Props = {
@@ -68,7 +68,7 @@ const emit = defineEmits<{
 
 const router = useRouter();
 const store = useTasksStore();
-const storeSettings = useSettingsStore();
+const settingsStore = useSettingsStore();
 
 const selectedProject = ref(props.currentProject);
 const target = ref();

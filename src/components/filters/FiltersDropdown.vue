@@ -1,11 +1,11 @@
 <template>
-  <div class="dropdown dropdown-bottom dropdown-end">
+  <div class="dropdown-bottom dropdown-end dropdown">
     <label
       tabindex="0"
       class="outline-custom">
       <button
         tabindex="1"
-        class="w-full hover:bg-base-200 focus:bg-base-200 btn btn-square rounded-md btn-xs bg-base-100 border-0 text-slate-900 font-normal normal-case outline-custom">
+        class="outline-custom btn-square btn-xs btn w-full rounded-md border-0 bg-base-100 font-normal normal-case text-slate-900 hover:bg-base-200 focus:bg-base-200">
         <span class="flex flex-row gap-1">
           <IconSettings />
           <span class="inline-flex items-center text-base-content">View</span>

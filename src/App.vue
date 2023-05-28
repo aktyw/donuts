@@ -10,10 +10,11 @@
       <div class="flex pt-12">
         <RouterView name="sidebar" />
         <RouterView
-          v-slot="{ Component, route  }"
-          class="w-full" :class="{' h-[calc(100vh-48px)]': isAuthenticated}">
+          v-slot="{ Component }"
+          class="w-full"
+          :class="{ ' h-[calc(100vh-48px)]': isAuthenticated }">
           <FadeTransitionShort mode="out-in">
-            <component :is="Component" :key="route.path"/>
+            <component :is="Component" />
           </FadeTransitionShort>
         </RouterView>
       </div>
@@ -87,7 +88,6 @@ function handleSetCurrentTheme() {
 
 <style>
 /*  Vue Datapicker Themes */
-
 
 .dp__theme_light {
   --dp-background-color: hsl(var(--b1));

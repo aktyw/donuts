@@ -2,7 +2,7 @@
   <li>
     <RouterLink
       v-bind="$attrs"
-      class="btn btn-md lg:btn-sm bg-base-300 border-0 normal-case text-base font-normal text-base-content hover:bg-base-200 rounded outline-custom"
+      class="outline-custom btn-md btn rounded border-0 bg-base-300 text-base font-normal normal-case text-base-content lg:btn-sm hover:bg-base-200"
       :active-class="isMobile"
       :to="to">
       <div class="flex gap-2">

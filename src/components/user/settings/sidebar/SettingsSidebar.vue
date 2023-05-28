@@ -1,8 +1,26 @@
 <template>
-  <div class="flex flex-col h-full bg-base-100 p-4 gap-4">
-    <SettingsHeader
-      name="Settings"
-      class="font-bold pl-2" />
+  <div class="flex h-full w-full flex-col gap-4 bg-base-100 p-4">
+    <div>
+      <SettingsHeader
+        name="Settings"
+        class="flex w-full justify-between pl-2 font-bold">
+        <template #actionAlt>
+          <span
+            v-if="mdAndSmaller"
+            class="relative right-6">
+            <TheTooltip
+              data="Close"
+              class="!tooltip-left fixed flex items-center">
+              <BaseButton @click="handleCloseModal">
+                <template #icon>
+                  <IconClose />
+                </template>
+              </BaseButton>
+            </TheTooltip>
+          </span>
+        </template>
+      </SettingsHeader>
+    </div>
     <nav>
       <ul>
         <SettingsSidebarButton
@@ -32,9 +50,27 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
+
+import BaseButton from '@/components/base/BaseButton.vue';
 import IconAccount from '@/components/icons/IconAccount.vue';
+import IconClose from '@/components/icons/IconClose.vue';
 import IconSettingsAlt from '@/components/icons/IconSettingsAlt.vue';
 import IconTheme from '@/components/icons/IconTheme.vue';
+import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 import SettingsHeader from '@/components/user/settings/content/SettingsHeader.vue';
 import SettingsSidebarButton from '@/components/user/settings/sidebar/SettingsSidebarButton.vue';
+import { getBreakpoints } from '@/composables/useBreakpoints';
+import { useSettingsStore } from '@/stores/SettingsStore';
+
+const router = useRouter();
+
+const settingsStore = useSettingsStore();
+
+const { mdAndSmaller } = getBreakpoints();
+
+function handleCloseModal(): void {
+  console.log(settingsStore.getParentModalRoute);
+  router.push(settingsStore.getParentModalRoute);
+}
 </script>

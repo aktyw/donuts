@@ -1,6 +1,6 @@
 <template>
   <TheTooltip
-    class="!tooltip-top h-full w-full border-r"
+    class="!tooltip-bottom h-full w-full border-r"
     data="Open parent task">
     <RouterLink
       :to="{ params: { taskid: parent?.id } }"

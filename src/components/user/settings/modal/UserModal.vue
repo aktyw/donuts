@@ -1,13 +1,13 @@
 <template>
   <FadeTransitionMedium>
     <div
-      class="modal modal-open sm:modal-middle h-full "
+      class="modal modal-open h-full sm:modal-middle"
       role="dialog">
       <div
         id="user-modal"
         ref="target"
-        class="modal-box p-0 flex h-full min-h-[320px] overflow-hidden md:min-w-[720px] lg:min-w-[900px]">
-        <aside class="flex items-center justify-between">
+        class="modal-box flex h-full min-h-[320px] flex-col overflow-hidden p-0 md:min-w-[720px] md:flex-row lg:min-w-[900px]">
+        <aside>
           <SettingsSidebar />
         </aside>
         <div class="flex w-full flex-col bg-base-200">

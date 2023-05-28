@@ -1,7 +1,7 @@
 <template>
   <header v-bind="$attrs">
     <div class="flex">
-      <slot name="action"></slot>
+      <slot name="action" />
       <slot>
         <h2>{{ name }}</h2>
       </slot>

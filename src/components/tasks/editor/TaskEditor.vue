@@ -1,7 +1,7 @@
 <template>
   <form
     id="form"
-    class="relative my-1.5 w-full rounded-lg border px-4 focus-within:border-accent-content">
+    class="fixed bottom-0 left-0 md:left-auto md:relative md:bottom-auto md:my-1.5 w-full rounded-lg border px-4 focus-within:border-base-content bg-base-100 z-50">
     <div class="py-3">
       <TaskEditorInput
         ref="taskTitleInput"
@@ -44,7 +44,7 @@
           <BaseButton
             v-if="date"
             aria-label="Clear date"
-            class="btn-ghost btn-xs rounded border border-base-300 p-0 hover:bg-base-200"
+            class="btn-ghost btn-sm rounded border border-base-300 p-0 hover:bg-base-200"
             @click.prevent="clearDate">
             <template #icon>
               <IconClose />
@@ -93,7 +93,7 @@
         </teleport>
       </div>
 
-      <div class="flex gap-1">
+      <div class="flex gap-1 ">
         <ButtonSecondaryAction
           class="w-12 lg:w-auto"
           @click.prevent="closeEditor">
@@ -103,7 +103,7 @@
         <ButtonMainAction
           v-if="!isEdit"
           :disabled="!taskTitle || !selectedProject"
-          class="w-12 lg:w-auto"
+          class="w-12 lg:w-auto text-sm"
           @click.prevent="handleAddTask">
           {{ lgAndLarger ? 'Add task' : '' }}
           <IconAdd v-if="!lgAndLarger" />
@@ -122,12 +122,13 @@
       v-show="showPicker"
       ref="datepicker"
       v-model="date"
-      teleport="#form"
       position="left"
+      teleport="#form"
+      :teleport-center="mdAndSmaller"
       :min-date="new Date()"
       :start-time="startTime"
-      @open="storeSettings.setModal({ modal: 'calendar', value: true })"
-      @closed="storeSettings.setModal({ modal: 'calendar', value: false })" />
+      @open="settingsStore.setModal({ modal: 'calendar', value: true })"
+      @closed="settingsStore.setModal({ modal: 'calendar', value: false })" />
   </form>
 </template>
 
@@ -161,7 +162,8 @@ import { useTasksStore } from '@/stores/TasksStore';
 import type { Project } from '@/types/models/Projects';
 import type { Task } from '@/types/models/Task';
 
-const { lgAndSmaller, lgAndLarger } = getBreakpoints();
+
+const { lgAndSmaller, lgAndLarger, largerThanMd ,mdAndSmaller} = getBreakpoints();
 
 type Props = {
   isEdit?: boolean;
@@ -183,7 +185,7 @@ const emit = defineEmits<{
 
 const props = defineProps<Props>();
 const projectsStore = useProjectsStore();
-const storeSettings = useSettingsStore();
+const settingsStore = useSettingsStore();
 const store = useTasksStore();
 const taskTitle = ref(props.title || '');
 const taskDescription = ref(props.description || '');
