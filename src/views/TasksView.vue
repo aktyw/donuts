@@ -4,7 +4,7 @@
       <FadeTransitionShort mode="out-in">
         <component
           :is="Component"
-          :class="{ 'ml-80': isMenuOpen }"
+          :class="{ 'ml-80': isMenuOpen && lgAndLarger }"
           class="flex flex-col items-center justify-start overflow-y-auto py-8 pb-80 transition-all duration-300" />
       </FadeTransitionShort>
     </keep-alive>
@@ -15,7 +15,10 @@
 import { storeToRefs } from 'pinia';
 
 import FadeTransitionShort from '@/components/ui/transitions/FadeTransitionShort.vue';
+import { getBreakpoints } from '@/composables/useBreakpoints';
 import { useSettingsStore } from '@/stores/SettingsStore';
+
+const { lgAndLarger } = getBreakpoints();
 
 const settingsStore = useSettingsStore();
 const { getMenuStatus: isMenuOpen } = storeToRefs(settingsStore);

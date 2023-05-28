@@ -20,7 +20,7 @@
 
     <EmptyMessage v-if="!tasks.length" />
     <Teleport to="body">
-      <router-view></router-view>
+      <router-view />
     </Teleport>
   </main>
 </template>

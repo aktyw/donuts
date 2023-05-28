@@ -16,8 +16,7 @@
           modal-title="Add project"
           action-title="Add"
           @action="addProject"
-          @close-editor="handleCloseEditor">
-        </ProjectModal>
+          @close-editor="handleCloseEditor" />
       </teleport>
     </main>
   </FadeTransitionMedium>

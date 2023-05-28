@@ -8,7 +8,7 @@
         <BaseToggle
           v-model="autoDarkMode"
           class="!pb-0">
-          Auto Dark Mode
+          Auto dark mode
         </BaseToggle>
       </div>
       <p class="text-sm">Automatically switch between light and dark themes when your system does.</p>
@@ -17,6 +17,9 @@
       <SettingsLabel
         class="pb-4 !font-bold"
         title="Your themes" />
+        <InfoContainer class="mb-4">
+      <p class="text-sm">Choose the default theme for your app. You can freely select them when Auto dark mode is disabled. If it is enabled, you are limited to choosing the current theme within the OS, although you can still change the default theme for both the light and dark themes respectively.</p>
+    </InfoContainer>
       <div class="flex flex-wrap gap-4">
         <div class="flex flex-col gap-4">
           <SettingsLabel title="Light" />

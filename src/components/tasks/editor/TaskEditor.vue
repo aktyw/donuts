@@ -9,14 +9,13 @@
         v-focus
         maxlength="100"
         placeholder="Task name"
-        class="font-semibold">
-      </TaskEditorInput>
+        class="font-semibold w-full max-w-[1200px]" />
       <TaskEditorInput
         ref="taskDescriptionInput"
         v-model.trim="taskDescription"
         maxlength="240"
-        placeholder="Description">
-      </TaskEditorInput>
+        class="w-full max-w-[1200px]"
+        placeholder="Description" />
 
       <div class="mt-2 flex">
         <TheTooltip
@@ -30,7 +29,7 @@
                 </template>
               </TaskTimeDetail>
             </template>
-            <template v-else> Due Date </template>
+            <template v-else>Due Date</template>
             <template
               v-if="!date"
               #icon>
@@ -59,8 +58,8 @@
           <ButtonBadgeMedium
             class="ml-3 pl-0.5"
             :is-toggle="taskIsPriority"
-            @click.prevent="togglePriority"
-            ><template #icon>
+            @click.prevent="togglePriority">
+            <template #icon>
               <IconImportantSmall />
             </template>
             Priority
@@ -69,8 +68,8 @@
       </div>
     </div>
 
-    <div class="flex justify-between border-t py-3">
-      <div class="flex gap-1">
+    <div class="flex justify-between border-t py-5 lg:py-3">
+      <div class="flex flex-col justify-between lg:flex-row gap-1">
         <TheTooltip
           class="!tooltip-top flex"
           data="Select a project">
@@ -80,7 +79,7 @@
         </TheTooltip>
 
         <ProjectAddButton
-          v-if="!quickTask && !isSubTask"
+          v-if="!quickTask && !isSubTask && !lgAndSmaller"
           class="h-full"
           @click.prevent="handleAddProject"></ProjectAddButton>
 
@@ -90,26 +89,32 @@
             modal-title="Add project"
             action-title="Add"
             @action="addProject"
-            @close-editor="handleCloseEditor">
-          </ProjectModal>
+            @close-editor="handleCloseEditor" />
         </teleport>
       </div>
 
-      <div>
-        <ButtonSecondaryAction @click.prevent="closeEditor">Cancel</ButtonSecondaryAction>
+      <div class="flex gap-1">
+        <ButtonSecondaryAction
+          class="w-12 lg:w-auto"
+          @click.prevent="closeEditor">
+          {{ lgAndLarger ? 'Cancel' : '' }}
+          <IconClose v-if="!lgAndLarger" />
+        </ButtonSecondaryAction>
         <ButtonMainAction
           v-if="!isEdit"
           :disabled="!taskTitle || !selectedProject"
-          @click.prevent="handleAddTask"
-          >Add task</ButtonMainAction
-        >
+          class="w-12 lg:w-auto"
+          @click.prevent="handleAddTask">
+          {{ lgAndLarger ? 'Add task' : '' }}
+          <IconAdd v-if="!lgAndLarger" />
+        </ButtonMainAction>
 
         <ButtonMainAction
           v-else
           :disabled="!taskTitle || !selectedProject"
-          @click.prevent="handleUpdateTask"
-          >Save</ButtonMainAction
-        >
+          @click.prevent="handleUpdateTask">
+          Save
+        </ButtonMainAction>
       </div>
     </div>
 
@@ -134,6 +139,7 @@ import { storeToRefs } from 'pinia';
 import { type Ref, ref, watch, watchEffect } from 'vue';
 
 import BaseButton from '@/components/base/BaseButton.vue';
+import IconAdd from '@/components/icons/IconAdd.vue';
 import IconCalendar from '@/components/icons/IconCalendar.vue';
 import IconClose from '@/components/icons/IconClose.vue';
 import IconImportantSmall from '@/components/icons/IconImportantSmall.vue';
@@ -146,6 +152,7 @@ import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 import ButtonBadgeMedium from '@/components/ui/buttons/ButtonBadgeMedium.vue';
 import ButtonMainAction from '@/components/ui/buttons/ButtonMainAction.vue';
 import ButtonSecondaryAction from '@/components/ui/buttons/ButtonSecondaryAction.vue';
+import { getBreakpoints } from '@/composables/useBreakpoints';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import { vFocus } from '@/directives/vAutoFocus';
 import { useProjectsStore } from '@/stores/ProjectsStore';
@@ -153,6 +160,8 @@ import { useSettingsStore } from '@/stores/SettingsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { Project } from '@/types/models/Projects';
 import type { Task } from '@/types/models/Task';
+
+const { lgAndSmaller, lgAndLarger } = getBreakpoints();
 
 type Props = {
   isEdit?: boolean;

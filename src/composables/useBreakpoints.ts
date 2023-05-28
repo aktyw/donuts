@@ -8,6 +8,7 @@ export function getBreakpoints() {
   const largerThanSm = breakpoints.greater('sm');
   const lgAndSmaller = breakpoints.smallerOrEqual('lg');
   const smallerThanLg = breakpoints.smaller('lg');
+  const lgAndLarger = breakpoints.greaterOrEqual('lg');
 
-  return { smAndLarger, largerThanSm, lgAndSmaller, smallerThanLg, smAndSmaller };
+  return { smAndLarger, largerThanSm, lgAndSmaller, smallerThanLg, smAndSmaller, lgAndLarger };
 }

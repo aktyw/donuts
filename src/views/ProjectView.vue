@@ -2,7 +2,7 @@
   <main
     v-if="currentProject?.active"
     id="main">
-    <div class="flex w-2/3 max-w-[800px] flex-col items-start">
+    <div class="flex w-4/5 lg:w-2/3 max-w-[800px] flex-col items-start">
       <FiltersNavbar :title="currentProject?.name ?? 'Inbox'" />
       <FilterStatus v-if="!allowDrag" />
       <FiltersList

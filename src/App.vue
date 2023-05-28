@@ -10,10 +10,10 @@
       <div class="flex pt-12 h-screen">
         <RouterView name="sidebar" />
         <RouterView
-          v-slot="{ Component }"
+          v-slot="{ Component, route  }"
           class="w-full h-[calc(100vh-48px)] pt-10">
           <FadeTransitionShort mode="out-in">
-            <component :is="Component" />
+            <component :is="Component" :key="route.path"/>
           </FadeTransitionShort>
         </RouterView>
       </div>

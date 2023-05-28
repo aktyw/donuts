@@ -12,10 +12,9 @@
         tabindex="0"
         class="dropdown-left dropdown-content menu menu-compact mt-2 w-48 gap-2 rounded-xl bg-base-200 p-2 shadow"
         @click="blurDropdown">
-        <NavLink to="/tasks"> Tasks </NavLink>
-        <NavLink to="/notes"> Notes </NavLink>
-        <NavLink to="/"> About </NavLink>
-        <NavLink to="/login"> Login </NavLink>
+        <NavLink to="/tasks">Tasks</NavLink>
+        <NavLink to="/notes">Notes</NavLink>
+        <NavLink to="/settings">Settings</NavLink>
       </ul>
     </div>
   </div>

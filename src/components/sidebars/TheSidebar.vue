@@ -3,7 +3,7 @@
     :class="{
       '-translate-x-full ': !isMenuOpen,
     }"
-    class="z-20 transition duration-300 h-screen fixed print:hidden">
+    class="z-50 transition duration-300 h-screen fixed print:hidden">
     <nav class="overflow-y-auto">
       <ul
         class="menu flex h-[calc(100vh-48px)] w-80 flex-nowrap overflow-x-hidden bg-base-200 p-4 pb-40 text-base-content [&>li>.router-link-exact-active]:bg-base-300 [&>li>a]:justify-between">

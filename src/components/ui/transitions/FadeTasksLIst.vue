@@ -5,8 +5,8 @@
     enter-to-class="opacity-100 translate-x-0"
     leave-from-class="opacity-100 translate-x-0"
     leave-active-class="transition duration-300 absolute"
-    leave-to-class="translate-x-[15px] opacity-0"
+    leave-to-class="translate-y-[15px] opacity-0"
     move-class="transition">
-    <slot></slot>
+    <slot />
   </TransitionGroup>
 </template>
