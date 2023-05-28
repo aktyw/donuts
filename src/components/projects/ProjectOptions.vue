@@ -24,7 +24,7 @@
       </teleport>
       <OptionListButton
         v-if="!isArchived"
-        @click="handleOpenEditor">
+        @click.stop="handleOpenEditor">
         <template #icon>
           <IconPen />
         </template>
@@ -33,7 +33,7 @@
 
       <OptionListButton
         v-if="!isArchived"
-        @click="handleAddToFav">
+        @click.stop="handleAddToFav">
         <template #icon>
           <IconHeartMinus v-if="project.favorite" />
           <IconHeart v-else />
@@ -43,7 +43,7 @@
 
       <OptionListButton
         v-if="!isFavorites && !isArchived"
-        @click="handleDuplicateProject">
+        @click.stop="handleDuplicateProject">
         <template #icon>
           <IconDuplicate />
         </template>
@@ -55,7 +55,7 @@
       <OptionListButton
         v-if="!isFavorites && !isArchived"
         :is-danger="true"
-        @click="handleArchiveProject">
+        @click.stop="handleArchiveProject">
         <template #icon>
           <IconArchive />
         </template>
@@ -64,7 +64,7 @@
 
       <OptionListButton
         v-if="!isFavorites && isArchived"
-        @click="handleUnarchiveProject">
+        @click.stop="handleUnarchiveProject">
         <template #icon>
           <IconUnarchive />
         </template>
@@ -74,7 +74,7 @@
       <OptionListButton
         v-if="!isFavorites"
         :is-danger="true"
-        @click="toggleDeleteModal">
+        @click.stop="toggleDeleteModal">
         <template #icon>
           <IconRecycleBin />
         </template>
