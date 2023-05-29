@@ -1,9 +1,9 @@
 <template>
-  <div class="navbar-start flex flex-row justify-between lg:w-1/2 print:hidden">
+  <div class="navbar-start flex flex-row justify-between print:hidden lg:w-1/2">
     <div class="flex gap-2">
       <TheTooltip :data="menuTooltip">
         <BaseButton
-          class="btn btn-sm btn-square btn-ghost hover:bg-base-200"
+          class="btn-ghost btn-square btn-sm btn hover:bg-base-200"
           aria-label="Toggle menu"
           @click="settingsStore.toggleMenu()">
           <template #icon>
@@ -16,9 +16,9 @@
       </TheTooltip>
       <TheTooltip data="Go to home">
         <BaseButton
-          class="btn btn-sm btn-square btn-ghost hover:bg-base-200"
+          class="btn-ghost btn-square btn-sm btn hover:bg-base-200"
           aria-label="Go to home"
-          @click="router.push(homeRoute as RouteLocationRaw)">
+          @click="handleLinkToHome">
           <template #icon>
             <IconHome
               class="fill-base-content"
@@ -40,6 +40,7 @@ import BaseButton from '@/components/base/BaseButton.vue';
 import IconHome from '@/components/icons/IconHome.vue';
 import IconMenu from '@/components/icons/IconMenu.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import { useHideMenu } from '@/composables/useHideMenu';
 import { useSettingsStore } from '@/stores/SettingsStore';
 
 const settingsStore = useSettingsStore();
@@ -55,4 +56,9 @@ const homeRoute = computed(() => {
 });
 
 const router = useRouter();
+
+function handleLinkToHome() {
+  router.push(homeRoute.value as RouteLocationRaw);
+  useHideMenu();
+}
 </script>

@@ -14,7 +14,7 @@
       ref="dropList"
       role="menu"
       tabindex="1"
-      class="[& svg:not(.active-state)]:fill-base-content [& button:active]:text-base-content dropdown-content menu w-60 rounded-md border border-base-300 bg-base-100 fill-base-content py-0.5 text-base-content shadow [&>button:active]:bg-base-200 [&>li:hover>button:not(.active-state)]:bg-base-200 z-30">
+      class="[& svg:not(.active-state)]:fill-base-content [& button:active]:text-base-content dropdown-content menu z-30 w-60 rounded-md border border-base-300 bg-base-100 fill-base-content py-0.5 text-base-content shadow [&>button:active]:bg-base-200 [&>li:hover>button:not(.active-state)]:bg-base-200">
       <OptionListButton @click.stop="handleEditTask(taskId)">
         <template #icon>
           <IconPen />

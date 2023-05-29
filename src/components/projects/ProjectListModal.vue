@@ -8,10 +8,10 @@
         <ProjectList
           v-model="selectedProject"
           :current-project="currentProject"
-          class="w-full max-w-[28rem] md:max-w-[48rem] lg:max-w-[60rem] !select-md" />
+          class="!select-md w-full max-w-[28rem] md:max-w-[48rem] lg:max-w-[60rem]" />
         <InfoContainer
           v-if="!!selectedProject && currentProject?.id !== selectedProject.id"
-          class="bg-base-200 my-4 px-2 [&>span]:font-bold">
+          class="my-4 bg-base-200 px-2 [&>span]:font-bold">
           <p>
             <strong>"{{ task.title.slice(0, 16) }}"</strong>
             move from

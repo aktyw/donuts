@@ -196,7 +196,7 @@ const isPriority = ref(props.task.isPriority);
 const deleteConfirm = ref(false);
 const deadline = computed(() => store.getTaskDate(props.task.id));
 const { showDetailTime, markOverdue } = useTimeDetail(deadline);
-const cardIsHover = ref(mdAndSmaller);
+const cardIsHover = ref(mdAndSmaller.value);
 const isOptionsOpen = ref(false);
 const card: Ref<HTMLElement | undefined> = ref();
 const { x: cardX, y: cardY, bottom: cardBottom } = useElementBounding(card);
@@ -241,7 +241,7 @@ function setCardBacklight() {
 }
 
 function handleHideOptionsBtn() {
-  if (isOptionsOpen.value || mdAndSmaller) return;
+  if (isOptionsOpen.value || mdAndSmaller.value) return;
   cardIsHover.value = false;
 }
 

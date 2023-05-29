@@ -122,6 +122,7 @@ import ProjectModal from '@/components/projects/ProjectModal.vue';
 import ProjectOptions from '@/components/projects/ProjectOptions.vue';
 import TheSidebar from '@/components/sidebars/TheSidebar.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import { useHideMenu } from '@/composables/useHideMenu';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useSettingsStore } from '@/stores/SettingsStore';
 import { useTasksStore } from '@/stores/TasksStore';
@@ -165,6 +166,7 @@ function handleHideOptions(): void {
 function addProject(project: Project): void {
   projectsStore.addProject(project);
   handleCloseEditor();
+  useHideMenu();
 }
 
 function setProjectList(payload: { id: 'favorites' | 'projects'; currentValue: boolean }): void {

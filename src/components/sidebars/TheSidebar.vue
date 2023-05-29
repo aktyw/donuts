@@ -7,7 +7,7 @@
     <nav class="overflow-y-auto">
       <ul
         class="menu flex h-[calc(100vh-48px)] w-80 flex-nowrap overflow-x-hidden bg-base-200 p-4 pb-40 text-base-content [&>li>.router-link-exact-active]:bg-base-300 [&>li>a]:justify-between">
-        <slot name="links"></slot>
+        <slot name="links" />
       </ul>
     </nav>
   </aside>

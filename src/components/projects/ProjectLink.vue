@@ -1,7 +1,8 @@
 <template>
   <RouterLink
-    class="flex items-center py-2 hover:bg-base-300 outline-custom"
+    class="outline-custom flex items-center py-2 hover:bg-base-300"
     :to="to"
+    @click="useHideMenu()"
     v-bind="$attrs">
     <TheTooltip
       v-if="!customTooltip"
@@ -37,6 +38,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { RouteLocationRaw } from 'vue-router';
+import { useHideMenu } from '@/composables/useHideMenu';
 
 import IconColor from '@/components/icons/IconColor.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
