@@ -24,7 +24,7 @@
         </OptionListButton>
       </router-link>
 
-      <OptionListButton @click="handlePrint">
+      <OptionListButton @click.stop="handlePrint">
         <template #icon>
           <IconPrint />
         </template>

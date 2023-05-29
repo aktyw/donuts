@@ -6,7 +6,7 @@
       <InfoCard>
         <p
           v-show="largerThanSm"
-          class="py-6 max-w-prose text-inherit leading-7">
+          class="max-w-prose py-6 leading-7 text-inherit">
           {{ currentMessage }}
         </p>
       </InfoCard>

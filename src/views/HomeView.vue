@@ -1,6 +1,6 @@
 <template>
   <FadeTransitionMedium>
-    <div class="hero h-full bg-base-200">
+    <div class="hero h-[calc(100vh-48px)] bg-base-200">
       <div class="hero-content flex-col lg:flex-row-reverse lg:gap-8">
         <img
           src="@/assets/images/donut.png"
