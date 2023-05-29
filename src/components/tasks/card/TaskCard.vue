@@ -74,7 +74,7 @@
                   '[&>span]:!text-error [&>svg]:!fill-error': markOverdue,
                   '[&>span]:text-success [&>svg]:fill-success': markToday,
                   '[&>span]:text-warning [&>svg]:fill-warning': markTomorrow,
-                  '[&>span]:text-primary [&>svg]:fill-primary': markDays
+                  '[&>span]:text-primary [&>svg]:fill-primary': markDays,
                 }"
                 class="pt-0.5"
                 @click.stop="handleOpenCalendar()">
@@ -224,11 +224,6 @@ const subtaskCompletedAmount = computed(() => {
   });
 
   return amount?.length || 0;
-});
-
-onUpdated(() => {
-  console.log(markToday.value);
-  console.log(markTomorrow.value);
 });
 
 function handleOpenCalendar(): void {

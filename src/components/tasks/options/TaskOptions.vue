@@ -81,22 +81,21 @@
 
       <BaseDividerSmall />
 
-      <Datepicker
+      <!-- <Datepicker
         v-if="settingsStore.getModalStatus('task')"
         v-show="showPicker"
         ref="datepicker"
         :value="currentDate"
         teleport="#subtasksList"
         :teleport-center="mdAndSmaller"
-        position="right"
+        position="left"
         :min-date="new Date()"
         :start-time="startTime"
         @open="settingsStore.setModal({ modal: 'calendar', value: true })"
         @closed="settingsStore.setModal({ modal: 'calendar', value: false })"
-        @update:model-value="handleDate" />
+        @update:model-value="handleDate" /> -->
 
       <Datepicker
-        v-else
         v-show="showPicker"
         ref="datepicker"
         :value="currentDate"

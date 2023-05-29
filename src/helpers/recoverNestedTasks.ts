@@ -11,7 +11,6 @@ export function recoverNestedTasks(task: Task): void {
     task.childId.forEach((id: string) => {
       const t = store.getDeletedTaskById(id);
 
-      console.log(t);
       recoverNestedTasks(t);
     });
   }

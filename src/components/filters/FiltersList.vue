@@ -1,22 +1,22 @@
 <template>
   <ul class="flex w-full justify-between p-0 py-2 md:justify-end md:py-3 lg:gap-4">
     <FiltersListOption
-      aria-label=""
+      aria-label="active"
       :tasks="activeTasks"
       :filter-type="Filters.Active" />
 
     <FiltersListOption
-      aria-label=""
+      aria-label="completed"
       :tasks="completedTasks"
       :filter-type="Filters.Completed" />
 
     <FiltersListOption
-      aria-label=""
+      aria-label="priority"
       :tasks="priorityTasks"
       :filter-type="Filters.Priority" />
 
     <FiltersListOption
-      aria-label=""
+      aria-label="all"
       :tasks="tasks"
       :filter-type="Filters.All" />
   </ul>

@@ -235,11 +235,6 @@ export const useTasksStore = defineStore('tasks', {
       const task = findItem(id, this.tasks.default);
 
       duplicateNestedTasks(task);
-      // const taskIndex = this.tasks.default.findIndex((task: Task) => task.id === id);
-      // const tasksArrStart = this.tasks.default.slice(0, taskIndex + 1);
-      // const tasksArrEnd = this.tasks.default.slice(taskIndex + 1);
-
-      // this.tasks.default = [...tasksArrStart, copyTask, ...tasksArrEnd];
 
       useNotification(NotificationMessage.TaskDuplicate);
     },
@@ -258,9 +253,6 @@ export const useTasksStore = defineStore('tasks', {
       const taskToRecover = findItem(id, this.tasks.deleted);
 
       recoverNestedTasks(taskToRecover);
-
-      // this.tasks.default.push(taskToRecover);
-      // this.tasks.deleted = this.tasks.deleted.filter((task) => task !== taskToRecover);
     },
     deleteAllProjectTasks(projectId: string): void {
       const delTasks = [...this.tasks.default.filter((task) => task.projectId === projectId)];

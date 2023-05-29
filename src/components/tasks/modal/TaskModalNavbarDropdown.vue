@@ -54,7 +54,7 @@
 
       <OptionListButton
         :is-danger="true"
-        @click="handleDeleteTask">
+        @click.stop="handleDeleteTask">
         <template #icon>
           <IconRecycleBin />
         </template>

@@ -28,10 +28,11 @@ export function duplicateNestedTasks(task: Task, newParent?: Task): Task {
   }
 
   const taskIndex = store.tasks.default.findIndex((task: Task) => task.id === copyTask.id);
-  const tasksArrStart = store.tasks.default.slice(0, taskIndex + 1);
-  const tasksArrEnd = store.tasks.default.slice(taskIndex + 1);
+  // const tasksArrStart = store.tasks.default.slice(0, taskIndex + 1);
+  // const tasksArrEnd = store.tasks.default.slice(taskIndex + 1);
+  const tasks = store.tasks.default.slice();
 
-  store.tasks.default = [...tasksArrStart, copyTask, ...tasksArrEnd];
+  store.tasks.default = [...tasks, copyTask];
 
   if (copyTask.childId && copyTask.childId.length > 0) {
     copyTask.childId.forEach((id: string) => {

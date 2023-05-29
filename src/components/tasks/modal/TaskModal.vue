@@ -64,8 +64,8 @@
           </nav>
         </div>
 
-        <section class="flex h-full flex-col overflow-y-auto md:flex-row">
-          <main class="flex h-full w-full flex-col gap-4 p-4">
+        <section class="flex h-full flex-col overflow-hidden md:flex-row">
+          <main class="flex h-full w-full flex-col gap-4 overflow-y-auto p-4">
             <SubParentLinks v-if="hasParent" />
             <div class="flex">
               <TaskCheckbox
@@ -83,7 +83,7 @@
               <TaskShowSlim
                 v-else
                 :class="{ 'line-through': currentTask.isDone }"
-                @click="openTaskEditor">
+                @click.stop="openTaskEditor">
                 {{ currentTask.title }}
                 <template #desc>
                   {{ currentTask.description }}
@@ -103,7 +103,7 @@
               <SubtaskAddButton
                 v-if="!isSubtaskEditorActive"
                 class="print:hidden"
-                @click="openSubtaskEditor" />
+                @click.stop="openSubtaskEditor" />
             </div>
           </main>
 
@@ -210,7 +210,7 @@ const store = useTasksStore();
 
 const currentTaskId = computed(() => route.params.taskid as string);
 const currentTask = computed(() => store.getTaskById(currentTaskId.value));
-const currentProject = computed(() => projectsStore.getProjectById(currentTask.value.projectId));
+const currentProject = computed(() => projectsStore.getProjectById(currentTask?.value?.projectId));
 const currentIndex = computed(() => findIndex(currentTaskId.value, initialTasks));
 const currentDate = computed(() => store.getTaskDate(currentTask.value.id));
 
@@ -252,8 +252,6 @@ const isNextTask = computed(() => {
 });
 
 const hasParent = computed(() => !!parentTask.value);
-
-onUpdated(() => {});
 
 onMounted(() => {
   isSubtaskEditorActive.value = !!(route.hash === '#subtask');
@@ -316,11 +314,6 @@ function handlePrintTask(): void {
   print();
 }
 
-function handleDeleteTask(): void {
-  store.deleteTask(currentTask.value.id);
-  closeModal();
-}
-
 function closeModal(): void {
   const parentRoute = route.matched[1].name;
 
@@ -340,6 +333,11 @@ function toggleDeleteModal(): void {
 
 function cancelDeleteTask(): void {
   toggleDeleteModal();
+}
+
+function handleDeleteTask(): void {
+  store.deleteTask(currentTask.value.id);
+  closeModal();
 }
 
 function openTaskEditor(): void {

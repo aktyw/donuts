@@ -6,9 +6,9 @@
         {{ title }}
         <span
           v-if="title === TASK_VIEW_TITLE.TODAY"
-          class="text-sm font-normal"
-          >{{ formattedDate }}</span
-        >
+          class="text-sm font-normal">
+          {{ formattedDate }}
+        </span>
       </h2>
     </BaseHeading>
     <FiltersDropdown @delete-tasks="handleDeleteTasksAndSetProject"></FiltersDropdown>

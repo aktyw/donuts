@@ -8,7 +8,10 @@
       <FiltersList
         v-if="!!store.tasks.default.length && !allowDrag"
         :tasks="projectTasks" />
-      <TasksList :tasks="rootProjectTasks" />
+      <TasksList
+        :tasks="rootProjectTasks"
+        :project-tasks="projectTasks"
+        :current-project="currentProject" />
       <TaskAddButton
         v-if="!isEditorActive"
         @click="showEditor" />

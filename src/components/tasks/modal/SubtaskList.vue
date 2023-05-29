@@ -12,8 +12,7 @@
         v-for="subtask in subtasks"
         :key="subtask.id"
         :task="subtask"
-        :is-modal="true">
-      </TaskCard>
+        :is-modal="true" />
     </ul>
   </section>
 </template>
