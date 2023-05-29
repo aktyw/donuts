@@ -70,7 +70,12 @@
                 :completed-amount="subtaskCompletedAmount" />
 
               <TaskTimeDetail
-                :class="markOverdue"
+                :class="{
+                  '[&>span]:!text-error [&>svg]:!fill-error': markOverdue,
+                  '[&>span]:text-success [&>svg]:fill-success': markToday,
+                  '[&>span]:text-warning [&>svg]:fill-warning': markTomorrow,
+                  '[&>span]:text-primary [&>svg]:fill-primary': markDays
+                }"
                 class="pt-0.5"
                 @click.stop="handleOpenCalendar()">
                 <template #icon>
@@ -156,8 +161,7 @@
 import { useActiveElement } from '@vueuse/core';
 import { useElementBounding } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { computed, type Ref, ref, watch } from 'vue';
-import { inject } from 'vue';
+import { computed, inject, onUpdated, type Ref, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import IconCalendar from '@/components/icons/IconCalendar.vue';
@@ -184,25 +188,32 @@ type Props = {
 const props = defineProps<Props>();
 const router = useRouter();
 const route = useRoute();
+
 const store = useTasksStore();
 const projectsStore = useProjectsStore();
 const settingsStore = useSettingsStore();
-const activeElement = useActiveElement();
-const { mdAndSmaller } = getBreakpoints();
 const { getProjectById } = storeToRefs(projectsStore);
 const project = computed(() => getProjectById.value(props.task.projectId));
 const isDone = ref(props.task.isDone);
 const isPriority = ref(props.task.isPriority);
+
+const { mdAndSmaller } = getBreakpoints();
+const activeElement = useActiveElement();
+
 const deleteConfirm = ref(false);
-const deadline = computed(() => store.getTaskDate(props.task.id));
-const { showDetailTime, markOverdue } = useTimeDetail(deadline);
-const cardIsHover = ref(mdAndSmaller.value);
+const editTask = ref(false);
+const options = ref();
 const isOptionsOpen = ref(false);
+const isEditorActive = inject('isEditorActive');
+
+const deadline = computed(() => store.getTaskDate(props.task.id));
+const { showDetailTime, markOverdue, markToday, markTomorrow, markDays } = useTimeDetail(deadline);
+
+const cardIsHover = ref(mdAndSmaller.value);
 const card: Ref<HTMLElement | undefined> = ref();
 const { x: cardX, y: cardY, bottom: cardBottom } = useElementBounding(card);
 const showBacklight = ref(false);
-const editTask = ref(false);
-const isEditorActive = inject('isEditorActive');
+
 const subtaskAmount = computed(() => props.task.childId?.length || 0);
 const subtaskChilds = computed(() => props.task.childId);
 const subtaskCompletedAmount = computed(() => {
@@ -215,7 +226,10 @@ const subtaskCompletedAmount = computed(() => {
   return amount?.length || 0;
 });
 
-const options = ref();
+onUpdated(() => {
+  console.log(markToday.value);
+  console.log(markTomorrow.value);
+});
 
 function handleOpenCalendar(): void {
   options.value.handleCalendar();

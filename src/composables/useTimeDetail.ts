@@ -1,14 +1,18 @@
-import { computed, type Ref, type ComputedRef } from 'vue';
+import { useTimeAgo } from '@vueuse/core';
+import { computed, type ComputedRef, type Ref } from 'vue';
+
 import { isOverdue, isToday, isTomorrow, showDateWithTime } from '@/helpers/checkTime';
 import { Time } from '@/types/models/TimeDetails';
-import { useTimeAgo } from '@vueuse/core';
 
 export type RefOrComp<T> = ComputedRef<T> | Ref<T>;
 
 export function useTimeDetail(time: RefOrComp<Date | undefined>): {
   showDetailTime: RefOrComp<string | undefined>;
   showInputDetailTime: RefOrComp<string | undefined>;
-  markOverdue: RefOrComp<string>;
+  markOverdue: RefOrComp<boolean>;
+  markToday: RefOrComp<boolean>;
+  markTomorrow: RefOrComp<boolean>;
+  markDays: RefOrComp<boolean>;
 } {
   const showDetailTime = computed(() => {
     if (!time.value) return;
@@ -32,9 +36,16 @@ export function useTimeDetail(time: RefOrComp<Date | undefined>): {
     return `${date[1]} ${date[2]}`;
   });
 
-  const markOverdue = computed(() =>
-    showDetailTime.value === Time.Overdue ? '[&>span]:text-error [&>svg]:fill-error' : ''
-  );
+  const todays = ['just now', 'minutes', 'hour', 'hours'];
 
-  return { showDetailTime, showInputDetailTime, markOverdue };
+  const markOverdue = computed(() => !!showDetailTime?.value?.toString().startsWith(Time.Overdue));
+  const markToday = computed(() => {
+    const timeString = showDetailTime?.value?.toString();
+
+    return todays.some((time) => timeString?.includes(time));
+  });
+  const markTomorrow = computed(() => !!showDetailTime?.value?.toString().includes(Time.Tomorrow));
+  const markDays = computed(() => !!showDetailTime?.value?.toString().includes('days'));
+
+  return { showDetailTime, showInputDetailTime, markOverdue, markToday, markTomorrow, markDays };
 }

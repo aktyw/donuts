@@ -152,7 +152,7 @@ export const useSettingsStore = defineStore('settings', {
     setProjectListState(payload: { id: 'favorites' | 'projects'; value: boolean }): void {
       this.settings.isProjectListOpen[payload.id] = payload.value;
     },
-    setFooterActionState(value: boolean) {
+    setFooterActionState(value: boolean): void {
       this.settings.isFooterActionActive = value;
     },
     setAutoDarkMode(value: boolean): void {
