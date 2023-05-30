@@ -1,6 +1,6 @@
 <template>
   <BaseButton
-    class="flex items-center justify-center text-center h-9 w-48 border rounded-md border-red-600 text-red-600 hover:border-red-800 my-2 hover:text-red-800 transition cursor-pointer font-medium text-sm">
+    class="my-2 flex h-9 w-48 cursor-pointer items-center justify-center rounded-md border border-red-600 text-center text-sm font-medium text-red-600 transition hover:border-red-800 hover:text-red-800">
     {{ title }}
   </BaseButton>
 </template>

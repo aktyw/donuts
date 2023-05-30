@@ -29,7 +29,7 @@ export const useTasksStore = defineStore('tasks', {
         default: [],
         deleted: [],
         temp: [],
-        currentFilter: Filters.All,
+        currentFilter: Filters.Active,
       },
       undefined,
       {
@@ -271,6 +271,9 @@ export const useTasksStore = defineStore('tasks', {
       this.tasks.temp.push(...delTasks);
 
       useNotification(NotificationMessage.TasksAllDelete);
+    },
+    clearAllDeletedTasks(): void {
+      this.tasks.deleted = [];
     },
     undoDeleteAllTasks(): void {
       this.tasks.default = [...this.tasks.default, ...this.tasks.temp];

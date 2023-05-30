@@ -32,8 +32,6 @@ const projects = [...activeProjects.value];
 
 const homes = [{ name: 'Today', id: 'today' }, ...projects];
 
-console.log(homes);
-
 defineEmits<{
   (e: 'update:modelValue'): void;
 }>();

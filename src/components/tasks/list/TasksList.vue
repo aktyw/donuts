@@ -54,8 +54,8 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed, onMounted, onUpdated, ref } from 'vue';
-import draggable from 'vuedraggable';
 
+// import draggable from 'vuedraggable';
 import TaskCard from '@/components/tasks/card/TaskCard.vue';
 import TasksList from '@/components/tasks/list/TasksList.vue';
 import FadeTasksList from '@/components/ui/transitions/FadeTasksList.vue';
@@ -73,8 +73,8 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const drag = ref(true);
-const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
+// const drag = ref(true);
+// const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
 
 const store = useTasksStore();
 const { getSortType: sortTypeStatus, getTaskById, getCurrentFilter: filter } = storeToRefs(store);

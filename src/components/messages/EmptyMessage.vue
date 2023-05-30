@@ -5,8 +5,8 @@
         <TheIllustration />
       </slot>
       <slot name="content">
-        <h4 class="font-bold text-base-content pb-2 w-64 md:w-96 text-center">{{ currentMessage }}</h4>
-        <span class="font-light text-base-content text-base w-60 md:w-72 text-center">{{ currentTip }}</span>
+        <h4 class="w-64 pb-2 text-center font-bold text-base-content md:w-96">{{ currentMessage }}</h4>
+        <span class="w-60 text-center text-base font-light text-base-content md:w-72">{{ currentTip }}</span>
       </slot>
     </span>
   </FadeTransitionMedium>
