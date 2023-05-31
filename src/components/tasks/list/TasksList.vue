@@ -86,15 +86,12 @@ type Props = {
 };
 
 const props = defineProps<Props>();
-
 const store = useTasksStore();
 
 const { getTaskById, getCurrentFilter: currentFilter } = storeToRefs(store);
 
 const activeTasks = computed(() => props.tasks.filter((task: Task) => !task.isDone));
-
 const completedTasks = computed(() => props.projectTasks?.filter((task: Task) => task.isDone));
-
 const priorityTasks = computed(() => props.projectTasks?.filter((task: Task) => task.isPriority));
 
 const filteredTasks = computed(() => {

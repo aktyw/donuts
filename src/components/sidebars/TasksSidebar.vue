@@ -81,7 +81,8 @@
           <template #project-links>
             <li
               v-for="{ id, name, color } in activeProjects"
-              :key="id">
+              :key="id"
+              class="[&>*>*>button]:opacity-0 [&>*>*>button]:hover:opacity-100 [&>*>*>button:focus]:opacity-100">
               <ProjectLink
                 :to="{ name: 'project', params: { id: id } }"
                 :name="name"

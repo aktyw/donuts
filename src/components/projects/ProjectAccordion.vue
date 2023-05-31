@@ -3,7 +3,7 @@
     class="collapse overflow-visible"
     :class="{ 'collapse-open overflow-visible': isProjectOpen }">
     <div class="collapse-title flex h-10 min-h-0 items-center justify-between rounded-lg p-0.5 hover:bg-base-300">
-      <h2>
+      <h2 class="w-full h-full">
         <RouterLink
           v-if="routeName"
           :to="{ name: routeName }"
@@ -45,7 +45,7 @@ import { computed } from 'vue';
 import ProjectAddButton from '@/components/projects/ProjectAddButton.vue';
 import ProjectsToggleButton from '@/components/projects/toggle/ProjectsToggleButton.vue';
 
-const style = computed(() => 'px-4 text-left text-base font-normal w-full h-full outline-custom');
+const style = computed(() => 'flex items-center px-4 text-left text-base font-normal w-full h-full outline-custom');
 
 const props = defineProps<{
   title: string;

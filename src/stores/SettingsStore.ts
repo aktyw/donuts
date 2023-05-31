@@ -137,6 +137,9 @@ export const useSettingsStore = defineStore('settings', {
     toggleMenu(): void {
       this.settings.isMenuOpen = !this.settings.isMenuOpen;
     },
+    openMenu(): void {
+      this.settings.isMenuOpen = true;
+    },
     hideMenu(): void {
       this.settings.isMenuOpen = false;
     },

@@ -55,8 +55,7 @@
           class="h-2 w-2 rounded-full bg-success"></span>
         <span
           v-else
-          class="h-2 w-2 rounded-full bg-error">
-        </span>
+          class="h-2 w-2 rounded-full bg-error"></span>
         {{ online ? 'Online' : 'Offline' }}
       </OptionListButton>
     </ul>
@@ -65,6 +64,7 @@
 
 <script setup lang="ts">
 import { useOnline } from '@vueuse/core';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 import BaseDividerSmall from '@/components/base/BaseDividerSmall.vue';
@@ -85,8 +85,26 @@ const settingsStore = useSettingsStore();
 const route = useRoute();
 const online = useOnline();
 
-function handlePrint() {
-  print();
+const isMenuOpenBeforePrint = ref();
+
+async function hideMenu(): Promise<void> {
+  isMenuOpenBeforePrint.value = settingsStore.getMenuStatus;
+
+  return new Promise((resolve) => {
+    settingsStore.hideMenu();
+    resolve();
+  });
+}
+
+async function handlePrint(): Promise<void> {
+  try {
+    await hideMenu();
+    print();
+  } catch (error) {
+    console.error('Cannot print right now.');
+  } finally {
+    if (isMenuOpenBeforePrint.value) settingsStore.openMenu();
+  }
 }
 
 function handleSettings() {

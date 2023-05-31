@@ -4,11 +4,8 @@
       v-if="!editTask"
       ref="card"
       v-bind="$attrs"
-      class="relative flex justify-between border-b border-base-200 py-3 transition-colors duration-1000"
-      :class="{ 'bg-base-300  duration-1000 ': showBacklight, 'last:border-b-0': isEditorActive }"
-      @click="handleShowOptionsBtn"
-      @mouseover="handleShowOptionsBtn"
-      @mouseleave="handleHideOptionsBtn">
+      class="relative flex justify-between border-b border-base-200 py-3 transition-colors duration-1000 md:[&>.dropdown>button]:opacity-0 md:[&>.dropdown>button]:hover:opacity-100 [&>.dropdown>button:focus]:opacity-100"
+      :class="{ 'bg-base-300  duration-1000 ': showBacklight, 'last:border-b-0': isEditorActive }">
       <div class="flex w-full gap-4">
         <TaskCheckbox
           :is-done="task.isDone"
@@ -110,7 +107,6 @@
       </div>
 
       <TaskOptions
-        v-show="cardIsHover"
         ref="options"
         :task-id="task.id"
         :task="task"
@@ -158,10 +154,9 @@
 </template>
 
 <script setup lang="ts">
-import { useActiveElement } from '@vueuse/core';
 import { useElementBounding } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { computed, inject, onUpdated, type Ref, ref, watch } from 'vue';
+import { computed, inject, type Ref, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import IconCalendar from '@/components/icons/IconCalendar.vue';
@@ -198,18 +193,15 @@ const isDone = ref(props.task.isDone);
 const isPriority = ref(props.task.isPriority);
 
 const { mdAndSmaller } = getBreakpoints();
-const activeElement = useActiveElement();
 
 const deleteConfirm = ref(false);
 const editTask = ref(false);
 const options = ref();
-const isOptionsOpen = ref(false);
 const isEditorActive = inject('isEditorActive');
 
 const deadline = computed(() => store.getTaskDate(props.task.id));
 const { showDetailTime, markOverdue, markToday, markTomorrow, markDays } = useTimeDetail(deadline);
 
-const cardIsHover = ref(mdAndSmaller.value);
 const card: Ref<HTMLElement | undefined> = ref();
 const { x: cardX, y: cardY, bottom: cardBottom } = useElementBounding(card);
 const showBacklight = ref(false);
@@ -230,14 +222,6 @@ function handleOpenCalendar(): void {
   options.value.handleCalendar();
 }
 
-watch(activeElement, (el) => {
-  el?.closest('.dropdown') ? (isOptionsOpen.value = true) : (isOptionsOpen.value = false);
-});
-
-watch(isOptionsOpen, (val) => {
-  if (!val) handleHideOptionsBtn();
-});
-
 watch(deleteConfirm, (val) => {
   settingsStore.setModal({ modal: 'deleteTaskConfirm', value: val });
 });
@@ -247,17 +231,6 @@ function setCardBacklight() {
   setTimeout(() => {
     showBacklight.value = false;
   }, 800);
-}
-
-function handleHideOptionsBtn() {
-  if (isOptionsOpen.value || mdAndSmaller.value) return;
-  cardIsHover.value = false;
-}
-
-function handleShowOptionsBtn() {
-  if (!isOptionsOpen.value) {
-    cardIsHover.value = true;
-  }
 }
 
 function handleDeleteTask(id: string): void {

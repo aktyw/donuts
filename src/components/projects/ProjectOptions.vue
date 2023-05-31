@@ -5,7 +5,7 @@
     <button
       class="outline-custom btn-square btn-xs btn rounded-md border-0 bg-transparent hover:bg-transparent focus:bg-base-200"
       aria-label="show task options">
-      <IconHorizontalDots class="fill-base-content hover:fill-neutral" />
+      <IconHorizontalDots class="fill-base-content hover:opacity-50 transition" />
     </button>
 
     <ul
