@@ -46,7 +46,6 @@ defineProps<{
 
 function handleDeleteTasksAndSetProject(project?: Project) {
   currentProject.value = project;
-  console.log(currentProject.value);
   toggleDeleteModal();
 }
 

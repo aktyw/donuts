@@ -5,7 +5,10 @@
       :class="{ 'ml-80': isMenuOpen && lgAndLarger }">
       <div class="flex w-4/5 max-w-[800px] flex-col items-start">
         <div class="flex w-full flex-col gap-4 border-b pb-4">
-          <h1 class="text-2xl font-bold">Projects</h1>
+          <div class="flex h-full items-center justify-between">
+            <h1 class="text-2xl font-bold">Projects</h1>
+            <ProjectSettingsLink @click="handleOpenSettings">Settings</ProjectSettingsLink>
+          </div>
           <ProjectsNavbar @open-project-editor="handleOpenEditor" />
         </div>
         <ProjectsRecords :projects="activeProjects" />
@@ -29,6 +32,7 @@ import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 import ProjectModal from '@/components/projects/ProjectModal.vue';
+import ProjectSettingsLink from '@/components/projects/ProjectSettingsLink.vue';
 import ProjectsNavbar from '@/components/projects/ProjectsNavbar.vue';
 import ProjectsRecords from '@/components/projects/ProjectsRecords.vue';
 import FadeTransitionMedium from '@/components/ui/transitions/FadeTransitionMedium.vue';
@@ -68,5 +72,9 @@ function handleCloseEditor(): void {
 function addProject(project: Project): void {
   projectsStore.addProject(project);
   handleCloseEditor();
+}
+
+function handleOpenSettings(): void {
+  settingsStore.setModalRoute(route.path);
 }
 </script>

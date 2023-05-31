@@ -132,7 +132,6 @@ async function handleSaveAction() {
   try {
     const result = await validateForm();
 
-    console.log(result);
     if (!result) return;
 
     isLoading.value = true;

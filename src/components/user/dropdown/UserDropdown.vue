@@ -15,7 +15,7 @@
       <router-link
         :to="{ name: 'theme' }"
         tabindex="1"
-        @click="handleSettings">
+        @click="handleOpenSettings">
         <OptionListButton>
           <template #icon>
             <IconTheme />
@@ -107,7 +107,7 @@ async function handlePrint(): Promise<void> {
   }
 }
 
-function handleSettings() {
+function handleOpenSettings() {
   blurElement();
   settingsStore.setModalRoute(route.path);
 }

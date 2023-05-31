@@ -10,8 +10,6 @@ export function updateEveryProp(task: Task) {
   if (task.childId && task.childId.length > 0) {
     const tasks = store.getAllTasksById(task.childId);
 
-    console.log(tasks);
-    tasks.forEach((t: Task) => console.log(t));
     tasks.forEach((t: Task) => updateEveryProp(t));
   }
 

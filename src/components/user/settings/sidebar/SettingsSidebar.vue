@@ -70,7 +70,6 @@ const settingsStore = useSettingsStore();
 const { mdAndSmaller } = getBreakpoints();
 
 function handleCloseModal(): void {
-  console.log(settingsStore.getParentModalRoute);
   router.push(settingsStore.getParentModalRoute);
 }
 </script>

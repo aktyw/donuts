@@ -67,9 +67,8 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { computed, type ComputedRef, onMounted, onUpdated, ref } from 'vue';
+import { computed, type ComputedRef } from 'vue';
 
-// import draggable from 'vuedraggable';
 import TaskCard from '@/components/tasks/card/TaskCard.vue';
 import TasksList from '@/components/tasks/list/TasksList.vue';
 import FadeTasksList from '@/components/ui/transitions/FadeTasksList.vue';

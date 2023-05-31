@@ -259,8 +259,6 @@ export const useTasksStore = defineStore('tasks', {
     duplicateTask(id: string, projectId?: string): void {
       const task = findItem(id, this.tasks.default);
 
-      console.log(task);
-
       duplicateNestedTasks(task, undefined, projectId);
 
       if (projectId) return;

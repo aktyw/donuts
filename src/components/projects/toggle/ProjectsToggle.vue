@@ -14,7 +14,6 @@ import { useSettingsStore } from '@/stores/SettingsStore';
 const settingsStore = useSettingsStore();
 
 function disableSlideTransition() {
-  console.log('Disabling');
   settingsStore.setTransitionStatus({ transition: 'projectRecord', value: false });
 }
 </script>
