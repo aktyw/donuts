@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid';
 import { useNotification } from '@/composables/useNotification';
 import { breakConnection, hasParent } from '@/helpers/breakConnection';
 import { isToday } from '@/helpers/checkTime';
+import { completeNestedTasks } from '@/helpers/completeNestedTasks';
 import { createNewTask } from '@/helpers/createNewTask';
 import { deleteNestedTasks } from '@/helpers/deleteNestedTasks';
 import { duplicateNestedTasks } from '@/helpers/duplicateNestedTasks';
@@ -76,6 +77,16 @@ export const useTasksStore = defineStore('tasks', {
     getProjectTasks(state): (projectId: string) => Task[] {
       return (projectId = 'inbox') => {
         return state.tasks.default.filter((task) => task.projectId === projectId);
+      };
+    },
+    getRootProjectTasks(state): (projectId: string) => Task[] {
+      return (projectId = 'inbox') => {
+        return state.tasks.default.filter((task) => task.projectId === projectId && !task.parentId);
+      };
+    },
+    getProjectTasksNotActive(state): (projectId: string) => Task[] {
+      return (projectId = 'inbox') => {
+        return state.tasks.default.filter((task) => task.projectId === projectId && !task.isDone);
       };
     },
     getTodayTasks(state): Task[] {
@@ -180,7 +191,7 @@ export const useTasksStore = defineStore('tasks', {
     },
     resetView(): void {
       this.resetSortSettings();
-      this.tasks.currentFilter = Filters.All;
+      this.tasks.currentFilter = Filters.Active;
     },
     resetSortSettings(): void {
       this.sort.type = SortFilters.Default;
@@ -192,11 +203,25 @@ export const useTasksStore = defineStore('tasks', {
     toggleIsDone(id: string) {
       const index = findIndex(id, this.tasks.default);
 
-      this.tasks.default[index]['isDone'] = !this.tasks.default[index]['isDone'];
+      const tasksCompletedBefore = this.tasks.default.filter((task: Task) => task.isDone).length;
+
+      completeNestedTasks(this.tasks.default[index], !this.tasks.default[index]['isDone']);
+
+      const tasksCompletedAfter = this.tasks.default.filter((task: Task) => task.isDone).length;
+
+      const amountOfCompletedTasks = Math.abs(tasksCompletedAfter - tasksCompletedBefore);
 
       this.tasks.default[index]['isDone']
-        ? useNotification(NotificationMessage.TaskComplete)
-        : useNotification(NotificationMessage.TaskActivate);
+        ? useNotification(
+            amountOfCompletedTasks > 1
+              ? `Tasks completed (${amountOfCompletedTasks})`
+              : NotificationMessage.TaskComplete
+          )
+        : useNotification(
+            amountOfCompletedTasks > 1
+              ? `Tasks activated (${amountOfCompletedTasks})`
+              : NotificationMessage.TaskActivate
+          );
     },
     toggleIsPriority(id: string) {
       const index = findIndex(id, this.tasks.default);
@@ -234,8 +259,11 @@ export const useTasksStore = defineStore('tasks', {
     duplicateTask(id: string, projectId?: string): void {
       const task = findItem(id, this.tasks.default);
 
-      duplicateNestedTasks(task);
+      console.log(task);
 
+      duplicateNestedTasks(task, undefined, projectId);
+
+      if (projectId) return;
       useNotification(NotificationMessage.TaskDuplicate);
     },
     deleteTask(id: string): void {

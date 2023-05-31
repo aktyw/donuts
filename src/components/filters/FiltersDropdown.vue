@@ -43,7 +43,7 @@
         Name
       </FiltersDropdownButtonItem>
 
-      <ul v-if="sortTypeStatus !== SortFilters.Default && tasks.length > 0">
+      <ul v-if="tasks.length > 0">
         <BaseDividerSmall />
 
         <FiltersDropdownHeading>Order</FiltersDropdownHeading>
@@ -80,11 +80,10 @@
           {{ Filters.All }}
         </FiltersDropdownButtonItem>
       </ul>
-      <BaseDividerSmall v-if="sortTypeStatus !== SortFilters.Default || currentProject" />
 
-      <FiltersDropdownHeading v-if="sortTypeStatus !== SortFilters.Default || currentProject">
-        Actions
-      </FiltersDropdownHeading>
+      <BaseDividerSmall />
+
+      <FiltersDropdownHeading>Actions</FiltersDropdownHeading>
       <FiltersDropdownButtonItem
         v-if="tasks && currentProject"
         :disabled="!tasks.length"
@@ -94,7 +93,6 @@
         Delete all
       </FiltersDropdownButtonItem>
       <FiltersDropdownButtonItem
-        v-if="sortTypeStatus !== SortFilters.Default"
         :is-danger="true"
         @action="store.resetView()">
         <IconFiltersOff />

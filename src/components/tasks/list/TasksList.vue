@@ -18,99 +18,92 @@
     </ul> -->
 
     <FadeTasksList
-      v-if="(!isTimeline && filter === 'Active') || filter === 'All'"
+      v-if="!isTimeline && currentFilter !== 'Active'"
       tag="ul">
       <TaskCard
-        v-for="task in allTasks"
+        v-for="task in filteredTasks"
+        :key="task.id"
+        :task="task" />
+    </FadeTasksList>
+
+    <FadeTasksList
+      v-if="!isTimeline && currentFilter === 'Active'"
+      tag="ul">
+      <TaskCard
+        v-for="task in activeTasks"
         :key="task.id"
         :task="task">
         <TasksList
-          v-if="task.childId?.length > 0"
-          :tasks="task.childId"
+          v-if="task.childId && task.childId?.length > 0"
+          :tasks="task?.childId.map((id) => getTaskById(id))"
           class="pl-12" />
       </TaskCard>
     </FadeTasksList>
 
     <FadeTasksList
-      v-if="filter !== 'All' && !isTimeline"
+      v-if="!isTimeline && currentFilter === 'All'"
       tag="ul">
       <TaskCard
-        v-for="task in filteredTasks"
+        v-for="task in props.tasks"
         :key="task.id"
-        :task="task"></TaskCard>
+        :task="task">
+        <TasksList
+          v-if="task.childId && task.childId?.length > 0"
+          :tasks="task?.childId.map((id) => getTaskById(id))"
+          class="pl-12" />
+      </TaskCard>
     </FadeTasksList>
 
-    <FadeTasksList
+    <!-- <FadeTasksList
       v-if="isTimeline"
       tag="ul">
       <TaskCard
         v-for="task in (tasks as Task[])"
         :key="task.id"
         :task="task" />
-    </FadeTasksList>
+    </FadeTasksList> -->
   </section>
 </template>
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { computed, onMounted, onUpdated, ref } from 'vue';
+import { computed, type ComputedRef, onMounted, onUpdated, ref } from 'vue';
 
 // import draggable from 'vuedraggable';
 import TaskCard from '@/components/tasks/card/TaskCard.vue';
 import TasksList from '@/components/tasks/list/TasksList.vue';
 import FadeTasksList from '@/components/ui/transitions/FadeTasksList.vue';
+import { useHandleTasks } from '@/composables/useHandleTasks';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { Project } from '@/types/models/Projects';
-import { SortFilters } from '@/types/models/Sort';
 import type { Task } from '@/types/models/Task';
 
 type Props = {
-  tasks: Task[] | string[];
-  projectTasks: Task[];
-  currentProject: Project;
+  tasks: Task[];
+  projectTasks?: Task[];
+  currentProject?: Project;
   isTimeline?: boolean;
 };
 
 const props = defineProps<Props>();
 
-// const drag = ref(true);
-// const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
-
 const store = useTasksStore();
-const { getSortType: sortTypeStatus, getTaskById, getCurrentFilter: filter } = storeToRefs(store);
 
-const allTasks = computed(() => {
-  if (typeof props.tasks[0] === 'string') {
-    return props.tasks.map((id) => {
-      return getTaskById.value(id);
-    });
-  }
+const { getTaskById, getCurrentFilter: currentFilter } = storeToRefs(store);
 
-  return props.tasks;
-});
+const activeTasks = computed(() => props.tasks.filter((task: Task) => !task.isDone));
 
-const allActiveTasks = computed(() => {
-  return store.getAllTasksById(props.tasks).map((task) => {
-    return task;
-  });
-});
+const completedTasks = computed(() => props.projectTasks?.filter((task: Task) => task.isDone));
+
+const priorityTasks = computed(() => props.projectTasks?.filter((task: Task) => task.isPriority));
 
 const filteredTasks = computed(() => {
-  if (filter.value === 'Completed') {
-    return props.projectTasks.filter((task) => task.isDone);
-  } else if (filter.value === 'Priority') {
-    return props.projectTasks.filter((task) => task.isPriority);
+  if (currentFilter.value === 'Completed') {
+    return useHandleTasks(completedTasks as ComputedRef<Task[]>).value;
+  } else if (currentFilter.value === 'Priority') {
+    return useHandleTasks(priorityTasks as ComputedRef<Task[]>).value;
   }
 
   return [];
-});
-
-onMounted(() => {
-  // console.log(allActiveTasks.value);
-  console.log(props.tasks);
-});
-
-onUpdated(() => {
-  console.log(filteredTasks.value);
 });
 </script>

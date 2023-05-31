@@ -1,10 +1,10 @@
 <template>
   <FadeTransitionMedium>
     <div
-      class="fixed left-0 top-0 z-[1000] h-screen w-screen before:absolute before:z-50 before:h-full before:w-full before:bg-transparent before:content-['']">
+      class="fixed grid place-items-center top-0 z-[1000] h-screen w-screen before:absolute before:z-50 before:h-full before:w-full before:bg-transparent before:content-['']">
       <TaskEditor
         ref="target"
-        class="border-1 !fixed right-96 top-24 z-50 w-[480px] max-w-xl border-base-300 bg-base-100 shadow-[0_10px_45px_-20px] shadow-neutral"
+        class="border-1 !fixed top-24 z-50 w-[480px] max-w-xl border-base-300 bg-base-100 shadow-[0_10px_45px_-20px] shadow-neutral"
         :quick-task="true"
         @close-editor="handleCloseEditor"
         @add-task="handleCloseEditor" />

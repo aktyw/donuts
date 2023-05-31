@@ -21,7 +21,7 @@
         <p class="text-sm">
           Choose the default theme for your app. You can freely select them when Auto dark mode is disabled. If it is
           enabled, you are limited to choosing the current theme within the OS, although you can still change the
-          default theme for both the light and dark themes respectively.
+          default theme for both the light and dark themes respectively. The changes are visible immediately.
         </p>
       </InfoContainer>
       <div class="flex flex-wrap gap-4">

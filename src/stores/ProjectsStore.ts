@@ -125,8 +125,8 @@ export const useProjectsStore = defineStore('projects', {
       this.projects = [...projectStarts, copyProject, ...projectEnds];
 
       const taskStore = useTasksStore();
-      const { getProjectTasks } = storeToRefs(taskStore);
-      const tasks = getProjectTasks.value(id);
+      const { getRootProjectTasks } = storeToRefs(taskStore);
+      const tasks = getRootProjectTasks.value(id);
 
       tasks.forEach(({ id }: { id: string }) => taskStore.duplicateTask(id, copyProject.id));
 

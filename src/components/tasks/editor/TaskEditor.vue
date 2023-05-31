@@ -93,7 +93,7 @@
         </teleport>
       </div>
 
-      <div class="flex gap-1 ">
+      <div class="flex gap-1">
         <ButtonSecondaryAction
           class="w-12 lg:w-auto"
           @click.prevent="closeEditor">
@@ -162,8 +162,7 @@ import { useTasksStore } from '@/stores/TasksStore';
 import type { Project } from '@/types/models/Projects';
 import type { Task } from '@/types/models/Task';
 
-
-const { lgAndSmaller, lgAndLarger, largerThanMd ,mdAndSmaller} = getBreakpoints();
+const { lgAndSmaller, lgAndLarger, largerThanMd, mdAndSmaller } = getBreakpoints();
 
 type Props = {
   isEdit?: boolean;

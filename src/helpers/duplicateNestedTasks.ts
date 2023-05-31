@@ -1,19 +1,24 @@
 import { v4 as uuid } from 'uuid';
 
 import { useTasksStore } from '@/stores/TasksStore';
+import type { Project } from '@/types/models/Projects';
 import type { Task } from '@/types/models/Task';
 
-export function duplicateNestedTasks(task: Task, newParent?: Task): Task {
+export function duplicateNestedTasks(task: Task, newParent?: Task, newProjectId?: Pick<Project, 'id'>): Task {
   const store = useTasksStore();
 
   const copyTask = JSON.parse(JSON.stringify(task));
+
+  if (newProjectId) {
+    copyTask.projectId = newProjectId;
+  }
 
   copyTask.createdAt = new Date();
   copyTask.parentId = newParent?.id || task.parentId;
   copyTask.id = uuid();
   if (copyTask.date) copyTask.date = new Date(copyTask.date);
 
-  if (!newParent && copyTask.parentId) {
+  if (!newParent && copyTask.parentId && !newProjectId) {
     const rootParent = store.getTaskById(copyTask.parentId);
 
     rootParent.childId?.push(copyTask.id);
@@ -27,9 +32,6 @@ export function duplicateNestedTasks(task: Task, newParent?: Task): Task {
     }
   }
 
-  const taskIndex = store.tasks.default.findIndex((task: Task) => task.id === copyTask.id);
-  // const tasksArrStart = store.tasks.default.slice(0, taskIndex + 1);
-  // const tasksArrEnd = store.tasks.default.slice(taskIndex + 1);
   const tasks = store.tasks.default.slice();
 
   store.tasks.default = [...tasks, copyTask];
@@ -38,7 +40,7 @@ export function duplicateNestedTasks(task: Task, newParent?: Task): Task {
     copyTask.childId.forEach((id: string) => {
       const t = store.getTaskById(id);
 
-      duplicateNestedTasks(t, copyTask);
+      duplicateNestedTasks(t, copyTask, newProjectId);
     });
   }
 

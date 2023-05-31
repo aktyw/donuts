@@ -5,9 +5,7 @@
     <div class="flex w-4/5 max-w-[800px] flex-col items-start lg:w-4/5">
       <FiltersNavbar :title="currentProject?.name ?? 'Inbox'" />
       <FilterStatus v-if="!allowDrag" />
-      <FiltersList
-        v-if="!!store.tasks.default.length && !allowDrag"
-        :tasks="projectTasks" />
+      <FiltersList :tasks="projectTasks" />
       <TasksList
         :tasks="rootProjectTasks"
         :project-tasks="projectTasks"
@@ -21,9 +19,9 @@
         @close-editor="closeEditor" />
     </div>
 
-    <EmptyMessage v-if="!projectTasks.length" />
+    <EmptyMessage v-if="!activeProjectTasks.length && currentFilter === 'Active'" />
     <Teleport to="body">
-      <router-view></router-view>
+      <router-view />
     </Teleport>
   </main>
 
@@ -58,11 +56,12 @@ import type { Task } from '@/types/models/Task';
 
 const store = useTasksStore();
 const projectsStore = useProjectsStore();
-const { getProjectTasks, getSortType: sortTypeStatus } = storeToRefs(store);
+const { getProjectTasks, getSortType: sortTypeStatus, getCurrentFilter: currentFilter } = storeToRefs(store);
 const { getProjectById } = storeToRefs(projectsStore);
 const projectId = useRouteParams<string>('id');
 const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
 const projectTasks = computed(() => getProjectTasks.value(projectId.value as string));
+const activeProjectTasks = computed(() => projectTasks.value.filter((task: Task) => !task.isDone));
 const currentProject = computed(() => getProjectById.value((projectId.value as string) ?? 'inbox'));
 const tasks = useHandleTasks(projectTasks);
 const rootProjectTasks = computed(() => tasks.value.filter((task: Task) => !task.parentId));
