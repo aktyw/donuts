@@ -64,7 +64,7 @@
 
 <script setup lang="ts">
 import { useOnline } from '@vueuse/core';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 import BaseDividerSmall from '@/components/base/BaseDividerSmall.vue';

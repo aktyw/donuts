@@ -1,7 +1,7 @@
 <template>
   <form
     id="form"
-    class="fixed bottom-0 left-0 md:left-auto md:relative md:bottom-auto md:my-1.5 w-full rounded-lg border px-4 focus-within:border-base-content bg-base-100 z-50">
+    class="fixed bottom-0 left-0 md:left-auto md:relative md:bottom-auto md:my-1.5 w-full rounded-lg border px-4 focus-within:border-base-content bg-base-100 z-40 print:hidden">
     <div class="py-3">
       <TaskEditorInput
         ref="taskTitleInput"
@@ -68,7 +68,7 @@
       </div>
     </div>
 
-    <div class="flex justify-between border-t py-5 lg:py-3">
+    <div class="flex justify-between border-t border-base-300 py-5 lg:py-3">
       <div class="flex flex-col justify-between lg:flex-row gap-1">
         <TheTooltip
           class="!tooltip-top flex"
@@ -81,7 +81,7 @@
         <ProjectAddButton
           v-if="!quickTask && !isSubTask && !lgAndSmaller"
           class="h-full"
-          @click.prevent="handleAddProject"></ProjectAddButton>
+          @click.prevent="handleAddProject" />
 
         <teleport to="body">
           <ProjectModal

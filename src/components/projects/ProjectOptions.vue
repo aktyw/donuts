@@ -1,11 +1,11 @@
 <template>
   <div
     ref="dropdown"
-    class="dropdown-bottom dropdown-left dropdown h-0">
+    class="dropdown-bottom dropdown-left dropdown h-0 absolute right-2">
     <button
-      class="outline-custom btn-square btn-xs btn rounded-md border-0 bg-transparent hover:bg-transparent focus:bg-base-200"
+      class="outline-custom btn-square btn-xs btn rounded-md border-0 bg-transparent hover:bg-transparent focus:bg-base-200 !duration-0"
       aria-label="show task options">
-      <IconHorizontalDots class="fill-base-content hover:opacity-50 transition" />
+      <IconHorizontalDots class="fill-base-content hover:opacity-50" />
     </button>
 
     <ul

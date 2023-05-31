@@ -6,14 +6,14 @@
         data="Go to Inbox">
         <ProjectLink
           :custom-tooltip="true"
-          class="fill-primary"
+          class="fill-primary [&>span]:right-5 md:[&>span]:right-auto"
           :to="{ name: 'project', params: { id: 'inbox' } }">
           <template #icon>
             <IconInbox />
           </template>
           <template #name>Inbox</template>
           <template #amount>
-            <span>{{ store.getProjectTasks('inbox').length }}</span>
+            {{ store.getProjectTasks('inbox').length }}
           </template>
         </ProjectLink>
       </TheTooltip>
@@ -24,19 +24,19 @@
         data="Go to Today">
         <ProjectLink
           :custom-tooltip="true"
-          class="fill-primary"
+          class="fill-primary [&>span]:right-5 md:[&>span]:right-auto"
           :to="{ name: 'today' }">
           <template #icon>
             <IconCalendarToday />
           </template>
           <template #name>Today</template>
           <template #amount>
-            <span>{{ store.getTodayTasks.length }}</span>
+            {{ store.getTodayTasks.length }}
           </template>
         </ProjectLink>
       </TheTooltip>
 
-      <BaseDivider></BaseDivider>
+      <BaseDivider />
 
       <div
         v-if="!!favActiveProjects.length"
@@ -50,7 +50,8 @@
           <template #project-links>
             <li
               v-for="{ id, name, color } in favActiveProjects"
-              :key="id">
+              :key="id"
+              :class="projectLinkStyle">
               <ProjectLink
                 :to="{ name: 'project', params: { id: id } }"
                 :name="name"
@@ -62,6 +63,9 @@
                       :id="id"
                       :is-favorites="true" />
                   </span>
+                </template>
+                <template #amount>
+                  {{ store.getProjectTasks(id).length }}
                 </template>
               </ProjectLink>
             </li>
@@ -82,7 +86,7 @@
             <li
               v-for="{ id, name, color } in activeProjects"
               :key="id"
-              class="[&>*>*>button]:opacity-0 [&>*>*>button]:hover:opacity-100 [&>*>*>button:focus]:opacity-100">
+              :class="projectLinkStyle">
               <ProjectLink
                 :to="{ name: 'project', params: { id: id } }"
                 :name="name"
@@ -91,6 +95,9 @@
                   <span class="absolute -top-1 right-0 bg-transparent">
                     <ProjectOptions :id="id" />
                   </span>
+                </template>
+                <template #amount>
+                  {{ store.getProjectTasks(id).length }}
                 </template>
               </ProjectLink>
             </li>
@@ -112,7 +119,7 @@
 <script setup lang="ts">
 import { useActiveElement } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import BaseDivider from '@/components/base/BaseDivider.vue';
 import IconCalendarToday from '@/components/icons/IconCalendarToday.vue';
@@ -135,9 +142,11 @@ const projectsStore = useProjectsStore();
 const activeElement = useActiveElement();
 const isProjectModalOpen = ref(false);
 const isProjectFocus = ref(false);
-const isOpen = ref(false);
-const sidebar = ref();
-const showId = ref();
+
+const projectLinkStyle = computed(
+  () =>
+    'md:[&>*>*>button]:opacity-0 md:[&>*>*>button]:hover:opacity-100 md:[&>*>*>button:focus]:opacity-100 [&>*>span]:visible [&>*>span]:hover:invisible'
+);
 const { getActiveProjects: activeProjects, getActiveFavoriteProjects: favActiveProjects } = storeToRefs(projectsStore);
 
 const { getProjectListState: isProjectListOpen } = storeToRefs(settingsStore);
@@ -151,17 +160,6 @@ function handleOpenEditor(): void {
 
 function handleCloseEditor(): void {
   isProjectModalOpen.value = false;
-}
-
-function handleShowOptions(id: string): void {
-  if (isOpen.value) return;
-  showId.value = id;
-}
-
-function handleHideOptions(): void {
-  if (!isOpen.value) {
-    showId.value = null;
-  }
 }
 
 function addProject(project: Project): void {

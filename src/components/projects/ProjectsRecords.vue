@@ -4,7 +4,7 @@
       <li
         v-for="{ id, name, color } in projects"
         :key="id"
-        class="relative list-none">
+        class="relative list-none md:[&>*>*>button]:opacity-0 md:[&>*>*>button]:hover:opacity-100 md:[&>*>*>button:focus]:opacity-100">
         <ProjectLink
           class="rounded-lg font-semibold hover:!bg-base-200"
           :to="{ name: 'project', params: { id: id } }"
@@ -14,7 +14,7 @@
           {{ name }}
           <template #options>
             <TheTooltip
-              class="!tooltip-top absolute -right-6 top-2 bg-transparent"
+              class="!tooltip-top absolute -right-8 top-2 bg-transparent"
               data="More project actions">
               <ProjectOptions
                 :id="id"

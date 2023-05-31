@@ -4,7 +4,7 @@
       v-if="!editTask"
       ref="card"
       v-bind="$attrs"
-      class="relative flex justify-between border-b border-base-200 py-3 transition-colors duration-1000 md:[&>.dropdown>button]:opacity-0 md:[&>.dropdown>button]:hover:opacity-100 [&>.dropdown>button:focus]:opacity-100"
+      class="relative flex justify-between border-b border-base-200 py-3 transition-colors duration-1000 md:[&>div>*>button]:opacity-0 md:[&>div>*>button]:hover:opacity-100 [&>div>*>button:focus]:opacity-100"
       :class="{ 'bg-base-300  duration-1000 ': showBacklight, 'last:border-b-0': isEditorActive }">
       <div class="flex w-full gap-4">
         <TaskCheckbox
@@ -106,20 +106,29 @@
         </div>
       </div>
 
-      <TaskOptions
-        ref="options"
-        :task-id="task.id"
-        :task="task"
-        class="absolute right-0"
-        :coords="{ cardX, cardY, cardBottom }"
-        @toggle-is-priority="toggleIsPriority"
-        @toggle-is-done="toggleIsDone"
-        @edit-task="toggleEditModal"
-        @delete-task="openDeleteModal"
-        @handle-date="handleUpdateDate"
-        @duplicate-task="handleDuplicateTask"
-        @picker-open="setCardBacklight"
-        @add-subtask="handleAddSubtask" />
+      <div>
+        <div class="absolute right-8">
+          <BaseButton
+            class="transition rounded-md hover:bg-base-200 print:hidden"
+            @click="toggleEditModal">
+            <IconPen />
+          </BaseButton>
+        </div>
+        <TaskOptions
+          ref="options"
+          :task-id="task.id"
+          :task="task"
+          class="absolute right-0 print:hidden"
+          :coords="{ cardX, cardY, cardBottom }"
+          @toggle-is-priority="toggleIsPriority"
+          @toggle-is-done="toggleIsDone"
+          @edit-task="toggleEditModal"
+          @delete-task="openDeleteModal"
+          @handle-date="handleUpdateDate"
+          @duplicate-task="handleDuplicateTask"
+          @picker-open="setCardBacklight"
+          @add-subtask="handleAddSubtask" />
+      </div>
 
       <Teleport to="body">
         <ModalConfirmDelete
@@ -159,8 +168,10 @@ import { storeToRefs } from 'pinia';
 import { computed, inject, type Ref, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
+import BaseButton from '@/components/base/BaseButton.vue';
 import IconCalendar from '@/components/icons/IconCalendar.vue';
 import IconColor from '@/components/icons/IconColor.vue';
+import IconPen from '@/components/icons/IconPen.vue';
 import ModalConfirmDelete from '@/components/modals/ModalConfirmDelete.vue';
 import TaskCheckbox from '@/components/tasks/card/TaskCheckbox.vue';
 import TaskProjectDetail from '@/components/tasks/card/TaskProjectDetail.vue';

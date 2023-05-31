@@ -2,46 +2,44 @@
   <RouterLink
     class="outline-custom flex items-center py-2 hover:bg-base-300"
     :to="to"
-    @click="useHideMenu()"
-    v-bind="$attrs">
+    v-bind="$attrs"
+    @click="useHideMenu()">
     <TheTooltip
       v-if="!customTooltip"
       :data="name || ''"
       class="w-full">
-      <div class="flex gap-2">
+      <div class="flex gap-2 relative">
         <slot name="icon">
           <IconColor v-bind="$attrs" />
         </slot>
-
         <slot name="name">{{ calcName }}</slot>
       </div>
-
-      <slot name="amount"></slot>
     </TheTooltip>
 
     <div
       v-else
-      class="flex gap-2">
+      class="flex gap-2 relative">
       <slot name="icon">
         <IconColor v-bind="$attrs" />
       </slot>
 
       <slot name="name">{{ calcName }}</slot>
     </div>
-
-    <slot name="amount"></slot>
+    <span class="absolute right-12 md:relative md:right-auto">
+      <slot name="amount" />
+    </span>
   </RouterLink>
 
-  <slot name="options"></slot>
+  <slot name="options" />
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { RouteLocationRaw } from 'vue-router';
-import { useHideMenu } from '@/composables/useHideMenu';
 
 import IconColor from '@/components/icons/IconColor.vue';
 import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import { useHideMenu } from '@/composables/useHideMenu';
 
 type Props = {
   to: RouteLocationRaw;
@@ -60,3 +58,4 @@ const calcName = computed(() => {
   return props.name;
 });
 </script>
+

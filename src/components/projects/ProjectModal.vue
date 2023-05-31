@@ -6,12 +6,10 @@
       <div
         ref="target"
         class="modal-box overflow-visible p-0">
-        <div class="mb-4 border-b">
+        <div class="mb-4 border-b border-base-300">
           <h2 class="p-4 text-2xl font-bold">{{ modalTitle }}</h2>
         </div>
-        <form
-          action=""
-          class="p-4">
+        <form class="p-4">
           <div class="flex flex-col">
             <BaseInput
               v-model.trim="projectName"
@@ -21,7 +19,9 @@
               maxlength="64"
               type="text"
               :placeholder="projectName || 'Project name'" />
-            <BaseDropdown label-name="Color">
+            <BaseDropdown
+              label-name="Color"
+              class="">
               <template #content>
                 <IconColor :fill="colorHex" />
                 <span class="text-base font-normal">{{ colorName }}</span>

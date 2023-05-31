@@ -27,6 +27,7 @@
           @click.prevent="handleProjectEditor" />
         <ProjectsToggleButton
           :is-open="isProjectOpen"
+          class="right-0.5"
           @click="setProjectListToggle" />
       </div>
     </div>

@@ -6,7 +6,7 @@
     <button
       tabindex="0"
       aria-label="Show task options"
-      class="outline-custom btn-square btn-xs btn rounded-md border-0 bg-base-100 hover:bg-base-200 focus:bg-base-200 focus-visible:-outline-offset-2">
+      class="outline-custom btn-square btn-xs btn rounded-md border-0 bg-base-100 hover:bg-base-200 focus:bg-base-200 focus-visible:-outline-offset-2 duration-300">
       <IconVerticalDots class="fill-base-content" />
     </button>
 
@@ -14,7 +14,7 @@
       ref="dropList"
       role="menu"
       tabindex="1"
-      class="[& svg:not(.active-state)]:fill-base-content [& button:active]:text-base-content dropdown-content menu z-30 w-60 rounded-md border border-base-300 bg-base-100 fill-base-content py-0.5 text-base-content shadow [&>button:active]:bg-base-200 [&>li:hover>button:not(.active-state)]:bg-base-200">
+      class="[& svg:not(.active-state)]:fill-base-content [& button:active]:text-base-content dropdown-content menu w-60 rounded-md border border-base-300 bg-base-100 fill-base-content py-0.5 text-base-content shadow [&>button:active]:bg-base-200 [&>li:hover>button:not(.active-state)]:bg-base-200">
       <OptionListButton @click.stop="handleEditTask(taskId)">
         <template #icon>
           <IconPen />
@@ -80,20 +80,6 @@
       </OptionListButton>
 
       <BaseDividerSmall />
-
-      <!-- <Datepicker
-        v-if="settingsStore.getModalStatus('task')"
-        v-show="showPicker"
-        ref="datepicker"
-        :value="currentDate"
-        teleport="#subtasksList"
-        :teleport-center="mdAndSmaller"
-        position="left"
-        :min-date="new Date()"
-        :start-time="startTime"
-        @open="settingsStore.setModal({ modal: 'calendar', value: true })"
-        @closed="settingsStore.setModal({ modal: 'calendar', value: false })"
-        @update:model-value="handleDate" /> -->
 
       <Datepicker
         v-show="showPicker"
