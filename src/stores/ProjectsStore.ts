@@ -10,7 +10,7 @@ import { findIndex } from '@/helpers/findIndex';
 import { findItem } from '@/helpers/findItem';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { HasId } from '@/types/models/HasId';
-import { NotificationMessage } from '@/types/models/NotificationMessage';
+import { NotificationMessage } from '@/types/models/Notification';
 import type { Project } from '@/types/models/Projects';
 
 type PartialProject = Omit<Project, 'active'>;

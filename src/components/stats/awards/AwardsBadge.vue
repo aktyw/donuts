@@ -11,39 +11,20 @@
       :style="{ '--value': value }"
       style="--size: 6rem; --thickness: 5px"></div>
   </div>
-
-  <teleport to="body">
-    <TheAchievement
-      v-if="hasEarnAchievement && isModalOpen"
-      :type="type"></TheAchievement>
-  </teleport>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
-
-import TheAchievement from '@/components/layouts/TheAchievement.vue';
-import { useSettingsStore } from '@/stores/SettingsStore';
-import type { TargetType } from '@/stores/StatsStore';
-
-const settingsStore = useSettingsStore();
-const hasEarnAchievement = ref(false);
-const isModalOpen = computed(() => settingsStore.getModalStatus('achievement'));
+import { onMounted, ref, watch } from 'vue';
 
 type Props = {
   progressValue: number;
-  type: TargetType;
 };
 const props = defineProps<Props>();
 
 watch(
   () => props.progressValue,
-  (val, old) => {
+  () => {
     animateProgress();
-    console.log(old, val);
-    if (val >= 100 && old < 100) {
-      showAchievement();
-    }
   }
 );
 
@@ -61,11 +42,6 @@ function animateProgress() {
     value.value += change;
     requestAnimationFrame(animateProgress);
   }
-}
-
-function showAchievement() {
-  hasEarnAchievement.value = true;
-  settingsStore.setModal({ modal: 'achievement', value: true });
 }
 
 onMounted(() => {

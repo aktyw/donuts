@@ -36,7 +36,7 @@ export const useTrackingStore = defineStore('tracking', {
     setNewEvent(payload: TrackingEvent): void {
       const { action, name, id, projectId, time } = payload;
 
-      this.tracking.events.push({ action, name, id, projectId, time });
+      this.tracking.events.unshift({ action, name, id, projectId, time });
     },
     clearLogs() {
       this.tracking.events = [];

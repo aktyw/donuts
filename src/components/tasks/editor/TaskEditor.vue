@@ -210,6 +210,8 @@ watchEffect(() => {
   selectedProject.value = props.currentProject || inbox;
 });
 
+console.log(navigator.userAgent);
+
 function handleAddTask(): void {
   const options = {
     title: taskTitle.value,

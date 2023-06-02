@@ -1,10 +1,9 @@
 import { v4 as uuid } from 'uuid';
 
 import { useTasksStore } from '@/stores/TasksStore';
-import type { Project } from '@/types/models/Projects';
 import type { Task } from '@/types/models/Task';
 
-export function duplicateNestedTasks(task: Task, newParent?: Task, newProjectId?: Pick<Project, 'id'>): Task {
+export function duplicateNestedTasks(task: Task, newParent?: Task, newProjectId?: string): Task {
   const store = useTasksStore();
 
   const copyTask = JSON.parse(JSON.stringify(task));

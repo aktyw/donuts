@@ -37,14 +37,14 @@
       </TaskCard>
     </FadeTasksList>
 
-    <!-- <FadeTasksList
+    <FadeTasksList
       v-if="isTimeline"
       tag="ul">
       <TaskCard
         v-for="task in (tasks as Task[])"
         :key="task.id"
         :task="task" />
-    </FadeTasksList> -->
+    </FadeTasksList>
   </section>
 </template>
 
@@ -54,7 +54,7 @@ import { computed, type ComputedRef } from 'vue';
 
 import TaskCard from '@/components/tasks/card/TaskCard.vue';
 import TasksList from '@/components/tasks/list/TasksList.vue';
-import FadeTasksList from '@/components/ui/transitions/FadeTasksList.vue';
+import FadeTasksList from '@/components/ui/transitions/FadeTasksLIst.vue';
 import { useHandleTasks } from '@/composables/useHandleTasks';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { Project } from '@/types/models/Projects';

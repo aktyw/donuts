@@ -10,9 +10,3 @@ export interface Task {
   parentId?: string | null;
   childId?: string[];
 }
-
-// export type TaskAddOptions = Omit<Task, 'id' | 'isDone' | 'createdAt' | 'subtasks'>;
-
-// export type TaskAddSubtaskOptions = TaskAddOptions & {
-//   parentId?: string;
-// };

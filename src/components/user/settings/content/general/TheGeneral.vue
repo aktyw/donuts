@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="flex flex-col gap-4">
+    <section class="flex flex-col gap-4 pb-16">
       <div class="flex flex-col gap-2">
         <SettingsLabel title="Home view" />
         <SelectHomeList v-model="selectedHome" />

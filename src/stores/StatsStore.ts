@@ -48,6 +48,13 @@ export const useStatsStore = defineStore('stats', {
     getTarget(state) {
       return (targetType: TargetType) => state.stats.tasks.target[targetType];
     },
+    getProgressValue() {
+      return (targetType: TargetType) => {
+        return targetType === 'daily'
+          ? Math.round((this.getCompletedTasks('daily') / this.getTarget('daily')) * 100)
+          : Math.round((this.getCompletedTasks('weekly') / this.getTarget('weekly')) * 100);
+      };
+    },
   },
   actions: {
     setNewTarget(payload: { targetType: TargetType; value: number }): void {

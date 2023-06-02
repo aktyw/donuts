@@ -3,3 +3,8 @@ export enum Time {
   Today = 'Today',
   Tomorrow = 'Tomorrow',
 }
+
+export interface StartTime {
+  hours: number;
+  minutes: number;
+}

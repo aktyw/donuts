@@ -138,7 +138,10 @@ export const useAuthStore = defineStore('auth', {
         const auth = getAuth();
         const user = auth.currentUser;
 
-        await deleteUser(user);
+        if (user) {
+          await deleteUser(user);
+        }
+
         this.router.push({ path: '/auth/login', replace: true });
       } catch (error) {
         if (error instanceof FirebaseError) {
@@ -151,9 +154,12 @@ export const useAuthStore = defineStore('auth', {
       try {
         const auth = getAuth();
 
-        await updateProfile(auth.currentUser, {
-          displayName: displayName,
-        });
+        if (auth.currentUser) {
+          await updateProfile(auth.currentUser, {
+            displayName: displayName,
+          });
+        }
+
         this.setUser();
       } catch (error) {
         if (error instanceof FirebaseError) {

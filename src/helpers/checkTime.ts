@@ -1,4 +1,4 @@
-import type { StartTime } from '@/types/models/StartTime';
+import type { StartTime } from '@/types/models/TimeDetails';
 
 export const today = new Date();
 

@@ -20,12 +20,12 @@
           Settings
         </NavLink>
         <NavLink :to="{ name: 'activity' }">Activity log</NavLink>
+        <StatsDropdownButton class="!w-full !h-12" />
         <BaseButton
-          class="outline-custom btn-md btn rounded border-0 bg-base-300 text-base font-semibold normal-case text-base-content lg:btn-sm hover:bg-base-200"
+          class="outline-custom btn-md btn rounded-md border-0 bg-base-300 text-base font-semibold normal-case text-base-content lg:btn-sm hover:bg-base-200"
           @click.prevent="logout">
           Log out
         </BaseButton>
-        <StatsDropdownButton class="!w-full"></StatsDropdownButton>
       </ul>
     </div>
   </div>

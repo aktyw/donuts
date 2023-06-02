@@ -1,11 +1,9 @@
 <template>
   <main id="main">
-    <div class="flex w-4/5 max-w-[800px] flex-col items-start">
+    <TasksContainer>
       <FiltersNavbar :title="TASK_VIEW_TITLE.TODAY" />
-      <FilterStatus v-if="!allowDrag" />
-      <FiltersList
-        v-if="!!store.tasks.default.length && !allowDrag"
-        :tasks="tasks" />
+      <FilterStatus v-if="!isDefault" />
+      <FiltersList :tasks="tasks" />
       <TasksList
         :tasks="tasks"
         :is-timeline="true" />
@@ -16,7 +14,7 @@
       <TaskEditor
         v-else
         @close-editor="closeEditor" />
-    </div>
+    </TasksContainer>
 
     <EmptyMessage v-if="!tasks.length" />
     <Teleport to="body">
@@ -36,6 +34,7 @@ import EmptyMessage from '@/components/messages/EmptyMessage.vue';
 import TaskEditor from '@/components/tasks/editor/TaskEditor.vue';
 import TaskAddButton from '@/components/tasks/list/TaskAddButton.vue';
 import TasksList from '@/components/tasks/list/TasksList.vue';
+import TasksContainer from '@/components/ui/containers/TasksContainer.vue';
 import { useHandleTasks } from '@/composables/useHandleTasks';
 import { useTasksStore } from '@/stores/TasksStore';
 import { SortFilters } from '@/types/models/Sort';
@@ -45,7 +44,7 @@ const store = useTasksStore();
 const { getSortType: sortTypeStatus } = storeToRefs(store);
 const todayTasks = computed(() => store.getTodayTasks);
 const tasks = useHandleTasks(todayTasks);
-const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
+const isDefault = computed(() => sortTypeStatus.value === SortFilters.Default);
 const isEditorActive = ref(false);
 
 provide('isEditorActive', isEditorActive);

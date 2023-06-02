@@ -55,24 +55,33 @@
         <LinkButton :to="{ name: 'productivity' }">Productivity settings</LinkButton>
       </div>
     </main>
+    <teleport to="body">
+      <TheAchievement
+        v-if="hasEarnAchievement && isModalOpen"
+        :type="achievementType" />
+    </teleport>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onUpdated, type Ref, ref } from 'vue';
+import { computed, type Ref, ref, watch } from 'vue';
 
 import BaseDivider from '@/components/base/BaseDivider.vue';
 import IconMedals from '@/components/icons/IconMedals.vue';
 import IconOrder from '@/components/icons/IconOrder.vue';
+import TheAchievement from '@/components/layouts/TheAchievement.vue';
 import AwardsBadge from '@/components/stats/awards/AwardsBadge.vue';
 import LinkButton from '@/components/stats/ui/LinkButton.vue';
 import StatsToggle from '@/components/stats/ui/StatsToggle.vue';
+import { useMessage } from '@/composables/useMessage';
+import { useSettingsStore } from '@/stores/SettingsStore';
 import type { TargetType } from '@/stores/StatsStore';
 import { useStatsStore } from '@/stores/StatsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 
 const tasksStore = useTasksStore();
 const statsStore = useStatsStore();
+const settingsStore = useSettingsStore();
 
 const completedDailyTasks = computed(() => statsStore.getCompletedTasks('daily'));
 const completedWeeklyTasks = computed(() => statsStore.getCompletedTasks('daily'));
@@ -80,8 +89,30 @@ const dailyTasksTarget = computed(() => statsStore.getTarget('daily'));
 const weeklyTasksTarget = computed(() => statsStore.getTarget('weekly'));
 
 const activeAchievementType: Ref<TargetType> = ref('daily');
+const hasEarnAchievement = ref(false);
+const isModalOpen = computed(() => settingsStore.getModalStatus('achievement'));
+const achievementType = ref();
 
-import { useMessage } from '@/composables/useMessage';
+const dailyProgress = computed(() => statsStore.getProgressValue('daily'));
+const weeklyProgress = computed(() => statsStore.getProgressValue('weekly'));
+
+watch(
+  () => dailyProgress.value,
+  (val, old) => {
+    if (val >= 100 && old < 100) {
+      showAchievement('daily');
+    }
+  }
+);
+
+watch(
+  () => weeklyProgress.value,
+  (val, old) => {
+    if (val >= 100 && old < 100) {
+      showAchievement('weekly');
+    }
+  }
+);
 
 const messages = [
   "Keep going, you're unstoppable!",
@@ -119,7 +150,9 @@ function calcProgressValue(type: TargetType) {
     : Math.round((completedWeeklyTasks.value / weeklyTasksTarget.value) * 100);
 }
 
-onUpdated(() => {
-  console.log(completedDailyTasks.value);
-});
+function showAchievement(type: TargetType) {
+  achievementType.value = type;
+  hasEarnAchievement.value = true;
+  settingsStore.setModal({ modal: 'achievement', value: true });
+}
 </script>

@@ -19,7 +19,7 @@ export interface Sort {
   order: SortOrder;
 }
 
-export interface State {
+export interface TasksState {
   tasks: RemovableRef<Tasks>;
   sort: Sort;
   notifications: Notification[];

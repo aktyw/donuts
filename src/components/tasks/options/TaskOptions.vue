@@ -153,7 +153,7 @@ import blurElement from '@/helpers/blur';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useSettingsStore } from '@/stores/SettingsStore';
 import { useTasksStore } from '@/stores/TasksStore';
-import { NotificationMessage } from '@/types/models/NotificationMessage';
+import { NotificationMessage } from '@/types/models/Notification';
 import type { Task } from '@/types/models/Task';
 
 const { mdAndSmaller } = getBreakpoints();

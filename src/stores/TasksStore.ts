@@ -17,14 +17,13 @@ import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useStatsStore } from '@/stores/StatsStore';
 import { Filters } from '@/types/models/Filters';
 import type { Notification } from '@/types/models/Notification';
-import { NotificationAction } from '@/types/models/NotificationAction';
-import { NotificationMessage } from '@/types/models/NotificationMessage';
+import { NotificationAction, NotificationMessage } from '@/types/models/Notification';
 import { SortFilters, SortOrder } from '@/types/models/Sort';
-import type { State } from '@/types/models/State';
+import type { TasksState } from '@/types/models/State';
 import type { Task } from '@/types/models/Task';
 
 export const useTasksStore = defineStore('tasks', {
-  state: (): State => ({
+  state: (): TasksState => ({
     tasks: useStorage(
       'tasks',
       {

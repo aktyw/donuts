@@ -83,7 +83,7 @@ import TheTooltip from '@/components/ui/tooltips/TheTooltip.vue';
 import { useNotification } from '@/composables/useNotification';
 import blurElement from '@/helpers/blur';
 import { useTasksStore } from '@/stores/TasksStore';
-import { NotificationMessage } from '@/types/models/NotificationMessage';
+import { NotificationMessage } from '@/types/models/Notification';
 import type { Task } from '@/types/models/Task';
 
 type Props = {

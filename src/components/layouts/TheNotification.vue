@@ -37,7 +37,7 @@ import IconUndo from '@/components/icons/IconUndo.vue';
 import FadeTransitionGroup from '@/components/ui/transitions/FadeTransitionGroup.vue';
 import { vFocus } from '@/directives/vAutoFocus.js';
 import { useTasksStore } from '@/stores/TasksStore';
-import { NotificationAction } from '@/types/models/NotificationAction';
+import { NotificationAction } from '@/types/models/Notification';
 
 const store = useTasksStore();
 const { notifications } = storeToRefs(store);

@@ -2,9 +2,9 @@
   <main
     v-if="currentProject?.active"
     id="main">
-    <div class="flex w-4/5 max-w-[800px] flex-col items-start">
+    <TasksContainer>
       <FiltersNavbar :title="currentProject?.name ?? 'Inbox'" />
-      <FilterStatus v-if="!allowDrag" />
+      <FilterStatus v-if="!isDefault" />
       <FiltersList :tasks="projectTasks" />
       <TasksList
         :tasks="rootProjectTasks"
@@ -17,7 +17,7 @@
         v-else
         :current-project="currentProject"
         @close-editor="closeEditor" />
-    </div>
+    </TasksContainer>
 
     <EmptyMessage v-if="!activeProjectTasks.length && currentFilter === 'Active'" />
     <Teleport to="body">
@@ -28,10 +28,10 @@
   <main
     v-else
     id="main">
-    <div class="flex w-4/5 max-w-[800px] flex-col items-start">
+    <TasksContainer>
       <h2 class="pb-2.5 text-xl font-bold">{{ currentProject?.name ?? 'Inbox' }}</h2>
       <ProjectArchived :id="projectId" />
-    </div>
+    </TasksContainer>
   </main>
 </template>
 
@@ -48,24 +48,29 @@ import ProjectArchived from '@/components/projects/ProjectArchived.vue';
 import TaskEditor from '@/components/tasks/editor/TaskEditor.vue';
 import TaskAddButton from '@/components/tasks/list/TaskAddButton.vue';
 import TasksList from '@/components/tasks/list/TasksList.vue';
+import TasksContainer from '@/components/ui/containers/TasksContainer.vue';
 import { useHandleTasks } from '@/composables/useHandleTasks';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useTasksStore } from '@/stores/TasksStore';
 import { SortFilters } from '@/types/models/Sort';
 import type { Task } from '@/types/models/Task';
 
-const store = useTasksStore();
+const tasksStore = useTasksStore();
 const projectsStore = useProjectsStore();
-const { getProjectTasks, getSortType: sortTypeStatus, getCurrentFilter: currentFilter } = storeToRefs(store);
+
+const { getProjectTasks, getSortType: sortTypeStatus, getCurrentFilter: currentFilter } = storeToRefs(tasksStore);
 const { getProjectById } = storeToRefs(projectsStore);
+
 const projectId = useRouteParams<string>('id');
-const allowDrag = computed(() => sortTypeStatus.value === SortFilters.Default);
 const projectTasks = computed(() => getProjectTasks.value(projectId.value as string));
 const activeProjectTasks = computed(() => projectTasks.value.filter((task: Task) => !task.isDone));
 const currentProject = computed(() => getProjectById.value((projectId.value as string) ?? 'inbox'));
-const tasks = useHandleTasks(projectTasks);
 const rootProjectTasks = computed(() => tasks.value.filter((task: Task) => !task.parentId));
+
+const tasks = useHandleTasks(projectTasks);
+
 const isEditorActive = ref(false);
+const isDefault = computed(() => sortTypeStatus.value === SortFilters.Default);
 
 provide('isEditorActive', isEditorActive);
 provide('tasks', readonly(projectTasks));
