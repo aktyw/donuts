@@ -30,6 +30,7 @@ interface SettingsState {
       moveProject: boolean;
       userSettings: boolean;
       deleteAccount: boolean;
+      achievement: boolean,
     };
     isProjectListOpen: {
       favorites: boolean;
@@ -71,6 +72,7 @@ export const useSettingsStore = defineStore('settings', {
         moveProject: false,
         userSettings: false,
         deleteAccount: false,
+        achievement: false,
       },
       isProjectListOpen: {
         favorites: true,

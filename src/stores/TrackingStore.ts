@@ -1,8 +1,6 @@
 import { useStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
 
-import { useStatsStore } from '@/stores/StatsStore';
-
 export type Action = 'Add' | 'Update' | 'Move' | 'Delete' | 'Complete' | 'Activate';
 
 export interface TrackingEvent {
@@ -36,17 +34,9 @@ export const useTrackingStore = defineStore('tracking', {
   },
   actions: {
     setNewEvent(payload: TrackingEvent): void {
-      const statsStore = useStatsStore();
-
       const { action, name, id, projectId, time } = payload;
 
       this.tracking.events.push({ action, name, id, projectId, time });
-
-      if (action === 'Complete') {
-        statsStore.updateValues(1);
-      } else if (action === 'Activate') {
-        statsStore.updateValues(-1);
-      }
     },
     clearLogs() {
       this.tracking.events = [];

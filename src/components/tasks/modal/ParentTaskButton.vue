@@ -6,7 +6,7 @@
       :to="{ params: { taskid: parent?.id } }"
       class="flex h-full w-full items-center justify-center gap-1 transition duration-300 hover:bg-base-200">
       <IconCircle />
-      <span>{{ parent?.title }}</span>
+      <span>{{ parent?.title.slice(0, 15) }}</span>
     </RouterLink>
   </TheTooltip>
 </template>

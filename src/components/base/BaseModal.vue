@@ -4,6 +4,7 @@
     role="dialog">
     <div
       ref="target"
+      v-bind="$attrs"
       class="modal-box overflow-visible">
       <h2
         v-if="modalTitle"

@@ -72,6 +72,7 @@ const routes = [
     name: 'activity',
     components: { default: lazyLoad('ActivityView'), sidebar: () => import(`@/components/sidebars/TasksSidebar.vue`) },
     meta: { requiresAuth: true },
+    props: true,
     children: [
       {
         path: 'task/:id',
@@ -80,6 +81,7 @@ const routes = [
           default: lazyLoad('ActivityView'),
           sidebar: () => import(`@/components/sidebars/TasksSidebar.vue`),
         },
+        props: true,
         meta: { requiresAuth: true },
       },
     ],

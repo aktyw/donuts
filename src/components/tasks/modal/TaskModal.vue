@@ -56,7 +56,7 @@
                 <template #content>
                   <p>
                     Do you really want to delete
-                    <span class="break-words font-bold">{{ currentTask.title }}</span>
+                    <span class="break-words font-bold">{{ currentTask.title.slice(0, 20) }}</span>
                     ?
                   </p>
                 </template>
@@ -85,7 +85,7 @@
                 v-else
                 :class="{ 'line-through': currentTask.isDone }"
                 @click.stop="openTaskEditor">
-                {{ currentTask.title }}
+                {{ currentTask.title.slice(0, 40) }}
                 <template #desc>
                   {{ currentTask.description }}
                 </template>
@@ -337,7 +337,10 @@ function handleDeleteTask(): void {
 }
 
 function handleShowActivityTask(): void {
-  router.push({ name: 'activityTask', params: { id: route.params.taskid } });
+  router.push({
+    name: 'activityTask',
+    params: { id: route.params.taskid },
+  });
 }
 
 function openTaskEditor(): void {

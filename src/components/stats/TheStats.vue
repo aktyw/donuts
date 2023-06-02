@@ -22,13 +22,15 @@
         <div>
           <AwardsBadge
             v-if="activeAchievementType === 'daily'"
+            type="daily"
             :progress-value="calcProgressValue('daily')">
-            <IconOrder />
+            <IconOrder :class="{ 'fill-primary': calcProgressValue('daily') >= 100 }" />
           </AwardsBadge>
           <AwardsBadge
             v-else
+            type="weekly"
             :progress-value="calcProgressValue('weekly')">
-            <IconMedals />
+            <IconMedals :class="{ 'fill-primary': calcProgressValue('weekly') >= 100 }" />
           </AwardsBadge>
         </div>
       </section>
@@ -57,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type Ref, ref } from 'vue';
+import { computed, onUpdated, type Ref, ref } from 'vue';
 
 import BaseDivider from '@/components/base/BaseDivider.vue';
 import IconMedals from '@/components/icons/IconMedals.vue';
@@ -116,4 +118,8 @@ function calcProgressValue(type: TargetType) {
     ? Math.round((completedDailyTasks.value / dailyTasksTarget.value) * 100)
     : Math.round((completedWeeklyTasks.value / weeklyTasksTarget.value) * 100);
 }
+
+onUpdated(() => {
+  console.log(completedDailyTasks.value);
+});
 </script>

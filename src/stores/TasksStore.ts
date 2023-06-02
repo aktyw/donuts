@@ -14,6 +14,7 @@ import { findItem } from '@/helpers/findItem';
 import { moveNestedTasks } from '@/helpers/moveNestedTasks';
 import { recoverNestedTasks } from '@/helpers/recoverNestedTasks';
 import { useProjectsStore } from '@/stores/ProjectsStore';
+import { useStatsStore } from '@/stores/StatsStore';
 import { Filters } from '@/types/models/Filters';
 import type { Notification } from '@/types/models/Notification';
 import { NotificationAction } from '@/types/models/NotificationAction';
@@ -204,6 +205,8 @@ export const useTasksStore = defineStore('tasks', {
       this.sort.order = this.sort.order === SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
     },
     toggleIsDone(id: string) {
+      const statsStore = useStatsStore();
+
       const index = findIndex(id, this.tasks.default);
 
       const tasksCompletedBefore = this.tasks.default.filter((task: Task) => task.isDone).length;
@@ -213,6 +216,8 @@ export const useTasksStore = defineStore('tasks', {
       const tasksCompletedAfter = this.tasks.default.filter((task: Task) => task.isDone).length;
 
       const amountOfCompletedTasks = Math.abs(tasksCompletedAfter - tasksCompletedBefore);
+
+      statsStore.updateStats(tasksCompletedAfter - tasksCompletedBefore);
 
       this.tasks.default[index]['isDone']
         ? useNotification(

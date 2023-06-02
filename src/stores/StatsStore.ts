@@ -1,3 +1,4 @@
+import { useStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
 
 export type TargetType = 'daily' | 'weekly';
@@ -22,8 +23,8 @@ interface StatsState {
 }
 
 export const useStatsStore = defineStore('stats', {
-  state: (): StatsState => ({
-    stats: {
+  state: () => ({
+    stats: useStorage('stats', {
       tasks: {
         completed: {
           daily: 0,
@@ -38,7 +39,7 @@ export const useStatsStore = defineStore('stats', {
       projects: {
         active: 0,
       },
-    },
+    }),
   }),
   getters: {
     getCompletedTasks(state) {
@@ -55,8 +56,14 @@ export const useStatsStore = defineStore('stats', {
     resetStats(payload: { targetType: TargetType; value: number }): void {
       this.stats.tasks.completed[payload.targetType] = payload.value;
     },
-    updateValues(value: number) {
-      Object.values(this.stats.tasks.completed).forEach((prop: number) => (prop += value));
+    updateStats(value: number) {
+      const completed = this.stats.tasks.completed;
+
+      Object.keys(completed).forEach((key) => {
+        const targetKey = key as keyof typeof completed;
+
+        completed[targetKey] = Math.max(completed[targetKey] + value, 0);
+      });
     },
   },
 });

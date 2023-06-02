@@ -12,7 +12,7 @@
           :is-priority="task.isPriority"
           @toggle="toggleIsDone(task.id)" />
 
-        <div class="flex w-full cursor-pointer flex-col [&>*>p]:outline-red-500">
+        <div class="flex w-full cursor-pointer flex-col [&>*>p]:outline-red-500 [&>*>p]:pr-16">
           <router-link
             v-if="isModal"
             class="flex flex-col outline-custom"

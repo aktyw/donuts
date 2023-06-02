@@ -2,9 +2,15 @@
   <div
     class="min-h-screen h-auto w-full flex justify-center pb-80 transition-all duration-300"
     :class="{ 'ml-80': isMenuOpen && lgAndLarger }">
-    <div class="w-4/5 flex flex-col items-center justify-start gap-2 py-8 max-w-[800px]">
+    <div class="w-4/5 flex flex-col justify-start gap-2 py-8 max-w-[800px]">
       <header>
-        <h2 class="text-2xl font-bold">Activity</h2>
+        <h2 class="text-xl font-bold">
+          Activity
+          <span v-if="route.params.id">
+            of task:
+            <span>{{ task.title.slice(0, 25) }}</span>
+          </span>
+        </h2>
       </header>
       <main class="w-full flex justify-center">
         <section class="w-full">
@@ -23,7 +29,11 @@
                         :class="actionColors[event.action]"></span>
                       <span class="font-semibold">{{ event.action }} task</span>
                     </div>
-                    <span class="font-medium">{{ event.name }}</span>
+                    <span
+                      v-if="!route.params.id"
+                      class="font-medium">
+                      {{ event.name }}
+                    </span>
                   </span>
                   <div class="flex justify-between items-center">
                     <span class="text-primary text-sm">{{ event.time }}</span>
@@ -57,6 +67,7 @@ import ProjectLink from '@/components/projects/ProjectLink.vue';
 import { getBreakpoints } from '@/composables/useBreakpoints';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useSettingsStore } from '@/stores/SettingsStore';
+import { useTasksStore } from '@/stores/TasksStore';
 import type { Action } from '@/stores/TrackingStore';
 import { useTrackingStore } from '@/stores/TrackingStore';
 
@@ -65,10 +76,12 @@ const { lgAndLarger } = getBreakpoints();
 const route = useRoute();
 const settingsStore = useSettingsStore();
 const projectsStore = useProjectsStore();
+const tasksStore = useTasksStore();
 
 const trackingStore = useTrackingStore();
 const { getProjectById } = storeToRefs(projectsStore);
 const { getMenuStatus: isMenuOpen } = storeToRefs(settingsStore);
+
 const events = computed(() => {
   if (route.hash) {
     return trackingStore.getFilteredEvents(route.hash.slice(1) as Action);
@@ -80,6 +93,8 @@ const events = computed(() => {
 
   return trackingStore.getEvents;
 });
+
+const task = computed(() => tasksStore.getTaskById(route.params.id));
 
 type ActionColorMap = {
   [key in Action]: string;
