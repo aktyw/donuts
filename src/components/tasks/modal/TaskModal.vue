@@ -113,7 +113,7 @@
               <TaskModalOption title="Project">
                 <ProjectList
                   v-model="selectedProject"
-                  class="select-sm w-full max-w-[16rem] border-none bg-base-100 px-2 transition duration-300 hover:bg-base-100"
+                  class="select-sm w-full max-w-[14rem] lg:w-full border-none bg-base-100 px-2 transition duration-300 hover:bg-base-100"
                   :current-project="currentProject"
                   @change="handleMoveTask" />
               </TaskModalOption>
@@ -337,7 +337,7 @@ function handleDeleteTask(): void {
 }
 
 function handleShowActivityTask(): void {
-  router.push({ name: 'activity' });
+  router.push({ name: 'activityTask', params: { id: route.params.taskid } });
 }
 
 function openTaskEditor(): void {

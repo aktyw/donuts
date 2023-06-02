@@ -19,8 +19,9 @@
           @click.stop="handleSettings">
           Settings
         </NavLink>
+        <NavLink :to="{ name: 'activity' }">Activity log</NavLink>
         <BaseButton
-          class="outline-custom btn-md btn rounded border-0 bg-base-300 text-base font-normal normal-case text-base-content lg:btn-sm hover:bg-base-200"
+          class="outline-custom btn-md btn rounded border-0 bg-base-300 text-base font-semibold normal-case text-base-content lg:btn-sm hover:bg-base-200"
           @click.prevent="logout">
           Log out
         </BaseButton>

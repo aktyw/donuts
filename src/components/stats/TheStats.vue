@@ -8,7 +8,7 @@
           completed tasks
         </p>
         <LinkButton
-          :to="{ name: 'activity' }"
+          :to="{ name: 'activity', hash: '#Complete' }"
           class="text-primary hover:underline transition">
           View all completed tasks
         </LinkButton>

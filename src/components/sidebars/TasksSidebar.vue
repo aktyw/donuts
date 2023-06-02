@@ -28,7 +28,9 @@
           :to="{ name: 'today' }">
           <template #icon>
             <IconCalendarToday>
-              <span class="absolute w-6 h-6 top-2 text-[10px] text-primary font-medium">{{ dateToday }}</span>
+              <span class="absolute w-6 h-6 top-2 text-[10px] text-primary font-medium tracking-tight">
+                {{ dateToday }}
+              </span>
             </IconCalendarToday>
           </template>
           <template #name>Today</template>

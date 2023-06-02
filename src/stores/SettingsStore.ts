@@ -1,4 +1,5 @@
 import { useDark } from '@vueuse/core';
+import { useStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
 
 import type { Mode, ThemesId } from '@/types/models/Themes';
@@ -45,7 +46,7 @@ interface SettingsState {
 
 export const useSettingsStore = defineStore('settings', {
   state: (): SettingsState => ({
-    settings: {
+    settings: useStorage('settings', {
       isMenuOpen: true,
       homeView: 'inbox',
       theme: {
@@ -81,7 +82,7 @@ export const useSettingsStore = defineStore('settings', {
       },
       isLoading: true,
       parentModalRoute: '/',
-    },
+    }),
   }),
 
   getters: {

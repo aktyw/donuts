@@ -154,7 +154,7 @@ export const useTasksStore = defineStore('tasks', {
       }
 
       useNotification(NotificationMessage.TaskAdd);
-      useTrackingEvent({ action: 'Add', name: newTask.title, projectId: newTask.projectId });
+      useTrackingEvent({ action: 'Add', name: newTask.title, id: newTask.id, projectId: newTask.projectId });
     },
     addNotification(message: string, id: string) {
       let actionLabel;
@@ -240,7 +240,7 @@ export const useTasksStore = defineStore('tasks', {
       this.tasks.default[index] = { ...task, ...content };
 
       useNotification(NotificationMessage.TaskUpdate);
-      useTrackingEvent({ action: 'Update', name: task.title, projectId: task.projectId });
+      useTrackingEvent({ action: 'Update', name: task.title, id: task.id, projectId: task.projectId });
     },
     updateDate(id: string, date: Date): void {
       const task = findItem(id, this.tasks.default);
@@ -248,7 +248,7 @@ export const useTasksStore = defineStore('tasks', {
       task.date = date;
 
       useNotification(NotificationMessage.TaskDateUpdate);
-      useTrackingEvent({ action: 'Update', name: task.title, projectId: task.projectId });
+      useTrackingEvent({ action: 'Update', name: task.title, id: task.id, projectId: task.projectId });
     },
     moveTask(id: string, projectId: string) {
       const rootTask = findItem(id, this.tasks.default);

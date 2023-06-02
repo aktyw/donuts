@@ -1,8 +1,8 @@
 <template>
   <div
-    class="h-[calc(100vh-48px)] w-full flex justify-center pb-80 transition-all duration-300"
+    class="min-h-screen h-auto w-full flex justify-center pb-80 transition-all duration-300"
     :class="{ 'ml-80': isMenuOpen && lgAndLarger }">
-    <div class="w-4/5 flex flex-col items-center justify-start gap-2 p-8 max-w-[800px]">
+    <div class="w-4/5 flex flex-col items-center justify-start gap-2 py-8 max-w-[800px]">
       <header>
         <h2 class="text-2xl font-bold">Activity</h2>
       </header>
@@ -51,6 +51,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 
 import ProjectLink from '@/components/projects/ProjectLink.vue';
 import { getBreakpoints } from '@/composables/useBreakpoints';
@@ -61,13 +62,24 @@ import { useTrackingStore } from '@/stores/TrackingStore';
 
 const { lgAndLarger } = getBreakpoints();
 
+const route = useRoute();
 const settingsStore = useSettingsStore();
 const projectsStore = useProjectsStore();
 
 const trackingStore = useTrackingStore();
 const { getProjectById } = storeToRefs(projectsStore);
 const { getMenuStatus: isMenuOpen } = storeToRefs(settingsStore);
-const events = computed(() => trackingStore.getEvents);
+const events = computed(() => {
+  if (route.hash) {
+    return trackingStore.getFilteredEvents(route.hash.slice(1) as Action);
+  }
+
+  if (route.name === 'activityTask') {
+    return trackingStore.getEventById(route.params.id.toString());
+  }
+
+  return trackingStore.getEvents;
+});
 
 type ActionColorMap = {
   [key in Action]: string;

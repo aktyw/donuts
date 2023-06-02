@@ -72,6 +72,17 @@ const routes = [
     name: 'activity',
     components: { default: lazyLoad('ActivityView'), sidebar: () => import(`@/components/sidebars/TasksSidebar.vue`) },
     meta: { requiresAuth: true },
+    children: [
+      {
+        path: 'task/:id',
+        name: 'activityTask',
+        components: {
+          default: lazyLoad('ActivityView'),
+          sidebar: () => import(`@/components/sidebars/TasksSidebar.vue`),
+        },
+        meta: { requiresAuth: true },
+      },
+    ],
   },
   {
     path: '/notes',

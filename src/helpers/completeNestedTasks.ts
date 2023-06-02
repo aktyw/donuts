@@ -11,7 +11,7 @@ export function completeNestedTasks(task: Task, value: boolean): void {
 
   if (!value) {
     store.tasks.default[index]['isDone'] = value;
-    useTrackingEvent({ action: 'Activate', name: task.title, projectId: task.projectId });
+    useTrackingEvent({ action: 'Activate', name: task.title, id: task.id, projectId: task.projectId });
     if (hasParent(task)) {
       const parent = store.getTaskById(task.parentId);
 
@@ -19,7 +19,7 @@ export function completeNestedTasks(task: Task, value: boolean): void {
     }
   } else {
     store.tasks.default[index]['isDone'] = value;
-    useTrackingEvent({ action: 'Complete', name: task.title, projectId: task.projectId });
+    useTrackingEvent({ action: 'Complete', name: task.title, id: task.id, projectId: task.projectId });
 
     if (task.childId && task.childId.length > 0) {
       task.childId.forEach((id: string) => {
