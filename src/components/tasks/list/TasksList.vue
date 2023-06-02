@@ -1,22 +1,5 @@
 <template>
   <section class="w-full">
-    <!-- <ul
-      v-if="allowDrag"
-      class="w-1/4">
-      <draggable
-        v-model="store.tasks.default"
-        item-key="id"
-        @start="drag = true"
-        @end="drag = false">
-        <template #item="{ element }">
-          <TaskCard
-            :key="element.id"
-            :task="element">
-          </TaskCard>
-        </template>
-      </draggable>
-    </ul> -->
-
     <FadeTasksList
       v-if="!isTimeline && currentFilter !== 'Active'"
       tag="ul">

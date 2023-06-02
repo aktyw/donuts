@@ -7,7 +7,11 @@
           <strong>{{ getCompletedTasks.length }}</strong>
           completed tasks
         </p>
-        <BaseButton class="text-primary hover:underline transition">View all completed tasks</BaseButton>
+        <LinkButton
+          :to="{ name: 'activity' }"
+          class="text-primary hover:underline transition">
+          View all completed tasks
+        </LinkButton>
       </div>
     </header>
     <main class="flex flex-col items-center gap-8">
@@ -18,12 +22,12 @@
         <div>
           <AwardsBadge
             v-if="activeAchievementType === 'daily'"
-            :progress-value="50">
+            :progress-value="calcProgressValue('daily')">
             <IconOrder />
           </AwardsBadge>
           <AwardsBadge
             v-else
-            :progress-value="75">
+            :progress-value="calcProgressValue('weekly')">
             <IconMedals />
           </AwardsBadge>
         </div>
@@ -38,11 +42,7 @@
           <span class="font-semibold">{{ completedWeeklyTasks }}/{{ weeklyTasksTarget }} tasks</span>
         </h3>
         <span>{{ message }}</span>
-        <LinkButton
-          to="{path:'/settings/productivity'}"
-          class="text-primary hover:underline transition">
-          Edit goal
-        </LinkButton>
+        <LinkButton :to="{ name: 'productivity' }">Edit goal</LinkButton>
         <BaseDivider />
       </section>
       <div>
@@ -50,7 +50,7 @@
       </div>
       <div class="w-full flex flex-col items-center">
         <BaseDivider />
-        <BaseButton class="text-primary hover:underline transition">Productivity settings</BaseButton>
+        <LinkButton :to="{ name: 'productivity' }">Productivity settings</LinkButton>
       </div>
     </main>
   </div>
@@ -59,7 +59,6 @@
 <script setup lang="ts">
 import { computed, type Ref, ref } from 'vue';
 
-import BaseButton from '@/components/base/BaseButton.vue';
 import BaseDivider from '@/components/base/BaseDivider.vue';
 import IconMedals from '@/components/icons/IconMedals.vue';
 import IconOrder from '@/components/icons/IconOrder.vue';
@@ -110,5 +109,11 @@ const getCompletedTasks = computed(() => tasksStore.getCompletedTasks);
 
 function handleChangeType(type: TargetType) {
   activeAchievementType.value = type;
+}
+
+function calcProgressValue(type: TargetType) {
+  return type === 'daily'
+    ? Math.round((completedDailyTasks.value / dailyTasksTarget.value) * 100)
+    : Math.round((completedWeeklyTasks.value / weeklyTasksTarget.value) * 100);
 }
 </script>

@@ -33,7 +33,6 @@ function animateProgress() {
 }
 
 onMounted(() => {
-  console.log('as');
   animateProgress();
 });
 </script>

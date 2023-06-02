@@ -1,8 +1,11 @@
+import { useTrackingEvent } from '@/composables/useTrackingEvent';
 import { useTasksStore } from '@/stores/TasksStore';
 import type { Task } from '@/types/models/Task';
 
 export function deleteNestedTasks(task: Task): void {
   const store = useTasksStore();
+
+  useTrackingEvent({ action: 'Delete', name: task.title, projectId: task.projectId });
 
   store.tasks.deleted.push(task);
   store.tasks.default = store.tasks.default.filter((t: Task) => t !== task);

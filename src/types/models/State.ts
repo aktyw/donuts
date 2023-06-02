@@ -1,8 +1,10 @@
-import type { Task } from './Task';
-import type { SortFilters, SortOrder } from '@/types/models/Sort';
-import type { Notification } from '@/types/models/Notification';
-import type { Filters } from '@/types/models/Filters';
 import type { RemovableRef } from '@vueuse/core';
+
+import type { Filters } from '@/types/models/Filters';
+import type { Notification } from '@/types/models/Notification';
+import type { SortFilters, SortOrder } from '@/types/models/Sort';
+
+import type { Task } from './Task';
 
 export interface Tasks {
   default: Task[];

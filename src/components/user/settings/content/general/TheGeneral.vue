@@ -12,13 +12,20 @@
           title="Delete tasks"
           @click="handleClearDeletedTasks" />
       </div>
+      <div class="flex flex-col gap-2">
+        <SettingsLabel title="Clear activity logs" />
+        <p class="text-sm">This will permanently clear all logs stored in activity logs</p>
+        <SettingsButtonDangerAction
+          title="Clear logs"
+          @click="handleClearActivityLogs" />
+      </div>
     </section>
   </div>
 
   <InfoContainer
     v-if="isSuccess"
     class="mt-6">
-    <p>The new home view has been set up successfully.</p>
+    <p>{{ successInfo }}</p>
   </InfoContainer>
 
   <SettingsFooterAction
@@ -38,23 +45,36 @@ import SettingsButtonDangerAction from '@/components/user/settings/content/ui/Se
 import SettingsLabel from '@/components/user/settings/content/ui/SettingsLabel.vue';
 import { useSettingsStore } from '@/stores/SettingsStore';
 import { useTasksStore } from '@/stores/TasksStore';
+import { useTrackingStore } from '@/stores/TrackingStore';
 
 const tasksStore = useTasksStore();
 const settingsStore = useSettingsStore();
+const trackingStore = useTrackingStore();
 
 const isSuccess = ref(false);
+const successInfo = ref();
 const selectedHome = ref('');
 
 function handleClearSelect() {
   selectedHome.value = '';
+  successInfo.value = '';
 }
 
 function handleChangeHomeView() {
   settingsStore.setHomeView(selectedHome.value);
+  successInfo.value = 'The new home view has been set up successfully.';
   isSuccess.value = true;
 }
 
 function handleClearDeletedTasks() {
   tasksStore.clearAllDeletedTasks();
+  successInfo.value = 'Tasks deleted successfully.';
+  isSuccess.value = true;
+}
+
+function handleClearActivityLogs() {
+  trackingStore.clearLogs();
+  successInfo.value = 'Logs cleared successfully.';
+  isSuccess.value = true;
 }
 </script>

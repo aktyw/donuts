@@ -31,7 +31,7 @@
         Print
       </OptionListButton>
 
-      <OptionListButton>
+      <OptionListButton @click.stop="handleShowActivity">
         <template #icon>
           <IconActivity />
         </template>
@@ -66,6 +66,7 @@
 import { useOnline } from '@vueuse/core';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 import BaseDividerSmall from '@/components/base/BaseDividerSmall.vue';
 import IconAccount from '@/components/icons/IconAccount.vue';
@@ -79,7 +80,9 @@ import UserInfo from '@/components/user/dropdown/UserInfo.vue';
 import blurElement from '@/helpers/blur';
 import { useAuthStore } from '@/stores/AuthStore';
 import { useSettingsStore } from '@/stores/SettingsStore';
+import ActivityView from '@/views/ActivityView.vue';
 
+const router = useRouter();
 const authStore = useAuthStore();
 const settingsStore = useSettingsStore();
 const route = useRoute();
@@ -114,5 +117,9 @@ function handleOpenSettings() {
 
 function logout() {
   authStore.logout();
+}
+
+function handleShowActivity() {
+  router.push({ name: 'activity' });
 }
 </script>

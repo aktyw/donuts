@@ -1,8 +1,8 @@
 import { useStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
-import { v4 as uuid } from 'uuid';
 
 import { useNotification } from '@/composables/useNotification';
+import { useTrackingEvent } from '@/composables/useTrackingEvent';
 import { breakConnection, hasParent } from '@/helpers/breakConnection';
 import { isToday } from '@/helpers/checkTime';
 import { completeNestedTasks } from '@/helpers/completeNestedTasks';
@@ -14,8 +14,6 @@ import { findItem } from '@/helpers/findItem';
 import { moveNestedTasks } from '@/helpers/moveNestedTasks';
 import { recoverNestedTasks } from '@/helpers/recoverNestedTasks';
 import { useProjectsStore } from '@/stores/ProjectsStore';
-import { useStatsStore } from '@/stores/StatsStore';
-import { useTrackingStore } from '@/stores/TrackingStore';
 import { Filters } from '@/types/models/Filters';
 import type { Notification } from '@/types/models/Notification';
 import { NotificationAction } from '@/types/models/NotificationAction';
@@ -23,6 +21,7 @@ import { NotificationMessage } from '@/types/models/NotificationMessage';
 import { SortFilters, SortOrder } from '@/types/models/Sort';
 import type { State } from '@/types/models/State';
 import type { Task } from '@/types/models/Task';
+
 export const useTasksStore = defineStore('tasks', {
   state: (): State => ({
     tasks: useStorage(
@@ -144,17 +143,18 @@ export const useTasksStore = defineStore('tasks', {
   },
   actions: {
     addTask(options: Task) {
-      const trackingStore = useTrackingStore();
       const newTask = createNewTask(options);
 
       this.tasks.default.push(newTask);
+
       if (newTask.parentId) {
         const parent = this.getTaskById(newTask.parentId);
 
         parent?.childId?.push(newTask.id);
       }
+
       useNotification(NotificationMessage.TaskAdd);
-      trackingStore.setNewEvent({ action: 'Add', name: 'testtitle', project: 'test', time: Date.now() });
+      useTrackingEvent({ action: 'Add', name: newTask.title, projectId: newTask.projectId });
     },
     addNotification(message: string, id: string) {
       let actionLabel;
@@ -240,6 +240,7 @@ export const useTasksStore = defineStore('tasks', {
       this.tasks.default[index] = { ...task, ...content };
 
       useNotification(NotificationMessage.TaskUpdate);
+      useTrackingEvent({ action: 'Update', name: task.title, projectId: task.projectId });
     },
     updateDate(id: string, date: Date): void {
       const task = findItem(id, this.tasks.default);
@@ -247,6 +248,7 @@ export const useTasksStore = defineStore('tasks', {
       task.date = date;
 
       useNotification(NotificationMessage.TaskDateUpdate);
+      useTrackingEvent({ action: 'Update', name: task.title, projectId: task.projectId });
     },
     moveTask(id: string, projectId: string) {
       const rootTask = findItem(id, this.tasks.default);

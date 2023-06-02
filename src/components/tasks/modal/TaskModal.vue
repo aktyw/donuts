@@ -37,6 +37,7 @@
             </TaskModalAction>
             <TaskModalNavbarDropdown
               :task="currentTask"
+              @view-activity-task="handleShowActivityTask"
               @delete-task="toggleDeleteModal"
               @print-task="handlePrintTask" />
             <TaskModalAction
@@ -154,7 +155,7 @@
 <script setup lang="ts">
 import Datepicker from '@vuepic/vue-datepicker';
 import { onClickOutside } from '@vueuse/core';
-import { computed, inject, onMounted, onUnmounted, onUpdated, provide, type Ref, ref, unref } from 'vue';
+import { computed, inject, onMounted, onUnmounted, provide, type Ref, ref, unref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import IconChevronDown from '@/components/icons/IconChevronDown.vue';
@@ -333,6 +334,10 @@ function cancelDeleteTask(): void {
 function handleDeleteTask(): void {
   store.deleteTask(currentTask.value.id);
   closeModal();
+}
+
+function handleShowActivityTask(): void {
+  router.push({ name: 'activity' });
 }
 
 function openTaskEditor(): void {
