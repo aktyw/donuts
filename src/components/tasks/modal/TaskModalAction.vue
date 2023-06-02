@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import BaseButton from '@/components/base/BaseButton.vue';
-import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import TheTooltip from '@/components/ui/tooltips/TheTooltip.vue';
 
 type Props = {
   tooltipData: string;

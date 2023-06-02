@@ -31,10 +31,17 @@
           </template>
         </SettingsSidebarButton>
         <SettingsSidebarButton
+          :to="{ name: 'general' }"
+          name="General">
+          <template #icon>
+            <IconSettingsAlt />
+          </template>
+        </SettingsSidebarButton>
+        <SettingsSidebarButton
           :to="{ name: 'productivity' }"
           name="Productivity">
           <template #icon>
-            <IconSettingsAlt />
+            <IconProductivity />
           </template>
         </SettingsSidebarButton>
         <SettingsSidebarButton
@@ -55,9 +62,10 @@ import { useRouter } from 'vue-router';
 import BaseButton from '@/components/base/BaseButton.vue';
 import IconAccount from '@/components/icons/IconAccount.vue';
 import IconClose from '@/components/icons/IconClose.vue';
+import IconProductivity from '@/components/icons/IconProductivity.vue';
 import IconSettingsAlt from '@/components/icons/IconSettingsAlt.vue';
 import IconTheme from '@/components/icons/IconTheme.vue';
-import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import TheTooltip from '@/components/ui/tooltips/TheTooltip.vue';
 import SettingsHeader from '@/components/user/settings/content/SettingsHeader.vue';
 import SettingsSidebarButton from '@/components/user/settings/sidebar/SettingsSidebarButton.vue';
 import { getBreakpoints } from '@/composables/useBreakpoints';

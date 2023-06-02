@@ -5,8 +5,8 @@
       class="outline-custom">
       <button
         tabindex="1"
-        class="outline-custom btn-square btn-xs btn w-full rounded-md border-0 bg-base-100 font-normal normal-case text-slate-900 hover:bg-base-200 focus:bg-base-200">
-        <span class="flex flex-row gap-1">
+        class="flex outline-custom btn-square btn-xs btn w-full rounded-md border-0 bg-base-100 font-normal normal-case hover:bg-base-200 focus:bg-base-200 h-full">
+        <span class="flex flex-row gap-1 m-1">
           <IconSettings />
           <span class="inline-flex items-center text-base-content">View</span>
         </span>
@@ -16,7 +16,7 @@
       tabindex="1"
       role="menu"
       aria-label="Show all tasks menu"
-      class="dropdown-content menu w-52 rounded-md border border-base-300 bg-base-100 fill-base-content py-0.5 text-base-content shadow">
+      class="dropdown-content menu w-60 rounded-md border border-base-300 bg-base-100 fill-base-content py-0.5 text-base-content shadow">
       <FiltersDropdownHeading :is-first="true">Sort</FiltersDropdownHeading>
       <FiltersDropdownButtonItem
         :is-active="sortTypeStatus === SortFilters.Default"

@@ -1,6 +1,7 @@
 <template>
-  <div class="navbar-end hidden lg:flex">
+  <div class="navbar-end hidden md:flex">
     <ul class="flex flex-row items-center gap-4">
+      <StatsDropdown />
       <QuickTaskButton @click="isQuickTaskActive = true">
         <template #icon>
           <IconAdd class="fill-base-content" />
@@ -21,6 +22,7 @@
 import { ref } from 'vue';
 
 import IconAdd from '@/components/icons/IconAdd.vue';
+import StatsDropdown from '@/components/stats/dropdown/StatsDropdown.vue';
 import TaskQuickAdd from '@/components/tasks/quick-task/QuickTaskAdd.vue';
 import QuickTaskButton from '@/components/tasks/quick-task/QuickTaskButton.vue';
 import UserDropdown from '@/components/user/dropdown/UserDropdown.vue';

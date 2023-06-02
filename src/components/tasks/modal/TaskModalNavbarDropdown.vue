@@ -79,7 +79,7 @@ import IconPrint from '@/components/icons/IconPrint.vue';
 import IconRecycleBin from '@/components/icons/IconRecycleBin.vue';
 import OptionListButton from '@/components/tasks/list/OptionListButton.vue';
 import OptionListInfo from '@/components/tasks/list/OptionListInfo.vue';
-import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import TheTooltip from '@/components/ui/tooltips/TheTooltip.vue';
 import { useNotification } from '@/composables/useNotification';
 import blurElement from '@/helpers/blur';
 import { useTasksStore } from '@/stores/TasksStore';

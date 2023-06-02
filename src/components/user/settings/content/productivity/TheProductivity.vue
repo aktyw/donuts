@@ -2,15 +2,31 @@
   <div>
     <section class="flex flex-col gap-4">
       <div class="flex flex-col gap-2">
-        <SettingsLabel title="Home view" />
-        <SelectHomeList v-model="selectedHome" />
+        <SettingsLabel title="Goals" />
+        <p class="text-sm">Small steps add up to big achievements. Set task goals to keep your momentum.</p>
       </div>
-      <div class="flex flex-col gap-2">
-        <SettingsLabel title="Clear recycle bin" />
-        <p class="text-sm">This will permanently delete all tasks stored in recycle bin. This can’t be undone.</p>
-        <SettingsButtonDangerAction
-          title="Delete tasks"
-          @click="handleClearDeletedTasks" />
+      <div>
+        <div class="w-40">
+          <SettingsLabel title="Daily tasks" />
+          <SettingsInput
+            v-model.number="dailyValue"
+            class="w-full"
+            maxlength="3"
+            :placeholder="initialDaily.toString()"
+            min="1"
+            max="100"
+            type="number" />
+        </div>
+        <div class="w-40">
+          <SettingsLabel title="Weekly tasks" />
+          <SettingsInput
+            v-model.number="weeklyValue"
+            :placeholder="initialWeekly.toString()"
+            class="w-full"
+            min="1"
+            max="1000"
+            type="number" />
+        </div>
       </div>
     </section>
   </div>
@@ -18,43 +34,50 @@
   <InfoContainer
     v-if="isSuccess"
     class="mt-6">
-    <p>The new home view has been set up successfully.</p>
+    <p>New goals has been set up successfully.</p>
   </InfoContainer>
 
   <SettingsFooterAction
-    :is-save-btn-active="!!selectedHome"
-    save-title="Update"
-    @cancel="handleClearSelect"
-    @save="handleChangeHomeView" />
+    :is-save-btn-active="initialDaily !== dailyValue || initialWeekly !== weeklyValue"
+    @cancel="handleCancelAction"
+    @save="handleUpdateGoals" />
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import InfoContainer from '@/components/ui/containers/InfoContainer.vue';
-import SelectHomeList from '@/components/user/settings/content/productivity/SelectHomeList.vue';
 import SettingsFooterAction from '@/components/user/settings/content/SettingsFooterAction.vue';
-import SettingsButtonDangerAction from '@/components/user/settings/content/ui/SettingsButtonDangerAction.vue';
+import SettingsInput from '@/components/user/settings/content/ui/SettingsInput.vue';
 import SettingsLabel from '@/components/user/settings/content/ui/SettingsLabel.vue';
-import { useSettingsStore } from '@/stores/SettingsStore';
-import { useTasksStore } from '@/stores/TasksStore';
+import { useStatsStore } from '@/stores/StatsStore';
 
-const tasksStore = useTasksStore();
-const settingsStore = useSettingsStore();
+const statsStore = useStatsStore();
 
+const targetTasks = computed(() => {
+  const daily = statsStore.getTarget('daily');
+  const weekly = statsStore.getTarget('weekly');
+
+  return { daily, weekly };
+});
 const isSuccess = ref(false);
-const selectedHome = ref('');
 
-function handleClearSelect() {
-  selectedHome.value = '';
-}
+const initialDaily = targetTasks.value.daily;
+const initialWeekly = targetTasks.value.weekly;
 
-function handleChangeHomeView() {
-  settingsStore.setHomeView(selectedHome.value);
+const dailyValue = ref(initialDaily);
+const weeklyValue = ref(initialWeekly);
+
+function handleCancelAction() {}
+
+function handleUpdateGoals() {
+  if (targetTasks.value.daily !== dailyValue.value) {
+    statsStore.setNewTarget({ targetType: 'daily', value: dailyValue.value || 1 });
+  }
+  if (targetTasks.value.weekly !== weeklyValue.value) {
+    statsStore.setNewTarget({ targetType: 'weekly', value: weeklyValue.value || 1 });
+  }
+
   isSuccess.value = true;
-}
-
-function handleClearDeletedTasks() {
-  tasksStore.clearAllDeletedTasks();
 }
 </script>

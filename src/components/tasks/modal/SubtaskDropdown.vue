@@ -21,5 +21,5 @@
 </template>
 
 <script setup lang="ts">
-import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import TheTooltip from '@/components/ui/tooltips/TheTooltip.vue';
 </script>

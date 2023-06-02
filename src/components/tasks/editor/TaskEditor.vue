@@ -25,7 +25,7 @@
             <template v-if="date">
               <TaskTimeDetail class="mx-1">
                 <template #time>
-                  <span class="pt-0.5">{{ showInputDetailTime }}</span>
+                  <span class="text-sm pt-0.5">{{ showInputDetailTime }}</span>
                 </template>
               </TaskTimeDetail>
             </template>
@@ -33,7 +33,7 @@
             <template
               v-if="!date"
               #icon>
-              <IconCalendar class="mr-1" />
+              <IconCalendarTodayAlt class="mr-1" />
             </template>
           </ButtonBadgeMedium>
         </TheTooltip>
@@ -56,11 +56,11 @@
           class="!tooltip-top flex"
           data="Set priority">
           <ButtonBadgeMedium
-            class="ml-3 pl-0.5"
+            class="ml-3"
             :is-toggle="taskIsPriority"
             @click.prevent="togglePriority">
             <template #icon>
-              <IconImportantSmall />
+              <IconFlag class="mr-1" />
             </template>
             Priority
           </ButtonBadgeMedium>
@@ -141,18 +141,18 @@ import { type Ref, ref, watch, watchEffect } from 'vue';
 
 import BaseButton from '@/components/base/BaseButton.vue';
 import IconAdd from '@/components/icons/IconAdd.vue';
-import IconCalendar from '@/components/icons/IconCalendar.vue';
+import IconCalendarTodayAlt from '@/components/icons/IconCalendarTodayAlt.vue';
 import IconClose from '@/components/icons/IconClose.vue';
-import IconImportantSmall from '@/components/icons/IconImportantSmall.vue';
+import IconFlag from '@/components/icons/IconFlag.vue';
 import ProjectAddButton from '@/components/projects/ProjectAddButton.vue';
 import ProjectList from '@/components/projects/ProjectList.vue';
 import ProjectModal from '@/components/projects/ProjectModal.vue';
 import TaskTimeDetail from '@/components/tasks/card/TaskTimeDetail.vue';
 import TaskEditorInput from '@/components/tasks/editor/TaskEditorInput.vue';
-import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 import ButtonBadgeMedium from '@/components/ui/buttons/ButtonBadgeMedium.vue';
 import ButtonMainAction from '@/components/ui/buttons/ButtonMainAction.vue';
 import ButtonSecondaryAction from '@/components/ui/buttons/ButtonSecondaryAction.vue';
+import TheTooltip from '@/components/ui/tooltips/TheTooltip.vue';
 import { getBreakpoints } from '@/composables/useBreakpoints';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import { vFocus } from '@/directives/vAutoFocus';

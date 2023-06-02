@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar-center hidden lg:flex">
+  <div class="navbar-center hidden md:flex">
     <ul class="menu-horizontal gap-4">
       <NavLink to="/tasks">Tasks</NavLink>
       <NavLink to="/notes">Notes</NavLink>

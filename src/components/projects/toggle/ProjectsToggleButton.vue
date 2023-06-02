@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import BaseButton from '@/components/base/BaseButton.vue';
 import IconChevronDown from '@/components/icons/IconChevronDown.vue';
-import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import TheTooltip from '@/components/ui/tooltips/TheTooltip.vue';
 
 type Props = {
   isOpen: boolean;

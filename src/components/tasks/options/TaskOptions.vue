@@ -65,7 +65,7 @@
         :class="priorityStyle"
         @click.stop="handleTogglePriority(taskId)">
         <template #icon>
-          <IconImportant />
+          <IconFlag />
         </template>
         Toggle Priority
       </OptionListButton>
@@ -138,7 +138,7 @@ import IconBell from '@/components/icons/IconBell.vue';
 import IconClock from '@/components/icons/IconClock.vue';
 import IconDone from '@/components/icons/IconDone.vue';
 import IconDuplicate from '@/components/icons/IconDuplicate.vue';
-import IconImportant from '@/components/icons/IconImportant.vue';
+import IconFlag from '@/components/icons/IconFlag.vue';
 import IconLink from '@/components/icons/IconLink.vue';
 import IconMove from '@/components/icons/IconMove.vue';
 import IconPen from '@/components/icons/IconPen.vue';

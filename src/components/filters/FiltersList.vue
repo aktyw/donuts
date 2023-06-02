@@ -1,5 +1,5 @@
 <template>
-  <ul class="flex w-full justify-between p-0 py-2 md:justify-end md:py-3 lg:gap-4">
+  <ul class="flex w-full justify-between p-0 py-2 sm:justify-end md:py-3 sm:gap-4">
     <FiltersListOption
       aria-label="active"
       :tasks="activeTasks"

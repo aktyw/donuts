@@ -35,7 +35,7 @@ import { storeToRefs } from 'pinia';
 import IconCloseSmall from '@/components/icons/IconCloseSmall.vue';
 import IconNorthSmall from '@/components/icons/IconNorthSmall.vue';
 import IconSouthSmall from '@/components/icons/IconSouthSmall.vue';
-import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import TheTooltip from '@/components/ui/tooltips/TheTooltip.vue';
 import { useTasksStore } from '@/stores/TasksStore';
 import { SortOrder } from '@/types/models/Sort';
 

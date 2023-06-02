@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar-start flex flex-row justify-between print:hidden lg:w-1/2">
+  <div class="navbar-start flex flex-row justify-between print:hidden lg:w-1/2 ml-1">
     <div class="flex gap-2">
       <TheTooltip :data="menuTooltip">
         <BaseButton
@@ -8,6 +8,12 @@
           @click="settingsStore.toggleMenu()">
           <template #icon>
             <IconMenu
+              v-if="!menuStatus || largerThanMd"
+              class="fill-base-content"
+              focusable="false"
+              aria-hidden="true" />
+            <IconCloseFat
+              v-if="menuStatus && !largerThanMd"
               class="fill-base-content"
               focusable="false"
               aria-hidden="true" />
@@ -37,12 +43,15 @@ import { computed } from 'vue';
 import { type RouteLocationRaw, useRouter } from 'vue-router';
 
 import BaseButton from '@/components/base/BaseButton.vue';
+import IconCloseFat from '@/components/icons/IconCloseFat.vue';
 import IconHome from '@/components/icons/IconHome.vue';
 import IconMenu from '@/components/icons/IconMenu.vue';
-import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import TheTooltip from '@/components/ui/tooltips/TheTooltip.vue';
+import { getBreakpoints } from '@/composables/useBreakpoints';
 import { useHideMenu } from '@/composables/useHideMenu';
 import { useSettingsStore } from '@/stores/SettingsStore';
 
+const { largerThanMd } = getBreakpoints();
 const settingsStore = useSettingsStore();
 const { getHomeView: home, getMenuStatus: menuStatus } = storeToRefs(settingsStore);
 const menuTooltip = computed(() => (menuStatus.value ? 'Close menu' : 'Open menu'));

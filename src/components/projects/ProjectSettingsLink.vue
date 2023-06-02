@@ -19,5 +19,5 @@
 <script setup lang="ts">
 import BaseButton from '@/components/base/BaseButton.vue';
 import IconSettingsAlt from '@/components/icons/IconSettingsAlt.vue';
-import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import TheTooltip from '@/components/ui/tooltips/TheTooltip.vue';
 </script>

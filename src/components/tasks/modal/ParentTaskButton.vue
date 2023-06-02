@@ -15,7 +15,7 @@
 import { inject } from 'vue';
 
 import IconCircle from '@/components/icons/IconCircle.vue';
-import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import TheTooltip from '@/components/ui/tooltips/TheTooltip.vue';
 import type { Task } from '@/types/models/Task';
 
 const parent = inject<Task>('parentTask');

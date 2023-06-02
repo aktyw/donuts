@@ -44,7 +44,7 @@
         <template #icon>
           <IconLogout />
         </template>
-        Logout
+        Log out
       </OptionListButton>
 
       <OptionListButton

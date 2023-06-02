@@ -68,6 +68,13 @@ const routes = [
     ],
   },
   {
+    path: '/activity',
+    redirect: { path: '/activity' },
+    name: 'activity',
+    components: { default: lazyLoad('ActivityView'), sidebar: () => import(`@/components/sidebars/TasksSidebar.vue`) },
+    meta: { requiresAuth: true },
+  },
+  {
     path: '/notes',
     name: 'notes',
     redirect: { path: '/notes/list' },
@@ -104,6 +111,12 @@ const routes = [
         path: 'account/password',
         name: 'password',
         component: () => import('@/components/user/settings/content/account/ChangePassword.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'general',
+        name: 'general',
+        component: () => import('@/components/user/settings/content/general/TheGeneral.vue'),
         meta: { requiresAuth: true },
       },
       {

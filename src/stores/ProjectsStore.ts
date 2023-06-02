@@ -131,6 +131,7 @@ export const useProjectsStore = defineStore('projects', {
       tasks.forEach(({ id }: { id: string }) => taskStore.duplicateTask(id, copyProject.id));
 
       useNotification(NotificationMessage.DuplicateProject);
+      this.router.push({ name: 'project', params: { id: copyProject.id } });
     },
   },
 });

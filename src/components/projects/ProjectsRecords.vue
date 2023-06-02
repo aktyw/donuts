@@ -33,7 +33,7 @@ import { useRoute } from 'vue-router';
 
 import ProjectLink from '@/components/projects/ProjectLink.vue';
 import ProjectOptions from '@/components/projects/ProjectOptions.vue';
-import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import TheTooltip from '@/components/ui/tooltips/TheTooltip.vue';
 import FadeSlideGroup from '@/components/ui/transitions/FadeSlideGroup.vue';
 import { useSettingsStore } from '@/stores/SettingsStore';
 import type { Project } from '@/types/models/Projects';

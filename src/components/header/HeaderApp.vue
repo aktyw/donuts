@@ -1,5 +1,5 @@
 <template>
-  <HeaderContainer v-if="largerThanSm">
+  <HeaderContainer v-if="largerThanMd">
     <NavSlimOptions />
     <NavMainFeatures />
     <NavSettings />
@@ -19,5 +19,5 @@ import NavSettings from '@/components/header/navigation/NavSettings.vue';
 import NavSlimOptions from '@/components/header/navigation/NavSlimOptions.vue';
 import { getBreakpoints } from '@/composables/useBreakpoints';
 
-const { largerThanSm } = getBreakpoints();
+const { largerThanMd } = getBreakpoints();
 </script>

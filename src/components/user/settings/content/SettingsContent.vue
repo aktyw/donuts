@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col overflow-hidden">
+  <div class="flex flex-col overflow-y-hidden">
     <SettingsHeader
       class="sticky top-0 z-50 flex w-full justify-between border-b-2 border-b-base-300 bg-base-200 p-4 font-semibold"
       :name="title">
@@ -29,7 +29,7 @@
             class="!tooltip-left fixed flex items-center">
             <BaseButton @click="handleCloseModal">
               <template #icon>
-                <IconClose />
+                <IconCloseFat />
               </template>
             </BaseButton>
           </TheTooltip>
@@ -37,7 +37,7 @@
       </template>
     </SettingsHeader>
 
-    <main class="relative h-screen overflow-scroll p-4 pb-96 md:pb-8">
+    <main class="relative h-screen overflow-auto p-4 pb-96 md:pb-8">
       <router-view />
     </main>
   </div>
@@ -49,8 +49,8 @@ import { useRoute, useRouter } from 'vue-router';
 
 import BaseButton from '@/components/base/BaseButton.vue';
 import IconArrowLeft from '@/components/icons/IconArrowLeft.vue';
-import IconClose from '@/components/icons/IconClose.vue';
-import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import IconCloseFat from '@/components/icons/IconCloseFat.vue';
+import TheTooltip from '@/components/ui/tooltips/TheTooltip.vue';
 import SettingsHeader from '@/components/user/settings/content/SettingsHeader.vue';
 import { getBreakpoints } from '@/composables/useBreakpoints';
 import { useSettingsStore } from '@/stores/SettingsStore';

@@ -133,21 +133,16 @@
                   data="Set priority">
                   <ButtonBadgeMedium
                     :class="{ '!bg-base-100': currentTask.isPriority }"
-                    class="hover:!bg-base-100"
+                    class="hover:!bg-base-100 gap-1"
                     :is-toggle="currentTask.isPriority"
                     @click.prevent="togglePriority">
                     <template #icon>
-                      <IconImportantSmall class="-ml-1.5" />
+                      <IconFlag class="-ml-1" />
                     </template>
-                    Is priority
+                    Priority
                   </ButtonBadgeMedium>
                 </TheTooltip>
               </TaskModalOption>
-
-              <div>
-                <h3>Labels +btn</h3>
-                <p>List labels badges</p>
-              </div>
             </div>
           </aside>
         </section>
@@ -164,7 +159,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 import IconChevronDown from '@/components/icons/IconChevronDown.vue';
 import IconClose from '@/components/icons/IconClose.vue';
-import IconImportantSmall from '@/components/icons/IconImportantSmall.vue';
+import IconFlag from '@/components/icons/IconFlag.vue';
 import ModalConfirmDelete from '@/components/modals/ModalConfirmDelete.vue';
 import ProjectLink from '@/components/projects/ProjectLink.vue';
 import ProjectList from '@/components/projects/ProjectList.vue';
@@ -178,8 +173,8 @@ import TaskModalAction from '@/components/tasks/modal/TaskModalAction.vue';
 import TaskModalNavbarDropdown from '@/components/tasks/modal/TaskModalNavbarDropdown.vue';
 import TaskModalOption from '@/components/tasks/modal/TaskModalOption.vue';
 import TaskShowSlim from '@/components/tasks/modal/TaskShowSlim.vue';
-import TheTooltip from '@/components/tooltips/TheTooltip.vue';
 import ButtonBadgeMedium from '@/components/ui/buttons/ButtonBadgeMedium.vue';
+import TheTooltip from '@/components/ui/tooltips/TheTooltip.vue';
 import FadeTransitionMedium from '@/components/ui/transitions/FadeTransitionMedium.vue';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useSettingsStore } from '@/stores/SettingsStore';

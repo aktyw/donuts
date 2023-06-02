@@ -12,10 +12,10 @@
           :is-priority="task.isPriority"
           @toggle="toggleIsDone(task.id)" />
 
-        <div class="flex w-full cursor-pointer flex-col">
+        <div class="flex w-full cursor-pointer flex-col [&>*>p]:outline-red-500">
           <router-link
             v-if="isModal"
-            class="flex flex-col"
+            class="flex flex-col outline-custom"
             :to="{ params: { taskid: task.id } }">
             <p
               class="flex break-all"
@@ -23,14 +23,14 @@
               {{ task.title }}
             </p>
             <p
-              class="flex break-all text-sm"
+              class="flex break-all text-sm outline-custom"
               :class="{ 'line-through': isDone, 'decoration-accent': isPriority }">
               {{ task.description }}
             </p>
           </router-link>
           <router-link
             v-if="$route.name === 'today'"
-            class="flex flex-col"
+            class="flex flex-col outline-custom"
             :to="{ name: 'taskToday', params: { taskid: task.id } }">
             <p
               class="flex h-full break-all"
@@ -45,7 +45,7 @@
           </router-link>
           <router-link
             v-if="$route.name === 'project'"
-            class="flex flex-col"
+            class="flex flex-col outline-custom"
             :to="{ name: 'task', params: { taskid: task.id } }">
             <p
               class="flex h-full break-all"

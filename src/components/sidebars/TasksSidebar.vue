@@ -27,7 +27,9 @@
           class="fill-primary [&>span]:right-5 md:[&>span]:right-auto"
           :to="{ name: 'today' }">
           <template #icon>
-            <IconCalendarToday />
+            <IconCalendarToday>
+              <span class="absolute w-6 h-6 top-2 text-[10px] text-primary font-medium">{{ dateToday }}</span>
+            </IconCalendarToday>
           </template>
           <template #name>Today</template>
           <template #amount>
@@ -117,7 +119,7 @@
 </template>
 
 <script setup lang="ts">
-import { useActiveElement } from '@vueuse/core';
+import { useActiveElement, useDateFormat, useNow } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 
@@ -129,7 +131,7 @@ import ProjectLink from '@/components/projects/ProjectLink.vue';
 import ProjectModal from '@/components/projects/ProjectModal.vue';
 import ProjectOptions from '@/components/projects/ProjectOptions.vue';
 import TheSidebar from '@/components/sidebars/TheSidebar.vue';
-import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import TheTooltip from '@/components/ui/tooltips/TheTooltip.vue';
 import { useHideMenu } from '@/composables/useHideMenu';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useSettingsStore } from '@/stores/SettingsStore';
@@ -142,7 +144,7 @@ const projectsStore = useProjectsStore();
 const activeElement = useActiveElement();
 const isProjectModalOpen = ref(false);
 const isProjectFocus = ref(false);
-
+const dateToday = useDateFormat(useNow(), 'DD');
 const projectLinkStyle = computed(
   () =>
     'md:[&>*>*>button]:opacity-0 md:[&>*>*>button]:hover:opacity-100 md:[&>*>*>button:focus]:opacity-100 [&>*>span]:visible [&>*>span]:hover:invisible'

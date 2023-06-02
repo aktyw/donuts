@@ -38,7 +38,7 @@ import { computed } from 'vue';
 import type { RouteLocationRaw } from 'vue-router';
 
 import IconColor from '@/components/icons/IconColor.vue';
-import TheTooltip from '@/components/tooltips/TheTooltip.vue';
+import TheTooltip from '@/components/ui/tooltips/TheTooltip.vue';
 import { useHideMenu } from '@/composables/useHideMenu';
 
 type Props = {
@@ -58,4 +58,3 @@ const calcName = computed(() => {
   return props.name;
 });
 </script>
-

@@ -1,6 +1,6 @@
 <template>
   <BaseButton
-    class="btn-ghost no-animation btn-sm btn-block btn justify-start p-0 py-2 text-left font-normal normal-case hover:bg-transparent [&:hover>svg]:bg-accent [&:hover>svg]:fill-neutral-content [&:hover]:text-accent"
+    class="btn-ghost no-animation btn-sm btn-block btn justify-start p-0 py-2 text-left font-normal normal-case hover:bg-transparent [&:hover>svg]:bg-accent [&:hover>svg]:fill-primary-content [&:hover]:text-accent"
     @click.prevent="showAddSubtaskEditor">
     <template #icon>
       <IconAdd class="mr-2 rounded-xl transition-all duration-150" />
