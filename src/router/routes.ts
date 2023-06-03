@@ -89,7 +89,7 @@ const routes = [
   {
     path: '/notes',
     name: 'notes',
-    redirect: { path: '/notes/list' },
+    redirect: { path: '/notes/editor' },
     components: { default: lazyLoad('NotesView'), sidebar: () => import(`@/components/sidebars/NotesSidebar.vue`) },
     meta: { requiresAuth: true },
     children: [
@@ -97,6 +97,12 @@ const routes = [
         path: 'list',
         name: 'noteList',
         component: () => import(`@/components/notes/NotesList.vue`),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'editor',
+        name: 'noteEditor',
+        component: () => import(`@/components/notes/NoteEditor.vue`),
         meta: { requiresAuth: true },
       },
     ],

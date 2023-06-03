@@ -30,14 +30,15 @@ watch(
 
 const EASING_VALUE = 0.1;
 const THRESHOLD = 0.03;
+const MAX_VALUE = 100;
 const value = ref(0);
 
 function animateProgress() {
-  const remainingDifference = props.progressValue - value.value;
+  const remainingDifference = Math.min(props.progressValue, MAX_VALUE) - value.value;
   const change = remainingDifference * EASING_VALUE;
 
   if (Math.abs(change) < THRESHOLD) {
-    value.value = props.progressValue;
+    value.value = Math.min(props.progressValue, MAX_VALUE);
   } else {
     value.value += change;
     requestAnimationFrame(animateProgress);

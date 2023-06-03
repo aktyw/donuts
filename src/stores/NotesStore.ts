@@ -4,10 +4,12 @@ export const useNotesStore = defineStore('notes', {
     notes: [
       {
         id: 'id1',
+        title: 'title of note',
         content: 'lorem ipsum note',
       },
       {
         id: 'id2',
+        title: 'some title of note',
         content: 'lorem ipsum note 2',
       },
     ],

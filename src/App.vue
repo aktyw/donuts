@@ -7,7 +7,7 @@
       <BaseSkipLink v-if="isAuthenticated" />
       <HeaderApp v-if="isAuthenticated" />
       <HeaderStart v-else />
-      <div class="flex pt-12">
+      <MainContainer>
         <RouterView name="sidebar" />
         <RouterView
           v-slot="{ Component }"
@@ -17,7 +17,7 @@
             <component :is="Component" />
           </FadeTransitionShort>
         </RouterView>
-      </div>
+      </MainContainer>
       <TheNotification v-if="!!store.notifications.length" />
     </div>
   </FadeTransitionMedium>
@@ -32,6 +32,7 @@ import BaseSkipLink from '@/components/base/BaseSkipLink.vue';
 import HeaderApp from '@/components/header/HeaderApp.vue';
 import HeaderStart from '@/components/header/HeaderStart.vue';
 import TheNotification from '@/components/layouts/TheNotification.vue';
+import MainContainer from '@/components/ui/containers/MainContainer.vue';
 import TheSplash from '@/components/ui/splash-screen/TheSplash.vue';
 import FadeTransitionMedium from '@/components/ui/transitions/FadeTransitionMedium.vue';
 import FadeTransitionShort from '@/components/ui/transitions/FadeTransitionShort.vue';

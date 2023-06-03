@@ -1,4 +1,3 @@
-import TheBadge from '@/components/layouts/TheBadge.vue';
 <template>
   <li>
     <TheBadge

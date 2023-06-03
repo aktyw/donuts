@@ -1,9 +1,11 @@
 <template>
-  <ul class="grid place-items-center">
+  <ul class="flex items-center flex-col">
     <li
       v-for="note in notes"
       :key="note.id">
-      {{ note.content }}
+      <NoteCard
+        :title="note.title"
+        :content="note.content" />
     </li>
   </ul>
 </template>
@@ -11,6 +13,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 
+import NoteCard from '@/components/notes/NoteCard.vue';
 import { useNotesStore } from '@/stores/NotesStore';
 
 const store = useNotesStore();

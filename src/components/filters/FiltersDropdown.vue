@@ -70,7 +70,7 @@
         <FiltersDropdownButtonItem
           :is-active="currentFilter === Filters.Priority"
           @action="store.setFilter(Filters.Priority)">
-          <IconImportantSmall />
+          <IconFlag />
           {{ Filters.Priority }}
         </FiltersDropdownButtonItem>
         <FiltersDropdownButtonItem
@@ -115,7 +115,7 @@ import IconChaos from '@/components/icons/IconChaos.vue';
 import IconCircle from '@/components/icons/IconCircle.vue';
 import IconCircleCheck from '@/components/icons/IconCircleCheck.vue';
 import IconFiltersOff from '@/components/icons/IconFiltersOff.vue';
-import IconImportantSmall from '@/components/icons/IconImportantSmall.vue';
+import IconFlag from '@/components/icons/IconFlag.vue';
 import IconListAlt from '@/components/icons/IconListAlt.vue';
 import IconNorth from '@/components/icons/IconNorth.vue';
 import IconRecycleBin from '@/components/icons/IconRecycleBin.vue';
