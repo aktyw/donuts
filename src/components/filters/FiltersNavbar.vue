@@ -13,13 +13,23 @@
     </BaseHeading>
     <FiltersDropdown @delete-tasks="handleDeleteTasksAndSetProject"></FiltersDropdown>
     <ModalConfirmDelete
-      v-if="deleteConfirm"
+      v-if="deleteAllConfirm"
       :is-danger="true"
-      @cancel="cancelDeleteTask"
+      @cancel="hideDeleteModals"
       @action="handleDeleteAllTasks">
       Delete task
       <template #content>
         <p>Do you really want to delete all tasks ?</p>
+      </template>
+    </ModalConfirmDelete>
+    <ModalConfirmDelete
+      v-if="deleteCompletedConfirm"
+      :is-danger="true"
+      @cancel="hideDeleteModals"
+      @action="handleDeleteCompletedTasks">
+      Delete completed task
+      <template #content>
+        <p>Do you really want to delete all completed tasks ?</p>
       </template>
     </ModalConfirmDelete>
   </div>
@@ -30,6 +40,7 @@ import { useDateFormat, useNow } from '@vueuse/core';
 import { type Ref, ref } from 'vue';
 
 import BaseHeading from '@/components/base/BaseHeading.vue';
+import type { FilterModal } from '@/components/filters/FiltersDropdown.vue';
 import FiltersDropdown from '@/components/filters/FiltersDropdown.vue';
 import ModalConfirmDelete from '@/components/modals/ModalConfirmDelete.vue';
 import { useTasksStore } from '@/stores/TasksStore';
@@ -44,25 +55,38 @@ defineProps<{
   titleDate?: string | Date;
 }>();
 
-function handleDeleteTasksAndSetProject(project?: Project) {
+function handleDeleteTasksAndSetProject(modal: FilterModal, project?: Project) {
+  console.log(modal, project);
   currentProject.value = project;
-  toggleDeleteModal();
+
+  showDeleteModal(modal);
 }
 
 const formattedDate = useDateFormat(useNow(), 'ddd DD MMM', { locales: 'en-US' });
 
-const deleteConfirm = ref(false);
+const deleteAllConfirm = ref(false);
+const deleteCompletedConfirm = ref(false);
 
-function toggleDeleteModal(): void {
-  deleteConfirm.value = !deleteConfirm.value;
+function showDeleteModal(modal: FilterModal): void {
+  if (modal === 'all') {
+    deleteAllConfirm.value = true;
+  } else if (modal === 'completed') {
+    deleteCompletedConfirm.value = true;
+  }
 }
 
-function cancelDeleteTask(): void {
-  toggleDeleteModal();
+function hideDeleteModals(): void {
+  deleteAllConfirm.value = false;
+  deleteCompletedConfirm.value = false;
 }
 
 function handleDeleteAllTasks(): void {
   store.deleteAllProjectTasks(currentProject?.value?.id);
-  toggleDeleteModal();
+  hideDeleteModals();
+}
+
+function handleDeleteCompletedTasks(): void {
+  store.deleteAllCompletedProjectTasks(currentProject?.value?.id);
+  hideDeleteModals();
 }
 </script>

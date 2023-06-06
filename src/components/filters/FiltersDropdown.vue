@@ -85,10 +85,18 @@
 
       <FiltersDropdownHeading>Actions</FiltersDropdownHeading>
       <FiltersDropdownButtonItem
+        v-if="tasks.some((task) => task.isDone) && currentProject"
+        :disabled="!tasks.length"
+        :is-danger="true"
+        @action="handleDeleteTasks('completed')">
+        <IconRecycleBin />
+        Delete completed
+      </FiltersDropdownButtonItem>
+      <FiltersDropdownButtonItem
         v-if="tasks && currentProject"
         :disabled="!tasks.length"
         :is-danger="true"
-        @action="handleDeleteTasks()">
+        @action="handleDeleteTasks('all')">
         <IconRecycleBin />
         Delete all
       </FiltersDropdownButtonItem>
@@ -129,6 +137,8 @@ import type { Project } from '@/types/models/Projects';
 import { SortFilters, SortOrder } from '@/types/models/Sort';
 import type { Task } from '@/types/models/Task';
 
+export type FilterModal = 'all' | 'completed';
+
 const store = useTasksStore();
 
 const {
@@ -138,14 +148,14 @@ const {
 } = storeToRefs(store);
 
 const tasks = inject<Task[]>('tasks') ?? [];
-const currentProject = inject<Ref<Project>>('currentProject');
+const currentProject: Ref<Project> | undefined = inject<Ref<Project>>('currentProject');
 
 const emit = defineEmits<{
-  (e: 'deleteTasks', currentProject?: Project): void;
+  (e: 'deleteTasks', modal: FilterModal, currentProject?: Project): void;
 }>();
 
-function handleDeleteTasks(): void {
+function handleDeleteTasks(modal: FilterModal): void {
   blurElement();
-  emit('deleteTasks', currentProject?.value);
+  emit('deleteTasks', modal, currentProject?.value);
 }
 </script>

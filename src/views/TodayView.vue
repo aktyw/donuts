@@ -3,10 +3,8 @@
     <TasksContainer>
       <FiltersNavbar :title="TASK_VIEW_TITLE.TODAY" />
       <FilterStatus v-if="!isDefault" />
-      <FiltersList :tasks="tasks" />
-      <TasksList
-        :tasks="tasks"
-        :is-timeline="true" />
+      <FiltersList :tasks="todayTasks" />
+      <TodayTasksList :tasks="tasks" />
 
       <TaskAddButton
         v-if="!isEditorActive"
@@ -33,7 +31,7 @@ import FilterStatus from '@/components/filters/FilterStatus.vue';
 import EmptyMessage from '@/components/messages/EmptyMessage.vue';
 import TaskEditor from '@/components/tasks/editor/TaskEditor.vue';
 import TaskAddButton from '@/components/tasks/list/TaskAddButton.vue';
-import TasksList from '@/components/tasks/list/TasksList.vue';
+import TodayTasksList from '@/components/tasks/list/TodayTasksList.vue';
 import TasksContainer from '@/components/ui/containers/TasksContainer.vue';
 import { useHandleTasks } from '@/composables/useHandleTasks';
 import { useTasksStore } from '@/stores/TasksStore';
@@ -42,8 +40,10 @@ import { TASK_VIEW_TITLE } from '@/types/models/Titles';
 
 const store = useTasksStore();
 const { getSortType: sortTypeStatus } = storeToRefs(store);
+
 const todayTasks = computed(() => store.getTodayTasks);
 const tasks = useHandleTasks(todayTasks);
+
 const isDefault = computed(() => sortTypeStatus.value === SortFilters.Default);
 const isEditorActive = ref(false);
 

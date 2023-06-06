@@ -290,13 +290,26 @@ export const useTasksStore = defineStore('tasks', {
       recoverNestedTasks(taskToRecover);
     },
     deleteAllProjectTasks(projectId: string): void {
-      const delTasks = [...this.tasks.default.filter((task) => task.projectId === projectId)];
+      const hasSameProject = (task: Task) => task.projectId === projectId;
+
+      const delTasks = [...this.tasks.default.filter(hasSameProject)];
 
       this.tasks.deleted.push(...delTasks);
       this.tasks.default = this.tasks.default.filter((task) => task.projectId !== projectId);
       this.tasks.temp.push(...delTasks);
 
       useNotification(NotificationMessage.TasksAllDelete);
+    },
+    deleteAllCompletedProjectTasks(projectId: string) {
+      const delTasks = [...this.tasks.default.filter((task) => task.projectId === projectId && task.isDone)];
+
+      const delTasksIds = delTasks.map((task) => task.id);
+
+      this.tasks.deleted.push(...delTasks);
+      this.tasks.default = this.tasks.default.filter((task) => !delTasksIds.includes(task.id));
+      this.tasks.temp.push(...delTasks);
+
+      useNotification(NotificationMessage.TasksAllCompletedDelete);
     },
     deleteAllTasks(): void {
       const delTasks = [...this.tasks.default];
