@@ -38,4 +38,6 @@ const props = defineProps<Props>();
 const priorityTasks = computed(() => props.tasks.filter((task) => task.isPriority));
 const completedTasks = computed(() => props.tasks.filter((task) => task.isDone));
 const activeTasks = computed(() => props.tasks.filter((task) => !task.isDone));
+
+console.log(completedTasks.value);
 </script>

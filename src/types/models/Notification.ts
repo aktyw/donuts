@@ -10,6 +10,7 @@ export const NotificationAction = { TaskDelete: 'TaskDelete', TasksAllDelete: 'T
 export enum NotificationMessage {
   TaskDelete = 'Task deleted',
   TasksAllDelete = 'All tasks deleted',
+  TasksAllCompletedDelete = 'All completed tasks deleted',
   TaskAdd = 'Task added',
   TaskMove = 'Task moved',
   TaskComplete = 'Task completed',

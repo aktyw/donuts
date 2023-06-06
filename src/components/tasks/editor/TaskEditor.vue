@@ -147,7 +147,7 @@ import IconFlag from '@/components/icons/IconFlag.vue';
 import ProjectAddButton from '@/components/projects/ProjectAddButton.vue';
 import ProjectList from '@/components/projects/ProjectList.vue';
 import ProjectModal from '@/components/projects/ProjectModal.vue';
-import TaskTimeDetail from '@/components/tasks/card/TaskTimeDetail.vue';
+import TaskTimeDetail from '@/components/tasks/card/details/TaskTimeDetail.vue';
 import TaskEditorInput from '@/components/tasks/editor/TaskEditorInput.vue';
 import ButtonBadgeMedium from '@/components/ui/buttons/ButtonBadgeMedium.vue';
 import ButtonMainAction from '@/components/ui/buttons/ButtonMainAction.vue';

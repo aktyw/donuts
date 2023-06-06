@@ -65,8 +65,12 @@
                 v-if="subtaskAmount > 0 && !isModal"
                 :amount="subtaskAmount"
                 :completed-amount="subtaskCompletedAmount" />
+              <TaskPriorityDetail
+                v-if="task.isPriority"
+                class="fill-error" />
 
               <TaskTimeDetail
+                v-if="showDetailTime"
                 :class="{
                   '[&>span]:!text-error [&>svg]:!fill-error': markOverdue,
                   '[&>span]:text-success [&>svg]:fill-success': markToday,
@@ -76,14 +80,10 @@
                 class="pt-0.5"
                 @click.stop="handleOpenCalendar()">
                 <template #icon>
-                  <IconCalendar
-                    v-if="showDetailTime"
-                    class="relative right-0.5 fill-base-content" />
+                  <IconCalendar class="relative right-0.5 fill-base-content" />
                 </template>
                 <template #time>
-                  <span
-                    v-if="showDetailTime"
-                    class="flex items-end pt-0.5">
+                  <span class="flex items-end pt-0.5">
                     {{ showDetailTime }}
                   </span>
                 </template>
@@ -173,13 +173,13 @@ import IconCalendar from '@/components/icons/IconCalendar.vue';
 import IconColor from '@/components/icons/IconColor.vue';
 import IconPen from '@/components/icons/IconPen.vue';
 import ModalConfirmDelete from '@/components/modals/ModalConfirmDelete.vue';
+import TaskPriorityDetail from '@/components/tasks/card/details/TaskPriorityDetail.vue';
+import TaskProjectDetail from '@/components/tasks/card/details/TaskProjectDetail.vue';
+import TaskSubtaskInfo from '@/components/tasks/card/details/TaskSubtaskInfo.vue';
+import TaskTimeDetail from '@/components/tasks/card/details/TaskTimeDetail.vue';
 import TaskCheckbox from '@/components/tasks/card/TaskCheckbox.vue';
-import TaskProjectDetail from '@/components/tasks/card/TaskProjectDetail.vue';
-import TaskSubtaskInfo from '@/components/tasks/card/TaskSubtaskInfo.vue';
-import TaskTimeDetail from '@/components/tasks/card/TaskTimeDetail.vue';
 import TaskEditor from '@/components/tasks/editor/TaskEditor.vue';
 import TaskOptions from '@/components/tasks/options/TaskOptions.vue';
-import { getBreakpoints } from '@/composables/useBreakpoints';
 import { useTimeDetail } from '@/composables/useTimeDetail';
 import { useProjectsStore } from '@/stores/ProjectsStore';
 import { useSettingsStore } from '@/stores/SettingsStore';
@@ -195,22 +195,27 @@ const props = defineProps<Props>();
 const router = useRouter();
 const route = useRoute();
 
-const store = useTasksStore();
+const tasksStore = useTasksStore();
 const projectsStore = useProjectsStore();
 const settingsStore = useSettingsStore();
+
 const { getProjectById } = storeToRefs(projectsStore);
 const project = computed(() => getProjectById.value(props.task.projectId));
-const isDone = ref(props.task.isDone);
-const isPriority = ref(props.task.isPriority);
 
-const { mdAndSmaller } = getBreakpoints();
+const isDone = computed(() => props.task.isDone);
+const isPriority = computed(() => props.task.isPriority);
 
 const deleteConfirm = ref(false);
+
+watch(deleteConfirm, (val) => {
+  settingsStore.setModal({ modal: 'deleteTaskConfirm', value: val });
+});
+
 const editTask = ref(false);
 const options = ref();
 const isEditorActive = inject('isEditorActive');
 
-const deadline = computed(() => store.getTaskDate(props.task.id));
+const deadline = computed(() => tasksStore.getTaskDate(props.task.id));
 const { showDetailTime, markOverdue, markToday, markTomorrow, markDays } = useTimeDetail(deadline);
 
 const card: Ref<HTMLElement | undefined> = ref();
@@ -221,7 +226,7 @@ const subtaskAmount = computed(() => props.task.childId?.length || 0);
 const subtaskChilds = computed(() => props.task.childId);
 const subtaskCompletedAmount = computed(() => {
   const amount = subtaskChilds.value?.filter((subId) => {
-    const subs = store.getTaskById(subId);
+    const subs = tasksStore.getTaskById(subId);
 
     return subs.isDone;
   });
@@ -233,10 +238,6 @@ function handleOpenCalendar(): void {
   options.value.handleCalendar();
 }
 
-watch(deleteConfirm, (val) => {
-  settingsStore.setModal({ modal: 'deleteTaskConfirm', value: val });
-});
-
 function setCardBacklight() {
   showBacklight.value = true;
   setTimeout(() => {
@@ -246,7 +247,7 @@ function setCardBacklight() {
 
 function handleDeleteTask(id: string): void {
   closeDeleteModal();
-  store.deleteTask(id);
+  tasksStore.deleteTask(id);
 }
 
 function cancelDeleteTask(): void {
@@ -266,21 +267,19 @@ function toggleEditModal(): void {
 }
 
 function toggleIsDone(id: string): void {
-  isDone.value = !isDone.value;
-  store.toggleIsDone(id);
+  tasksStore.toggleIsDone(id);
 }
 
 function toggleIsPriority(id: string): void {
-  isPriority.value = !isPriority.value;
-  store.toggleIsPriority(id);
+  tasksStore.toggleIsPriority(id);
 }
 
 function handleDuplicateTask(id: string): void {
-  store.duplicateTask(id);
+  tasksStore.duplicateTask(id);
 }
 
 function handleUpdateDate(date: Date): void {
-  store.updateDate(props.task.id, date);
+  tasksStore.updateDate(props.task.id, date);
 }
 
 function handleAddSubtask(): void {
@@ -291,6 +290,6 @@ function handleAddSubtask(): void {
 
 function handleUpdateTask(content: Partial<Task>): void {
   toggleEditModal();
-  store.updateTask(props.task.id, content);
+  tasksStore.updateTask(props.task.id, content);
 }
 </script>
