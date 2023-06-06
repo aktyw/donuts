@@ -1,5 +1,9 @@
 <template>
-  <BaseLabel :for="inputName">{{ label }}</BaseLabel>
+  <BaseLabel
+    v-if="label"
+    :for="inputName">
+    {{ label }}
+  </BaseLabel>
   <input
     ref="input"
     :name="inputName"
@@ -17,9 +21,9 @@ import BaseLabel from '@/components/base/BaseLabel.vue';
 const input = ref();
 
 defineProps<{
-  modelValue: string;
-  inputName: string;
-  label: string;
+  modelValue?: string;
+  inputName?: string;
+  label?: string;
 }>();
 
 const emit = defineEmits(['update:modelValue']);

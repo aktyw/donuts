@@ -1,23 +1,38 @@
+import { useStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
+import { v4 as uuid } from 'uuid';
+
+import { findItem } from '../helpers/findItem';
+
+interface Note {
+  id: string;
+  title: string;
+  content: string;
+}
+
 export const useNotesStore = defineStore('notes', {
   state: () => ({
-    notes: [
-      {
-        id: 'id1',
-        title: 'title of note',
-        content: 'lorem ipsum note',
-      },
-      {
-        id: 'id2',
-        title: 'some title of note',
-        content: 'lorem ipsum note 2',
-      },
-    ],
+    notes: useStorage<Note[]>('notes', []),
   }),
   getters: {
     getAllNotes(state) {
       return state.notes;
     },
   },
-  actions: {},
+  actions: {
+    addNewNote(payload: Omit<Note, 'id'>): void {
+      const note: Note = {
+        id: uuid(),
+        title: payload.title,
+        content: payload.content,
+      };
+
+      this.notes.push(note);
+    },
+    deleteNote(id: string): void {
+      const noteToDel: Note = findItem(id, this.notes);
+
+      this.notes.filter((note: Note) => note.id !== noteToDel.id);
+    },
+  },
 });

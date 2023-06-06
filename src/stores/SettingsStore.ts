@@ -30,7 +30,7 @@ interface SettingsState {
       moveProject: boolean;
       userSettings: boolean;
       deleteAccount: boolean;
-      achievement: boolean,
+      achievement: boolean;
     };
     isProjectListOpen: {
       favorites: boolean;

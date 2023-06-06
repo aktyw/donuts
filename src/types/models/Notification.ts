@@ -26,4 +26,6 @@ export enum NotificationMessage {
   DuplicateProject = 'Project duplicated',
   ArchiveProject = 'Project archived',
   ActivateProject = 'Project activated',
+  NoteAdd = 'Note added',
+  NoteDelete = 'Note deleted',
 }

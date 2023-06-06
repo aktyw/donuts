@@ -1,5 +1,7 @@
 <template>
-  <div class="p-2 sm:p-16 pb-24">
+  <main
+    id="main"
+    class="sm:px-8 sm:pt-6 sm:pb-40 pb-24">
     <slot />
-  </div>
+  </main>
 </template>

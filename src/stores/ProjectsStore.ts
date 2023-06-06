@@ -1,8 +1,7 @@
 import { useStorage } from '@vueuse/core';
-import { addDoc, collection, deleteDoc, doc, setDoc } from 'firebase/firestore';
+import { deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { nanoid } from 'nanoid';
 import { defineStore, storeToRefs } from 'pinia';
-import { useCollection } from 'vuefire';
 
 import { useNotification } from '@/composables/useNotification';
 import { db } from '@/firebase/config';
@@ -61,7 +60,7 @@ export const useProjectsStore = defineStore('projects', {
         favorite,
       };
 
-      await setDoc(doc(db, 'projects', id), project);
+      // await setDoc(doc(db, 'projects', id), project);
 
       this.projects.push(project);
 
@@ -69,9 +68,9 @@ export const useProjectsStore = defineStore('projects', {
     },
     async deleteProject(id: string) {
       const project = findItem(id, this.projects);
-      const docRef = doc(db, 'projects', id);
+      // const docRef = doc(db, 'projects', id);
 
-      await deleteDoc(docRef);
+      // await deleteDoc(docRef);
       this.projects = this.projects.filter((p) => p !== project);
 
       useNotification(NotificationMessage.DeleteProject);

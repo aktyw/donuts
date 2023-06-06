@@ -5,6 +5,7 @@
         :is="'li'"
         data="Go to editor">
         <ProjectLink
+          :custom-tooltip="true"
           class="fill-primary [&>span]:right-5 md:[&>span]:right-auto"
           :to="{ name: 'noteEditor' }">
           <template #icon>
@@ -18,6 +19,7 @@
         :is="'li'"
         data="Go to notes">
         <ProjectLink
+          :custom-tooltip="true"
           class="fill-primary [&>span]:right-5 md:[&>span]:right-auto"
           :to="{ name: 'noteList' }">
           <template #icon>
