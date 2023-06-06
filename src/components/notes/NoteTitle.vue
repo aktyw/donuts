@@ -4,7 +4,7 @@
     :placeholder="title"
     input-name="title"
     name="title"
-    class="text-xl border-0 text-base-content bg-base-100 focus-within:bg-base-300 transition p-0 !mb-2 h-8" />
+    class="px-0.5 text-xl border-0 text-base-content bg-base-100 focus-within:bg-base-300 transition p-0 !mb-2 h-8" />
 </template>
 
 <script setup lang="ts">

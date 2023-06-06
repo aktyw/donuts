@@ -32,7 +32,7 @@ export const useNotesStore = defineStore('notes', {
     deleteNote(id: string): void {
       const noteToDel: Note = findItem(id, this.notes);
 
-      this.notes.filter((note: Note) => note.id !== noteToDel.id);
+      this.notes = this.notes.filter((note: Note) => note.id !== noteToDel.id);
     },
   },
 });

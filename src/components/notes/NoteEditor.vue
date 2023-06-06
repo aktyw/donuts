@@ -1,7 +1,9 @@
 <template>
   <NotesContainer>
     <div class="flex gap-4">
-      <NoteEditorOptions @save-note="handleSaveNote" />
+      <NoteEditorOptions
+        @copy-to-clipboard="handleCopyToClipboard"
+        @save-note="handleSaveNote" />
       <NoteTitle
         v-model="title"
         :title="title" />
@@ -13,7 +15,7 @@
       class="!max-w-80"
       theme="snow"
       toolbar="full"
-      @ready="isEditorReady = true" />
+      @ready="isEditorReady = true"></QuillEditor>
   </NotesContainer>
 </template>
 
@@ -21,9 +23,9 @@
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 import { QuillEditor } from '@vueup/vue-quill';
+import { useClipboard } from '@vueuse/core';
 import { ref } from 'vue';
 
-import TheNotification from '@/components/layouts/TheNotification.vue';
 import NoteEditorOptions from '@/components/notes/NoteEditorOptions.vue';
 import NoteTitle from '@/components/notes/NoteTitle.vue';
 import NotesContainer from '@/components/ui/containers/NotesContainer.vue';
@@ -38,6 +40,8 @@ const isEditorReady = ref(false);
 
 const content = ref('');
 const title = ref('Untitled');
+
+const { copy } = useClipboard({ content });
 
 function handleSaveNote(): void {
   if (!content.value) return;
@@ -56,5 +60,10 @@ function handleSaveNote(): void {
 function clearEditor(): void {
   editor.value.setContents('', 'silent');
   title.value = 'Untitled';
+}
+
+function handleCopyToClipboard(): void {
+  copy(editor.value.getText());
+  useNotification(NotificationMessage.NoteContent);
 }
 </script>

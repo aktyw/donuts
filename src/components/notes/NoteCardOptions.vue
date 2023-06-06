@@ -2,12 +2,12 @@
   <aside class="flex px-8 py-4 gap-2 justify-end">
     <BaseButton>
       <template #icon>
-        <IconTheme class="fill-white transition" />
+        <IconTheme class="text-primary-content transition" />
       </template>
     </BaseButton>
     <BaseButton @click="handleDeleteNote">
       <template #icon>
-        <IconRecycleBin class="fill-white hover:!fill-error transition" />
+        <IconRecycleBin class="text-primary-content hover:!fill-error transition" />
       </template>
     </BaseButton>
   </aside>

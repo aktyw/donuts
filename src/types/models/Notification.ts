@@ -20,6 +20,7 @@ export enum NotificationMessage {
   TaskDuplicate = 'Task duplicated',
   TaskPriority = 'Task priority changed',
   CopyLink = 'Task link copied',
+  NoteContent = 'Content copied',
   UpdateProject = 'Project updated',
   DeleteProject = 'Project deleted',
   AddProject = 'Project added',
