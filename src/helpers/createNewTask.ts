@@ -16,5 +16,6 @@ export function createNewTask(options: Task): Task {
     projectId,
     ...(parentId && { parentId }),
     childId: [],
+    noteId: [],
   };
 }

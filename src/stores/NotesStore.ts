@@ -6,7 +6,7 @@ import { type NOTES_COLORS_HEXES } from '@/types/models/Colors';
 
 import { findItem } from '../helpers/findItem';
 
-interface Note {
+export interface Note {
   id: string;
   title: string;
   content: string;

@@ -144,6 +144,12 @@
                   </ButtonBadgeMedium>
                 </TheTooltip>
               </TaskModalOption>
+              <TaskModalOption title="Notes">
+                <NotesSelectList
+                  class="btn btn-sm w-full max-w-[14rem] lg:w-full border-none bg-base-100 px-2 transition duration-300 hover:bg-base-100"
+                  :task="currentTask" />
+                <NotesLabels :task="currentTask" :labels="labels" />
+              </TaskModalOption>
             </div>
           </aside>
         </section>
@@ -162,6 +168,8 @@ import IconChevronDown from '@/components/icons/IconChevronDown.vue';
 import IconClose from '@/components/icons/IconClose.vue';
 import IconFlag from '@/components/icons/IconFlag.vue';
 import ModalConfirmDelete from '@/components/modals/ModalConfirmDelete.vue';
+import NotesLabels from '@/components/notes/NotesLabels.vue';
+import NotesSelectList from '@/components/notes/NotesSelectList.vue';
 import ProjectLink from '@/components/projects/ProjectLink.vue';
 import ProjectList from '@/components/projects/ProjectList.vue';
 import TaskCheckbox from '@/components/tasks/card/TaskCheckbox.vue';
@@ -202,18 +210,20 @@ defineEmits<{
 
 const projectsStore = useProjectsStore();
 const settingsStore = useSettingsStore();
-const store = useTasksStore();
+const tasksStore = useTasksStore();
 
 const currentTaskId = computed(() => route.params.taskid as string);
-const currentTask = computed(() => store.getTaskById(currentTaskId.value));
+const currentTask = computed(() => tasksStore.getTaskById(currentTaskId.value));
 const currentProject = computed(() => projectsStore.getProjectById(currentTask?.value?.projectId));
 const currentIndex = computed(() => findIndex(currentTaskId.value, initialTasks));
-const currentDate = computed(() => store.getTaskDate(currentTask.value.id));
+const currentDate = computed(() => tasksStore.getTaskDate(currentTask.value.id));
+
+const labels = computed(() => currentTask.value.noteId);
 
 const parentTask = computed(() => {
   const parentTaskId = currentTask.value.parentId;
 
-  return store.getTaskById(parentTaskId);
+  return tasksStore.getTaskById(parentTaskId);
 });
 
 provide('parentTask', parentTask);
@@ -221,7 +231,7 @@ provide('parentTask', parentTask);
 const subTasks = computed(() => {
   const subTasksId = currentTask.value.childId;
 
-  return subTasksId.map((id: string) => store.getTaskById(id));
+  return subTasksId.map((id: string) => tasksStore.getTaskById(id));
 });
 
 const initialTasks = unref(inject('tasks') as Task[]);
@@ -284,26 +294,28 @@ async function moveToNextTask(): Promise<void> {
 }
 
 function handleUpdateTask(content: Partial<Task>): void {
-  store.updateTask(currentTaskId.value, content);
+  tasksStore.updateTask(currentTaskId.value, content);
   closeEditors();
 }
 
 function handleUpdateDate(date: Date): void {
-  store.updateDate(currentTaskId.value, date);
+  tasksStore.updateDate(currentTaskId.value, date);
 }
 
 function handleMoveTask(): void {
   if (selectedProject.value) {
-    store.moveTask(currentTask.value.id, selectedProject.value.id);
+    tasksStore.moveTask(currentTask.value.id, selectedProject.value.id);
   }
 }
 
+function handleAddNote(): void {}
+
 function toggleIsDone(): void {
-  store.toggleIsDone(currentTaskId.value);
+  tasksStore.toggleIsDone(currentTaskId.value);
 }
 
 function togglePriority(): void {
-  store.toggleIsPriority(currentTask.value.id);
+  tasksStore.toggleIsPriority(currentTask.value.id);
 }
 
 function handlePrintTask(): void {
@@ -332,7 +344,7 @@ function cancelDeleteTask(): void {
 }
 
 function handleDeleteTask(): void {
-  store.deleteTask(currentTask.value.id);
+  tasksStore.deleteTask(currentTask.value.id);
   closeModal();
 }
 

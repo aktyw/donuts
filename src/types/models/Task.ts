@@ -9,4 +9,5 @@ export interface Task {
   projectId: string;
   parentId?: string | null;
   childId?: string[];
+  noteId?: string[];
 }

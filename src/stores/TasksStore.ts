@@ -327,5 +327,13 @@ export const useTasksStore = defineStore('tasks', {
       this.tasks.default = [...this.tasks.default, ...this.tasks.temp];
       this.tasks.temp = [];
     },
+    addNoteToTask(task: Task, noteId: string): void {
+      if (noteId) {
+        task.noteId?.push(noteId);
+      }
+    },
+    deleteNoteFromTask(task: Task, noteId: string): void {
+      task.noteId = task.noteId?.filter((id) => id !== noteId);
+    },
   },
 });
