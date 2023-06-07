@@ -1,6 +1,6 @@
 <template>
   <div
-    class="card w-64 h-64 max-h-64 max-w-64 shadow-xl [&>aside]:invisible [&>aside]:hover:visible transition cursor-grab"
+    class="card w-40 h-40 sm:w-64 sm:h-64 max-h-64 max-w-64 shadow-xl sm:[&>aside]:invisible sm:[&>aside]:hover:visible sm:[&>:active]:visible transition cursor-grab"
     :class="cardBackgroundStyle"
     @click="showNoteModal = true">
     <div class="card-body overflow-hidden">
@@ -11,6 +11,7 @@
     </div>
     <NoteCardOptions
       :id="uid"
+      @click.stop
       @delete-note="showConfirmDeleteModal" />
 
     <slot />

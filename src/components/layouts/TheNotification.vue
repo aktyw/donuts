@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <div class="absolute flex flex-col gap-2 bottom-4 left-4 z-[5000]">
+    <div class="absolute flex flex-col gap-2 -bottom-8 sm:bottom-4 left-4 z-[5000]">
       <FadeTransitionGroup>
         <BaseNotification
           v-for="notification in notifications"

@@ -1,5 +1,5 @@
 <template>
-  <BaseButton class="dropdown dropdown-bottom font-normal">
+  <BaseButton class="dropdown dropdown-top sm:dropdown-bottom font-normal">
     Add note to current task
     <div
       tabindex="0"

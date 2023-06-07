@@ -1,13 +1,11 @@
 <template>
-  <BaseButton
-    class="dropdown dropdown-end"
-    @click.stop>
+  <BaseButton class="dropdown">
     <template #icon>
       <IconTheme class="fill-primary-content transition" />
     </template>
     <div
       tabindex="0"
-      class="dropdown-content card card-compact w-auto p-1 mx-2 shadow bg-base-200 text-primary-content">
+      class="dropdown-content sm:h-auto items-center rounded-lg flex justify-center shadow bg-base-200 text-primary-content card !w-full sm:!w-56 sm:relative sm:!bottom-auto right-0 -top-0.5 sm:!right-auto p-0.5 sm:mx-2">
       <ul class="flex">
         <li
           v-for="({ hex }, id) in NOTES_COLORS"
@@ -15,7 +13,9 @@
           class="flex items-center border border-transparent hover:border hover:border-primary">
           <BaseButton @click.stop="handleChangeNoteColor(hex)">
             <template #icon>
-              <IconColor :fill="hex" />
+              <IconColor
+                class="w-8 h-8 sm:h-auto sm:w-auto"
+                :fill="hex" />
             </template>
           </BaseButton>
         </li>

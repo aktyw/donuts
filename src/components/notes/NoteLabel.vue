@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center btn btn-xs gap-0.5">
+  <div class="flex items-center btn btn-xs gap-1">
     <BaseLabel
       class="text-xs font-medium !mb-0 cursor-pointer"
       @click="showNoteModal = true">

@@ -6,7 +6,7 @@
       <div>
         <NoteLabel
           :note="note"
-          @delete-note-from-task="handleDeleteNoteFromTask(note.id)"></NoteLabel>
+          @delete-note-from-task="handleDeleteNoteFromTask(note.id)" />
       </div>
     </li>
   </ul>

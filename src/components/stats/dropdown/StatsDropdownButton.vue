@@ -1,6 +1,6 @@
 <template>
   <TheTooltip
-    class="z-[100]"
+    class="z-[100] tooltip-right sm:tooltip-bottom"
     data="Open productivity">
     <BaseButton
       class="btn-sm btn border-transparent bg-base-300 p-1 px-1.5 text-lg normal-case text-base-content hover:border-transparent hover:bg-base-200"

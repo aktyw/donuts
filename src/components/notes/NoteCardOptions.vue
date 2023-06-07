@@ -1,5 +1,5 @@
 <template>
-  <aside class="flex px-8 py-4 gap-2 justify-end">
+  <aside class="flex px-2 sm:px-8 py-2 sm:py-4 gap-2 justify-end !static">
     <ColorOptions @change-color="handleChangeNoteColor" />
 
     <BaseButton @click.stop="handleDeleteNote">

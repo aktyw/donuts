@@ -20,7 +20,6 @@
           Settings
         </NavLink>
         <NavLink :to="{ name: 'activity' }">Activity log</NavLink>
-        <StatsDropdownButton class="!w-full !h-12" />
         <BaseButton
           class="outline-custom btn-md btn rounded-md border-0 bg-base-300 text-base font-semibold normal-case text-base-content lg:btn-sm hover:bg-base-200"
           @click.prevent="logout">
@@ -37,7 +36,6 @@ import { useRoute } from 'vue-router';
 import BaseButton from '@/components/base/BaseButton.vue';
 import NavLink from '@/components/header/navigation/NavLink.vue';
 import IconList from '@/components/icons/IconList.vue';
-import StatsDropdownButton from '@/components/stats/dropdown/StatsDropdownButton.vue';
 import blurElement from '@/helpers/blur';
 import { useAuthStore } from '@/stores/AuthStore';
 import { useSettingsStore } from '@/stores/SettingsStore';

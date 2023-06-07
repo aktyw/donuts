@@ -1,46 +1,48 @@
 <template>
-  <div>
-    <section class="flex flex-col gap-4">
-      <div class="flex flex-col gap-2">
-        <SettingsLabel title="Goals" />
-        <p class="text-sm">Small steps add up to big achievements. Set task goals to keep your momentum.</p>
-      </div>
-      <div>
-        <div class="w-40">
-          <SettingsLabel title="Daily tasks" />
-          <SettingsInput
-            v-model.number="dailyValue"
-            class="w-full"
-            maxlength="3"
-            :placeholder="initialDaily.toString()"
-            min="1"
-            max="100"
-            type="number" />
+  <div class="pb-20">
+    <div>
+      <section class="flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
+          <SettingsLabel title="Goals" />
+          <p class="text-sm">Small steps add up to big achievements. Set task goals to keep your momentum.</p>
         </div>
-        <div class="w-40">
-          <SettingsLabel title="Weekly tasks" />
-          <SettingsInput
-            v-model.number="weeklyValue"
-            :placeholder="initialWeekly.toString()"
-            class="w-full"
-            min="1"
-            max="1000"
-            type="number" />
+        <div>
+          <div class="w-40">
+            <SettingsLabel title="Daily tasks" />
+            <SettingsInput
+              v-model.number="dailyValue"
+              class="w-full"
+              maxlength="3"
+              :placeholder="initialDaily.toString()"
+              min="1"
+              max="100"
+              type="number" />
+          </div>
+          <div class="w-40">
+            <SettingsLabel title="Weekly tasks" />
+            <SettingsInput
+              v-model.number="weeklyValue"
+              :placeholder="initialWeekly.toString()"
+              class="w-full"
+              min="1"
+              max="1000"
+              type="number" />
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
+
+    <InfoContainer
+      v-if="isSuccess"
+      class="mt-6">
+      <p>New goals has been set up successfully.</p>
+    </InfoContainer>
+
+    <SettingsFooterAction
+      :is-save-btn-active="initialDaily !== dailyValue || initialWeekly !== weeklyValue"
+      @cancel="handleCancelAction"
+      @save="handleUpdateGoals" />
   </div>
-
-  <InfoContainer
-    v-if="isSuccess"
-    class="mt-6">
-    <p>New goals has been set up successfully.</p>
-  </InfoContainer>
-
-  <SettingsFooterAction
-    :is-save-btn-active="initialDaily !== dailyValue || initialWeekly !== weeklyValue"
-    @cancel="handleCancelAction"
-    @save="handleUpdateGoals" />
 </template>
 
 <script setup lang="ts">

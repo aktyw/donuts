@@ -22,7 +22,7 @@
       </TheTooltip>
       <TheTooltip data="Go to home">
         <BaseButton
-          class="btn-ghost btn-square btn-sm btn hover:bg-base-200"
+          class="btn-ghost btn-square btn-sm btn hover:bg-base-200 flex items-center"
           aria-label="Go to home"
           @click="handleLinkToHome">
           <template #icon>

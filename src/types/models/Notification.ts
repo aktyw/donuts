@@ -29,4 +29,5 @@ export enum NotificationMessage {
   ActivateProject = 'Project activated',
   NoteAdd = 'Note added',
   NoteDelete = 'Note deleted',
+  ChangeOrder = 'Order changed',
 }
