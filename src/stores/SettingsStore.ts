@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 
 import type { Mode, ThemesId } from '@/types/models/Themes';
 
-interface SettingsState {
+export interface SettingsState {
   settings: {
     isMenuOpen: boolean;
     homeView: string;

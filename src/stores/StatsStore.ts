@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 
 export type TargetType = 'daily' | 'weekly';
 
-interface StatsState {
+export interface StatsState {
   stats: {
     tasks: {
       completed: {

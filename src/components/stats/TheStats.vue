@@ -48,7 +48,7 @@
         <BaseDivider />
       </section>
       <div>
-        <p>chart JS here last 7 days</p>
+        <BarChart />
       </div>
       <div class="w-full flex flex-col items-center">
         <BaseDivider />
@@ -67,6 +67,7 @@
 import { computed, type Ref, ref, watch } from 'vue';
 
 import BaseDivider from '@/components/base/BaseDivider.vue';
+import BarChart from '@/components/charts/BarChart.vue';
 import IconMedals from '@/components/icons/IconMedals.vue';
 import IconOrder from '@/components/icons/IconOrder.vue';
 import TheAchievement from '@/components/layouts/TheAchievement.vue';

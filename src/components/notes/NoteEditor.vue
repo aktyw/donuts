@@ -51,7 +51,7 @@ const isEditorReady = ref(false);
 const content = ref('');
 const title = ref('Untitled');
 
-const currentColor = ref(NOTES_COLORS[4].hex);
+const currentColor = ref<NOTES_COLORS_HEXES>(NOTES_COLORS[4].hex);
 const currentColorStyle = computed(() => `bg-[${currentColor.value}] active:bg-[${currentColor.value}] `);
 
 const { copy } = useClipboard();
