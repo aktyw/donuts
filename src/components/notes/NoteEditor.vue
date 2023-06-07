@@ -1,13 +1,20 @@
 <template>
   <NotesContainer>
-    <div class="flex gap-4">
-      <NoteEditorOptions
-        @copy-to-clipboard="handleCopyToClipboard"
-        @save-note="handleSaveNote" />
+    <div class="flex gap-4 justify-between items-center">
       <NoteTitle
         v-model="title"
         :title="title" />
+      <div class="flex gap-4">
+        <ColorOptions
+          class="!dropdown-left btn btn-sm"
+          :class="currentColorStyle"
+          @change-color="handleChangeCurrentColor" />
+        <NoteEditorOptions
+          @copy-to-clipboard="handleCopyToClipboard"
+          @save-note="handleSaveNote" />
+      </div>
     </div>
+
     <QuillEditor
       ref="editor"
       v-model:content="content"
@@ -24,8 +31,9 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 import { QuillEditor } from '@vueup/vue-quill';
 import { useClipboard } from '@vueuse/core';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
+import ColorOptions from '@/components/notes/ColorOptions.vue';
 import NoteEditorOptions from '@/components/notes/NoteEditorOptions.vue';
 import NoteTitle from '@/components/notes/NoteTitle.vue';
 import NotesContainer from '@/components/ui/containers/NotesContainer.vue';
@@ -41,17 +49,19 @@ const isEditorReady = ref(false);
 
 const content = ref('');
 const title = ref('Untitled');
-const color = ref(NOTES_COLORS[4].hex);
+
+const currentColor = ref(NOTES_COLORS[4].hex);
+const currentColorStyle = computed(() => `bg-[${currentColor.value}] hover:bg-[${currentColor.value}]`);
+
 const { copy } = useClipboard();
 
-console.log(NOTES_COLORS[0]);
 function handleSaveNote(): void {
   if (!content.value) return;
 
   const note = {
     title: title.value,
     content: content.value,
-    color: color.value || NOTES_COLORS[4].hex,
+    color: currentColor.value || NOTES_COLORS[4].hex,
   };
 
   notesStore.addNewNote(note);
@@ -68,5 +78,9 @@ function clearEditor(): void {
 function handleCopyToClipboard(): void {
   copy(editor.value.getText());
   useNotification(NotificationMessage.NoteContent);
+}
+
+function handleChangeCurrentColor(color: NOTES_COLORS_HEXES): void {
+  currentColor.value = color;
 }
 </script>

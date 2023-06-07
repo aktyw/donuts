@@ -1,6 +1,6 @@
 <template>
   <div
-    class="card w-64 h-64 max-h-64 max-w-64 shadow-xl [&>aside]:invisible [&>aside]:hover:visible transition cursor-pointer"
+    class="card w-64 h-64 max-h-64 max-w-64 shadow-xl [&>aside]:invisible [&>aside]:hover:visible transition cursor-grab"
     :class="cardBackgroundStyle"
     @click="showNoteModal = true">
     <div class="card-body overflow-hidden">

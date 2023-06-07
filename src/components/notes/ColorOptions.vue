@@ -7,12 +7,12 @@
     </template>
     <div
       tabindex="0"
-      class="dropdown-content card card-compact w-auto p-2 shadow bg-base-200 text-primary-content">
+      class="dropdown-content card card-compact w-auto p-1 mx-2 shadow bg-base-200 text-primary-content">
       <ul class="flex">
         <li
           v-for="({ hex }, id) in NOTES_COLORS"
           :key="id"
-          class="flex items-center hover:border border-primary">
+          class="flex items-center border border-transparent hover:border hover:border-primary">
           <BaseButton @click.stop="handleChangeNoteColor(hex)">
             <template #icon>
               <IconColor :fill="hex" />
