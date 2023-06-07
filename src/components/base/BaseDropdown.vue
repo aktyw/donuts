@@ -5,7 +5,7 @@
       tabindex="0"
       class="btn mt-2 w-full justify-start bg-transparent text-base-content hover:bg-transparent text-left normal-case gap-2 outline-custom">
       <slot name="icon" />
-      <slot name="content"></slot>
+      <slot name="content" />
     </label>
     <ul
       tabindex="0"

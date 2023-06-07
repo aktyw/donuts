@@ -9,7 +9,7 @@
 
     <TaskListContainer v-else>
       <TaskCard
-        v-for="task in props.tasks"
+        v-for="task in nestedTasks"
         :key="task.id"
         :task="task">
         <TasksList
@@ -43,8 +43,10 @@ const tasksStore = useTasksStore();
 
 const { getTaskById, getCurrentFilter: currentFilter } = storeToRefs(tasksStore);
 
+const activeTasks = computed(() => props.tasks.filter((task: Task) => !task.isDone));
 const completedTasks = computed(() => props.projectTasks?.filter((task: Task) => task.isDone));
 const priorityTasks = computed(() => props.projectTasks?.filter((task: Task) => task.isPriority));
 
+const nestedTasks = computed(() => (currentFilter.value === 'Active' ? activeTasks.value : props.tasks));
 const flatTasks = computed(() => (currentFilter.value === 'Completed' ? completedTasks.value : priorityTasks.value));
 </script>

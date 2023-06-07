@@ -1,10 +1,8 @@
 import { useStorage } from '@vueuse/core';
-import { deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { nanoid } from 'nanoid';
 import { defineStore, storeToRefs } from 'pinia';
 
 import { useNotification } from '@/composables/useNotification';
-import { db } from '@/firebase/config';
 import { findIndex } from '@/helpers/findIndex';
 import { findItem } from '@/helpers/findItem';
 import { useTasksStore } from '@/stores/TasksStore';

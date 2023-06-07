@@ -7,6 +7,16 @@ module.exports = {
       sans: ['Inter', 'Lato', 'Mukta', 'system-ui'],
     },
   },
+  safelist: [
+    'bg-[#f44336]',
+    'bg-[#9c27b0]',
+    'bg-[#2196f3]',
+    'bg-[#009688]',
+    'bg-[#ff9800]',
+    'bg-[#795548]',
+    'bg-[#9e9e9e]',
+    'bg-[#607d8b]',
+  ],
   plugins: [require('daisyui')],
   daisyui: {
     themes: [
