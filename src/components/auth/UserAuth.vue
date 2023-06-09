@@ -3,6 +3,11 @@
     <div class="card flex-shrink-0 w-full max-w-md shadow-2xl bg-base-100">
       <div class="card-body">
         <form action="">
+          <InfoContainer class="mb-2">
+            login and pass:
+            <strong>test@donuts.com</strong>
+          </InfoContainer>
+
           <div class="form-control">
             <label class="label">
               <span class="label-text">Email</span>
@@ -41,7 +46,6 @@
                 Forgot password?
               </a>
             </label>
-            <pre>dwadwa@wp.pl</pre>
           </div>
         </form>
         <div class="flex flex-row justify-between flex-1 form-control mt-6">
@@ -104,6 +108,7 @@ import BaseButton from '@/components/base/BaseButton.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseModal from '@/components/base/BaseModal.vue';
 import IconGoogle from '@/components/icons/IconGoogle.vue';
+import InfoContainer from '@/components/ui/containers/InfoContainer.vue';
 import { useFirebaseError } from '@/composables/useFirebaseError';
 import { MAX_PASS_LENGTH, MIN_PASS_LENGTH } from '@/config/index';
 import { useAuthStore } from '@/stores/AuthStore';

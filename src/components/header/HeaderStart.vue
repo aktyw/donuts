@@ -5,7 +5,7 @@
   </HeaderContainer>
 
   <HeaderContainer v-else>
-    <TheLogoSmall />
+    <TheLogo />
     <NavStartMobile />
   </HeaderContainer>
 </template>
