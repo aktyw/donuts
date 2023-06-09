@@ -5,7 +5,7 @@ Donuts is a simple and intuitive application that allows users to easily manage 
 
 ## Live 
 
-[Check Donuts App Live](https://fanciful-dango-010a42.netlify.app/)
+[Check Donuts App Live](https://donuts-manager.netlify.app/)
 
 ## Technologies
 
